@@ -1,0 +1,60 @@
+import { useSessionStorage, useStorage } from "@vueuse/core";
+import { compareSync } from "bcrypt-ts/browser";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
+
+import type { EncryptStatus } from "@theme-hope/composables/encrypt/typings";
+import { useEncryptConfig } from "@theme-hope/composables/encrypt/useEncryptConfig";
+
+const STORAGE_KEY = "VUEPRESS_HOPE_GLOBAL_TOKEN";
+
+export interface GlobalEncrypt {
+  status: ComputedRef<EncryptStatus>;
+  validate: (token: string, keep?: boolean) => void;
+}
+
+export const useGlobalEncrypt = (): GlobalEncrypt => {
+  const encryptData = useEncryptConfig();
+
+  const storageToken = useStorage(STORAGE_KEY, "");
+  const sessionToken = useSessionStorage(STORAGE_KEY, "");
+
+  const status = computed(() => {
+    const { global = false, admin } = encryptData.value;
+
+    // Is globally encrypted
+    // oxlint-disable-next-line unicorn/explicit-length-check
+    const isEncrypted = global && Boolean(admin?.tokens.length);
+
+    const isLocked =
+      // Valid token exists
+      isEncrypted
+        ? storageToken.value
+          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            encryptData.value.admin!.tokens.every(
+              // None of the token matches
+              (hash) => !compareSync(storageToken.value, hash),
+            )
+          : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            encryptData.value.admin!.tokens.every(
+              // None of the token matches
+              (hash) => !compareSync(sessionToken.value, hash),
+            )
+        : false;
+
+    return {
+      isEncrypted,
+      isLocked,
+      hint: admin?.hint ?? "",
+    };
+  });
+
+  const validate = (inputToken: string, keep = false): void => {
+    (keep ? storageToken : sessionToken).value = inputToken;
+  };
+
+  return {
+    status,
+    validate,
+  };
+};
