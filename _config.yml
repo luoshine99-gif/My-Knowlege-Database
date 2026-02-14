@@ -1,7 +1,7 @@
 title: mrlxl 的博客
 description: 记录学习与思考
+
 remote_theme: vaibhavvikas/jekyll-theme-minimalistic
-theme: minima
 
 plugins:
   - jekyll-remote-theme
@@ -10,7 +10,7 @@ color-scheme: auto
 
 navigation:
   - name: 首页
-    link: ./index.html
+    link: /
 
 platforms:
   - name: GitHub
