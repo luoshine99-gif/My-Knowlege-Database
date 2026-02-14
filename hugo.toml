@@ -1,0 +1,51 @@
+baseURL = 'https://yuy0ung.github.io/'
+languageCode = 'en-US'
+title = 'Yuy0ung的知识库'
+
+[menus]
+  [[menus.main]]
+    name = 'Home'
+    pageRef = '/'
+    weight = 10
+
+  [[menus.main]]
+    name = 'Posts'
+    pageRef = '/posts'
+    weight = 20
+
+  [[menus.main]]
+    name = 'Tags'
+    pageRef = '/tags'
+    weight = 30
+
+[module]
+  [module.hugoVersion]
+    extended = false
+    min = '0.146.0'
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    noClasses = false
+  [markup.tableOfContents]
+    endLevel = 6
+    ordered = false
+    startLevel = 1
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[mediaTypes]
+  [mediaTypes."application/json"]
+    suffixes = ["json"]
+
+[outputFormats]
+  [outputFormats.JSON]
+    mediaType = "application/json"
+    baseName = "index"
+    isPlainText = true
+    notAlternative = true
+
+[outputs]
+  home = ["HTML", "JSON"]

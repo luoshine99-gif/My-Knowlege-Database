@@ -1,0 +1,16 @@
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+
+  mermaid.initialize({ 
+    startOnLoad: false,
+    theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+    securityLevel: 'loose'
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // 自动运行 mermaid 解析，查找 .mermaid 类
+    await mermaid.run({
+      querySelector: '.mermaid'
+    });
+  });
+</script>
