@@ -3192,6 +3192,24 @@ byte[] code = ClassPool.getDefault().get(RCETest.class.getName()).toBytecode(); 
     <li>
       <div class="tree-item-wrapper">
         <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../blog/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%88%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84%E4%B8%8E%E4%B8%B2/" class="article-link" data-summary="数据结构之栈、队列和数组 第三章_栈、队列和数组 本章介绍的两种数据结构栈和队列在逻辑结构上都属于线性结构，只不过是操作受限的线性表。
+3.1 栈 3.1.1 栈的基本概念 栈（stack） 是仅允许在一端进行插入和删除操作的线性表。
+在写C语言时，函数销毁创建本质就是依赖于栈这一数据结构。特点是后进先出（Last In First Out，LIFO） 下面介绍栈的三个基本属性以及示意图：
+栈顶（Top）： 允许进行插入和删除操作的这一端。 栈底（Bottom）： 固定不变，不允许进行插入和删除操作的这一端。 空栈： 不含任何元素的栈。 3.1.2 栈的基本操作 采用严蔚敏版的命名规范：
+InitStack(&amp;amp;amp;S)：初始化一个空栈S。 DestroyStack(&amp;amp;amp;S)：销毁栈S，释放其存储空间。 Pop(&amp;amp;amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。 Push(&amp;amp;amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。 GetTop(S,&amp;amp;amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。 StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。 3.1.3 栈的数学性质 栈的数学性质： 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n&#43;1)Cn2n，该数列也被称为卡特兰数。（做题时很好用）
+3.1.4 顺序栈 3.1.3.1 顺序栈的定义 采用顺序存储的栈称为顺序栈，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个整型指针（top） 指向当前栈顶元素位置。
+与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。
+3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论与线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
+1. top 表示当前栈顶元素的下标: 注意top指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
+#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; #include &amp;amp;lt;stdlib.h&amp;amp;gt; # define MaxSize 50 typedef struct { Elemtype data[MaxSize]; int top; }SqStack; void InitStack(SqStack&amp;amp;amp; S) { S.top = -1; //注意这里初始化为-1 } bool StackEmpty(SqStack &amp;amp;amp;S) { if (S.top == -1) { return true; } return false; } bool Push(SqStack &amp;amp;amp;S, Elemtype x) { if (S.top == MaxSize - 1) { //栈满，不能插入 return false; } //下面两行等价于S.data[&#43;&#43;top]=x; 做题时注意区分 S.top&#43;&#43;; S.data[S.top] = x; return true; } bool Pop(SqStack&amp;amp;amp; S, Elemtype &amp;amp;amp;x) { if (S.top == -1) { //栈为空，无法删除 return false; } x = S.data[S.top--]; return true; } bool GetTop(SqStack &amp;amp;amp;S, Elemtype &amp;amp;amp;e) { if (S.top == -1) { //栈为空，无法读取 return false; } e = S.data[S.top]; return true; } 2. top 表示“下一个可存放元素的位置” 注意一开始 top 指针置为 0
+">数据结构之栈、队列和数组与串</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
         <a href="../../blog/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BB%AA%E8%AE%BA%E4%B8%8E%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="article-link" data-summary="数据结构之绪论与线性表 第一章_绪论 1.1 数据结构在学什么 如何用程序代码把现实世界的问题信息化 如何用计算机高效地处理这些信息从而创造价值 只有详细学习过这四门课的人才能够更好理解信息化，这也是计算机专业的学生和只会写代码的人的区别所在 1.2 数据结构的基本概念 本小节会对数据结构中的基本概念做简单讲解，目的在于了解和理解概念，具体的深入了解会在后面的章节中提到，本小节的思维导图如下： 1.2.1 基本概念 1.2.1.1 数据 数据是信息的载体，是描述客观事物属性的数、字符及所有能输入到计算机中并被计算机程序识别和处理的符号的集合，数据是计算机程序加工的原料。
 简单来看，在计算机的世界中，数据就是0和1
 1.2.1.2 数据元素、数据项 数据元素是数据的基本单位，通常作为一个整体进行考虑和处理。一个数据元素可由若干数据项组成，数据项是构成数据元素的不可分割的最小单位
@@ -3333,6 +3351,8 @@ DAST 在学习企业DAST黑盒的一些知识之后，尝试写了一个DevSecOp
       
       
       <ul>
+      
+        <li><a href="../../blog/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%88%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84%E4%B8%8E%E4%B8%B2/">数据结构之栈、队列和数组与串</a></li>
       
         <li><a href="../../blog/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BB%AA%E8%AE%BA%E4%B8%8E%E7%BA%BF%E6%80%A7%E8%A1%A8/">数据结构之绪论与线性表</a></li>
       

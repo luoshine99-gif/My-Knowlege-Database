@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<title>经典漏洞 | mrlxl的知识库</title>
+<title>数据结构之栈、队列和数组与串 | mrlxl的知识库</title>
 <script>
   (function() {
     const savedTheme = localStorage.getItem('theme');
@@ -3345,26 +3345,543 @@ DAST 在学习企业DAST黑盒的一些知识之后，尝试写了一个DevSecOp
   
 </div>
   <div class="content-center">
-    <h1>经典漏洞</h1>
-    <div class="markdown-body">
-      
-      
-      
-      <ul>
-      
-        <li><a href="../../../blog/java%E5%AE%89%E5%85%A8/%E7%BB%8F%E5%85%B8%E6%BC%8F%E6%B4%9E/fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">Fastjson反序列化漏洞</a></li>
-      
-        <li><a href="../../../blog/java%E5%AE%89%E5%85%A8/%E7%BB%8F%E5%85%B8%E6%BC%8F%E6%B4%9E/jndi%E6%B3%A8%E5%85%A5/">JNDI注入</a></li>
-      
-        <li><a href="../../../blog/java%E5%AE%89%E5%85%A8/%E7%BB%8F%E5%85%B8%E6%BC%8F%E6%B4%9E/log4j%E6%BC%8F%E6%B4%9E/">Log4j漏洞</a></li>
-      
-        <li><a href="../../../blog/java%E5%AE%89%E5%85%A8/%E7%BB%8F%E5%85%B8%E6%BC%8F%E6%B4%9E/shiro%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/">shiro反序列化漏洞</a></li>
-      
-      </ul>
-    </div>
+    <article class="markdown-body">
+      <h1 class="post-title-template">数据结构之栈、队列和数组与串</h1>
+      <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
+        
+        
+            2025-12-11
+        
+      </div>
+      <h1 id="数据结构之栈队列和数组">数据结构之栈、队列和数组</h1>
+<h1 id="第三章_栈队列和数组">第三章_栈、队列和数组</h1>
+<p>本章介绍的两种数据结构<strong>栈和队列</strong>在逻辑结构上都属于线性结构，只不过是<strong>操作受限的线性表</strong>。</p>
+<h2 id="31-栈">3.1 栈</h2>
+<h3 id="311-栈的基本概念">3.1.1 栈的基本概念</h3>
+<blockquote>
+<p><strong>栈（stack）</strong> 是仅允许在<strong>一端</strong>进行插入和删除操作的线性表。</p>
+</blockquote>
+<p>在写C语言时，函数销毁创建本质就是依赖于栈这一数据结构。特点是<strong>后进先出（Last In First Out，LIFO）</strong> 下面介绍栈的三个基本属性以及示意图：</p>
+<ul>
+<li><strong>栈顶（Top）：</strong> 允许进行插入和删除操作的这一端。</li>
+<li><strong>栈底（Bottom）：</strong> 固定不变，不允许进行插入和删除操作的这一端。</li>
+<li><strong>空栈：</strong> 不含任何元素的栈。</li>
+</ul>
+<p><img src="https://tuchuang.mrlxl.cn/picture/20260205141705252.png" alt="栈示意图"></p>
+<h3 id="312-栈的基本操作">3.1.2 栈的基本操作</h3>
+<p>采用严蔚敏版的命名规范：</p>
+<ul>
+<li>InitStack(&amp;S)：初始化一个空栈S。</li>
+<li>DestroyStack(&amp;S)：销毁栈S，释放其存储空间。</li>
+<li>Pop(&amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。</li>
+<li>Push(&amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。</li>
+<li>GetTop(S,&amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。</li>
+<li>StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。</li>
+</ul>
+<h3 id="313-栈的数学性质">3.1.3 栈的数学性质</h3>
+<p><strong>栈的数学性质：</strong> 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n+1)C<sup>n</sup><sub>2n</sub>，该数列也被称为<strong>卡特兰数</strong>。（做题时很好用）</p>
+<h3 id="314-顺序栈">3.1.4 顺序栈</h3>
+<h4 id="3131-顺序栈的定义">3.1.3.1 顺序栈的定义</h4>
+<blockquote>
+<p>采用顺序存储的栈称为<strong>顺序栈</strong>，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个<strong>整型指针（top）</strong> 指向当前栈顶元素位置。</p>
+</blockquote>
+<p>与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。</p>
+<h4 id="3132-顺序栈的实现和基本操作">3.1.3.2 顺序栈的实现和基本操作</h4>
+<p>下面介绍<strong>顺序栈</strong>。基于top指针的指向方式，栈其实存在两种操作方式：<strong>1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”</strong>。由于和《数据结构之绪论与线性表》中的代码大致都相同，也很简单，这里直接用代码说明<strong>顺序栈的实现和基本操作</strong>。</p>
+<p><strong>1. top 表示当前栈顶元素的下标:</strong>
+注意top指针在这种情况下初始化为 -1。在做题时，S.data[++top]; 等代码的 ++top 和 top++，两种情况表示不同，一定理解记忆是哪种情况。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define _CRT_SECURE_NO_WARNINGS
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp"># define MaxSize 50
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Elemtype</span> <span class="n">data</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">top</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"> <span class="p">}</span><span class="n">SqStack</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitStack</span><span class="p">(</span><span class="n">SqStack</span><span class="o">&amp;</span> <span class="n">S</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">//注意这里初始化为-1
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">StackEmpty</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Push</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="n">MaxSize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈满，不能插入
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//下面两行等价于S.data[++top]=x; 做题时注意区分
+</span></span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Pop</span><span class="p">(</span><span class="n">SqStack</span><span class="o">&amp;</span> <span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈为空，无法删除
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">x</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="o">--</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">GetTop</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈为空，无法读取
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">e</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>2. top 表示“下一个可存放元素的位置”</strong>
+注意一开始 top 指针置为 0</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp"># define MaxSize 50
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Elemtype</span> <span class="n">data</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">top</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"> <span class="p">}</span><span class="n">SqStack</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitStack</span><span class="p">(</span><span class="n">SqStack</span><span class="o">&amp;</span> <span class="n">S</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//注意这里初始化为-1
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">StackEmpty</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Push</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="n">MaxSize</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈满，不能插入
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//下面两行等价于S.data[top++]=x; 
+</span></span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Pop</span><span class="p">(</span><span class="n">SqStack</span><span class="o">&amp;</span> <span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈为空，无法删除
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">x</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="o">--</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">GetTop</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈为空，无法读取
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">e</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="3133-共享栈">3.1.3.3 共享栈</h4>
+<p>为了提高空间的使用效率，利用栈底位置相对固定的特性，可以让两个顺序栈共享同一段一维数组空间，将两个站的栈底分别置于数组两端，栈顶向中间延伸，代码较为简单，不做详解，结构如图所示：
+<strong>栈满条件为 top0 + 1 = top1</strong>
+<img src="https://tuchuang.mrlxl.cn/picture/20260205165403201.png" alt="共享栈"></p>
+<h3 id="315-链栈">3.1.5 链栈</h3>
+<blockquote>
+<p>使用链式存储的栈称为<strong>链栈</strong>，其优点是便于动态分配存储空间，不存在栈满溢出的问题。通常使用<strong>单链表</strong>实现链栈，并且规定<strong>所有的操作均在链表的表头进行</strong>。</p>
+</blockquote>
+<p>链栈的实现和在《数据结构之绪论与线性表》讲述的单链表一模一样，所谓进出栈就是插入和删除头结点，当然也存在两种初始化方式（带和不带头结点），推荐使用不带头结点的初始化方式。</p>
+<h2 id="32-队列">3.2 队列</h2>
+<h3 id="321-队列的基本概念">3.2.1 队列的基本概念</h3>
+<blockquote>
+<p><strong>队列（Queue）</strong> 简称队，仅允许在表的一段进行插入，而在另一端进行删除。</p>
+</blockquote>
+<p>队列也是一种操作受限的线性表，符合现实中日常排队的规则，特点是<strong>先进先出（First In First Out，FIFO）</strong>,下面介绍栈的三个基本属性以及示意图：</p>
+<ul>
+<li><strong>队头：</strong> 允许删除的一端，也称队首。</li>
+<li><strong>队尾：</strong> 允许插入的一端。</li>
+<li><strong>空队列：</strong> 不含任何元素的队列。</li>
+</ul>
+<p><img src="https://tuchuang.mrlxl.cn/picture/20260205174259850.png" alt="队列示意图"></p>
+<h3 id="322-队列的基本操作">3.2.2 队列的基本操作</h3>
+<p>采用严蔚敏版的命名规范：</p>
+<ul>
+<li>InitQueue(&amp;Q)：初始化一个空队列Q。</li>
+<li>EnQueue(&amp;Q,x)：入队操作，若队列未满，将x加入队尾。</li>
+<li>DeQueue(&amp;Q,x)：出队操作，若队列非空，删除队首元素，并通过x返回该值。</li>
+<li>GetHead(Q,&amp;x)：读取队首元素但不出队，若队非空，则通过x返回值。</li>
+<li>QueueEmpty(Q)：判断队列是否为空，为空返回True，否则返回False。</li>
+</ul>
+<h3 id="323-顺序队列">3.2.3 顺序队列</h3>
+<p>顺序队列仅在<strong>尾指针指向下一个可存储位置</strong>的情况下进行讨论。</p>
+<h4 id="3231-普通顺序队列">3.2.3.1 普通顺序队列</h4>
+<p>顾名思义，顺序队列即为使用顺序结构（数组）实现的队列，其初始化代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp"># define MaxSize 50
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ElemType</span> <span class="n">data</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">front</span><span class="p">,</span> <span class="n">rear</span><span class="p">;</span> <span class="c1">//队首指针和队尾指针
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">SqQueue</span><span class="p">;</span>
+</span></span></code></pre></div><p>可以看见是定义了两个指针来进行出队和入队操作：</p>
+<ul>
+<li>初始状态：Q.front == Q.rear == 0。</li>
+<li>入队操作：队列未满时，Q.data[Q.rear] = x; Q.rear++;</li>
+<li>出队操作：队列非空时，x = Q.data[Q.front]; Q.front++;</li>
+</ul>
+<p><img src="https://tuchuang.mrlxl.cn/picture/20260207204451820.png" alt="普通顺序队列">
+<strong>假溢出现象：</strong> 值得注意的是不能用 Q.rear == MaxSize 来表示队满情况，比如由上图(c)出队操作可知，元素出队后，前面明明有空闲空间却因为代码逻辑而不能够再进行利用，这时候如果再入队元素，则会出现 <strong>“上溢”</strong>，然而这种溢出并非真正的溢出，数组中有空闲空间，于是这种溢出称为<strong>假溢出</strong>。</p>
+<h4 id="3231-循环队列">3.2.3.1 循环队列</h4>
+<p>为了解决普通顺序队列的假溢出问题，引入了<strong>循环队列</strong>：将顺序空间在逻辑上组织为环状结构，通过<strong>取模运算实现</strong>。循环队列操作：</p>
+<ul>
+<li>初始状态：Q.front == Q.rear == 0。</li>
+<li>队首指针进1：Q.front = (Q.front + 1) % MaxSize</li>
+<li>队尾指针进1：Q.rear = (Q.rear + 1) % MaxSize</li>
+<li><strong>队列长度： (Q.rear + Q.front + MaxSize) % Maxsize</strong>（数论知识可证明）</li>
+</ul>
+<p>前面说过在普通顺序队列里不能用 Q.rear == MaxSize 来表示队满情况，在循环队列里同样不能这样判断，<strong>判断队满有如下三种方式：</strong></p>
+<ol>
+<li><strong>牺牲一个存储单元：</strong> 以 (Q.rear + 1) % MaxSize == Q.front来判断是否队满，为什么要牺牲一个存储单元这么进行判断呢，因为 Q.rear == Q.front 被用来进行<strong>判空操作</strong>了。</li>
+<li><strong>增设Size成员：</strong> 用一个Size成员来记录队列中的元素个数，<strong>队满条件：</strong> Q.Size == MaxSize，<strong>队空条件：</strong> Q.Size == 0。</li>
+<li><strong>增设tag标志位：</strong> 当前操作是<strong>出队操作将tag=0</strong>，当前操作是<strong>入队操作将tag=1</strong>。Q.rear == Q.front 时若是 tag = 1，即为队满；若是 tag = 0，即为队空。</li>
+</ol>
+<p><strong>循环队列操作（牺牲一个存储单元法）：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// （1）初始化
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitQueue</span><span class="p">(</span><span class="n">SqQueue</span> <span class="o">&amp;</span><span class="n">Q</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 初始化队首、队尾指针
+</span></span></span><span class="line"><span class="cl">    <span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// （2）判队空
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">QueueEmpty</span><span class="p">(</span><span class="n">SqQueue</span> <span class="n">Q</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 队空条件
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// （3）入队
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">EnQueue</span><span class="p">(</span><span class="n">SqQueue</span> <span class="o">&amp;</span><span class="n">Q</span><span class="p">,</span> <span class="n">ElemType</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 队满则报错
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">((</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MaxSize</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Q</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 队尾指针加 1 取模
+</span></span></span><span class="line"><span class="cl">    <span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MaxSize</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// （4）出队
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">DeQueue</span><span class="p">(</span><span class="n">SqQueue</span> <span class="o">&amp;</span><span class="n">Q</span><span class="p">,</span> <span class="n">ElemType</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 队空则报错
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">=</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MaxSize</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="324-链式队列">3.2.4 链式队列</h3>
+<p>链式队列顾名思义采用链表对队列进行实现，与链栈这种单指针管理模式更优相比，采用<strong>双指针的管理模式</strong>对链式队列的实现更加方便。双指针管理模式、不带头结点的单链表在《考研视角下的C语言(下)》中有详细提及，采用双指针管理模式、带头节点单链表实现链式队列的代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//链式队列的定义
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">LinkNode</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Elemtype</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">LinkNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">LinkNode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">LinkNode</span> <span class="o">*</span><span class="n">front</span><span class="p">,</span> <span class="o">*</span><span class="n">rear</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">LinkQueue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//链式队列的初始化
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitQueue</span><span class="p">(</span><span class="n">LinkQueue</span><span class="o">&amp;</span> <span class="n">Q</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="p">(</span><span class="n">LinkNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">LinkNode</span><span class="p">));</span>  <span class="c1">//建立头结点
+</span></span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>  <span class="c1">//初始化为空
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//判队空
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">EmptyQueue</span><span class="p">(</span><span class="n">LinkQueue</span> <span class="n">Q</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">rear</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//入队
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">EnQueue</span><span class="p">(</span><span class="n">LinkQueue</span><span class="o">&amp;</span> <span class="n">Q</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">LinkNode</span><span class="o">*</span> <span class="n">NewNode</span> <span class="o">=</span> <span class="p">(</span><span class="n">LinkNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">LinkNode</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NewNode</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NewNode</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">rear</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">NewNode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="n">NewNode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//出队
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">DeQueue</span><span class="p">(</span><span class="n">LinkQueue</span><span class="o">&amp;</span> <span class="n">Q</span><span class="p">,</span> <span class="n">Elemtype</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="nf">EmptyQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">))</span> <span class="p">{</span>  <span class="c1">//判空
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">LinkNode</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">x</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">rear</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">;</span>  <span class="c1">//若队伍中只有一个节点，两指针都指向头节点
+</span></span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="325-双端队列">3.2.5 双端队列</h3>
+<blockquote>
+<p><strong>双端队列</strong>是一种允许在两端都进行插入和删除操作的线性表，双端队列的两端是平等的，为了便于理解，可将左端视为前端，右端视为后端。</p>
+</blockquote>
+<p><img src="https://tuchuang.mrlxl.cn/picture/20260207204339666.png" alt="双端队列">
+细心观察不难得出,在<strong>输入输出不受限的双端队列</strong>中,几乎可以模仿前面讲过的<strong>栈、队列、共享栈</strong>的所有操作。
+在考研中双端队列最常考的题型就是 “判断输入输出的合法性” 举例如下：
+<img src="https://tuchuang.mrlxl.cn/picture/20260207212351574.png" alt="双端队列"></p>
+<h2 id="33-栈和队列的应用">3.3 栈和队列的应用</h2>
+<h3 id="331-栈在括号匹配中的应用">3.3.1 栈在括号匹配中的应用</h3>
+<p>如果我在IDE中有这样如下一段代码，对于括号该如何进行匹配？</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">][</span><span class="mi">10</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="mi">3</span><span class="o">-</span><span class="mi">2</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;加油！奥利给！&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>显而易见，在编译器层面，正是使用栈这一数据结构来进行括号的匹配：若是匹配到左括号就压栈，若是匹配到合适的右括号就出栈，最后判断栈中是否为空来判断整段代码是否匹配成功。其逻辑示意图如下：
+<img src="https://tuchuang.mrlxl.cn/picture/20260208112848979.png" alt="栈在括号匹配中的应用"></p>
+<p>了解括号匹配的原理之后，我们还需了解如何在代码层面上实现括号匹配操作，代码如下，在考研中可以直接使用命名规范的函数作答但建议进行简要说明。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdbool.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define MaxSize 10  </span><span class="c1">// 定义栈中元素的最大个数
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 栈的结构体定义
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">data</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>  <span class="c1">// 静态数组存放栈中元素
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">top</span><span class="p">;</span>             <span class="c1">// 栈顶指针
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">SqStack</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 初始化栈
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitStack</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 判断栈是否为空
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">StackEmpty</span><span class="p">(</span><span class="n">SqStack</span> <span class="n">S</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 新元素入栈
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Push</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="kt">char</span> <span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 栈顶元素出栈，用x返回
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Pop</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="kt">char</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 括号匹配检查函数
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">bracketCheck</span><span class="p">(</span><span class="kt">char</span> <span class="n">str</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SqStack</span> <span class="n">S</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">InitStack</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>  <span class="c1">// 初始化一个栈
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 扫描到左括号，入栈
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;(&#39;</span> <span class="o">||</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;[&#39;</span> <span class="o">||</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;{&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">Push</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 扫描到右括号，且当前栈空
+</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nf">StackEmpty</span><span class="p">(</span><span class="n">S</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// 匹配失败
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">char</span> <span class="n">topElem</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">Pop</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">topElem</span><span class="p">);</span>  <span class="c1">// 栈顶元素出栈
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// 检查括号是否匹配
+</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;)&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">topElem</span> <span class="o">!=</span> <span class="sc">&#39;(&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;]&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">topElem</span> <span class="o">!=</span> <span class="sc">&#39;[&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;}&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">topElem</span> <span class="o">!=</span> <span class="sc">&#39;{&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 检索完全部括号后，栈空说明匹配成功
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nf">StackEmpty</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="332-栈在表达式求值中的应用">3.3.2 栈在表达式求值中的应用</h3>
+<p>利用栈实现表达式的运算这种思想在计算机中是十分重要的，尤其是在CPU中（计算机组成原理内容）。
+注意：本节所描述的“左优先原则”和“右优先原则”以及“左右操作数”均为民间叫法，在考研简答题时不建议使用。</p>
+<h4 id="3321-三种表达式介绍">3.3.2.1 三种表达式介绍</h4>
+<p>首先介绍三种表达式即前缀（波兰式）、后缀（逆波兰式）、中缀三种表达式，其中中缀表达式就是我们现实中常见的表达式：
+<img src="https://tuchuang.mrlxl.cn/picture/20260208203920798.png" alt="表达式"></p>
+<h4 id="3322-三种表达式机算手算">3.3.2.2 三种表达式机算（手算）</h4>
+<p>手动计算前缀和后缀表达式的过程其实就是将其转为中缀表达式的过程，示例如上图标注所示，运算规则如下：</p>
+<ul>
+<li><strong>前缀表达式：</strong> 从左向右扫描表达式，<strong>每次选取一个其前已经形成两个完整操作对象的运算符，</strong> 将这两个操作对象中靠左的作为左操作数、靠右的作为右操作数，按运算规则计算后，用结果替换该运算符及其两个操作对象，重复上述过程，直到整个表达式化为一个结果。</li>
+<li><strong>后缀表达式：</strong> 从左向右扫描表达式，<strong>每次选取一个其后已经形成两个完整操作对象的运算符，</strong> 将这两个操作对象中靠左的作为左操作数、靠右的作为右操作数，按运算规则计算后，用结果替换该运算符及其两个操作对象，重复上述过程，直到整个表达式化为一个结果。</li>
+<li>中缀表达式：该怎么算怎么算。</li>
+</ul>
+<h4 id="3323-中缀表达式转后缀表达式手算机算">3.3.2.3 中缀表达式转后缀表达式（手算，机算）</h4>
+<p><strong>手算：</strong>
+中缀表达式转后缀表达式可有多种结果，为了能够用算法实现（算法具有确定性），使结果唯一，于是采用 <strong>左优先原则：只要左边的运算符能够先运算，就先算左边的。</strong> 示意如下图所示：
+<img src="https://tuchuang.mrlxl.cn/picture/20260208204952893.png" alt="左优先原则"></p>
+<p><strong>机算：</strong>
+在考研中为重点，可能考查运算到某一步时，栈里的状态怎么样。
+<img src="https://tuchuang.mrlxl.cn/picture/20260209204202521.png" alt="中转后机算"></p>
+<h4 id="3324-中缀表达式转前缀表达式手算">3.3.2.4 中缀表达式转前缀表达式（手算）</h4>
+<p>同样的道理，中缀表达式转前缀表达式采用 <strong>右优先原则：只要右边的运算符能够先运算，就先算右边的。</strong> 示意如下图所示：
+<img src="https://tuchuang.mrlxl.cn/picture/20260208205626851.png" alt="右优先原则"></p>
+<h4 id="3325-后缀表达式机算">3.3.2.5 后缀表达式机算</h4>
+<p>回归3.3.2节的标题，栈在表达式的求值中有什么作用？实际上中缀表达式只方便人类计算，而后缀表达式和前缀表达式更加方便机器计算。使用栈对后缀表达式机算规则如下：
+<strong>从左到右</strong>，依次遍历表达式字符串，遇到操作数压入栈中。遇到运算符，则依次弹出两个操作数。<strong>以第一个弹出为右操作数，第二个弹出为左操作数。</strong> 计算结果入栈，最终栈中唯一元素即为结果。</p>
+<h4 id="3326-前缀表达式机算">3.3.2.6 前缀表达式机算</h4>
+<p>与后缀表达式机算稍有不同，规则如下：
+<strong>从右到左</strong>，依次遍历表达式字符串，遇到操作数压入栈中。遇到运算符，则依次弹出两个操作数。<strong>以第一个弹出为左操作数，第二个弹出为右操作数。</strong> 计算结果入栈，最终栈中唯一元素即为结果。</p>
+<h4 id="3327-中缀表达式机算">3.3.2.7 中缀表达式机算</h4>
+<p>从逻辑上来说，中缀表达式机算=“中缀表达式转后缀表达式”+“后缀表达式机算”，我认为这种具有现实意义的考点可能为考察重点。其规则如下：
+<img src="https://tuchuang.mrlxl.cn/picture/20260209204851119.png" alt="中缀表达式机算"></p>
+<h3 id="333-栈在递归中的应用">3.3.3 栈在递归中的应用</h3>
+<p>系统栈用来保存每一层递归调用的函数现场（包括参数、局部变量和返回地址），从而保证函数能按“先调用、后返回”的顺序正确执行。在《考研视角下的C语言(下)》中详细提及，这里做简单说明，普通函数与递归函数的压栈示意图如下：
+<img src="https://tuchuang.mrlxl.cn/picture/raw_b.png" alt="递归概念"></p>
+<h3 id="334-队列的应用">3.3.4 队列的应用</h3>
+<h4 id="3341-树的层次遍历">3.3.4.1 树的层次遍历</h4>
+<p>树的层次遍历，即一层一层的对树进行遍历，其示意图如下：
+<img src="https://tuchuang.mrlxl.cn/picture/20260210141109930.png" alt="树的层次遍历">
+实现该遍历的算法会在之后的章节中介绍，这里介绍使用队列进行树的层次遍历思想：<strong>从根节点开始，将其入队；每次出队一个节点并访问它，然后按顺序将该节点的左右孩子（若存在）入队，直到队列为空。</strong> 以上图为题，过程如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="mi">1</span>  <span class="c1">//根节点入队
+</span></span></span><span class="line"><span class="cl"><span class="mi">2</span> <span class="mi">3</span>  
+</span></span><span class="line"><span class="cl"><span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span>  <span class="c1">//2出队，插入子节点
+</span></span></span><span class="line"><span class="cl"><span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span>  <span class="c1">//4没有子节点，出队不必插入
+</span></span></span><span class="line"><span class="cl"><span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>
+</span></span><span class="line"><span class="cl"><span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>
+</span></span><span class="line"><span class="cl"><span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span>
+</span></span><span class="line"><span class="cl"><span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span>
+</span></span><span class="line"><span class="cl"><span class="mi">10</span> <span class="mi">11</span>
+</span></span><span class="line"><span class="cl"><span class="mi">11</span>
+</span></span><span class="line"><span class="cl"><span class="err">空</span>
+</span></span></code></pre></div><h4 id="3342-图的广度优先遍历">3.3.4.2 图的广度优先遍历</h4>
+<p>图的广度优先遍历在这里暂时不需了解概念，示意如下：
+<img src="https://tuchuang.mrlxl.cn/picture/20260210150438761.png" alt="图">
+与树的层次遍历思想类似：<strong>从起始顶点开始，将其入队；每出队一个顶点并访问它，将与其相邻且尚未访问（或未入队）的顶点依次入队，直到队列为空。</strong> 以上图为题，过程如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="mi">1</span> <span class="c1">//起始节点入队
+</span></span></span><span class="line"><span class="cl"><span class="mi">2</span> <span class="mi">3</span>  <span class="c1">//相邻节点入队
+</span></span></span><span class="line"><span class="cl"><span class="mi">3</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl"><span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="mi">7</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="mi">8</span> 
+</span></span><span class="line"><span class="cl"><span class="err">空</span>
+</span></span></code></pre></div><h4 id="3343-操作系统中的应用">3.3.4.3 操作系统中的应用</h4>
+<p>时间片轮转算法：按进程到达就绪状态的先后顺序进入就绪队列，始终从队首取出最先到达的进程运行。时间片用完的进程又插入队尾。这也是只有一个CPU却能同时运行多个进程的原因。</p>
+<h2 id="34-特殊矩阵的压缩存储">3.4 特殊矩阵的压缩存储</h2>
+<p>数组在内存中分为<strong>行优先存储和列优先存储</strong>，<strong>由编程语言决定</strong>。比如 C/C++ 为行优先存储，而MATLAB则为列优先存储。在《考研视角下的C语言(中)》中已详细介绍了一维数组和二维数组。
+普通矩阵直接使用二维数组初始化就行，但这里将会介绍几种特殊矩阵。</p>
+<h3 id="341-对称矩阵">3.4.1 对称矩阵</h3>
+<blockquote>
+<p>若n阶<strong>方阵（行列数都相同）</strong>，对于任何一个元素 a<sub>i,j</sub> 都有 <strong>a<sub>i,j</sub> 等于 a<sub>j,i</sub></strong>，则称该矩阵为对称矩阵。</p>
+</blockquote>
+<p><img src="https://tuchuang.mrlxl.cn/picture/20260210154934931.png" alt="对称矩阵">
+自然而然能想到，我们只需存储<strong>上三角区（或下三角区）+ 主对角线元素</strong>即可，故数组的大小只需要 (n*n-n)/2 + n ，在代码层面实现只需使用<strong>一维数组</strong>，在需要访问未存储区域的元素时，写一个 <strong>“映射”函数</strong> 将二维数组下标转化为一维数组下标即可</p>
+<h3 id="342-三角矩阵">3.4.2 三角矩阵</h3>
+<p>三角矩阵的定义如下：
+<img src="https://tuchuang.mrlxl.cn/picture/20260210182116193.png" alt="三角矩阵">
+可以看见，三角矩阵和上方的对称矩阵大致相同，只需将上图有颜色的区域存入一维数组中，再在数组末尾存一个常数即可。</p>
+<h3 id="343-三对角矩阵">3.4.3 三对角矩阵</h3>
+<p>三对角矩阵，其定义如下：
+<img src="https://tuchuang.mrlxl.cn/picture/20260210195556294.png" alt="三对角矩阵">
+同样使用一维数组压缩存储，有两点需要注意：
+<strong>知道行数 i 和列数 j ，怎么求出数组下标 k （从0开始）：</strong> a<sub>i,j</sub> 是第 i 行第 j-i+2 个元素（只算带状区域内的），其前 i-1 行有 3*(i-1)-1 个元素（只算带状区域内的）。故 k 值为 2*i + j - 3 。
+<strong>知道数组下标 K （从0开始），怎么求行数 i 和列数 j ：</strong> i = (向下取整)[(k + 1) / 3] + 1，j = k - 2*i + 3。</p>
+<h3 id="345-稀疏矩阵">3.4.5 稀疏矩阵</h3>
+<blockquote>
+<p><strong>稀疏矩阵</strong>是矩阵中<strong>非零元素</strong>个数远远小于总元素个数的矩阵</p>
+</blockquote>
+<p>具体小多少，并没有一个具体的界限，靠经验判断。为了提高空间利用率，通常将每个非零元素的行、列、元素值合并成一个三元组(行标 i ,列标 j ,值 a<sub>i,j</sub>)进行存储。下面介绍两种压缩方法：</p>
+<h4 id="3451-数组存储">3.4.5.1 数组存储</h4>
+<p>采用数组对三元组进行存储并<strong>不能够实现随机存储</strong>，因为需要一一对比，结构如下图所示：
+<img src="https://tuchuang.mrlxl.cn/picture/20260210201946046.png" alt="数组存储三元组"></p>
+<h4 id="3452-十字链表存储">3.4.5.2 十字链表存储</h4>
+<p>一图胜千言，结构如下图所示，最常见的使用就是按行遍历和按列遍历，也非常适合频繁的插入和删除。
+<img src="https://tuchuang.mrlxl.cn/picture/20260210201916627.png" alt="十字链表"></p>
+<h1 id="附言">附言</h1>
+<p>参考文章：
+《数据结构之绪论与线性表》：http://mrlxl.cn/index.php/2026/02/04/test-11/
+《考研视角下的C语言(中)》：http://mrlxl.cn/index.php/2025/12/17/test-7/
+《考研视角下的C语言(下)》：http://mrlxl.cn/index.php/2026/01/24/test-9/</p>
+
+    </article>
+    <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">Created by Yuy0ung. Powered by GitHub Page.</p>
+
   </div>
   <div class="sidebar-right">
-    
+    <h3>大纲</h3>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据结构之栈队列和数组">数据结构之栈、队列和数组</a></li>
+    <li><a href="#第三章_栈队列和数组">第三章_栈、队列和数组</a>
+      <ul>
+        <li><a href="#31-栈">3.1 栈</a>
+          <ul>
+            <li><a href="#311-栈的基本概念">3.1.1 栈的基本概念</a></li>
+            <li><a href="#312-栈的基本操作">3.1.2 栈的基本操作</a></li>
+            <li><a href="#313-栈的数学性质">3.1.3 栈的数学性质</a></li>
+            <li><a href="#314-顺序栈">3.1.4 顺序栈</a>
+              <ul>
+                <li><a href="#3131-顺序栈的定义">3.1.3.1 顺序栈的定义</a></li>
+                <li><a href="#3132-顺序栈的实现和基本操作">3.1.3.2 顺序栈的实现和基本操作</a></li>
+                <li><a href="#3133-共享栈">3.1.3.3 共享栈</a></li>
+              </ul>
+            </li>
+            <li><a href="#315-链栈">3.1.5 链栈</a></li>
+          </ul>
+        </li>
+        <li><a href="#32-队列">3.2 队列</a>
+          <ul>
+            <li><a href="#321-队列的基本概念">3.2.1 队列的基本概念</a></li>
+            <li><a href="#322-队列的基本操作">3.2.2 队列的基本操作</a></li>
+            <li><a href="#323-顺序队列">3.2.3 顺序队列</a>
+              <ul>
+                <li><a href="#3231-普通顺序队列">3.2.3.1 普通顺序队列</a></li>
+                <li><a href="#3231-循环队列">3.2.3.1 循环队列</a></li>
+              </ul>
+            </li>
+            <li><a href="#324-链式队列">3.2.4 链式队列</a></li>
+            <li><a href="#325-双端队列">3.2.5 双端队列</a></li>
+          </ul>
+        </li>
+        <li><a href="#33-栈和队列的应用">3.3 栈和队列的应用</a>
+          <ul>
+            <li><a href="#331-栈在括号匹配中的应用">3.3.1 栈在括号匹配中的应用</a></li>
+            <li><a href="#332-栈在表达式求值中的应用">3.3.2 栈在表达式求值中的应用</a>
+              <ul>
+                <li><a href="#3321-三种表达式介绍">3.3.2.1 三种表达式介绍</a></li>
+                <li><a href="#3322-三种表达式机算手算">3.3.2.2 三种表达式机算（手算）</a></li>
+                <li><a href="#3323-中缀表达式转后缀表达式手算机算">3.3.2.3 中缀表达式转后缀表达式（手算，机算）</a></li>
+                <li><a href="#3324-中缀表达式转前缀表达式手算">3.3.2.4 中缀表达式转前缀表达式（手算）</a></li>
+                <li><a href="#3325-后缀表达式机算">3.3.2.5 后缀表达式机算</a></li>
+                <li><a href="#3326-前缀表达式机算">3.3.2.6 前缀表达式机算</a></li>
+                <li><a href="#3327-中缀表达式机算">3.3.2.7 中缀表达式机算</a></li>
+              </ul>
+            </li>
+            <li><a href="#333-栈在递归中的应用">3.3.3 栈在递归中的应用</a></li>
+            <li><a href="#334-队列的应用">3.3.4 队列的应用</a>
+              <ul>
+                <li><a href="#3341-树的层次遍历">3.3.4.1 树的层次遍历</a></li>
+                <li><a href="#3342-图的广度优先遍历">3.3.4.2 图的广度优先遍历</a></li>
+                <li><a href="#3343-操作系统中的应用">3.3.4.3 操作系统中的应用</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#34-特殊矩阵的压缩存储">3.4 特殊矩阵的压缩存储</a>
+          <ul>
+            <li><a href="#341-对称矩阵">3.4.1 对称矩阵</a></li>
+            <li><a href="#342-三角矩阵">3.4.2 三角矩阵</a></li>
+            <li><a href="#343-三对角矩阵">3.4.3 三对角矩阵</a></li>
+            <li><a href="#345-稀疏矩阵">3.4.5 稀疏矩阵</a>
+              <ul>
+                <li><a href="#3451-数组存储">3.4.5.1 数组存储</a></li>
+                <li><a href="#3452-十字链表存储">3.4.5.2 十字链表存储</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#附言">附言</a></li>
+  </ul>
+</nav>
   </div>
 </div>
 
