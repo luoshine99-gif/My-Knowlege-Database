@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Tags | Yuy0ung的知识库</title>
+<script>
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    const html = document.documentElement;
+    if (savedTheme) {
+      html.setAttribute('data-theme', savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+
+      <link rel="stylesheet" href="/css/main.min.1b811b24e25dcc4d4e5cab50b3b6089531edce29a8d36035967c1f4af823ee08.css" integrity="sha256-G4EbJOJdzE1OXKtQs7YIlTHtzimo02A1lnwfSvgj7gg=" crossorigin="anonymous">
+
+
+        <script src="/js/main.c7c382a34629504a0438bf6064d168a2df4a02e88159bc8148fc2bd4f2e54d01.js" integrity="sha256-x8OCo0YpUEoEOL9gZNFoot9KAuiBWbyBSPwr1PLlTQE=" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+  
+  <div class="header-left">
+    
+    <img src="/avatar.jpg" alt="Avatar" class="header-avatar">
+    
+    
+    <a href="/" class="header-title">Yuy0ung的知识库</a>
+    
+    
+    <a href="/" class="header-home-btn" title="首页">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </a>
+  </div>
+
+  
+  <div class="header-right">
+    
+    <a href="https://github.com/Yuy0ung/" target="_blank" class="header-about-btn">关于我</a>
+
+    
+    <button id="mobile-search-trigger" class="mobile-search-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+
+    
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider round">
+          
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </div>
+      </label>
+      <script>
+        
+        (function() {
+          const html = document.documentElement;
+          const checkbox = document.getElementById('checkbox');
+          if (html.getAttribute('data-theme') === 'dark') {
+            checkbox.checked = true;
+          }
+        })();
+      </script>
+    </div>
+  </div>
+</div>
+
+  </header>
+  <main>
+    
+  <h1>Tags</h1>
+  
+  
+
+  </main>
+  
+  
+  <div id="search-modal" class="search-modal">
+    <div class="search-modal-content">
+      
+      <div class="mobile-search-header" style="display: none;">
+        <button id="mobile-exit-btn" class="mobile-icon-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="search-input-wrapper">
+        <input type="text" id="search-input" placeholder="搜索文章标题或内容...">
+        <button id="mobile-search-btn" class="mobile-icon-btn mobile-search-submit" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <span class="search-loading" style="display: none;">第一次加载搜索功能可能需要一点时间...</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+      <div class="search-footer">
+        <span class="desktop-only">ESC 关闭</span>
+        <span class="desktop-only">↑↓ 选择</span>
+        <span class="desktop-only">Enter 跳转</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+
+  mermaid.initialize({ 
+    startOnLoad: false,
+    theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+    securityLevel: 'loose'
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    
+    await mermaid.run({
+      querySelector: '.mermaid'
+    });
+  });
+</script>
+
+</body>
+</html>
