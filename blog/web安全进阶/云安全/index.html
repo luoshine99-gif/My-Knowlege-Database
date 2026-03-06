@@ -4,17 +4,19 @@
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <title>云安全 | mrlxl的知识库</title>
+
 <script>
-  (function() {
-    const savedTheme = localStorage.getItem('theme');
-    const html = document.documentElement;
-    if (savedTheme) {
-      html.setAttribute('data-theme', savedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      html.setAttribute('data-theme', 'dark');
-    }
-  })();
+(function() {
+  const savedTheme = localStorage.getItem('theme');
+  const html = document.documentElement;
+  if (savedTheme) {
+    html.setAttribute('data-theme', savedTheme);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.setAttribute('data-theme', 'dark');
+  }
+})();
 </script>
+
 
       <link rel="stylesheet" href="../../../css/main.min.1b811b24e25dcc4d4e5cab50b3b6089531edce29a8d36035967c1f4af823ee08.css" integrity="sha256-G4EbJOJdzE1OXKtQs7YIlTHtzimo02A1lnwfSvgj7gg=" crossorigin="anonymous">
 
@@ -22,6 +24,17 @@
         <script src="../../../js/main.c7c382a34629504a0438bf6064d168a2df4a02e88159bc8148fc2bd4f2e54d01.js" integrity="sha256-x8OCo0YpUEoEOL9gZNFoot9KAuiBWbyBSPwr1PLlTQE=" crossorigin="anonymous"></script>
 
 
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$']],
+    displayMath: [['$$', '$$']]
+  }
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <header>
