@@ -1044,11 +1044,14 @@ InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分
 <img src="http://tuchuang.mrlxl.cn/picture/20260307235101801.png" alt="往返时延的概念"></p>
 <h4 id="1167-信道利用率">1.1.6.7 信道利用率</h4>
 <p>$$
-\text{信道利用率} =
-\frac{\text{信道有数据通过的时间}}
-{\text{信道无数据通过的时间} + \text{信道有数据通过的时间}}
-$$
-以一个题目为例：
+U=\frac{T_d}{T_i+T_d}
+$$</p>
+<ul>
+<li>(U)：信道利用率</li>
+<li>(T_d)：信道有数据通过的时间（data）</li>
+<li>(T_i)：信道无数据通过的时间（idle）</li>
+</ul>
+<p>以一个题目为例：
 <img src="http://tuchuang.mrlxl.cn/picture/20260308000401208.png" alt="信道利用率题目">
 <strong>注意</strong>：信道利用率并不是越高越好，高了可能导致<strong>网络堵塞</strong>；也不是越低越好，低了<strong>浪费资源</strong>。
 ​</p>
