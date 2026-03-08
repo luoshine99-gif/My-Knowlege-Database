@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<title>数据结构之栈、队列和数组 | mrlxl的知识库</title>
+<title>计算机网络体系结构 | mrlxl的知识库</title>
 
 <script>
 (function() {
@@ -871,459 +871,250 @@ InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分
 </div>
   <div class="content-center">
     <article class="markdown-body">
-      <h1 class="post-title-template">数据结构之栈、队列和数组</h1>
+      <h1 class="post-title-template">计算机网络体系结构</h1>
       <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
         
         
-            2026-02-12
+            2026-03-08
         
       </div>
-      <h1 id="数据结构之栈队列和数组">数据结构之栈、队列和数组</h1>
-<h1 id="第三章_栈队列和数组">第三章_栈、队列和数组</h1>
-<p>本章介绍的两种数据结构<strong>栈和队列</strong>在逻辑结构上都属于线性结构，只不过是<strong>操作受限的线性表</strong>。</p>
-<h2 id="31-栈">3.1 栈</h2>
-<h3 id="311-栈的基本概念">3.1.1 栈的基本概念</h3>
-<blockquote>
-<p><strong>栈（stack）</strong> 是仅允许在<strong>一端</strong>进行插入和删除操作的线性表。</p>
-</blockquote>
-<p>在写C语言时，函数销毁创建本质就是依赖于栈这一数据结构。特点是<strong>后进先出（Last In First Out，LIFO）</strong> 下面介绍栈的三个基本属性以及示意图：</p>
+      <h1 id="计算机网络体系结构">计算机网络体系结构</h1>
+<h1 id="第一章_计算机网络的概念">第一章_计算机网络的概念</h1>
+<h2 id="11-计算机网络概述">1.1 计算机网络概述</h2>
+<h3 id="111-计算机网络的概念">1.1.1 计算机网络的概念</h3>
+<p>首先我们简单的认识三个设备：</p>
 <ul>
-<li><strong>栈顶（Top）：</strong> 允许进行插入和删除操作的这一端。</li>
-<li><strong>栈底（Bottom）：</strong> 固定不变，不允许进行插入和删除操作的这一端。</li>
-<li><strong>空栈：</strong> 不含任何元素的栈。</li>
+<li><strong>集线器</strong>：将多个不同终端连接起来，但是当某个设备发送数据时，<strong>集线器会把数据广播到所有端口</strong>，无法处理数据冲突，经常卡顿。集线器也能连接集线器，现在已经被淘汰了。</li>
+<li><strong>交换机</strong>：集线器的升级版，用于将不同终端连接起来，交换机可以根据 <strong>MAC 地址表</strong> 将数据 <strong>只转发到目标端口</strong>，而不是广播到所有端口，可以处理数据冲突。用于网络内部，交换机上也能连接交换机。</li>
+<li><strong>路由器</strong>：用于连接不同的网络，根据 <strong>IP 地址</strong> 选择数据包的最佳传输路径。<strong>家用路由器 = 路由器 + 交换机 + 其他功能</strong></li>
 </ul>
-<p><img src="https://tuchuang.mrlxl.cn/picture/20260205141705252.png" alt="栈示意图"></p>
-<h3 id="312-栈的基本操作">3.1.2 栈的基本操作</h3>
-<p>采用严蔚敏版的命名规范：</p>
+<p>认识了这三个设备之后，我们需要严格区分以下三个概念：</p>
 <ul>
-<li>InitStack(&amp;S)：初始化一个空栈S。</li>
-<li>DestroyStack(&amp;S)：销毁栈S，释放其存储空间。</li>
-<li>Pop(&amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。</li>
-<li>Push(&amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。</li>
-<li>GetTop(S,&amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。</li>
-<li>StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。</li>
+<li><strong>计算机网络（简称网络）</strong>：计算机网络是由若干节点（Node，或译为结点）和连接这些结点的链路组成，结点可以是<strong>计算机、集线器、交换机或路由器等</strong>。多个网络可以通过交换机互连，构成更加覆盖范围更广的计算机网络。</li>
+<li><strong>互连网（internet）</strong>：是一个通用名词，泛指多个计算机网络互连而成的网络网络之间可以采用<strong>任意通信协议</strong>进行通信。</li>
+<li><strong>互联网（Internet，因特网）</strong>：是一个专用名词，特指当前最大最开放的由众多网络和路由器互连而成的特定计算机网络。它必须采用<strong>TCP/IP协议族</strong>作为通信规则。</li>
 </ul>
-<h3 id="313-栈的数学性质">3.1.3 栈的数学性质</h3>
-<p><strong>栈的数学性质：</strong> 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n+1)C<sup>n</sup><sub>2n</sub>，该数列也被称为<strong>卡特兰数</strong>。（做题时很好用）</p>
-<h3 id="314-顺序栈">3.1.4 顺序栈</h3>
-<h4 id="3131-顺序栈的定义">3.1.3.1 顺序栈的定义</h4>
-<blockquote>
-<p>采用顺序存储的栈称为<strong>顺序栈</strong>，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个<strong>整型指针（top）</strong> 指向当前栈顶元素位置。</p>
-</blockquote>
-<p>与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。</p>
-<h4 id="3132-顺序栈的实现和基本操作">3.1.3.2 顺序栈的实现和基本操作</h4>
-<p>下面介绍<strong>顺序栈</strong>。基于top指针的指向方式，栈其实存在两种操作方式：<strong>1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”</strong>。由于和《数据结构之绪论与线性表》中的代码大致都相同，也很简单，这里直接用代码说明<strong>顺序栈的实现和基本操作</strong>。</p>
-<p><strong>1. top 表示当前栈顶元素的下标:</strong>
-注意top指针在这种情况下初始化为 -1。在做题时，S.data[++top]; 等代码的 ++top 和 top++，两种情况表示不同，一定理解记忆是哪种情况。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define _CRT_SECURE_NO_WARNINGS
-</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="cp"># define MaxSize 50
-</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Elemtype</span> <span class="n">data</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">top</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> <span class="p">}</span><span class="n">SqStack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitStack</span><span class="p">(</span><span class="n">SqStack</span><span class="o">&amp;</span> <span class="n">S</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">//注意这里初始化为-1
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">StackEmpty</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Push</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="n">MaxSize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈满，不能插入
-</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="c1">//下面两行等价于S.data[++top]=x; 做题时注意区分
-</span></span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Pop</span><span class="p">(</span><span class="n">SqStack</span><span class="o">&amp;</span> <span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈为空，无法删除
-</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="n">x</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="o">--</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">GetTop</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈为空，无法读取
-</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="n">e</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p><strong>2. top 表示“下一个可存放元素的位置”</strong>
-注意一开始 top 指针置为 0</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp"># define MaxSize 50
-</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Elemtype</span> <span class="n">data</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">top</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"> <span class="p">}</span><span class="n">SqStack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitStack</span><span class="p">(</span><span class="n">SqStack</span><span class="o">&amp;</span> <span class="n">S</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//注意这里初始化为-1
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">StackEmpty</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Push</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="n">MaxSize</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈满，不能插入
-</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="c1">//下面两行等价于S.data[top++]=x; 
-</span></span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Pop</span><span class="p">(</span><span class="n">SqStack</span><span class="o">&amp;</span> <span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈为空，无法删除
-</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="n">x</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="o">--</span><span class="n">S</span><span class="p">.</span><span class="n">top</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">GetTop</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//栈为空，无法读取
-</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="n">e</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">S</span><span class="p">.</span><span class="n">top</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h4 id="3133-共享栈">3.1.3.3 共享栈</h4>
-<p>为了提高空间的使用效率，利用栈底位置相对固定的特性，可以让两个顺序栈共享同一段一维数组空间，将两个站的栈底分别置于数组两端，栈顶向中间延伸，代码较为简单，不做详解，结构如图所示：
-<strong>栈满条件为 top0 + 1 = top1</strong>
-<img src="http://tuchuang.mrlxl.cn/picture/20260205165403201.png" alt="共享栈"></p>
-<h3 id="315-链栈">3.1.5 链栈</h3>
-<blockquote>
-<p>使用链式存储的栈称为<strong>链栈</strong>，其优点是便于动态分配存储空间，不存在栈满溢出的问题。通常使用<strong>单链表</strong>实现链栈，并且规定<strong>所有的操作均在链表的表头进行</strong>。</p>
-</blockquote>
-<p>链栈的实现和在《数据结构之绪论与线性表》讲述的单链表一模一样，所谓进出栈就是插入和删除头结点，当然也存在两种初始化方式（带和不带头结点），推荐使用不带头结点的初始化方式。</p>
-<h2 id="32-队列">3.2 队列</h2>
-<h3 id="321-队列的基本概念">3.2.1 队列的基本概念</h3>
-<blockquote>
-<p><strong>队列（Queue）</strong> 简称队，仅允许在表的一段进行插入，而在另一端进行删除。</p>
-</blockquote>
-<p>队列也是一种操作受限的线性表，符合现实中日常排队的规则，特点是<strong>先进先出（First In First Out，FIFO）</strong>,下面介绍栈的三个基本属性以及示意图：</p>
+<p>网络的最终用户通过<strong>互联网服务提供商（Internet Service Provider，ISP）</strong> 接入互联网，例如中国电信、中国移动等。所谓上网，是指通过某 ISP 分配的 IP 地址接入互联网。ISP 可从互联网管理机构申请大量 IP 地址（互联网上的主机都必须拥有 IP 地址才能接入互联网，这一点将在第 4 章中讨论），并拥有通信线路及路由器等连网设备。因此，任何机构或个人只要向 ISP 缴纳费用，就可获得所需 IP 地址的使用权，并通过该 ISP 接入互联网。</p>
+<h3 id="112-计算机网络的组成">1.1.2 计算机网络的组成</h3>
+<p>从不同角度看，计算机网络的组成可以分为以下几类：
+<img src="http://tuchuang.mrlxl.cn/picture/20260306204537494.png" alt="计算机网络的组成"></p>
+<h3 id="113-计算机网络的功能">1.1.3 计算机网络的功能</h3>
+<p>计算机的功能是多种多样的，现今许多应用都依赖于网络的支持，主要有以下五大功能。</p>
 <ul>
-<li><strong>队头：</strong> 允许删除的一端，也称队首。</li>
-<li><strong>队尾：</strong> 允许插入的一端。</li>
-<li><strong>空队列：</strong> 不含任何元素的队列。</li>
+<li><strong>数据通信</strong>：数据通信是计算机网络<strong>最基本</strong>的功能，用来实现计算机之间各种信息的传输。例如，文件传输、电子邮件等应用，离开了计算机网络将无法实现。</li>
+<li><strong>资源共享</strong>：资源共享可以是软件、硬件或数据资源的共享。</li>
+<li><strong>分布式处理</strong>：当网络中的某个计算机系统负荷过重时，可将其处理的某个复杂任务分配给网络中的其他计算机系统。例如：矩阵的乘法</li>
+<li><strong>提高可靠性</strong>：计算机网络中的每台计算机可以通过网络互为备份。例如：网盘不仅给你存储还给你备份。</li>
+<li><strong>负载均衡</strong>：将工作任务均衡地分配给网络中的多台计算机，避免某台计算机因负载过重而瘫痪。</li>
 </ul>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260205174259850.png" alt="队列示意图"></p>
-<h3 id="322-队列的基本操作">3.2.2 队列的基本操作</h3>
-<p>采用严蔚敏版的命名规范：</p>
-<ul>
-<li>InitQueue(&amp;Q)：初始化一个空队列Q。</li>
-<li>EnQueue(&amp;Q,x)：入队操作，若队列未满，将x加入队尾。</li>
-<li>DeQueue(&amp;Q,x)：出队操作，若队列非空，删除队首元素，并通过x返回该值。</li>
-<li>GetHead(Q,&amp;x)：读取队首元素但不出队，若队非空，则通过x返回值。</li>
-<li>QueueEmpty(Q)：判断队列是否为空，为空返回True，否则返回False。</li>
-</ul>
-<h3 id="323-顺序队列">3.2.3 顺序队列</h3>
-<p>顺序队列仅在<strong>尾指针指向下一个可存储位置</strong>的情况下进行讨论。</p>
-<h4 id="3231-普通顺序队列">3.2.3.1 普通顺序队列</h4>
-<p>顾名思义，顺序队列即为使用顺序结构（数组）实现的队列，其初始化代码如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp"># define MaxSize 50
-</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">ElemType</span> <span class="n">data</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">front</span><span class="p">,</span> <span class="n">rear</span><span class="p">;</span> <span class="c1">//队首指针和队尾指针
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">SqQueue</span><span class="p">;</span>
-</span></span></code></pre></div><p>可以看见是定义了两个指针来进行出队和入队操作：</p>
-<ul>
-<li>初始状态：Q.front == Q.rear == 0。</li>
-<li>入队操作：队列未满时，Q.data[Q.rear] = x; Q.rear++;</li>
-<li>出队操作：队列非空时，x = Q.data[Q.front]; Q.front++;</li>
-</ul>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260207204451820.png" alt="普通顺序队列">
-<strong>假溢出现象：</strong> 值得注意的是不能用 Q.rear == MaxSize 来表示队满情况，比如由上图(c)出队操作可知，元素出队后，前面明明有空闲空间却因为代码逻辑而不能够再进行利用，这时候如果再入队元素，则会出现 <strong>“上溢”</strong>，然而这种溢出并非真正的溢出，数组中有空闲空间，于是这种溢出称为<strong>假溢出</strong>。</p>
-<h4 id="3231-循环队列">3.2.3.1 循环队列</h4>
-<p>为了解决普通顺序队列的假溢出问题，引入了<strong>循环队列</strong>：将顺序空间在逻辑上组织为环状结构，通过<strong>取模运算实现</strong>。循环队列操作：</p>
-<ul>
-<li>初始状态：Q.front == Q.rear == 0。</li>
-<li>队首指针进1：Q.front = (Q.front + 1) % MaxSize</li>
-<li>队尾指针进1：Q.rear = (Q.rear + 1) % MaxSize</li>
-<li><strong>队列长度： (Q.rear + Q.front + MaxSize) % Maxsize</strong>（数论知识可证明）</li>
-</ul>
-<p>前面说过在普通顺序队列里不能用 Q.rear == MaxSize 来表示队满情况，在循环队列里同样不能这样判断，<strong>判断队满有如下三种方式：</strong></p>
+<p>除了上述主要功能外，计算机网络还能支持电子化办公与应用服务、远程教育等功能，满足了社会的各种信息化需求。</p>
+<h3 id="114-电路交换报文交换分组交换">1.1.4 电路交换，报文交换，分组交换</h3>
+<p>首先先抛开我们脑海中已有的计算机网络拓扑图。在 1960 年代，美国科学家们开始研究使用什么技术实现数据交换，那时候可还没有计算机网络。</p>
+<h4 id="1141-电路交换">1.1.4.1 电路交换</h4>
+<p>这是仿照了传统电话的通信方式，就是一种<strong>端对端</strong>的通信方式，电路交换分为三个阶段：<strong>建立连接（占用通信资源）、传输数据（持续占用通信资源）和释放连接（归还通信资源）</strong>，在通信过程中这条通路始终被通信双方独占，示意如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260306222832008.png" alt="电路交换">
+电路交换技术的<strong>优点：</strong></p>
 <ol>
-<li><strong>牺牲一个存储单元：</strong> 以 (Q.rear + 1) % MaxSize == Q.front来判断是否队满，为什么要牺牲一个存储单元这么进行判断呢，因为 Q.rear == Q.front 被用来进行<strong>判空操作</strong>了。</li>
-<li><strong>增设Size成员：</strong> 用一个Size成员来记录队列中的元素个数，<strong>队满条件：</strong> Q.Size == MaxSize，<strong>队空条件：</strong> Q.Size == 0。</li>
-<li><strong>增设tag标志位：</strong> 当前操作是<strong>出队操作将tag=0</strong>，当前操作是<strong>入队操作将tag=1</strong>。Q.rear == Q.front 时若是 tag = 1，即为队满；若是 tag = 0，即为队空。</li>
+<li>通信时延小：通信线路为双方专用，数据直达，传输效率高。</li>
+<li>有序传输：数据按发送顺序传送，不存在失序问题。</li>
+<li>没有冲突：不同通信对使用独立信道，不会争用物理信道。</li>
+<li>实时性强：物理通路一旦建立，双方即可随时通信。</li>
 </ol>
-<p><strong>循环队列操作（牺牲一个存储单元法）：</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// （1）初始化
-</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitQueue</span><span class="p">(</span><span class="n">SqQueue</span> <span class="o">&amp;</span><span class="n">Q</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 初始化队首、队尾指针
-</span></span></span><span class="line"><span class="cl">    <span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// （2）判队空
-</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">QueueEmpty</span><span class="p">(</span><span class="n">SqQueue</span> <span class="n">Q</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 队空条件
-</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">else</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// （3）入队
-</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">EnQueue</span><span class="p">(</span><span class="n">SqQueue</span> <span class="o">&amp;</span><span class="n">Q</span><span class="p">,</span> <span class="n">ElemType</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 队满则报错
-</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">((</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MaxSize</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Q</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 队尾指针加 1 取模
-</span></span></span><span class="line"><span class="cl">    <span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MaxSize</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// （4）出队
-</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">DeQueue</span><span class="p">(</span><span class="n">SqQueue</span> <span class="o">&amp;</span><span class="n">Q</span><span class="p">,</span> <span class="n">ElemType</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 队空则报错
-</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">=</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MaxSize</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="324-链式队列">3.2.4 链式队列</h3>
-<p>链式队列顾名思义采用链表对队列进行实现，与链栈这种单指针管理模式更优相比，采用<strong>双指针的管理模式</strong>对链式队列的实现更加方便。双指针管理模式、不带头结点的单链表在《考研视角下的C语言(下)》中有详细提及，采用双指针管理模式、带头节点单链表实现链式队列的代码如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//链式队列的定义
-</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">LinkNode</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Elemtype</span> <span class="n">data</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">LinkNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">LinkNode</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">LinkNode</span> <span class="o">*</span><span class="n">front</span><span class="p">,</span> <span class="o">*</span><span class="n">rear</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">LinkQueue</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">//链式队列的初始化
-</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitQueue</span><span class="p">(</span><span class="n">LinkQueue</span><span class="o">&amp;</span> <span class="n">Q</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="p">(</span><span class="n">LinkNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">LinkNode</span><span class="p">));</span>  <span class="c1">//建立头结点
-</span></span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>  <span class="c1">//初始化为空
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">//判队空
-</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">EmptyQueue</span><span class="p">(</span><span class="n">LinkQueue</span> <span class="n">Q</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">Q</span><span class="p">.</span><span class="n">front</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">rear</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">//入队
-</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">EnQueue</span><span class="p">(</span><span class="n">LinkQueue</span><span class="o">&amp;</span> <span class="n">Q</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">LinkNode</span><span class="o">*</span> <span class="n">NewNode</span> <span class="o">=</span> <span class="p">(</span><span class="n">LinkNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">LinkNode</span><span class="p">));</span>
-</span></span><span class="line"><span class="cl">	<span class="n">NewNode</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="n">NewNode</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">rear</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">NewNode</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="n">NewNode</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">//出队
-</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">DeQueue</span><span class="p">(</span><span class="n">LinkQueue</span><span class="o">&amp;</span> <span class="n">Q</span><span class="p">,</span> <span class="n">Elemtype</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="nf">EmptyQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">))</span> <span class="p">{</span>  <span class="c1">//判空
-</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="n">LinkNode</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="n">x</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="n">Q</span><span class="p">.</span><span class="n">rear</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="n">Q</span><span class="p">.</span><span class="n">rear</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">;</span>  <span class="c1">//若队伍中只有一个节点，两指针都指向头节点
-</span></span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="nf">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="325-双端队列">3.2.5 双端队列</h3>
-<blockquote>
-<p><strong>双端队列</strong>是一种允许在两端都进行插入和删除操作的线性表，双端队列的两端是平等的，为了便于理解，可将左端视为前端，右端视为后端。</p>
-</blockquote>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260207204339666.png" alt="双端队列">
-细心观察不难得出,在<strong>输入输出不受限的双端队列</strong>中,几乎可以模仿前面讲过的<strong>栈、队列、共享栈</strong>的所有操作。
-在考研中双端队列最常考的题型就是 “判断输入输出的合法性” 举例如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260207212351574.png" alt="双端队列"></p>
-<h2 id="33-栈和队列的应用">3.3 栈和队列的应用</h2>
-<h3 id="331-栈在括号匹配中的应用">3.3.1 栈在括号匹配中的应用</h3>
-<p>如果我在IDE中有这样如下一段代码，对于括号该如何进行匹配？</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">][</span><span class="mi">10</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="mi">3</span><span class="o">-</span><span class="mi">2</span><span class="p">));</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;加油！奥利给！&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>显而易见，在编译器层面，正是使用栈这一数据结构来进行括号的匹配：若是匹配到左括号就压栈，若是匹配到合适的右括号就出栈，最后判断栈中是否为空来判断整段代码是否匹配成功。其逻辑示意图如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260208112848979.png" alt="栈在括号匹配中的应用"></p>
-<p>了解括号匹配的原理之后，我们还需了解如何在代码层面上实现括号匹配操作，代码如下，在考研中可以直接使用命名规范的函数作答但建议进行简要说明。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdbool.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define MaxSize 10  </span><span class="c1">// 定义栈中元素的最大个数
-</span></span></span><span class="line"><span class="cl"><span class="c1">// 栈的结构体定义
-</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">data</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>  <span class="c1">// 静态数组存放栈中元素
-</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">top</span><span class="p">;</span>             <span class="c1">// 栈顶指针
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">SqStack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// 初始化栈
-</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitStack</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="c1">// 判断栈是否为空
-</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">StackEmpty</span><span class="p">(</span><span class="n">SqStack</span> <span class="n">S</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="c1">// 新元素入栈
-</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Push</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="kt">char</span> <span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="c1">// 栈顶元素出栈，用x返回
-</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">Pop</span><span class="p">(</span><span class="n">SqStack</span> <span class="o">&amp;</span><span class="n">S</span><span class="p">,</span> <span class="kt">char</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// 括号匹配检查函数
-</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">bracketCheck</span><span class="p">(</span><span class="kt">char</span> <span class="n">str</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">SqStack</span> <span class="n">S</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">InitStack</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>  <span class="c1">// 初始化一个栈
-</span></span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// 扫描到左括号，入栈
-</span></span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;(&#39;</span> <span class="o">||</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;[&#39;</span> <span class="o">||</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;{&#39;</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="nf">Push</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">// 扫描到右括号，且当前栈空
-</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nf">StackEmpty</span><span class="p">(</span><span class="n">S</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// 匹配失败
-</span></span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            <span class="kt">char</span> <span class="n">topElem</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="nf">Pop</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">topElem</span><span class="p">);</span>  <span class="c1">// 栈顶元素出栈
-</span></span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            <span class="c1">// 检查括号是否匹配
-</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;)&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">topElem</span> <span class="o">!=</span> <span class="sc">&#39;(&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;]&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">topElem</span> <span class="o">!=</span> <span class="sc">&#39;[&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;}&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">topElem</span> <span class="o">!=</span> <span class="sc">&#39;{&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 检索完全部括号后，栈空说明匹配成功
-</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nf">StackEmpty</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="332-栈在表达式求值中的应用">3.3.2 栈在表达式求值中的应用</h3>
-<p>利用栈实现表达式的运算这种思想在计算机中是十分重要的，尤其是在CPU中（计算机组成原理内容）。
-注意：本节所描述的“左优先原则”和“右优先原则”以及“左右操作数”均为民间叫法，在考研简答题时不建议使用。</p>
-<h4 id="3321-三种表达式介绍">3.3.2.1 三种表达式介绍</h4>
-<p>首先介绍三种表达式即前缀（波兰式）、后缀（逆波兰式）、中缀三种表达式，其中中缀表达式就是我们现实中常见的表达式：
-<img src="http://tuchuang.mrlxl.cn/picture/20260208203920798.png" alt="表达式"></p>
-<h4 id="3322-三种表达式机算手算">3.3.2.2 三种表达式机算（手算）</h4>
-<p>手动计算前缀和后缀表达式的过程其实就是将其转为中缀表达式的过程，示例如上图标注所示，运算规则如下：</p>
+<p>电路交换技术的<strong>缺点：</strong></p>
+<ol>
+<li>建立连接时间长：平均建立连接的时间对计算机通信而言过长。</li>
+<li>线路利用率低：物理通路被通信双方独占，即使空闲也无法供其他用户使用。</li>
+<li>灵活性差：通路中任一节点或链路发生故障，都需重新建立新连接。</li>
+<li>难以实现差错控制：中间节点不具备存储和检错能力，无法发现或纠正传输错误。</li>
+</ol>
+<p>显然，由于计算机之间的通信通常是<strong>突发式（高频、少量）</strong> 的，若将这个技术应用到计算机网络，被占用的通信链路大部分时间处于空闲状态，利用率极低。</p>
+<h4 id="1142-报文交换">1.1.4.2 报文交换</h4>
+<p>终端将数据加上源地址、目的地址等控制信息后，被封装成<strong>报文（Message）</strong>。报文交换采用<strong>存储转发技术</strong>：整个报文先传送到相邻节点，被完整接收并存储后，节点更具转发表将其转发至下一跳，如此逐跳转发，直至到达目的端。每个报文可<strong>独立选择通往目的端的路径</strong>。示意如题所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260306225656702.png" alt="报文交换">
+报文交换技术的<strong>优点：</strong></p>
+<ol>
+<li>无建立和释放连接的时延：通信前无须建立连接，用户可随时发送报文。</li>
+<li>线路分配灵活：交换节点在存储完整报文后，可选择当前最优空闲链路进行转发；若某条路径发生故障，该节点可动态切换至其他路径。</li>
+<li>线路利用率高：报文仅在一段链路上传输时才占用这段链路的资源。</li>
+<li>支持差错控制：交换节点可对缓存中的报文进行差错检验。</li>
+</ol>
+<p>报文交换技术的<strong>缺点：</strong></p>
+<ol>
+<li>存储转发时延高：节点必须完整接收整个报文后，才能开始转发。</li>
+<li>缓存开销大：由于报文大小没有限制，这就要求交换节点配备大容量缓存。</li>
+<li>错误处理低效：报文越长，出错概率相对更大，重传整个报文的代价较大。</li>
+</ol>
+<p>这种方式看上去有些符合我们现在的网络架构了，是可以用应用到计算机网络中的，但是可以看见其几乎所有的缺点都来自于<strong>报文长度不固定，可长可短</strong>。</p>
+<h4 id="1143-分组交换">1.1.4.3 分组交换</h4>
+<p>为了解决报文交换技术因报文过长带来的问题，提出了分组交换技术。要求<strong>源主机</strong>在发送前，先将较长的报文划分为<strong>若干较小的等长数据段</strong>，并在每个数据段前添加由必要的控制信息（如源地址，目的地址，分组编号）组成的<strong>首部</strong>，构成分组（Packet），如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260306230701062.png" alt="分组">
+源主机将分组发送到<strong>分组交换网</strong>，网络中的<strong>分组交换机</strong>（如路由器）收到一个分组后，先将其缓存，然后从首部提取目的地址，据此查找转发表，并将分组转发给下一个分组交换机。经过多个分组交换机的<strong>存储转发</strong>，分组最终到达目的主机。目的主机再进行删除不必要信息、拼接。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260306231601542.png" alt="分组交换">
+分组交换不仅继承了报文交换的诸多优点，还具有以下<strong>优势：</strong></p>
+<ol>
+<li>便于存储管理，转发开销小：由于分组长度固定，缓冲区大小可预设，管理更高效。</li>
+<li>传输效率高：分组可逐个发送，实现流水线操作，即后一个分组的接收可与前一个分组的转发并行，从而减少整体传输时间。</li>
+<li>降低出错概率与重传代价：由于分组较短，出错概率也必然减小，重传数据量大幅减少，既提高了可靠性，又降低了传输时延。</li>
+</ol>
+<p>分组交换技术的<strong>缺点：</strong></p>
+<ol>
+<li>存在存储转发时延：尽管比报文交换的传输时延小，但相比于电路交换仍存在存储转发时延，且要求节点交换机具备更强的处理能力。</li>
+<li>需要传输额外的信息量：每个数据段都需附加控制信息以构成分组，使得传送的信息量增大约 5%～10%，从而增加了控制复杂度，降低了通信效率。</li>
+<li>分组可能失序、丢失或重复：当采用<strong>数据报</strong>服务时，分组可能经不同路径到达，需在目的主机按编号重排序，处理较为复杂。若采用<strong>虚电路</strong>服务，虽可避免失序，但需经历建立连接、数据传输和释放连接三个阶段。</li>
+</ol>
+<p>那<strong>分组交换</strong>就是目前计算机网络采用的技术，相比另一种<strong>虚电路交换（第四章学习）</strong>，把分组的拆分和合并交给了比网络中的路由器性能一般更强大的终端计算机（性能强大）。也从而使网络核心设备结构更加简单，提高了网络的可扩展性。</p>
+<h4 id="1144-三种交换方式的性能分析">1.1.4.4 三种交换方式的性能分析</h4>
+<p>分别采用图像对三种交换方式的过程和所用时间进行说明：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307110355833.png" alt="电路交换">
+<img src="http://tuchuang.mrlxl.cn/picture/20260307111731162.png" alt="报文交换">
+<img src="http://tuchuang.mrlxl.cn/picture/20260307113004209.png" alt="分组交换">
+三种方式对比如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307113321017.png" alt="三种方式对比"></p>
+<h3 id="115-计算机网络分类">1.1.5 计算机网络分类</h3>
+<h4 id="1151-按分部范围分类">1.1.5.1 按分部范围分类</h4>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260307201516377.png" alt="分布范围分类"></p>
+<h4 id="1152-按传输技术分类">1.1.5.2 按传输技术分类</h4>
 <ul>
-<li><strong>前缀表达式：</strong> 从左向右扫描表达式，<strong>每次选取一个其前已经形成两个完整操作对象的运算符，</strong> 将这两个操作对象中靠左的作为左操作数、靠右的作为右操作数，按运算规则计算后，用结果替换该运算符及其两个操作对象，重复上述过程，直到整个表达式化为一个结果。</li>
-<li><strong>后缀表达式：</strong> 从左向右扫描表达式，<strong>每次选取一个其后已经形成两个完整操作对象的运算符，</strong> 将这两个操作对象中靠左的作为左操作数、靠右的作为右操作数，按运算规则计算后，用结果替换该运算符及其两个操作对象，重复上述过程，直到整个表达式化为一个结果。</li>
-<li>中缀表达式：该怎么算怎么算。</li>
+<li><strong>广播式网络</strong> —— 当一台计算机发送数据分组时，广播范围内所有计算机都会收到该分组，并通过检查分组的目的地址决定是否接收该分组</li>
+<li><strong>点对点网络</strong> —— 数据只会从发送方 “点对点” 发到接收方，精准送达</li>
 </ul>
-<h4 id="3323-中缀表达式转后缀表达式手算机算">3.3.2.3 中缀表达式转后缀表达式（手算，机算）</h4>
-<p><strong>手算：</strong>
-中缀表达式转后缀表达式可有多种结果，为了能够用算法实现（算法具有确定性），使结果唯一，于是采用 <strong>左优先原则：只要左边的运算符能够先运算，就先算左边的。</strong> 示意如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260208204952893.png" alt="左优先原则"></p>
-<p><strong>机算：</strong>
-在考研中为重点，可能考查运算到某一步时，栈里的状态怎么样。
-<img src="http://tuchuang.mrlxl.cn/picture/20260209204202521.png" alt="中转后机算"></p>
-<h4 id="3324-中缀表达式转前缀表达式手算">3.3.2.4 中缀表达式转前缀表达式（手算）</h4>
-<p>同样的道理，中缀表达式转前缀表达式采用 <strong>右优先原则：只要右边的运算符能够先运算，就先算右边的。</strong> 示意如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260208205626851.png" alt="右优先原则"></p>
-<h4 id="3325-后缀表达式机算">3.3.2.5 后缀表达式机算</h4>
-<p>回归3.3.2节的标题，栈在表达式的求值中有什么作用？实际上中缀表达式只方便人类计算，而后缀表达式和前缀表达式更加方便机器计算。使用栈对后缀表达式机算规则如下：
-<strong>从左到右</strong>，依次遍历表达式字符串，遇到操作数压入栈中。遇到运算符，则依次弹出两个操作数。<strong>以第一个弹出为右操作数，第二个弹出为左操作数。</strong> 计算结果入栈，最终栈中唯一元素即为结果。</p>
-<h4 id="3326-前缀表达式机算">3.3.2.6 前缀表达式机算</h4>
-<p>与后缀表达式机算稍有不同，规则如下：
-<strong>从右到左</strong>，依次遍历表达式字符串，遇到操作数压入栈中。遇到运算符，则依次弹出两个操作数。<strong>以第一个弹出为左操作数，第二个弹出为右操作数。</strong> 计算结果入栈，最终栈中唯一元素即为结果。</p>
-<h4 id="3327-中缀表达式机算">3.3.2.7 中缀表达式机算</h4>
-<p>从逻辑上来说，中缀表达式机算=“中缀表达式转后缀表达式”+“后缀表达式机算”，我认为这种具有现实意义的考点可能为考察重点。其规则如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260209204851119.png" alt="中缀表达式机算"></p>
-<h3 id="333-栈在递归中的应用">3.3.3 栈在递归中的应用</h3>
-<p>系统栈用来保存每一层递归调用的函数现场（包括参数、局部变量和返回地址），从而保证函数能按“先调用、后返回”的顺序正确执行。在《考研视角下的C语言(下)》中详细提及，这里做简单说明，普通函数与递归函数的压栈示意图如下：
-<img src="http://tuchuang.mrlxl.cn/picture/raw_b.png" alt="递归概念"></p>
-<h3 id="334-队列的应用">3.3.4 队列的应用</h3>
-<h4 id="3341-树的层次遍历">3.3.4.1 树的层次遍历</h4>
-<p>树的层次遍历，即一层一层的对树进行遍历，其示意图如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260210141109930.png" alt="树的层次遍历">
-实现该遍历的算法会在之后的章节中介绍，这里介绍使用队列进行树的层次遍历思想：<strong>从根节点开始，将其入队；每次出队一个节点并访问它，然后按顺序将该节点的左右孩子（若存在）入队，直到队列为空。</strong> 以上图为题，过程如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="mi">1</span>  <span class="c1">//根节点入队
-</span></span></span><span class="line"><span class="cl"><span class="mi">2</span> <span class="mi">3</span>  
-</span></span><span class="line"><span class="cl"><span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span>  <span class="c1">//2出队，插入子节点
-</span></span></span><span class="line"><span class="cl"><span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span>
-</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span>  <span class="c1">//4没有子节点，出队不必插入
-</span></span></span><span class="line"><span class="cl"><span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>
-</span></span><span class="line"><span class="cl"><span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>
-</span></span><span class="line"><span class="cl"><span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span>
-</span></span><span class="line"><span class="cl"><span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span>
-</span></span><span class="line"><span class="cl"><span class="mi">10</span> <span class="mi">11</span>
-</span></span><span class="line"><span class="cl"><span class="mi">11</span>
-</span></span><span class="line"><span class="cl"><span class="err">空</span>
-</span></span></code></pre></div><h4 id="3342-图的广度优先遍历">3.3.4.2 图的广度优先遍历</h4>
-<p>图的广度优先遍历在这里暂时不需了解概念，示意如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260210150438761.png" alt="图">
-与树的层次遍历思想类似：<strong>从起始顶点开始，将其入队；每出队一个顶点并访问它，将与其相邻且尚未访问（或未入队）的顶点依次入队，直到队列为空。</strong> 以上图为题，过程如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="mi">1</span> <span class="c1">//起始节点入队
-</span></span></span><span class="line"><span class="cl"><span class="mi">2</span> <span class="mi">3</span>  <span class="c1">//相邻节点入队
-</span></span></span><span class="line"><span class="cl"><span class="mi">3</span> <span class="mi">4</span>
-</span></span><span class="line"><span class="cl"><span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>
-</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">6</span>
-</span></span><span class="line"><span class="cl"><span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>
-</span></span><span class="line"><span class="cl"><span class="mi">7</span> <span class="mi">8</span>
-</span></span><span class="line"><span class="cl"><span class="mi">8</span> 
-</span></span><span class="line"><span class="cl"><span class="err">空</span>
-</span></span></code></pre></div><h4 id="3343-操作系统中的应用">3.3.4.3 操作系统中的应用</h4>
-<p>时间片轮转算法：按进程到达就绪状态的先后顺序进入就绪队列，始终从队首取出最先到达的进程运行。时间片用完的进程又插入队尾。这也是只有一个CPU却能同时运行多个进程的原因。</p>
-<h2 id="34-特殊矩阵的压缩存储">3.4 特殊矩阵的压缩存储</h2>
-<p>数组在内存中分为<strong>行优先存储和列优先存储</strong>，<strong>由编程语言决定</strong>。比如 C/C++ 为行优先存储，而MATLAB则为列优先存储。在《考研视角下的C语言(中)》中已详细介绍了一维数组和二维数组。
-普通矩阵直接使用二维数组初始化就行，但这里将会介绍几种特殊矩阵。</p>
-<h3 id="341-对称矩阵">3.4.1 对称矩阵</h3>
-<blockquote>
-<p>若n阶<strong>方阵（行列数都相同）</strong>，对于任何一个元素 a<sub>i,j</sub> 都有 <strong>a<sub>i,j</sub> 等于 a<sub>j,i</sub></strong>，则称该矩阵为对称矩阵。</p>
-</blockquote>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260210154934931.png" alt="对称矩阵">
-自然而然能想到，我们只需存储<strong>上三角区（或下三角区）+ 主对角线元素</strong>即可，故数组的大小只需要 (n*n-n)/2 + n ，在代码层面实现只需使用<strong>一维数组</strong>，在需要访问未存储区域的元素时，写一个 <strong>“映射”函数</strong> 将二维数组下标转化为一维数组下标即可</p>
-<h3 id="342-三角矩阵">3.4.2 三角矩阵</h3>
-<p>三角矩阵的定义如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260210182116193.png" alt="三角矩阵">
-可以看见，三角矩阵和上方的对称矩阵大致相同，只需将上图有颜色的区域存入一维数组中，再在数组末尾存一个常数即可。</p>
-<h3 id="343-三对角矩阵">3.4.3 三对角矩阵</h3>
-<p>三对角矩阵，其定义如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260210195556294.png" alt="三对角矩阵">
-同样使用一维数组压缩存储，有两点需要注意：
-<strong>知道行数 i 和列数 j ，怎么求出数组下标 k （从0开始）：</strong> a<sub>i,j</sub> 是第 i 行第 j-i+2 个元素（只算带状区域内的），其前 i-1 行有 3*(i-1)-1 个元素（只算带状区域内的）。故 k 值为 2*i + j - 3 。
-<strong>知道数组下标 K （从0开始），怎么求行数 i 和列数 j ：</strong> i = (向下取整)[(k + 1) / 3] + 1，j = k - 2*i + 3。</p>
-<h3 id="345-稀疏矩阵">3.4.5 稀疏矩阵</h3>
-<blockquote>
-<p><strong>稀疏矩阵</strong>是矩阵中<strong>非零元素</strong>个数远远小于总元素个数的矩阵</p>
-</blockquote>
-<p>具体小多少，并没有一个具体的界限，靠经验判断。为了提高空间利用率，通常将每个非零元素的行、列、元素值合并成一个三元组(行标 i ,列标 j ,值 a<sub>i,j</sub>)进行存储。下面介绍两种压缩方法：</p>
-<h4 id="3451-数组存储">3.4.5.1 数组存储</h4>
-<p>采用数组对三元组进行存储并<strong>不能够实现随机存储</strong>，因为需要一一对比，结构如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260210201946046.png" alt="数组存储三元组"></p>
-<h4 id="3452-十字链表存储">3.4.5.2 十字链表存储</h4>
-<p>一图胜千言，结构如下图所示，最常见的使用就是按行遍历和按列遍历，也非常适合频繁的插入和删除。
-<img src="https://tuchuang.mrlxl.cn/picture/20260210201916627.png" alt="十字链表"></p>
+<h4 id="1153-按拓扑结构分类">1.1.5.3 按拓扑结构分类</h4>
+<p>常见拓扑结构包括<strong>总线型、星型、环型和网状网络</strong>。前三种常见于局域网，最后一种常见于广域网。</p>
+<ul>
+<li>
+<p><strong>总线形网络：</strong> 数据“广播式”的传播，存在总线争用问题。注意<strong>集线器</strong>看上去是星形结构，实际是总线形结构
+<img src="http://tuchuang.mrlxl.cn/picture/20260307202306156.png" alt="总线型"></p>
+</li>
+<li>
+<p><strong>星形网络：</strong> 由中央设备实现的“点对点”传输，不存在总线争用问题，典型代表是以太网交换机。
+<img src="http://tuchuang.mrlxl.cn/picture/20260307203316286.png" alt="星形网络"></p>
+</li>
+<li>
+<p><strong>环形网络：</strong> 数据“广播式”传播，通过“令牌”解决“总线争用问题，令牌顺环形依次传递，拿到令牌者可使用总线。典型代表是 1980 年代的令牌环网。
+<img src="http://tuchuang.mrlxl.cn/picture/20260307202749891.png" alt="环形网络"></p>
+</li>
+<li>
+<p><strong>网状网络：</strong> 数据通过各中间结点逐一存储转发，属于“点到点”传输。典型代表是由众多路由器构建的广域网。
+<img src="http://tuchuang.mrlxl.cn/picture/20260307203538394.png" alt="网状网络"></p>
+</li>
+</ul>
+<h4 id="1154-按使用者分类">1.1.5.4 按使用者分类</h4>
+<ul>
+<li><strong>公用网</strong> —— 向公众开放的网络。如：办宽带、交手机话费即可使用的互联网。</li>
+<li><strong>专用网</strong> —— 仅供某个组织内部使用的网络。如：政府、军队、电力、银行的内部网络。</li>
+</ul>
+<h4 id="1155-按传输介质分类">1.1.5.5 按传输介质分类</h4>
+<ul>
+<li><strong>无线网络</strong> —— 如 5G，Wi-Fi，卫星。</li>
+<li><strong>有线网络</strong> —— 如 网线，光纤。</li>
+</ul>
+<h3 id="116-计算机网络的性能指标">1.1.6 计算机网络的性能指标</h3>
+<h4 id="1161-速率speed">1.1.6.1 速率（Speed）</h4>
+<p><strong>信道（Channel）：</strong> 单向，表示向某一方向传送信息的通道（信道≠通信线路），一条通信线路在逻辑上往往对应一条<strong>发送信道</strong>和一条<strong>接收信道</strong>。</p>
+<p><strong>速率（Speed）</strong> 是指连接到网络上的节点在信道上传输数据的速率，也称为<strong>数据率</strong>或<strong>比特率</strong>、<strong>数据传输率</strong>。常用速率单位：bit/s = b/s = <strong>bps（bit per second）</strong>，有时也会用 <strong>B/s = 8b/s</strong>。</p>
+<p>我们再日常生活中常常看见前面会加上 <strong>K、M、G、T</strong> 等前缀。但是注意！在计算机网络中和在操作系统、计组中这些前缀的是有些不一样的。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307213648460.png" alt="速率前缀不同点"></p>
+<h4 id="1162-带宽bandwidth">1.1.6.2 带宽（Bandwidth）</h4>
+<p>带宽在不同领域有着不同的含义.
+在<strong>计算机网络</strong>中：
+带宽表示网络通信线路所能传送数据的能力，指信道所能支持的<strong>最高数据传输速率</strong>，单位：bps（或记为 b/s、bit/s；可加上数量前缀 K、M、G、T）。示例如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307215147380.png" alt="计算机网络带宽">
+值得注意的是，计算机网络中，节点之间的通信实际能达到的最高速率由<strong>带宽</strong>和<strong>节点性能</strong>共同决定。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307215430108.png" alt="实际最高速率">
+在<strong>通信原理</strong>（通信领域的一门基础学科）中：
+带宽表示某信道允许通过的<strong>信号频带范围</strong>。单位：Hz（读作 “赫 / 赫兹”；可加上数量前缀 k、M、G、T）。一个不太恰当的例子如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307220533482.png" alt="通信原理带宽">
+虽然两种带宽含义不同，但是都可表示信道传输数据的能力，在后面的章节中通过<strong>香农定理，奈氏准则</strong>将两种带宽联系起来。</p>
+<h4 id="1163-吞吐量throughput">1.1.6.3 吞吐量（Throughput）</h4>
+<p>考研中很少涉及，有大致了解即可。注意是要把双向的速率都加起来考虑，示意如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307221320721.png" alt="吞吐量"></p>
+<h4 id="1164-时延delay">1.1.6.4 时延（Delay）</h4>
+<p>时延的概念如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307232516752.png" alt="时延的概念">
+以一个例题来熟悉一下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307233013777.png" alt="时延例题"></p>
+<h4 id="1165-时延带宽积">1.1.6.5 时延带宽积</h4>
+<p>时延带宽积的<strong>含义</strong>：一条链路中，已从发送端发出但尚未到达接收端的最大比特数，可用于设计最短帧长。</p>
+<p>将信道看成一个<strong>水管</strong>，带宽就是横截面积，传播时延就是长度。
+时延带宽积就是水管总体积。
+我们用一个真题来熟悉：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307234406000.png" alt="时延带宽积真题"></p>
+<h4 id="1166-往返时延">1.1.6.6 往返时延</h4>
+<p>游戏右上角的延迟就是往返时延，示意如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307235101801.png" alt="往返时延的概念"></p>
+<h4 id="1167-信道利用率">1.1.6.7 信道利用率</h4>
+<p>$$
+\text{信道利用率} =
+\frac{\text{信道有数据通过的时间}}
+{\text{信道无数据通过的时间} + \text{信道有数据通过的时间}}
+$$
+以一个题目为例：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308000401208.png" alt="信道利用率题目">
+<strong>注意</strong>：信道利用率并不是越高越好，高了可能导致<strong>网络堵塞</strong>；也不是越低越好，低了<strong>浪费资源</strong>。
+​</p>
+<h3 id="117-计算机网络体系结构与参考模型">1.1.7 计算机网络体系结构与参考模型</h3>
+<h4 id="1171-计算机网络分层结构">1.1.7.1 计算机网络分层结构</h4>
+<p><strong>计算机网络体系结构（NetWork Arichitecture）</strong> 是计算机网络各层及其<strong>协议</strong>的<strong>集合</strong>，就是这个计算机网络及其构件所应完成的<strong>功能的精确定义（不涉及实现）</strong>。</p>
+<p><strong>实现（implementation）</strong> 是遵循这种体系机构的前提下，用任何<strong>硬件或软件</strong>完成这些功能的问题。</p>
+<p>体系结构是抽象的，而实现是具体的。</p>
+<p>有三种常见的计算机网络体系结构：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308112754034.png" alt="三种常见的计算机网络体系结构">
+因为翻译不同，对有些术语的说明如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308203254124.png" alt="术语说明">
+接下来引出三个关于数据的概念：</p>
+<ul>
+<li>SDU：要传的数据</li>
+<li>PCI：本层加的控制信息</li>
+<li>PDU：封装后的结果</li>
+</ul>
+<p>很明显，PDU = PCI + SDU。
+<img src="http://tuchuang.mrlxl.cn/picture/20260308185716563.png" alt=""></p>
+<h4 id="1172-协议服务接口的概念">1.1.7.2 协议、服务、接口的概念</h4>
+<p>实体：第 n 层中的活动元素（软件+硬件）称为第 n 层实体。</p>
+<p><strong>协议</strong>：是<strong>控制对等实体之间通信的规则集合</strong>。由语法、语言、同步（或时序）三部分组成（协议三要素）。</p>
+<ul>
+<li><strong>语法</strong>：数据与控制信息的格式。例如，协议控制信息（首部）部分占几个字节、每个字节是什么含义；协议的数据部分最多由多少字节。</li>
+<li><strong>语义</strong>：即需要发出何种控制信息、完成何种动作及做出何种应答。例如，协议中需要明确规定：发送方完数据后，接收方是否需要 “应答”，以及应答的种类有哪些（如：传输成功、传输失败）。</li>
+<li><strong>同步（或时序）</strong>：执行各种操作的条件、时序关系等，即事件实现顺序的详细说明。例如，发送方发完数据后，接收方需要立即应答。如果发送方在 10 秒内未收到 “传输成功” 应答，则发送方会再次发送数据。</li>
+</ul>
+<p><strong>服务</strong>：是指下层为紧邻的上层提供的功能调用。</p>
+<p><strong>接口</strong>：又称服务访问点（SAP），上一层通过接口请求下一层的服务。和 API 有些细微区别。</p>
+<p>四个概念（三个核心概念）在结构中的体现如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308113830542.png" alt="四个概念在结构中的体现"></p>
+<h4 id="1173-osi-参考模型">1.1.7.3 OSI 参考模型</h4>
+<p>用一个口诀记忆：<strong>物联（链）网叔（输）会使（示）用</strong>。
+一些常见设备的功能层次：<strong>集线器</strong>&ndash;物理层；<strong>交换机</strong>&ndash;物理层，数据链路层；<strong>路由器</strong>&ndash;物理层，数据链路层，网络层。</p>
+<p><strong>物理层：</strong>
+传输单位是<strong>比特（bit）</strong>。注意，传输使用的物理介质（如双绞线，光缆等）不属于物理层协议范畴，而是位于其下方。因此，有人将物理介质视为“第 0 层”。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308200613416.png" alt="物理层"></p>
+<p><strong>数据链路层：</strong>
+数据链路层的传输单位是<strong>帧（Frame）</strong>，主要作用是将物理层提供的可能出错的物理连接，改造为<strong>逻辑上</strong>无差错的数据链路。将网络层交来的分组封装成帧，并可靠的传送到相邻节点的网络层。实现节点间的<strong>差错控制和流量控制</strong>。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308201214492.png" alt="数据链路层"></p>
+<p><strong>网络层：</strong>
+传输单位是<strong>数据包（或分组）（Packet）</strong>，其主要任务是将分组从源主机传送到目的主机，为不同主机间提供通信服务。注意，网络层既提供有连接的虚电路服务，又提供无连接的数据报服务。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308202144172.png" alt="网络层"></p>
+<p><strong>传输层：</strong>
+传输单位是<strong>报文段（Segment）</strong>，传输层负责不同主机中进程之间的<strong>端到端</strong>通信，OSI 参考模型的传输层仅提供面向连接的可靠服务。
+需要注意的是，数据链路层实现<strong>节点到节点通信</strong>（基于 MAC 地址），网络层实现<strong>主机到主机通信</strong>（基于 IP 地址），而传输层实现<strong>端到端通信</strong>（基于端口号）。</p>
+<p>由于一台主机可同时运行多个进程，传输层需具备复用与分用的功能：</p>
+<ul>
+<li>复用：是指多个应用进程可同时使用传输层的服务</li>
+<li>分用：是指传输层能将接收到的数据准确交付给对应的上层进程。</li>
+</ul>
+<p>示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308202735493.png" alt="传输层"></p>
+<p><strong>会话层、示意层、应用层：</strong>
+这几层考的都很少，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308203142204.png" alt="会话层、示意层、应用层"></p>
+<p>总结如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308203835139.png" alt="OSI总结"></p>
+<h4 id="1174-tcpip-模型">1.1.7.4 TCP/IP 模型</h4>
+<p>口诀：<strong>接网叔（输）用</strong>
+和 OSI 模型对比如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260308210731701.png" alt="OSI VS TCP/IP">
+<img src="http://tuchuang.mrlxl.cn/picture/20260308210601492.png" alt="OSI VS TCP/IP"></p>
 <h1 id="附言">附言</h1>
-<p>参考文章：
-《数据结构之绪论与线性表》：http://mrlxl.cn/index.php/2026/02/04/test-11/
-《考研视角下的C语言(中)》：http://mrlxl.cn/index.php/2025/12/17/test-7/
-《考研视角下的C语言(下)》：http://mrlxl.cn/index.php/2026/01/24/test-9/</p>
+<p>嘿嘿，我最喜欢的计算机网络。欢迎来到计算机网络的世界。</p>
 
     </article>
     <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
@@ -1333,71 +1124,48 @@ InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分
     <h3>大纲</h3>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#数据结构之栈队列和数组">数据结构之栈、队列和数组</a></li>
-    <li><a href="#第三章_栈队列和数组">第三章_栈、队列和数组</a>
+    <li><a href="#计算机网络体系结构">计算机网络体系结构</a></li>
+    <li><a href="#第一章_计算机网络的概念">第一章_计算机网络的概念</a>
       <ul>
-        <li><a href="#31-栈">3.1 栈</a>
+        <li><a href="#11-计算机网络概述">1.1 计算机网络概述</a>
           <ul>
-            <li><a href="#311-栈的基本概念">3.1.1 栈的基本概念</a></li>
-            <li><a href="#312-栈的基本操作">3.1.2 栈的基本操作</a></li>
-            <li><a href="#313-栈的数学性质">3.1.3 栈的数学性质</a></li>
-            <li><a href="#314-顺序栈">3.1.4 顺序栈</a>
+            <li><a href="#111-计算机网络的概念">1.1.1 计算机网络的概念</a></li>
+            <li><a href="#112-计算机网络的组成">1.1.2 计算机网络的组成</a></li>
+            <li><a href="#113-计算机网络的功能">1.1.3 计算机网络的功能</a></li>
+            <li><a href="#114-电路交换报文交换分组交换">1.1.4 电路交换，报文交换，分组交换</a>
               <ul>
-                <li><a href="#3131-顺序栈的定义">3.1.3.1 顺序栈的定义</a></li>
-                <li><a href="#3132-顺序栈的实现和基本操作">3.1.3.2 顺序栈的实现和基本操作</a></li>
-                <li><a href="#3133-共享栈">3.1.3.3 共享栈</a></li>
+                <li><a href="#1141-电路交换">1.1.4.1 电路交换</a></li>
+                <li><a href="#1142-报文交换">1.1.4.2 报文交换</a></li>
+                <li><a href="#1143-分组交换">1.1.4.3 分组交换</a></li>
+                <li><a href="#1144-三种交换方式的性能分析">1.1.4.4 三种交换方式的性能分析</a></li>
               </ul>
             </li>
-            <li><a href="#315-链栈">3.1.5 链栈</a></li>
-          </ul>
-        </li>
-        <li><a href="#32-队列">3.2 队列</a>
-          <ul>
-            <li><a href="#321-队列的基本概念">3.2.1 队列的基本概念</a></li>
-            <li><a href="#322-队列的基本操作">3.2.2 队列的基本操作</a></li>
-            <li><a href="#323-顺序队列">3.2.3 顺序队列</a>
+            <li><a href="#115-计算机网络分类">1.1.5 计算机网络分类</a>
               <ul>
-                <li><a href="#3231-普通顺序队列">3.2.3.1 普通顺序队列</a></li>
-                <li><a href="#3231-循环队列">3.2.3.1 循环队列</a></li>
+                <li><a href="#1151-按分部范围分类">1.1.5.1 按分部范围分类</a></li>
+                <li><a href="#1152-按传输技术分类">1.1.5.2 按传输技术分类</a></li>
+                <li><a href="#1153-按拓扑结构分类">1.1.5.3 按拓扑结构分类</a></li>
+                <li><a href="#1154-按使用者分类">1.1.5.4 按使用者分类</a></li>
+                <li><a href="#1155-按传输介质分类">1.1.5.5 按传输介质分类</a></li>
               </ul>
             </li>
-            <li><a href="#324-链式队列">3.2.4 链式队列</a></li>
-            <li><a href="#325-双端队列">3.2.5 双端队列</a></li>
-          </ul>
-        </li>
-        <li><a href="#33-栈和队列的应用">3.3 栈和队列的应用</a>
-          <ul>
-            <li><a href="#331-栈在括号匹配中的应用">3.3.1 栈在括号匹配中的应用</a></li>
-            <li><a href="#332-栈在表达式求值中的应用">3.3.2 栈在表达式求值中的应用</a>
+            <li><a href="#116-计算机网络的性能指标">1.1.6 计算机网络的性能指标</a>
               <ul>
-                <li><a href="#3321-三种表达式介绍">3.3.2.1 三种表达式介绍</a></li>
-                <li><a href="#3322-三种表达式机算手算">3.3.2.2 三种表达式机算（手算）</a></li>
-                <li><a href="#3323-中缀表达式转后缀表达式手算机算">3.3.2.3 中缀表达式转后缀表达式（手算，机算）</a></li>
-                <li><a href="#3324-中缀表达式转前缀表达式手算">3.3.2.4 中缀表达式转前缀表达式（手算）</a></li>
-                <li><a href="#3325-后缀表达式机算">3.3.2.5 后缀表达式机算</a></li>
-                <li><a href="#3326-前缀表达式机算">3.3.2.6 前缀表达式机算</a></li>
-                <li><a href="#3327-中缀表达式机算">3.3.2.7 中缀表达式机算</a></li>
+                <li><a href="#1161-速率speed">1.1.6.1 速率（Speed）</a></li>
+                <li><a href="#1162-带宽bandwidth">1.1.6.2 带宽（Bandwidth）</a></li>
+                <li><a href="#1163-吞吐量throughput">1.1.6.3 吞吐量（Throughput）</a></li>
+                <li><a href="#1164-时延delay">1.1.6.4 时延（Delay）</a></li>
+                <li><a href="#1165-时延带宽积">1.1.6.5 时延带宽积</a></li>
+                <li><a href="#1166-往返时延">1.1.6.6 往返时延</a></li>
+                <li><a href="#1167-信道利用率">1.1.6.7 信道利用率</a></li>
               </ul>
             </li>
-            <li><a href="#333-栈在递归中的应用">3.3.3 栈在递归中的应用</a></li>
-            <li><a href="#334-队列的应用">3.3.4 队列的应用</a>
+            <li><a href="#117-计算机网络体系结构与参考模型">1.1.7 计算机网络体系结构与参考模型</a>
               <ul>
-                <li><a href="#3341-树的层次遍历">3.3.4.1 树的层次遍历</a></li>
-                <li><a href="#3342-图的广度优先遍历">3.3.4.2 图的广度优先遍历</a></li>
-                <li><a href="#3343-操作系统中的应用">3.3.4.3 操作系统中的应用</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li><a href="#34-特殊矩阵的压缩存储">3.4 特殊矩阵的压缩存储</a>
-          <ul>
-            <li><a href="#341-对称矩阵">3.4.1 对称矩阵</a></li>
-            <li><a href="#342-三角矩阵">3.4.2 三角矩阵</a></li>
-            <li><a href="#343-三对角矩阵">3.4.3 三对角矩阵</a></li>
-            <li><a href="#345-稀疏矩阵">3.4.5 稀疏矩阵</a>
-              <ul>
-                <li><a href="#3451-数组存储">3.4.5.1 数组存储</a></li>
-                <li><a href="#3452-十字链表存储">3.4.5.2 十字链表存储</a></li>
+                <li><a href="#1171-计算机网络分层结构">1.1.7.1 计算机网络分层结构</a></li>
+                <li><a href="#1172-协议服务接口的概念">1.1.7.2 协议、服务、接口的概念</a></li>
+                <li><a href="#1173-osi-参考模型">1.1.7.3 OSI 参考模型</a></li>
+                <li><a href="#1174-tcpip-模型">1.1.7.4 TCP/IP 模型</a></li>
               </ul>
             </li>
           </ul>
