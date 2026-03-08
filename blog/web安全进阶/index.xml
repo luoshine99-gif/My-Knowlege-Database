@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>web安全进阶 on mrlxl的知识库</title>
+    <link>https://luoshine99-gif.github.io/blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/</link>
+    <description>Recent content in web安全进阶 on mrlxl的知识库</description>
+    <generator>Hugo</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 01 Jan 2026 00:00:00 +0800</lastBuildDate>
+    <atom:link href="https://luoshine99-gif.github.io/blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>内存马原理，实战与查杀</title>
+      <link>https://luoshine99-gif.github.io/blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E5%86%85%E5%AD%98%E9%A9%AC%E5%8E%9F%E7%90%86%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9F%A5%E6%9D%80/</link>
+      <pubDate>Thu, 01 Jan 2026 00:00:00 +0800</pubDate>
+      <guid>https://luoshine99-gif.github.io/blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E5%86%85%E5%AD%98%E9%A9%AC%E5%8E%9F%E7%90%86%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9F%A5%E6%9D%80/</guid>
+      <description>&lt;h1 id=&#34;内存马原理实战与查杀&#34;&gt;内存马原理、实战与查杀&lt;/h1&gt;&#xA;&lt;h2 id=&#34;引言&#34;&gt;引言&lt;/h2&gt;&#xA;&lt;p&gt;我们在漏洞挖掘的时候经常看见大牛们发现一个文件上传漏洞时，上传的不是我们熟知的.php文件，而是.jsp文件。这其实利用的不是我们开始学的时候接触的webshell,而是memshell(内存马)。这篇文章将从基础原理开始，依次介绍Servlet内存马，Spring内存马，Agent内存马，Shiro内存马使用以及内存马的检测与查杀。&lt;/p&gt;&#xA;&lt;h2 id=&#34;一-java-web-应用的三大组件&#34;&gt;一. Java Web 应用的三大组件&lt;/h2&gt;&#xA;&lt;p&gt;想要理解最常见的三种内存马的类型，那么一定要了解&lt;strong&gt;Java Web 应用的三大组件&#xA;Servlet，Filter，Listener&lt;/strong&gt;，下面我将结合工程实例具体介绍：&lt;/p&gt;&#xA;&lt;h3 id=&#34;11-servlet&#34;&gt;1.1 Servlet&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Servlet 是运行在 Web 容器中的 Java 程序，用于接收客户端请求并生成响应，是 Java Web 中处理业务逻辑的核心组件。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;结合大家都知道的当前已经成为主流的 Spring Boot 我们可能对 Servlet 感到更加熟悉一点，但是不论是 Spring MVC 还是 Spring Boot，本质上都是建立在 Servlet 规范之上的封装，&lt;strong&gt;它们内部都通过一个或多个 Servlet 来接收并分发 HTTP 请求。&lt;/strong&gt; 下图是 Java Web 发展史的“标准主线”&#xA;&lt;img src=&#34;http://tuchuang.mrlxl.cn/picture/20251226221208885.png&#34; alt=&#34;java发展&#34;&gt;&#xA;&lt;strong&gt;一个 Servlet 工程 = Tomcat + Servlet API + 你写的 Servlet 类 + 映射配置&lt;/strong&gt;，在工程里代码层如何开发一个 Servlet 完整流程如下：&#xA;&lt;img src=&#34;http://tuchuang.mrlxl.cn/picture/20251226225238829.png&#34; alt=&#34;使用Servlet&#34;&gt;&#xA;Servlet 和 jsp 的关系：&lt;strong&gt;JSP(java servlet page) 是一种以页面为中心的 Servlet 编写方式，最终都会被编译成 Servlet 执行。&lt;/strong&gt; 当你第一次访问一个 .jsp 文件时，Tomcat 会做这几件事：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
