@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<title>识别虚拟机、Docker和K8s集群环境 | mrlxl的知识库</title>
+<title>物理层 | mrlxl的知识库</title>
 
 <script>
 (function() {
@@ -880,90 +880,112 @@ InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分
 </div>
   <div class="content-center">
     <article class="markdown-body">
-      <h1 class="post-title-template">识别虚拟机、Docker和K8s集群环境</h1>
+      <h1 class="post-title-template">物理层</h1>
       <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
         
         
-            2025-12-11
+            2026-03-10
         
       </div>
-      <h1 id="识别虚拟机docker和k8s集群环境">识别虚拟机、Docker和K8s集群环境</h1>
-<h3 id="一基础">一、基础</h3>
-<p>随着云原生应用不断普及，在我们getshell之后，我们还需要判断该shell是否处于虚拟环境中，并判断该虚拟环境的类型，通常情况下，shell的虚拟环境可能有如下三个类型：</p>
-<ul>
-<li>
-<h5 id="虚拟机"><strong>虚拟机</strong></h5>
-<p>虚拟机是指在一台物理服务器上运行的多个虚拟主机实例，每个虚拟主机实例都拥有自己的环境和资源，通常用于提供Web托管服务</p>
-</li>
-<li>
-<h5 id="docker"><strong>Docker</strong></h5>
-<p>Docker是一种虚拟化技术，利用容器化的方式将应用程序及其依赖项打包成独立、轻量级的环境，实现快速部署、高效运行和跨平台运行的功能</p>
-</li>
-<li>
-<h5 id="k8s"><strong>K8s</strong></h5>
-<p>Kubernetes（通常简写为K8s）是一个开源的容器编排平台，通过自动化部署、扩展和管理容器化应用，实现高可用性、弹性和灵活性。它提供了集群管理、服务发现、负载均衡等功能，让用户可以更轻松地管理容器化应用的生命周期</p>
-</li>
-</ul>
-<h3 id="二思路">二、思路</h3>
-<p>如果shell处于虚拟机、Docker或K8s集群环境中，我们需要对环境进行识别，并采取针对性的措施，比如：</p>
-<ul>
-<li>
-<p><strong>虚拟机</strong>：通常考虑横向移动来扩大攻击效果</p>
-</li>
-<li>
-<p><strong>Docker</strong>：通常先进行容器逃逸，再进行内网横向移动</p>
-</li>
-<li>
-<p><strong>K8s</strong>：通常先尝试接管集群，以获取对容器和集群资源的完全控制</p>
-</li>
-</ul>
-<h3 id="三识别">三、识别</h3>
-<p>首先判断当前shell是否采用了虚拟化技术：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">systemd-detect-virt		<span class="c1">#识别系统虚拟机（VM）、容器还是裸机上运行</span>
-</span></span></code></pre></div><p>在确认采用了虚拟化技术后，常有如下检测方法可以快速识别当前所处环境类型</p>
-<ul>
-<li>
-<h5 id="查看主机名和进程"><strong>查看主机名和进程</strong></h5>
-<p>容器的主机名默认随机生成的字符串，PID1非系统进程，可初步判断当前为容器环境</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hostname	<span class="c1">#查看主机名</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">ps aux		<span class="c1">#显示系统上所有用户的详细进程信息</span>
-</span></span></code></pre></div></li>
-<li>
-<h5 id="通过利用cgroup信息的差异"><strong>通过利用cgroup信息的差异</strong></h5>
-<p>通过查看cgroup信息，可以判断当前环是否是虚拟机、Docker容器或K8s集群:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cat /proc/1/cgroup	<span class="c1">#用于查看进程ID为1的系统进程（通常是Init进程）所属的cgroup信息，即用于控制和管理进程资源使用的容器技术</span>
-</span></span></code></pre></div><p>也可以针对性的查找关键词，例如针对Docker字符串：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">grep <span class="s1">&#39;docker&#39;</span> /proc/1/cgroup	<span class="c1">#查找是否存在‘Docker’字符串</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>检查根目录下.dockerenv文件</strong></p>
-<p>通过判断根目录下的.dockerenv文件是否存在，确认当前环是否为容器环境:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ls -alh/dockerenv	<span class="c1">#列出/dockerenv目录下的所有文件和目录，并显示详细信息以及人类可读的文件大小</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>通过检查挂载信息</strong></p>
-<p>通过检查挂载信息，推测当前环境是虚拟机、Docker容器还是K8s集群:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mount lgrep <span class="s1">&#39;/type&#39;</span>	<span class="c1">#从当前系统中列出所有已挂载的文件系统，并使用grep命令筛选出包含/type路径的挂载信息</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>查看硬盘信息</strong></p>
-<p>通过查看硬盘信息，推断当前环境是否为容器环境:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">fdisk -l <span class="c1">#列出系统上所有磁盘的分区信息</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>获取当前环境的文件系统和挂载点信息</strong></p>
-<p>获取当前环境的文件系统和挂载点信息，用来判断是否容器环境:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">df -h	<span class="c1">#显示文件系统的磁盘使用情况和挂载点信息</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>通过了解环境变量包含的信息</strong></p>
-<p>通过检查环境变量，了解特定环境的信息:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">env 	<span class="c1">#显示当前系统环境中的所有环境变量</span>
-</span></span></code></pre></div></li>
-</ul>
-<h3 id="四反制">四、反制</h3>
-<p>对于防守者而言，通过了解攻击者在云原生环境中可能采取的这些信息探测行为，可以建立有效的告警机制，以便及早发现潜在的攻击行为</p>
+      <h1 id="第二章_物理层">第二章_物理层</h1>
+<h2 id="21-通信基础">2.1 通信基础</h2>
+<h3 id="211-基本概念">2.1.1 基本概念</h3>
+<h4 id="2111-信源信道与信宿">2.1.1.1 信源、信道与信宿</h4>
+<p>信源、信道与信宿概念如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309165934248.png" alt="信源、信道与信宿"></p>
+<h4 id="2112-码元">2.1.1.2 码元</h4>
+<p>首先引出<strong>数字信号</strong>与<strong>模拟信号</strong>两个概念：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309170326190.png" alt="数字信号与模拟信号">
+在通信系统中，通常用一个固定时长的波形表示一个 <strong>k 进制的符号</strong>，该<strong>波形</strong>称为<strong>码元</strong>（也称为 K 进制码元），该时长称为<strong>码元长度（信号周期）</strong>。
+示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309185616136.png" alt="码元的概念">
+1 个码元可以携带 n bit 的信息量，因此该码元有 $2^n$ 种不同状态，可以表示 $2^n$ 种不同的二进制组合，$2^n$ 种不同的信号状态，但在某一时刻只能取其中<strong>一种</strong>信号状态。称为 <strong>$2^n$ 进制码元。</strong>
+示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309191548466.png" alt="n进制码元"></p>
+<h4 id="2113-速率波特率比特率">2.1.1.3 速率（波特率、比特率）</h4>
+<p><strong>波特率：</strong> 也称码元传输速率或调制速率，表示数字通信系统<strong>每秒</strong>传输的码元数。<strong>码元速率与进制无关</strong>。
+<strong>比特率：</strong> 也称信息传输速率，表示数字通信系统<strong>每秒</strong>传输的比特数。
+如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309172253663.png" alt="波特率、比特率"></p>
+<h3 id="212-信道的极限容量">2.1.2 信道的极限容量</h3>
+<h4 id="2121-噪声">2.1.2.1 噪声</h4>
+<p>在听觉信道所谓的噪声是声源，而在通信信道上的噪声是强磁场强电场，总之，<strong>噪声会对信道产生干扰，影响信道数据的通信效率。</strong></p>
+<h4 id="2122-信噪比">2.1.2.2 信噪比</h4>
+<p>信噪比是信号功率和噪声功率的比值，是一个数值，是没有单位的，可以使用 <strong>S/N</strong> 表示。但是为了方便表示以<strong>分贝（公式转换 S/N）</strong> 为单位表示信噪比，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309200651731.png" alt="信噪比"></p>
+<h4 id="2123-奈奎斯特定理奈氏准则与香农定理">2.1.2.3 奈奎斯特定理（奈氏准则）与香农定理</h4>
+<p>奈氏准则是算<strong>无噪声（理想情况）</strong> 的<strong>极限数据传输率</strong>，香农定理是算<strong>有噪声</strong>情况下的极限数据传输率。
+区分：<strong>时延带宽积</strong>是研究信道里能装多少数据，<strong>奈奎斯特 / 香农</strong> 是研究能传多快。
+两定理示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309202245633.png" alt="两个定理">
+通过两道真题计算理解：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309203006132.png" alt="奈氏准则">
+<img src="http://tuchuang.mrlxl.cn/picture/20260309202756639.png" alt="香农定理"></p>
+<h3 id="213-编码和调制">2.1.3 编码和调制</h3>
+<h4 id="2131-编码与调制的概念">2.1.3.1 编码与调制的概念</h4>
+<p>首先明确，编码与调制分别对应数字信号与模拟信号。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309213058860.png" alt="编码与调制的概念"></p>
+<h4 id="2132-数字数据编码为数字信号">2.1.3.2 数字数据编码为数字信号</h4>
+<p>现实中编码的核心在于<strong>如何用电平或跳变来表示二进制数 0 和 1</strong> 。常见的编码方式有以下几种，要<strong>理解牢记，英文简写也要记住</strong>：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309214036652.png" alt="常见编码方式">
+<img src="http://tuchuang.mrlxl.cn/picture/20260309215219473.png" alt="常见编码方式性质">
+用两道真题来理解（<strong>不要把波形记住往上套，可能会有噪声干扰，套口诀特征</strong>）：
+<img src="http://tuchuang.mrlxl.cn/picture/20260309220132232.png" alt="真题1">
+<img src="http://tuchuang.mrlxl.cn/picture/20260309220324059.png" alt="真题2"></p>
+<h4 id="2133-数字数据编码为模拟信号">2.1.3.3 数字数据编码为模拟信号</h4>
+<p>有些介质可以同时传输数字信号与模拟信号，如双绞线与电缆，而有些介质只能传输模拟信号，如真空。</p>
+<p>前面已经说过，将数字数据编码为模拟信号的方法，名为<strong>调制</strong>，而调制常用的方法有以下<strong>四种</strong>，英文简写也要牢记：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310195621944.png" alt="调制常用方法">
+<img src="http://tuchuang.mrlxl.cn/picture/20260310195805950.png" alt="QAM">
+下面用几个真题来熟悉一下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310200150237.png" alt="真题1">
+<img src="http://tuchuang.mrlxl.cn/picture/20260310200251277.png" alt="真题2"></p>
+<h2 id="22-传输介质">2.2 传输介质</h2>
+<p>传输介质是网络模型“第 0 层”的内容，在考研中考察频率不高，不用过于深究，其总领内容如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310204105567.png" alt="内容总领"></p>
+<h3 id="221-双绞线同轴电缆光纤">2.2.1 双绞线，同轴电缆，光纤</h3>
+<p><strong>双绞线：</strong>
+分为两种，有屏蔽（STP）和无屏蔽（UTP）。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310205139040.png" alt="双绞线">
+<strong>同轴电缆：</strong>
+基本已经不用了，局域网领域已基本采用双绞线作为主流传输介质。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310205945920.png" alt="同轴电缆">
+<strong>光纤：</strong>
+光纤也分两种，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310210919686.png" alt="光纤">
+<strong>以太网对有限传输的命名规则：</strong>
+以太网传输数字信号采用曼彻斯特编码，其对有线传输存在一定命名规则，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310211517631.png" alt="以太网对有限传输的命名规则"></p>
+<h3 id="222-无线传输介质">2.2.2 无线传输介质</h3>
+<p>这么多年都没考过，一图胜千言：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310211842263.png" alt="无线传输介质"></p>
+<h3 id="223-物理层接口特性">2.2.3 物理层接口特性</h3>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260310212613807.png" alt="物理层接口特性"></p>
+<h2 id="23-物理层设备">2.3 物理层设备</h2>
+<h3 id="231-中继器与集线器">2.3.1 中继器与集线器</h3>
+<h4 id="2311-中继器">2.3.1.1 中继器</h4>
+<p>中继器的功能是<strong>整形，放大并转发信号</strong>。有两个端口，从一个端口输入，从一个端口输出，<strong>两端属于同一局域网中的不同网段</strong>。仅支持<strong>半双工通信（双向的哈）</strong>。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310223142781.png" alt="中继器"></p>
+<h4 id="2312-集线器">2.3.1.2 集线器</h4>
+<p><strong>集线器实际就是一个多端口的中继器</strong>,同样能够接收信号进行整形和放大。虽然集线器所连接网络的拓扑结构在物理上是星形，但是其<strong>逻辑</strong>上是<strong>总线形网络</strong>。也就是说，并不能够处理<strong>冲突</strong>。也是<strong>半双工通信</strong>。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310224047969.png" alt="集线器"></p>
+<h4 id="2313-中继器和集线器的一些特性">2.3.1.3 中继器和集线器的一些特性</h4>
+<ol>
+<li>中继器、集线器<strong>不能无限串联</strong>：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310230217480.png" alt="不能无限串联"></li>
+<li>集线器物理上是星形结构，逻辑上是<strong>总线形结构</strong>（全部广播），故不能处理冲突：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310230630945.png" alt="总线形结构集线器"></li>
+<li>集线器各网段“共享带宽”：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310230901721.png" alt="共享带宽"></li>
+<li>集线器可以连接不同的传输介质（实际情况与国内大部分教材冲突）：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310231320640.png" alt="连接不同的传输介质"></li>
+</ol>
+<h3 id="232-冲突域碰撞域">2.3.2 冲突域（碰撞域）</h3>
+<p>关于冲突域的题目在考研中有考到过。
+如果两台主机同时发送数据会出现冲突，那么这两台主机就属于同一<strong>冲突域（碰撞域）</strong> 中。示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310225046210.png" alt="冲突域">
+我们一个题目来熟悉：
+<img src="http://tuchuang.mrlxl.cn/picture/20260310225303939.png" alt="冲突域真题"></p>
 
     </article>
     <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
@@ -973,33 +995,50 @@ InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分
     <h3>大纲</h3>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#识别虚拟机docker和k8s集群环境">识别虚拟机、Docker和K8s集群环境</a>
+    <li><a href="#第二章_物理层">第二章_物理层</a>
       <ul>
-        <li>
+        <li><a href="#21-通信基础">2.1 通信基础</a>
           <ul>
-            <li><a href="#一基础">一、基础</a>
+            <li><a href="#211-基本概念">2.1.1 基本概念</a>
               <ul>
-                <li>
-                  <ul>
-                    <li><a href="#虚拟机"><strong>虚拟机</strong></a></li>
-                    <li><a href="#docker"><strong>Docker</strong></a></li>
-                    <li><a href="#k8s"><strong>K8s</strong></a></li>
-                  </ul>
-                </li>
+                <li><a href="#2111-信源信道与信宿">2.1.1.1 信源、信道与信宿</a></li>
+                <li><a href="#2112-码元">2.1.1.2 码元</a></li>
+                <li><a href="#2113-速率波特率比特率">2.1.1.3 速率（波特率、比特率）</a></li>
               </ul>
             </li>
-            <li><a href="#二思路">二、思路</a></li>
-            <li><a href="#三识别">三、识别</a>
+            <li><a href="#212-信道的极限容量">2.1.2 信道的极限容量</a>
               <ul>
-                <li>
-                  <ul>
-                    <li><a href="#查看主机名和进程"><strong>查看主机名和进程</strong></a></li>
-                    <li><a href="#通过利用cgroup信息的差异"><strong>通过利用cgroup信息的差异</strong></a></li>
-                  </ul>
-                </li>
+                <li><a href="#2121-噪声">2.1.2.1 噪声</a></li>
+                <li><a href="#2122-信噪比">2.1.2.2 信噪比</a></li>
+                <li><a href="#2123-奈奎斯特定理奈氏准则与香农定理">2.1.2.3 奈奎斯特定理（奈氏准则）与香农定理</a></li>
               </ul>
             </li>
-            <li><a href="#四反制">四、反制</a></li>
+            <li><a href="#213-编码和调制">2.1.3 编码和调制</a>
+              <ul>
+                <li><a href="#2131-编码与调制的概念">2.1.3.1 编码与调制的概念</a></li>
+                <li><a href="#2132-数字数据编码为数字信号">2.1.3.2 数字数据编码为数字信号</a></li>
+                <li><a href="#2133-数字数据编码为模拟信号">2.1.3.3 数字数据编码为模拟信号</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#22-传输介质">2.2 传输介质</a>
+          <ul>
+            <li><a href="#221-双绞线同轴电缆光纤">2.2.1 双绞线，同轴电缆，光纤</a></li>
+            <li><a href="#222-无线传输介质">2.2.2 无线传输介质</a></li>
+            <li><a href="#223-物理层接口特性">2.2.3 物理层接口特性</a></li>
+          </ul>
+        </li>
+        <li><a href="#23-物理层设备">2.3 物理层设备</a>
+          <ul>
+            <li><a href="#231-中继器与集线器">2.3.1 中继器与集线器</a>
+              <ul>
+                <li><a href="#2311-中继器">2.3.1.1 中继器</a></li>
+                <li><a href="#2312-集线器">2.3.1.2 集线器</a></li>
+                <li><a href="#2313-中继器和集线器的一些特性">2.3.1.3 中继器和集线器的一些特性</a></li>
+              </ul>
+            </li>
+            <li><a href="#232-冲突域碰撞域">2.3.2 冲突域（碰撞域）</a></li>
           </ul>
         </li>
       </ul>
