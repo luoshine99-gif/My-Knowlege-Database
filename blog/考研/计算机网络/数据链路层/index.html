@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<title>识别虚拟机、Docker和K8s集群环境 | mrlxl的知识库</title>
+<title>数据链路层 | mrlxl的知识库</title>
 
 <script>
 (function() {
@@ -896,90 +896,351 @@ InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分
 </div>
   <div class="content-center">
     <article class="markdown-body">
-      <h1 class="post-title-template">识别虚拟机、Docker和K8s集群环境</h1>
+      <h1 class="post-title-template">数据链路层</h1>
       <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
         
         
-            2025-12-11
+            2026-03-20
         
       </div>
-      <h1 id="识别虚拟机docker和k8s集群环境">识别虚拟机、Docker和K8s集群环境</h1>
-<h3 id="一基础">一、基础</h3>
-<p>随着云原生应用不断普及，在我们getshell之后，我们还需要判断该shell是否处于虚拟环境中，并判断该虚拟环境的类型，通常情况下，shell的虚拟环境可能有如下三个类型：</p>
+      <h1 id="第三章_数据链路层">第三章_数据链路层</h1>
+<h2 id="31-数据链路层的功能">3.1 数据链路层的功能</h2>
+<p>尽管数据链路层协议繁多，但是他们都需要解决三个基本问题：<strong>封装成帧、透明传输 和 差错检测。</strong></p>
+<h3 id="311-封装成帧组帧">3.1.1 封装成帧（组帧）</h3>
+<p><strong>帧（Frame）</strong> 是数据链路层的<strong>协议数据单元（PDU）</strong>，为了方便数据链路层对等实体间传输的管理，所以需要把网络层的 IP 数据报（分组）封装成帧。</p>
+<p>那么封装成帧一定要解决两个问题：</p>
 <ul>
-<li>
-<h5 id="虚拟机"><strong>虚拟机</strong></h5>
-<p>虚拟机是指在一台物理服务器上运行的多个虚拟主机实例，每个虚拟主机实例都拥有自己的环境和资源，通常用于提供Web托管服务</p>
-</li>
-<li>
-<h5 id="docker"><strong>Docker</strong></h5>
-<p>Docker是一种虚拟化技术，利用容器化的方式将应用程序及其依赖项打包成独立、轻量级的环境，实现快速部署、高效运行和跨平台运行的功能</p>
-</li>
-<li>
-<h5 id="k8s"><strong>K8s</strong></h5>
-<p>Kubernetes（通常简写为K8s）是一个开源的容器编排平台，通过自动化部署、扩展和管理容器化应用，实现高可用性、弹性和灵活性。它提供了集群管理、服务发现、负载均衡等功能，让用户可以更轻松地管理容器化应用的生命周期</p>
-</li>
+<li><strong>帧定界：</strong> 如何让“接收方”能确定帧的界限。</li>
+<li><strong>透明传输：</strong> 无论帧的数据部分出现什么比特组合，都不会与帧定界符等控制信息相混淆。接收方在接收到帧后能够<strong>去除“帧定界”等附加信息</strong>，将帧的数据部分恢复为 SDU。</li>
 </ul>
-<h3 id="二思路">二、思路</h3>
-<p>如果shell处于虚拟机、Docker或K8s集群环境中，我们需要对环境进行识别，并采取针对性的措施，比如：</p>
+<p>那么有以下四种组帧方法：字符计数法、字节填充法、零比特填充 和 违规编码。</p>
+<h4 id="3111-字符计数法">3.1.1.1 字符计数法</h4>
+<p>在每个帧的开头，用一个<strong>定长计数字段</strong>表示帧长。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260311175347019.png" alt="字符计数法"></p>
+<h4 id="3112-字节填充法">3.1.1.2 字节填充法</h4>
+<p>采用 ASCLL表中的控制符来划分帧的起始与结尾，会遇到数据部分与控制字符相同的问题，采用加转义字符的方式解决。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260311193835027.png" alt="字节填充法"></p>
+<h4 id="3113-零比特填充">3.1.1.3 零比特填充</h4>
+<p>和字节填充法类似，但是采用 01111110 这样的特殊比特串表示开始和结束，同理也会出现和上述一样的问题，采用遇5个 1 加（减） 0 的方式解决问题，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260311194725737.png" alt="零比特填充">
+零比特填充也是 HDLC 协议和 PPP 协议的组帧方式，在现实生活中被广泛使用。</p>
+<h4 id="3114-违规编码">3.1.1.4 违规编码</h4>
+<p>违规编码是在数字信号上做文章，通过故意产生不符合编码规则的信号来表示特殊控制信息。示意图（采用曼彻斯特编码为例）如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260311195307050.png" alt="违规编码"></p>
+<h3 id="312-差错检测">3.1.2 差错检测</h3>
+<p>如果接收方发现了帧内部的一个“位错”，可以有两种解决方案：</p>
 <ul>
-<li>
-<p><strong>虚拟机</strong>：通常考虑横向移动来扩大攻击效果</p>
-</li>
-<li>
-<p><strong>Docker</strong>：通常先进行容器逃逸，再进行内网横向移动</p>
-</li>
-<li>
-<p><strong>K8s</strong>：通常先尝试接管集群，以获取对容器和集群资源的完全控制</p>
-</li>
+<li>解决方案一（<strong>检错编码</strong>）：接收方发现比特错误后<strong>丢弃帧</strong>，并通知发送方<strong>重传帧</strong>。如 奇偶校验码、CRC校验码。</li>
+<li>解决方案二（<strong>纠错编码</strong>）：由接收方发现并纠正比特错误，如 海明校验码。</li>
 </ul>
-<h3 id="三识别">三、识别</h3>
-<p>首先判断当前shell是否采用了虚拟化技术：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">systemd-detect-virt		<span class="c1">#识别系统虚拟机（VM）、容器还是裸机上运行</span>
-</span></span></code></pre></div><p>在确认采用了虚拟化技术后，常有如下检测方法可以快速识别当前所处环境类型</p>
+<h4 id="3121-奇偶校验码检错编码">3.1.2.1 奇偶校验码（检错编码）</h4>
+<p>奇偶校验逻辑很简单，用一个比特位（校验位）使所有 <strong>数据位 + 校验位（校验码）</strong> 中“1”的个数为奇（偶）数：</p>
 <ul>
-<li>
-<h5 id="查看主机名和进程"><strong>查看主机名和进程</strong></h5>
-<p>容器的主机名默认随机生成的字符串，PID1非系统进程，可初步判断当前为容器环境</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">hostname	<span class="c1">#查看主机名</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">ps aux		<span class="c1">#显示系统上所有用户的详细进程信息</span>
-</span></span></code></pre></div></li>
-<li>
-<h5 id="通过利用cgroup信息的差异"><strong>通过利用cgroup信息的差异</strong></h5>
-<p>通过查看cgroup信息，可以判断当前环是否是虚拟机、Docker容器或K8s集群:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cat /proc/1/cgroup	<span class="c1">#用于查看进程ID为1的系统进程（通常是Init进程）所属的cgroup信息，即用于控制和管理进程资源使用的容器技术</span>
-</span></span></code></pre></div><p>也可以针对性的查找关键词，例如针对Docker字符串：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">grep <span class="s1">&#39;docker&#39;</span> /proc/1/cgroup	<span class="c1">#查找是否存在‘Docker’字符串</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>检查根目录下.dockerenv文件</strong></p>
-<p>通过判断根目录下的.dockerenv文件是否存在，确认当前环是否为容器环境:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ls -alh/dockerenv	<span class="c1">#列出/dockerenv目录下的所有文件和目录，并显示详细信息以及人类可读的文件大小</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>通过检查挂载信息</strong></p>
-<p>通过检查挂载信息，推测当前环境是虚拟机、Docker容器还是K8s集群:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mount lgrep <span class="s1">&#39;/type&#39;</span>	<span class="c1">#从当前系统中列出所有已挂载的文件系统，并使用grep命令筛选出包含/type路径的挂载信息</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>查看硬盘信息</strong></p>
-<p>通过查看硬盘信息，推断当前环境是否为容器环境:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">fdisk -l <span class="c1">#列出系统上所有磁盘的分区信息</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>获取当前环境的文件系统和挂载点信息</strong></p>
-<p>获取当前环境的文件系统和挂载点信息，用来判断是否容器环境:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">df -h	<span class="c1">#显示文件系统的磁盘使用情况和挂载点信息</span>
-</span></span></code></pre></div></li>
-<li>
-<p><strong>通过了解环境变量包含的信息</strong></p>
-<p>通过检查环境变量，了解特定环境的信息:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">env 	<span class="c1">#显示当前系统环境中的所有环境变量</span>
-</span></span></code></pre></div></li>
+<li><strong>奇校验：</strong> 通过设置校验位，使得 <strong>校验码中 “1” 的个数为奇数</strong>。</li>
+<li><strong>偶校验：</strong> 通过设置校验位，使得 <strong>校验码中 “1” 的个数为偶数</strong>。</li>
 </ul>
-<h3 id="四反制">四、反制</h3>
-<p>对于防守者而言，通过了解攻击者在云原生环境中可能采取的这些信息探测行为，可以建立有效的告警机制，以便及早发现潜在的攻击行为</p>
+<p>通常双方会事先约定好采用奇校验还是偶校验（一般使用偶校验），那么检测时只需使用异或运算，<strong>连续异或所有比特串，结果为 1 表示 数据位 + 校验位（校验码） “1” 的个数为奇数，反之为偶数。</strong> 刚好与采用偶校验，需填充的值相同。</p>
+<p>值得注意的是，<strong>奇偶校验无法检测出偶数位错误。</strong> 示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260311204453310.png" alt="奇偶校验码"></p>
+<h4 id="3122-循环冗余校验码检错编码">3.1.2.2 循环冗余校验码（检错编码）</h4>
+<p>循环冗余校验码又称 <strong>CRC 码</strong>。</p>
+<p>通常双方事先约定好<strong>生成多项式</strong>，取<strong>最高次幂</strong>的<strong>幂</strong>作为<strong>校验位位数</strong>，将信息码左移校验位位数，<strong>低位补 0</strong> ，再取生成多项式的各阶系数作为<strong>除数</strong>，右移后的信息位为<strong>被除数</strong>。进行<strong>模 2 除法</strong>。产生<strong>余数</strong>即为校验位。
+产生校验位的过程如图所示，难点是理解<strong>模 2 除法</strong>：
+<img src="http://tuchuang.mrlxl.cn/picture/20260311214319644.png" alt="产生校验位的过程">
+接收方使用同样的除数，对校验码进行模 2 除法，即可判断是否出错。值得注意的是 CRC 是<strong>有一定纠错功能的（不常用，说了解就行）</strong>。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260311220237750.png" alt="CRC判断是否出错">
+上图例子中，出现两个位无法确定是谁错的情况，其实是信息位太长的问题，超出了校验位的表示范围。如果校验码没有超出校验位的表示范围，那余数与出错位之间就是一一对应的关系。
+<img src="http://tuchuang.mrlxl.cn/picture/20260311215515311.png" alt="CRC纠错"></p>
+<h4 id="3123-海明校验码纠错编码">3.1.2.3 海明校验码（纠错编码）</h4>
+<p>海明校验码的<strong>四步</strong>求解步骤如下，易忘点在于理解如何确定不同校验位对应的检测组：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312111811223.png" alt="海明校验码">
+海明校验码具有<strong>一位纠错，两位检错的能力</strong>，其第四步纠错规则如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312114023775.png" alt="海明码检/纠错"></p>
+<h3 id="313-流量控制与可靠传输">3.1.3 流量控制与可靠传输</h3>
+<p>流量控制与可靠传输的概念如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312191416901.png" alt=""></p>
+<h4 id="3131-滑动窗口机制">3.1.3.1 滑动窗口机制</h4>
+<p>不论是流量控制还是可靠传输，都与滑动窗口机制有关，这里简单介绍滑动窗口的概念：</p>
+<ul>
+<li>发送窗口内的帧允许被发送。</li>
+<li>接收窗口内的帧允许被接收。</li>
+<li>接收方通过确认机制控制发送方窗口向前移动。</li>
+</ul>
+<p>示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312192512524.png" alt="滑动窗口机制"></p>
+<h4 id="3132-停止等待协议s-w">3.1.3.2 停止等待协议（S-W）</h4>
+<p>停止等待协议内容如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312200025381.png" alt="停止等待协议">
+<img src="http://tuchuang.mrlxl.cn/picture/20260312210013180.png" alt="相关概念">
+首先我们来看<strong>正常</strong>的过程：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312201015396.png" alt="S-W 正常过程">
+若是出现<strong>数据帧丢失</strong>情况，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312201428341.png" alt="数据帧丢失">
+若是出现<strong>确认帧ACK丢失</strong>的情况，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312202831893.png" alt="确认帧ACK丢失"></p>
+<h4 id="3133-后退-n-帧协议gbn">3.1.3.3 后退 N 帧协议（GBN）</h4>
+<p>后退 N 帧协议（GBK Go-Back-N）内容如下：
+<strong>注意</strong>是可以累计确认不是一定累计确认。
+<img src="http://tuchuang.mrlxl.cn/picture/20260312212654516.png" alt="后退 N 帧协议内容">
+其<strong>正确</strong>的情况如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312213018134.png" alt="正常过程">
+若是出现<strong>数据帧丢失</strong>情况，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312214156780.png" alt="数据帧丢失">
+后退 N 帧协议并不是指滑动窗口往后退，而是指如遇需超时重传的帧，后面的所有发送的帧都需要退回来重新传输。</p>
+<p>若是出现<strong>确认帧ACK丢失</strong>的情况，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312214901126.png" alt="确认帧ACK丢失">
+注意必须满足 <strong>Wt + Wr &lt;= 2<sup>n</sup></strong>，若不满足极有可能出现帧失序的情况，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260312215244499.png" alt="帧失序"></p>
+<h4 id="3134-选择重传协议sr">3.1.3.4 选择重传协议（SR）</h4>
+<p>选择重传协议（SR Selective Repeat）的内容如下：
+注意，虽然发送窗口 Wt 和接收窗口 Wr 都能大于 1 ，但是除了 <strong>Wt + Wr &lt;= 2<sup>n</sup></strong>，还需满足 <strong>Wr &lt;= Wt</strong> ，这样是为了提高滑动窗口的效率因为 确认帧/否认帧 一旦发出，接收方滑动窗口就能移动了，在实际中一般取 Wr == Wt。
+<img src="http://tuchuang.mrlxl.cn/picture/20260313202943565.png" alt="选择重传协议内容">
+那么正确的过程如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260313203116338.png" alt="正确的过程">
+若是出现<strong>数据帧丢失</strong>情况，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260313203828531.png" alt="数据帧丢失">
+若是检测出错，且不能纠错，将其出错帧丢弃后，会发送<strong>否认帧 NAK</strong>，这是 SR 协议的特色，主动请求重传。情况如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260313204452649.png" alt="否认帧 NAK">
+若是出现<strong>确认帧ACK丢失</strong>的情况，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260313205251867.png" alt="确认帧 ACK">
+与 GBN 相同，若不满足 <strong>Wt + Wr &lt;= 2<sup>n</sup></strong>，若不满足极有可能出现帧失序的情况。</p>
+<h4 id="3135-三种协议的信道利用率分析">3.1.3.5 三种协议的信道利用率分析</h4>
+<p>首先补充一些术语，如果题目中提到：</p>
+<ul>
+<li><strong>滑动窗口协议：</strong> 指的是 <strong>GBN 或 SR</strong>，S-W不算在内。</li>
+<li><strong>ARQ 协议（自动重传请求）：</strong> 指的是 S-W、GBN 和 SR 这三种协议。</li>
+<li><strong>连续 ARQ 协议：</strong> 指的是<strong>GBN 或 SR</strong></li>
+</ul>
+<p>来看<strong>停止等待协议（S-W）</strong> 的信道利用率分析，计算方式如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260314200905267.png" alt="S-W信道利用率">
+用一个真题来练习，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260314202133371.png" alt="真题"></p>
+<p>接下来看 <strong>后退 N 帧协议</strong>和<strong>选择重传协议</strong>，这两个做题时，在公式方面是一样的：
+<img src="http://tuchuang.mrlxl.cn/picture/20260314203108252.png" alt="GBN and SR">
+以两道真题熟悉：
+<img src="http://tuchuang.mrlxl.cn/picture/20260314203937955.png" alt="真题">
+<img src="http://tuchuang.mrlxl.cn/picture/20260314204440626.png" alt="真题"></p>
+<h2 id="32-介质访问控制">3.2 介质访问控制</h2>
+<h3 id="321-信道划分介质访问控制">3.2.1 信道划分介质访问控制</h3>
+<p><strong>信道划分介质访问控制</strong>是通过复用技术，将同一传输介质上的多个设备通信隔离开来。<strong>实质</strong>是通过分时、分频、分码等方式，将一个广播信道在逻辑上划分为若不相关的子信道，主要有以下四种方法：</p>
+<h4 id="3211-时分复用tdm-与-统计时分复用stdm">3.2.1.1 时分复用（TDM） 与 统计时分复用（STDM）</h4>
+<p><strong>时分复用</strong>就是将传输时间划分为等长的时间片，构成一个 <strong>TDM 帧</strong>，每个时间片又划分为多个<strong>时隙</strong>，对应每个用户，每个用户的对应时隙在 TDM 帧中的位置不变。
+<strong>注意</strong>：TDM 帧是一段固定长度的时间间隔，与数据链路层中的 “帧” 概念不同。
+如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315182243230.png" alt="时分复用">
+当某用户暂无数据发送时，其分配的时隙仍被保留，因此<strong>信道利用率降低</strong>。</p>
+<p>也因此将 TDM 进行改进得到 <strong>统计时分复用（STDM 也称异步时分复用）</strong>。STDM 不固定分配时隙，而是按需动态分配时隙。仅当用户有数据发送时，才为其分配 STDM 帧中的时隙。从而显著提高线路利用率，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315183137271.png" alt="统计时分复用"></p>
+<h4 id="3212-频分复用fdm">3.2.1.2 频分复用（FDM）</h4>
+<p><strong>频分复用（Frequency Division Multiplexing，FDM）</strong> 就是分频带，总带宽为 0-6000Hz，用户一用 0-2000Hz，用户二用 2500-4000Hz，用户三用 4500-6000Hz。用户之间空出来的频带就是<strong>隔离频带</strong>，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315183710766.png" alt="频分复用"></p>
+<h4 id="3213-波分复用wdm">3.2.1.3 波分复用（WDM）</h4>
+<p><strong>波分复用技术</strong>这里的波，指的是波长。本质和<strong>频分复用技术</strong>是一样的。因为光速恒定，不同波长自然也就对应不同频率。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315184752685.png" alt="波分复用"></p>
+<h4 id="3214-码分复用cdm">3.2.1.4 码分复用（CDM）</h4>
+<p>在 2G、3G 网络时代，节点之间的通信常用的技术是 <strong>CDMA（Code Division Multiple Access）</strong> 技术，而 CDMA 技术的底层原理就是 <strong>码分复用（CDM Code Division Multiplexing）</strong>，这里的<strong>码</strong>，指的是<strong>码片</strong>，不是<strong>码元</strong>。
+其过程如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315193201510.png" alt="CDM过程">
+各个站点会提前知道各个站点的码片序列，但是要求任意两站的码片能够相互<strong>正交</strong>，以方便后续计算<strong>规格化内积</strong>，示例如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315194146442.png" alt="CDM过程示例">
+在来一个难一点的例子：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315194324568.png" alt="CDM过程示例(难度+)">
+上图的例子实际上来源于下图的真题：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315194454632.png" alt="CDM真题"></p>
+<h3 id="322-随机访问介质访问控制">3.2.2 随机访问介质访问控制</h3>
+<p>随机访问介质访问控制知识发展过程总览如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315211022555.png" alt="知识总览"></p>
+<h4 id="3221-aloha-协议">3.2.2.1 ALOHA 协议</h4>
+<p>ALOHA 协议分为<strong>纯 ALOHA 协议</strong>和<strong>时隙 ALOHA 协议</strong>。对比如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315210707765.png" alt="ALOHA对比">
+<strong>纯 ALOHA 协议：</strong>
+纯 ALOHA 协议的<strong>基本思想</strong>是：在<strong>总线形网络</strong>中，任意一站点需要发送数据的时候，直接发送，若一段时间后没有收到 ACK ，认为发送失败，发生冲突。<strong>已经确认发生冲突后随机等待</strong>一段时间再发送，直至成功。
+示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315211146416.png" alt="纯 ALOHA 协议">
+<strong>时隙 ALOHA 协议：</strong>
+为了克服纯 ALOHA 协议发生冲突概率高，协议吞吐量低这一缺点而提出时隙 ALOHA 协议。<strong>基本思想</strong>是：将时间划分为等长的<strong>时隙（Slot）</strong>，并要求所有站点同步时钟，<strong>站点只能在每个时隙的起始时刻发送帧（等时间槽）</strong>，且一帧的发送时间必须小于一个时隙长度。确认发生冲突后，还是<strong>随机等待</strong>一段时间再找时隙发送。
+示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315211332702.png" alt="时隙 ALOHA 协议"></p>
+<h4 id="3222-csma-协议">3.2.2.2 CSMA 协议</h4>
+<p>CSMA（Carrier Sense Multiple Access）协议，即<strong>载波监听多路访问协议</strong>。是在 <strong>ALOHA 协议的基础</strong>上引入了<strong>载波监听机制</strong>。即监听信道是否空闲。</p>
+<p>CSMA 协议分为 <strong>1-坚持 CSMA</strong>、<strong>非坚持 CSMA</strong> 和 <strong>p-坚持 CSMA</strong>。1 和 p 代表的都是概率（监听发现信道空闲后即刻发送数据的概率），坚持表示若信道不空闲，是否坚持监听信道直到空闲。非坚持 CSMA 可以<strong>理解成</strong> 1-非坚持 CSMA。</p>
+<p>三种 CSMA（1-坚持、非坚持、p-坚持）本质上都是在 <strong>“连续时间信道”</strong> 上工作的，不是时隙化信道。只有 p-坚持 CSMA 在描述算法时引入了时隙概念。</p>
+<p><strong>1-坚持 CSMA：</strong>
+一直监听，信道一空就立刻发送。
+过程图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315211718089.png" alt="1-坚持 CSMA">
+<strong>非坚持 CSMA：</strong>
+信道忙就随机等一段时间再监听。
+过程图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315212142790.png" alt="非坚持 CSMA">
+<strong>p-坚持 CSMA：</strong>
+一直监听，信道空闲时，以概率 p 发送。p-坚持 CSMA 就是 1-坚持 CSMA 和 非坚持 CSMA 两种方案的折中方案。
+过程图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260315212423830.png" alt="p-坚持 CSMA"></p>
+<p>CSMA 协议本身<strong>没有冲突检测</strong>功能，发生冲突后只能依赖接收方检测出错，并通过 S-W、GBN、SR 等上层可靠传输协议重发。
+CSMA/CD 则可以<strong>实时检测并处理冲突</strong>。
+CSMA/CA 也不检错，但是会<strong>尽量避免冲突</strong>。</p>
+<h4 id="3223-csmacd-协议">3.2.2.3 CSMA/CD 协议</h4>
+<p>这个协议主要用于早期的<strong>总线形以太网</strong>。早期以太网使用同轴电缆作为传输介质，自然是半双工。这个协议也是考研中爱考的点。
+CSMA/CD 协议内容<strong>大纲</strong>如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260318182020517.png" alt="协议内容">
+首先需要介绍 CSMA/CD 协议的<strong>流程</strong>，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260318182503549.png" alt="CSMA/CD 协议流程发送方">
+<img src="http://tuchuang.mrlxl.cn/picture/20260318182624757.png" alt="CSMA/CD 协议流程接收方"></p>
+<p>我们还需明确三个概念：</p>
+<ol>
+<li><strong>争用期：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260318184514484.png" alt="争用期"></li>
+<li><strong>CSMA/CD 协议的最短帧长：</strong> 是以太网规定了的<strong>定值</strong>，为 <strong>64B</strong>，其制定逻辑如下图所示。
+<img src="http://tuchuang.mrlxl.cn/picture/20260318185256188.png" alt="最短帧长"></li>
+<li><strong>CSMA/CD 协议的最长帧长：</strong> 为了防止某些结点一直占用信道，以太网将其规定为 <strong>1518B</strong>。</li>
+</ol>
+<h4 id="3224-csmaca-协议">3.2.2.4 CSMA/CA 协议</h4>
+<p>CSMA/CA 协议适用于 <strong>IEEE 802.11 无线局域网（Wi-Fi）</strong>，是考研中的难点，但不是重点。
+其核心要点总结如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260318204226627.png" alt="CSMA/CA 核心要点">
+首先需介绍<strong>三个概念</strong>：</p>
+<ul>
+<li><strong>AP（Access Point）：</strong> 即接入点，<strong>收集所有终端的无线信号、集中转发数据、可以管理冲突、避免碰撞（CSMA/CA + RTS/CTS）</strong>。家用路由器 = 路由器 + 以太网交换机 + AP，AP 可以看成是家用路由器上那根长长的线。</li>
+<li><strong>隐蔽站：</strong> 无线通信中，并非所有站都能够互相侦听到对方（站的侦听范围有限），当两个互相无法侦听的站同时向同一个 AP 发送数据的时候，会在这个 AP 这里造成冲突，这两个站互为隐蔽站。</li>
+<li><strong>DIFS、PIFS 和 SIFS：</strong> DIFS（分布式协调 IFS）是最长的 IFS（帧间间隔） ，在 DCF 模式下用来发送数据帧和管理帧；PIFS（点协调 IFS）中等长度的 IFS ，在 PCF 方式中使用；SIFS（短 IFS），用于分隔同一段对话中的连续帧。不需要具体深究，只需要知道 <strong>DIFS &gt; PIFS &gt; SIFS</strong> ，然后记住图就行。</li>
+</ul>
+<p>为什么 CSMA/CD 协议无法用于无线局域网？其原因在于：</p>
+<ul>
+<li>适配器收到的信号强度通常远小于其发送信号的强度，且无线信道中信号强度动态范围大，若要实现冲突检测，<strong>硬件成本过高</strong>。</li>
+<li><strong>无法解决隐蔽站问题。</strong></li>
+</ul>
+<p>CSMA/CA 协议<strong>分布式协调功能（DCF）</strong>，过程如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260318205654907.png" alt="DCF">
+CSMA/CA 协议<strong>点协调功能（PCF）</strong>，这个功能可以选择是否启用，过程如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260318205006025.png" alt="PCF"></p>
+<h3 id="323-令牌传递协议">3.2.3 令牌传递协议</h3>
+<p>令牌传递协议（用于令牌环网技术）实际是一个过时的协议，运用于环形拓扑结构的网络之中，在上世纪 80 年代极为流行。最终被星形结构的以太网技术淘汰。该节简单了解即可。过程如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="err">以太网技术（总线形）</span><span class="o">&lt;--</span><span class="err">竞争对手</span><span class="o">--&gt;</span> <span class="err">令牌环网技术（环形）</span>
+</span></span><span class="line"><span class="cl">     <span class="o">|</span>
+</span></span><span class="line"><span class="cl">     <span class="o">|</span>
+</span></span><span class="line"><span class="cl"><span class="err">以太网技术（星形，彻底解决总线争用问题）</span>
+</span></span><span class="line"><span class="cl">     <span class="o">|</span>
+</span></span><span class="line"><span class="cl">     <span class="o">|</span>
+</span></span><span class="line"><span class="cl"><span class="err">令牌环网技术被淘汰</span>            
+</span></span></code></pre></div><p>令牌其实就是令牌帧，我们首先介绍 <strong>令牌帧</strong> 和 <strong>数据帧</strong> 两个概念：
+<img src="http://tuchuang.mrlxl.cn/picture/20260316163841867.png" alt="令牌帧和数据帧">
+令牌会在环网中不断地被传递，令牌途经不需要传输数据的节点时，修改令牌号将其传输给下一个节点。</p>
+<p>遇到需要传输数据的节点，该节点就将就将令牌帧转化为数据帧，使其在环形网络中单向传递（一个令牌传递一帧）。</p>
+<p><strong>令牌帧</strong> 和 <strong>数据帧</strong>传递过程如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260316165359275.png" alt="数据帧传输过程">
+<img src="http://tuchuang.mrlxl.cn/picture/20260316165929052.png" alt="令牌帧传递过程"></p>
+<p>在介绍 <strong>MAU</strong> 的概念以方便理解令牌环网技术，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260316170232945.png" alt="MAU"></p>
+<h2 id="33-局域网">3.3 局域网</h2>
+<h3 id="331-局域网基本概念和体系结构">3.3.1 局域网基本概念和体系结构</h3>
+<p>首先先介绍什么是 <strong>IEEE</strong>，IEEE 是<strong>电子电气工程师学会</strong>，所谓 <strong>IEEE 802 委员会</strong>是 IEEE 内部为推动局域网技术标准化而成立。而在局域网发展过程中有很多优秀的局域网技术。IEEE 802 委员会为其专门成立了各个小组以推动其标准化，如：</p>
+<ul>
+<li><strong>IEEE 802.3 工作组：</strong> 以太网技术。</li>
+<li><strong>IEEE 802.5 工作组（已解散）：</strong> FDDI 光纤分布数字接口。</li>
+<li><strong>IEEE 802.8 工作组（已解散）：</strong> 令牌环网技术。</li>
+<li><strong>IEEE 802.11 工作组：</strong> Wi-Fi 技术。</li>
+</ul>
+<p>关于局域网的基本概念和体系结构如下图所示，图片很大，<strong>耐心观看：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260316201637294.png" alt="局域网基本概念和体系结构"></p>
+<h3 id="332-以太网-和-ieee-8023">3.3.2 以太网 和 IEEE 802.3</h3>
+<p>以太网是一种局域网技术。它本质上是一套涵盖物理层和数据链路层的局域网技术规范。</p>
+<p>两种以太网标准（极其相似）：</p>
+<ul>
+<li><strong>IEEE 802.3 标准</strong>： LLC 层 + MAC 层 + 物理层</li>
+<li><strong>DIX Ethernet V2 标准</strong>（发明以太网的三家公司制定）： MAC 层 + 物理层</li>
+</ul>
+<p>这两种标准先有，后来才总结出来了 OSI 网络模型。
+其中 MAC （Media Access Control）称为<strong>介质访问控制层</strong>；LLC（Logical Link Control）成为<strong>逻辑链路控制层</strong>。</p>
+<h4 id="3321-以太网标准物理层">3.3.2.1 以太网标准（物理层）</h4>
+<p>首先介绍 IEEE 802.3 工作组推出的以太网标准的<strong>物理层</strong>。
+<img src="http://tuchuang.mrlxl.cn/picture/20260317190624084.png" alt="IEEE 802.3 以太网标准">
+当使用<strong>双绞线</strong>作为传输介质的时候，使用<strong>交换机</strong>连接的终端节点<strong>默认</strong>都能够进行<strong>全双工通信</strong>。而使用<strong>集线器</strong>的连接的节点仅支持<strong>半双工通信</strong>。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260317191347109.png" alt="双绞线以太网"></p>
+<h4 id="3322-以太网标准mac介质访问控制-层">3.3.2.2 以太网标准（MAC（介质访问控制） 层）</h4>
+<p>IEEE 802.3 标准中的 <strong>MAC 层 + LLC 层</strong> 与 DIX Ethernet V2 标准的 <strong>MAC 层</strong>都可以视作 OSI 网络模型中的<strong>数据链路层</strong>。</p>
+<p><strong>注意</strong>：MAC 层对应的是数据链路层，MAC 帧也是数据链路层的。</p>
+<p>接下来介绍两种以太网标准的 MAC 层标准，我们只需要了解这两种标准在“<strong>帧</strong>”的格式上的区别。<strong>DIX Ethernet V2</strong> 标准与 <strong>IEEE 802.3 标准</strong>的 <strong>MAC 帧</strong>格式非常相似。只在<strong>两个字节</strong>表示的含义不同。
+如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260317193753875.png" alt="MAC 帧的不同"></p>
+<h4 id="3323-单播帧与广播帧">3.3.2.3 单播帧与广播帧</h4>
+<p>单播帧和广播帧的概念如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260317194531033.png" alt="单播帧和广播帧">
+进而能够引出<strong>冲突域和广播域</strong>的概念，我们以一道真题来熟悉：
+<img src="http://tuchuang.mrlxl.cn/picture/20260317194912875.png" alt="冲突域和广播域"></p>
+<h3 id="333-vlan">3.3.3 VLAN</h3>
+<p>VLAN（Virtural LAN）即虚拟局域网，由 IEEE 802.1Q 工作组负责进行推进。</p>
+<p>VLAN 的作用是<strong>在逻辑上划分广播域</strong>，每个 VLAN 就是一个广播域。若是没有 VLAN 整个局域网就是一个极大的广播域，不利于信息的保密与安全隔离，甚至容易出现广播风暴。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260319175834310.png" alt="VLAN概念">
+关于 VLAN 的划分方式有三种：<strong>基于接口（端口）、基于 MAC 地址、基于 IP 地址</strong>。如下图所示：</p>
+<ul>
+<li><strong>基于接口（端口）:</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260319180022885.png" alt="基于接口（端口）"></li>
+<li><strong>基于 MAC 地址：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260319180156109.png" alt="基于 MAC 地址"></li>
+<li><strong>基于 IP 地址：</strong> 这种划分方式能够让 VLAN 跨越路由器，让多个局域网的主机组成一个 VLAN （需要<strong>网络层</strong>的功能支持）。
+<img src="http://tuchuang.mrlxl.cn/picture/20260319180441341.png" alt="基于 IP 地址"></li>
+</ul>
+<p>那么各个交换机之间是怎么知道该帧属于哪个 VLAN 呢，当然，对于每个<strong>以太网帧</strong>都需要在其中<strong>添加 VID</strong> 和进行<strong>重新计算 CRC 校验码</strong>。这样的帧称之为 <strong>802.1Q 帧</strong>，格式如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260319180702607.png" alt="802.1Q帧"></p>
+<h3 id="334-无线局域网-和-ieee-80211">3.3.4 无线局域网 和 IEEE 802.11</h3>
+<p>无线局域网分为两类：<strong>有固定基础设施的无线局域网</strong>和<strong>无固定基础设施的移动自组织网络</strong>（不属于考纲重点）。</p>
+<p>采用 IEEE 802.11 标准的无线局域网通常称为 <strong>Wi-Fi</strong>，类似于以太网是基于 IEEE 802.3 标准的局域网技术。</p>
+<p>Wi-Fi 与 以太网相比，最大的不同在于介质的不同，其采用同一网络分层模型（OSI/ TCP-IP思想），也有 MAC 层。帧也叫做 <strong>MAC 帧</strong></p>
+<h4 id="3341-有固定基础设施的无线局域网">3.3.4.1 有固定基础设施的无线局域网</h4>
+<p>其基本概念及术语如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260319195853421.png" alt="有固定基础设施的无线局域网"></p>
+<h4 id="3342无固定基础设施的移动自组织网络">3.3.4.2.无固定基础设施的移动自组织网络</h4>
+<p>概念如下图所示：
+<strong>注意</strong>：手机当热点实现自组织网络，其他手机连他。属于 有固定基础设施的无线局域网，这时候，该手机充当 <strong>AP</strong>，而 无固定基础设施的移动自组织网络 不需要 AP，所有站点地位平等并直接通信。
+<img src="http://tuchuang.mrlxl.cn/picture/20260319193523114.png" alt="无固定基础设施的移动自组织网络"></p>
+<h4 id="3343-80211-局域网数据帧无线-mac-帧">3.3.4.3 802.11 局域网数据帧（无线 MAC 帧）</h4>
+<p>802.11 帧分为三种：</p>
+<ul>
+<li>数据帧</li>
+<li>控制帧：如 ACK、RST 和 CTS。</li>
+<li>管理帧：如 探测请求/探测响应帧。</li>
+</ul>
+<p><strong>802.11 局域网数据帧（无线MAC帧）</strong> 格式如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260319194509044.png" alt="无线MAC帧">
+我们以一道真题来熟悉：
+<img src="http://tuchuang.mrlxl.cn/picture/20260319195943534.png" alt="802.11 帧真题"></p>
+<h2 id="34-广域网">3.4 广域网</h2>
+<h3 id="341-广域网的基本概念">3.4.1 广域网的基本概念</h3>
+<p>广域网的概念存在感很低，不用过多了解，示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260319200646443.png" alt="广域网"></p>
+<h3 id="342-ppp-协议">3.4.2 PPP 协议</h3>
+<p><strong>点对点协议（Point-to-Point Protocol，PPP）</strong> 是目前最流行的点对点链路控制协议。主要有两种应用场景：</p>
+<ol>
+<li>用户接入互联网时与 ISP 之间的通信。即用户家庭路由器 &lt;&mdash;&gt; ISP 边缘设备（接入路由器/BRAS/OLT/CMTS 等）</li>
+<li>两台网络设备之间通过直连专线通信。</li>
+</ol>
+<p>其协议内容如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260319202538524.png" alt="协议内容">
+其 PPP 协议的工作过程如下图所示，主要在于理解其 <strong>LCP 和 NCP</strong> 两个子协议的工作过程：
+<img src="http://tuchuang.mrlxl.cn/picture/20260320164617793.png" alt="PPP协议工作过程"></p>
+<h2 id="35-数据链路层设备">3.5 数据链路层设备</h2>
+<h3 id="351-以太网交换机">3.5.1 以太网交换机</h3>
+<p>以太网交换机的内容如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260320190801467.png" alt="以太网交换机内容">
+<strong>交换机作用过程如下：</strong></p>
+<ol>
+<li><strong>学习源 MAC 地址</strong>：交换机读取帧的源 MAC 地址，并将 {MAC 地址，入端口} 写入或更新到交换表。这一过程称为自学习，可使交换机动态掌握各主机的连接位置。</li>
+<li><strong>查看目的 MAC 地址</strong>：交换机解析帧的目的 MAC 地址，并根据其类型（单播、广播或组播）采取相应的转发策略。</li>
+<li><strong>决策与转发</strong>：
+为<strong>单播帧</strong>（目的 MAC 地址为普通主机地址）时，交换机在交换表中查找该目的地址：若找到对应表项（已知目的地址），则仅从该表项所指端口转发，实现精准交付；若未找到对应表项（未知目的地址），则执行未知单播帧泛洪（或称洪泛），即将帧从除接收端口外的所有其他活动端口转发出去，确保目标主机能收到。
+为<strong>广播帧</strong>（目的 MAC 地址为 FF:FF:FF:FF:FF:FF）时，交换机不查询转发表，直接将帧泛洪到除接收端口外的所有其他活动端口。
+为<strong>组播帧</strong>（目的地址为组播 MAC 地址）时，交换机通常也默认执行泛洪处理。</li>
+</ol>
+<p><strong>自学习功能：</strong>
+交换机具有<strong>自学习功能</strong>，通过自学习算法构建并维护转发表。
+<strong>注意</strong>：只有节点通过以太网交换机进行发送数据，以太网交换机的<strong>交换表</strong>才会记录其 mac 地址对应端口号。对于目的 mac 地址不在交换表上的情况，只能通过<strong>广播帧</strong>（发往所有端口（除了入端口）的形式进行发送。
+<img src="http://tuchuang.mrlxl.cn/picture/20260320172211128.png" alt="自学习机制">
+为了防止终端节点因改编端口（拔线跑路）而造成的交换表地址错误，通常会设置“<strong>过期自动作废</strong>”的机制。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260320191829527.png" alt="过期自动作废"></p>
+<p><strong>交换机内部交换方式：</strong>
+交换机在内部具有两种交换方式，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260320191329568.png" alt="交换机内部交换数据"></p>
 
     </article>
     <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
@@ -989,33 +1250,86 @@ InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分
     <h3>大纲</h3>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#识别虚拟机docker和k8s集群环境">识别虚拟机、Docker和K8s集群环境</a>
+    <li><a href="#第三章_数据链路层">第三章_数据链路层</a>
       <ul>
-        <li>
+        <li><a href="#31-数据链路层的功能">3.1 数据链路层的功能</a>
           <ul>
-            <li><a href="#一基础">一、基础</a>
+            <li><a href="#311-封装成帧组帧">3.1.1 封装成帧（组帧）</a>
               <ul>
-                <li>
-                  <ul>
-                    <li><a href="#虚拟机"><strong>虚拟机</strong></a></li>
-                    <li><a href="#docker"><strong>Docker</strong></a></li>
-                    <li><a href="#k8s"><strong>K8s</strong></a></li>
-                  </ul>
-                </li>
+                <li><a href="#3111-字符计数法">3.1.1.1 字符计数法</a></li>
+                <li><a href="#3112-字节填充法">3.1.1.2 字节填充法</a></li>
+                <li><a href="#3113-零比特填充">3.1.1.3 零比特填充</a></li>
+                <li><a href="#3114-违规编码">3.1.1.4 违规编码</a></li>
               </ul>
             </li>
-            <li><a href="#二思路">二、思路</a></li>
-            <li><a href="#三识别">三、识别</a>
+            <li><a href="#312-差错检测">3.1.2 差错检测</a>
               <ul>
-                <li>
-                  <ul>
-                    <li><a href="#查看主机名和进程"><strong>查看主机名和进程</strong></a></li>
-                    <li><a href="#通过利用cgroup信息的差异"><strong>通过利用cgroup信息的差异</strong></a></li>
-                  </ul>
-                </li>
+                <li><a href="#3121-奇偶校验码检错编码">3.1.2.1 奇偶校验码（检错编码）</a></li>
+                <li><a href="#3122-循环冗余校验码检错编码">3.1.2.2 循环冗余校验码（检错编码）</a></li>
+                <li><a href="#3123-海明校验码纠错编码">3.1.2.3 海明校验码（纠错编码）</a></li>
               </ul>
             </li>
-            <li><a href="#四反制">四、反制</a></li>
+            <li><a href="#313-流量控制与可靠传输">3.1.3 流量控制与可靠传输</a>
+              <ul>
+                <li><a href="#3131-滑动窗口机制">3.1.3.1 滑动窗口机制</a></li>
+                <li><a href="#3132-停止等待协议s-w">3.1.3.2 停止等待协议（S-W）</a></li>
+                <li><a href="#3133-后退-n-帧协议gbn">3.1.3.3 后退 N 帧协议（GBN）</a></li>
+                <li><a href="#3134-选择重传协议sr">3.1.3.4 选择重传协议（SR）</a></li>
+                <li><a href="#3135-三种协议的信道利用率分析">3.1.3.5 三种协议的信道利用率分析</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#32-介质访问控制">3.2 介质访问控制</a>
+          <ul>
+            <li><a href="#321-信道划分介质访问控制">3.2.1 信道划分介质访问控制</a>
+              <ul>
+                <li><a href="#3211-时分复用tdm-与-统计时分复用stdm">3.2.1.1 时分复用（TDM） 与 统计时分复用（STDM）</a></li>
+                <li><a href="#3212-频分复用fdm">3.2.1.2 频分复用（FDM）</a></li>
+                <li><a href="#3213-波分复用wdm">3.2.1.3 波分复用（WDM）</a></li>
+                <li><a href="#3214-码分复用cdm">3.2.1.4 码分复用（CDM）</a></li>
+              </ul>
+            </li>
+            <li><a href="#322-随机访问介质访问控制">3.2.2 随机访问介质访问控制</a>
+              <ul>
+                <li><a href="#3221-aloha-协议">3.2.2.1 ALOHA 协议</a></li>
+                <li><a href="#3222-csma-协议">3.2.2.2 CSMA 协议</a></li>
+                <li><a href="#3223-csmacd-协议">3.2.2.3 CSMA/CD 协议</a></li>
+                <li><a href="#3224-csmaca-协议">3.2.2.4 CSMA/CA 协议</a></li>
+              </ul>
+            </li>
+            <li><a href="#323-令牌传递协议">3.2.3 令牌传递协议</a></li>
+          </ul>
+        </li>
+        <li><a href="#33-局域网">3.3 局域网</a>
+          <ul>
+            <li><a href="#331-局域网基本概念和体系结构">3.3.1 局域网基本概念和体系结构</a></li>
+            <li><a href="#332-以太网-和-ieee-8023">3.3.2 以太网 和 IEEE 802.3</a>
+              <ul>
+                <li><a href="#3321-以太网标准物理层">3.3.2.1 以太网标准（物理层）</a></li>
+                <li><a href="#3322-以太网标准mac介质访问控制-层">3.3.2.2 以太网标准（MAC（介质访问控制） 层）</a></li>
+                <li><a href="#3323-单播帧与广播帧">3.3.2.3 单播帧与广播帧</a></li>
+              </ul>
+            </li>
+            <li><a href="#333-vlan">3.3.3 VLAN</a></li>
+            <li><a href="#334-无线局域网-和-ieee-80211">3.3.4 无线局域网 和 IEEE 802.11</a>
+              <ul>
+                <li><a href="#3341-有固定基础设施的无线局域网">3.3.4.1 有固定基础设施的无线局域网</a></li>
+                <li><a href="#3342无固定基础设施的移动自组织网络">3.3.4.2.无固定基础设施的移动自组织网络</a></li>
+                <li><a href="#3343-80211-局域网数据帧无线-mac-帧">3.3.4.3 802.11 局域网数据帧（无线 MAC 帧）</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#34-广域网">3.4 广域网</a>
+          <ul>
+            <li><a href="#341-广域网的基本概念">3.4.1 广域网的基本概念</a></li>
+            <li><a href="#342-ppp-协议">3.4.2 PPP 协议</a></li>
+          </ul>
+        </li>
+        <li><a href="#35-数据链路层设备">3.5 数据链路层设备</a>
+          <ul>
+            <li><a href="#351-以太网交换机">3.5.1 以太网交换机</a></li>
           </ul>
         </li>
       </ul>
