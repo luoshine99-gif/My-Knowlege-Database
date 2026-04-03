@@ -6,8 +6,15 @@
     <description>Recent content in 计算机网络 on mrlxl的知识库</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <lastBuildDate>Fri, 20 Mar 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 03 Apr 2026 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://luoshine99-gif.github.io/blog/%E8%80%83%E7%A0%94/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>网络层</title>
+      <link>https://luoshine99-gif.github.io/blog/%E8%80%83%E7%A0%94/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%B1%82/</link>
+      <pubDate>Fri, 03 Apr 2026 00:00:00 +0800</pubDate>
+      <guid>https://luoshine99-gif.github.io/blog/%E8%80%83%E7%A0%94/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E7%BD%91%E7%BB%9C%E5%B1%82/</guid>
+      <description>&lt;h1 id=&#34;第四章_网络层&#34;&gt;第四章_网络层&lt;/h1&gt;&#xA;&lt;h2 id=&#34;41-网络层的功能&#34;&gt;4.1 网络层的功能&lt;/h2&gt;&#xA;&lt;p&gt;网络层的功能主要涉及四个部分：&lt;strong&gt;异构网络互连、路由与转发、SDN 的基本概念、拥塞控制。&lt;/strong&gt;&#xA;其中&lt;strong&gt;异构网络互连、路由与转发、拥塞控制&lt;/strong&gt;的示意图如下：&#xA;&lt;img src=&#34;http://tuchuang.mrlxl.cn/picture/20260322193448171.png&#34; alt=&#34;异构网络互连、路由与转发、拥塞控制&#34;&gt;&#xA;&lt;strong&gt;SDN 的基本概念&lt;/strong&gt;如下：&lt;/p&gt;&#xA;&lt;h2 id=&#34;42-ipv4&#34;&gt;4.2 IPv4&lt;/h2&gt;&#xA;&lt;p&gt;IPv4 是 网际协议（Internet Protocol，IP）的普遍使用版本。其在计算机网络模型中的位置如下图所示：&#xA;&lt;img src=&#34;http://tuchuang.mrlxl.cn/picture/20260322212637964.png&#34; alt=&#34;协议大致分布关系&#34;&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;421-ipv4-分组&#34;&gt;4.2.1 IPv4 分组&lt;/h3&gt;&#xA;&lt;p&gt;本章节考研考纲重点内容如下：&#xA;&lt;img src=&#34;http://tuchuang.mrlxl.cn/picture/20260322213442714.png&#34; alt=&#34;考研考纲重点&#34;&gt;&lt;/p&gt;&#xA;&lt;h4 id=&#34;4211-ipv4-分组格式&#34;&gt;4.2.1.1 IPv4 分组格式&lt;/h4&gt;&#xA;&lt;p&gt;一个 IP 分组（或称 IP 数据报）由&lt;strong&gt;首部和数据部分&lt;/strong&gt;组成，其首部的前一部分固定，为 &lt;strong&gt;20 字节&lt;/strong&gt;，IP 数据报格式如图所示：&#xA;&lt;img src=&#34;http://tuchuang.mrlxl.cn/picture/20260322212743801.png&#34; alt=&#34;IP 数据报格式&#34;&gt;&#xA;其各个字段的含义也尤为重要，文字介绍几个重点概念，每个字段详细介绍如图所示：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;总长度：&lt;/strong&gt; 占 16 位，&lt;strong&gt;以 1B 为单位&lt;/strong&gt;，表示首部和数据部分之和的长度。因此 IP 数据报的最大长度为 &lt;strong&gt;2&lt;sup&gt;16&lt;/sup&gt;-1 = 65535B&lt;/strong&gt;。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;首部长度：&lt;/strong&gt; 占 4 位，&lt;strong&gt;以 4B 为单位&lt;/strong&gt;，可表示的最大首部长度之和为 &lt;strong&gt;2&lt;sup&gt;4&lt;/sup&gt;-1 * 4B = 60B&lt;/strong&gt;，IP 首部的长度必须是 4 的整数倍，若可选字段导致长度不足，则通过填充字段进行填充。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;片偏移：&lt;/strong&gt; 占 13 位，&lt;strong&gt;以 8B 为单位&lt;/strong&gt;，指出分片数据位置相对于原始数据报数据部分开头的偏移量。&lt;strong&gt;除最后一个分片外，其他的数据长度必须是 8B 的整数倍。&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;标识：&lt;/strong&gt; 占 16 位，源主机用一个增量序列，为每个数据报（分组）设置标识字段。它并不是“序号”（IP 是无连接服务）。分片的时候，每个分片都复制源数据报的标识字段值，以便目的主机正确还原为原数据报（分组）。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://tuchuang.mrlxl.cn/picture/20260322213408810.png&#34; alt=&#34;每个字段详细介绍&#34;&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>数据链路层</title>
       <link>https://luoshine99-gif.github.io/blog/%E8%80%83%E7%A0%94/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/</link>

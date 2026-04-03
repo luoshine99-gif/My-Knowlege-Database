@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<title>数据结构之串 | mrlxl的知识库</title>
+<title>网络层 | mrlxl的知识库</title>
 
 <script>
 (function() {
@@ -906,189 +906,394 @@ InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分
 </div>
   <div class="content-center">
     <article class="markdown-body">
-      <h1 class="post-title-template">数据结构之串</h1>
+      <h1 class="post-title-template">网络层</h1>
       <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
         
         
-            2026-02-12
+            2026-04-03
         
       </div>
-      <h1 id="数据结构之串">数据结构之串</h1>
-<h1 id="第四章_串">第四章_串</h1>
-<h2 id="41-串的定义">4.1 串的定义</h2>
-<p><strong>串（string）</strong> 是由零个或多个字符组成的有限序列（就是我们常说的字符串）通常记为：</p>
-<p><code>S = 'a₁ a₂ … aₙ'（n ≥ 0）</code></p>
-<p>其中，S 是串名，单（双）引号括起的字符序列是串的值（单双引号取决于语言，比如python用单引号，C语言用双引号），每个 aᵢ 可以是字母、数字或其他字符，串中字符的个数 n 称为串的长度，当 n = 0 时，该串称为空串，用 ∅ 表示。</p>
-<p>实际上<strong>串</strong>也是一种特殊的<strong>线性表</strong>，<strong>其特殊性体现在：串的元素类型限定为字符，且其基本运算主要是子串操作（如模式匹配），而不是一般线性表的插入和删除操作。</strong> 下面是<strong>子串</strong>相关的定义，用举例说明：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">S</span><span class="o">=</span><span class="s">&#34;HelloWorld!&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">T</span><span class="o">=</span><span class="err">&#39;</span><span class="n">iPhone</span> <span class="mi">18</span> <span class="n">Pro</span> <span class="n">Max</span><span class="o">?</span><span class="err">&#39;</span>
-</span></span></code></pre></div><p><strong>子串：</strong> 串中任意个连续的字符组成的子序列（可以等于主串）。 Eg: &lsquo;iPhone&rsquo;, &lsquo;Pro M&rsquo; 是串 T 的子串
-<strong>主串：</strong> 包含子串的串。 Eg: T 是子串 &lsquo;iPhone&rsquo; 的主串
-<strong>字符在主串中的位置：</strong> 字符在串中的序号。 Eg: &lsquo;8&rsquo; 在 T 中的位置是 9 （注意这里指的是位序）
-<strong>子串在主串中的位置：</strong> 子串的第一个字符在主串中的位置。 Eg: &lsquo;11 Pro&rsquo; 在 T 中的位置为 8 （注意这里指的是位序）</p>
-<h2 id="42-串的基本操作">4.2 串的基本操作</h2>
-<p>串的基本操作不做过多解释，基本和平常使用的C语言中string库中函数的作用相同，其函数规范如下：</p>
+      <h1 id="第四章_网络层">第四章_网络层</h1>
+<h2 id="41-网络层的功能">4.1 网络层的功能</h2>
+<p>网络层的功能主要涉及四个部分：<strong>异构网络互连、路由与转发、SDN 的基本概念、拥塞控制。</strong>
+其中<strong>异构网络互连、路由与转发、拥塞控制</strong>的示意图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260322193448171.png" alt="异构网络互连、路由与转发、拥塞控制">
+<strong>SDN 的基本概念</strong>如下：</p>
+<h2 id="42-ipv4">4.2 IPv4</h2>
+<p>IPv4 是 网际协议（Internet Protocol，IP）的普遍使用版本。其在计算机网络模型中的位置如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260322212637964.png" alt="协议大致分布关系"></p>
+<h3 id="421-ipv4-分组">4.2.1 IPv4 分组</h3>
+<p>本章节考研考纲重点内容如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260322213442714.png" alt="考研考纲重点"></p>
+<h4 id="4211-ipv4-分组格式">4.2.1.1 IPv4 分组格式</h4>
+<p>一个 IP 分组（或称 IP 数据报）由<strong>首部和数据部分</strong>组成，其首部的前一部分固定，为 <strong>20 字节</strong>，IP 数据报格式如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260322212743801.png" alt="IP 数据报格式">
+其各个字段的含义也尤为重要，文字介绍几个重点概念，每个字段详细介绍如图所示：</p>
 <ul>
-<li>StrAssign (&amp;T,chars): 赋值操作。把串 T 赋值为 chars。</li>
-<li>StrCopy (&amp;T,S): 复制操作。由串 S 复制得到串 T。</li>
-<li>StrEmpty (S): 判空操作。若 S 为空串，则返回 TRUE，否则返回 FALSE。</li>
-<li>StrLength (S): 求串长。返回串 S 的元素个数。</li>
-<li>ClearString (&amp;S): 清空操作。将 S 清为空串（逻辑上清空，并没有回收空间）。</li>
-<li>DestroyString (&amp;S): 销毁串。将串 S 销毁（回收存储空间）。</li>
-<li>Concat (&amp;T,S1,S2): 串联接。用 T 返回由 S1 和 S2 联接而成的新串</li>
-<li>SubString (&amp;Sub,S,pos,len): 求子串。用 Sub 返回串 S 的第 pos 个字符起长度为 len 的子串。</li>
-<li><strong>Index (S,T):</strong> 定位操作。若主串 S 中存在与串 T 值相同的子串，则返回它在主串 S 中第一次出现的位置；否则函数值为 0。</li>
-<li><strong>StrCompare (S,T):</strong> 比较操作。若 S&gt;T，则返回值 &gt; 0；若 S=T，则返回值 = 0；若 S &lt; T，则返回值 &lt; 0。</li>
+<li><strong>总长度：</strong> 占 16 位，<strong>以 1B 为单位</strong>，表示首部和数据部分之和的长度。因此 IP 数据报的最大长度为 <strong>2<sup>16</sup>-1 = 65535B</strong>。</li>
+<li><strong>首部长度：</strong> 占 4 位，<strong>以 4B 为单位</strong>，可表示的最大首部长度之和为 <strong>2<sup>4</sup>-1 * 4B = 60B</strong>，IP 首部的长度必须是 4 的整数倍，若可选字段导致长度不足，则通过填充字段进行填充。</li>
+<li><strong>片偏移：</strong> 占 13 位，<strong>以 8B 为单位</strong>，指出分片数据位置相对于原始数据报数据部分开头的偏移量。<strong>除最后一个分片外，其他的数据长度必须是 8B 的整数倍。</strong></li>
+<li><strong>标识：</strong> 占 16 位，源主机用一个增量序列，为每个数据报（分组）设置标识字段。它并不是“序号”（IP 是无连接服务）。分片的时候，每个分片都复制源数据报的标识字段值，以便目的主机正确还原为原数据报（分组）。</li>
 </ul>
-<h2 id="43-串的存储结构">4.3 串的存储结构</h2>
-<p>既然是串是一种特殊的线性表，其实现方式我们自然能想到两种即顺序存储和链式存储：</p>
-<h3 id="431-串的顺序存储">4.3.1 串的顺序存储</h3>
-<p>我们在C语言中接触的字符串顺序存储是在其末尾加上一个&rsquo;\0&rsquo;作为字符串的结束标识，而在数据结构中串其实并不只有这一种顺序存储方式，下面介绍四种串的顺序存储方式：
-<img src="http://tuchuang.mrlxl.cn/picture/20260211152305578.png" alt="串的顺序存储">
-方案一：使用一个单独的变量length进行存储数组长度
-方案二：在下标为0的位置存储数组长度，缺点是ch[0]的空间只有1字节，故数组长度只能为0-255。优点是数组下标与位序相同。
-方案三：末尾加上一个&rsquo;\0&rsquo;作为字符串的结束标识，缺点是知晓数组长度需要挨个遍历。
-<strong>方案四：</strong> 综合方案一和方案二，之后的介绍默认都是这种方式。</p>
-<h3 id="432-串的链式存储">4.3.2 串的链式存储</h3>
-<p>实现方式和链表类似，值得注意的是如何<strong>提高存储空间的密度</strong>的问题，如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260211154944398.png" alt="串的链式存储"></p>
-<h2 id="44-串的模式匹配">4.4 串的模式匹配</h2>
-<p>字符串的模式匹配就是在子串中查找与模式串（带搜索的字符串）完全相同的子串。</p>
-<h3 id="441-简单朴素模式匹配算法">4.4.1 简单（朴素）模式匹配算法</h3>
-<p><strong>简单模式匹配算法（Brute-Force 算法）</strong> 是一种暴力匹配算法。
-其基本思想是：从主串的第一个字符开始，依次取出与模式串长度相等的子串，并将其与模式串逐字符比较；若比较失败，则主串起始位置后移一位，重新进行比较，直到匹配成功或主串扫描结束。
-采用基本操作，实现代码如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define MaxSize 255
-</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="n">ch</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">length</span><span class="p">;</span>  <span class="c1">//实际数组的长度，不是单纯的sizeof()
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">SString</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">Index</span><span class="p">(</span><span class="n">SString</span> <span class="n">S</span><span class="p">,</span> <span class="n">SString</span> <span class="n">T</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">length</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">T</span><span class="p">.</span><span class="n">length</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="n">SString</span> <span class="n">str</span><span class="p">;</span> <span class="c1">//用于暂存子串
-</span></span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//满足条件的子串最多 n - m + 1 个
-</span></span></span><span class="line"><span class="cl">		<span class="nf">SubString</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">StrCompare</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="n">i</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">}</span>
-</span></span><span class="line"><span class="cl">		<span class="n">i</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//不存在与其相同的子串
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p><strong>不采用基本操作</strong>，实现如下：
-采用两个指针分别指向主串和模式串中的当前比较位置，逐字符进行比较；当字符相等时，两个指针同时后移，当失败时，主串指针回退到本次匹配起始位置的下一位，模式串指针重新置为起始位置。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define MaxSize 255
-</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="n">ch</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">length</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">SString</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">Index</span><span class="p">(</span><span class="n">SString</span> <span class="n">S</span><span class="p">,</span> <span class="n">SString</span> <span class="n">T</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">S</span><span class="p">.</span><span class="n">length</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">T</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">S</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">			<span class="n">i</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">			<span class="n">j</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">}</span>
-</span></span><span class="line"><span class="cl">		<span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">			<span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>  <span class="c1">//把起点右移一位，再重新匹配，注意这里有点容易搞晕，画个图便知
-</span></span></span><span class="line"><span class="cl">			<span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&gt;</span> <span class="n">T</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">//匹配成功，返回本次匹配起始位置
-</span></span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">//匹配失败
-</span></span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="442-kmp算法">4.4.2 KMP算法</h3>
-<p><strong>KMP算法</strong>由D.E.<strong>K</strong>nuth，J.H.<strong>M</strong>orris，V.R.<strong>P</strong>ratt，提出，是对朴素模式匹配算法的一种优化算法，其<strong>算法的核心</strong>在于<strong>若已匹配成功的序列中有后缀正好是模式串的前缀，则可直接将模式串右滑到与这些字符对齐的位置，</strong> 无需像朴素模式匹配算法那样右滑一位从头开始。</p>
-<p>首先我们需要明确以下三个概念：</p>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260322213408810.png" alt="每个字段详细介绍"></p>
+<h4 id="4212-ipv4-数据报分片">4.2.1.2 IPv4 数据报分片</h4>
+<p><strong>MTU 的概念：</strong>
+<strong>MTU（最大传送单元）</strong> 是一个数据链路层的帧所能够承受的最大数据量，不同的链路 MTU 可能不同，比如以太网是 （IP 数据报少于这个数需填充） 46&ndash;1500（MTU），有些是 4000。该概念<strong>经常被提及</strong>，涉及到 IP 数据报分片操作。</p>
+<p>当 IP 数据报首部<strong>标志字段</strong>中 <strong>DF = 0</strong> 时，会被允许分片，每个分片带<strong>首部 + 被分割的数据部分</strong>，被分片后，<strong>每个分片能够从不同的链路进行发送，因此可能会乱序到达目的主机</strong>。目的主机会使用<strong>标识字段，标志字段，片偏移</strong>三个字段完成分片的<strong>重组</strong>。</p>
+<p>当 IP 数据报首部<strong>标志字段</strong>中 <strong>DF = 1</strong> 时，不允许分片，而此时数据报的长度超出某一段链路的 MTU ，会向源主机发送报文表示<strong>异常</strong>。</p>
+<p>IP 分组进行分片如图所示：
+<strong>注意：</strong> 除最后一个分片外，其他的数据长度必须是 8B 的整数倍。
+<img src="http://tuchuang.mrlxl.cn/picture/20260322214018895.png" alt="IP 分组进行分片"></p>
+<h3 id="422-ipv4-地址">4.2.2 IPv4 地址</h3>
+<p>为了满足日益增长的实际需求，逐步提出了以下概念：
+<strong>分类的 IP 地址 &ndash;&gt; 子网划分 &ndash;&gt; CIDR &ndash;&gt; NAT</strong></p>
+<h4 id="4221-分类的-ipv4-地址">4.2.2.1 分类的 IPv4 地址</h4>
+<p><strong>分类的 IP 地址：</strong>
+IPv4 最早的时候采用的<strong>分类的 IP 地址</strong>，不论哪类 IP 地址，都由<strong>网络号</strong>和<strong>主机号</strong>构成。</p>
+<p>分为 A、B、C、D、E 五类。A、B、C 类均为<strong>单播地址（用于一对一通信）</strong>。不同类型的地址通常<strong>前若干比特位固定</strong>且<strong>表示网络号的比特位数不同</strong>。为了方便记忆，通常将 32 位 IP 地址用<strong>点分十进制</strong>表示。</p>
+<p>当判断一个 IP 是哪类地址，既可以通过前几位比特位的特征，也能通过其点分十进制表示方式的第一个十进制数的范围。</p>
+<p>分类的 IP 地址如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260323151452893.png" alt="分类的 IP 地址">
+其中存在几种特殊的 IP 地址，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260323161942450.png" alt="几种特殊的 IP 地址"></p>
+<p><strong>默认网关：</strong>
+默认网关指的是若一个终端想要接入互联网，其优先经过的<strong>路由器的 IP 地址</strong>。</p>
+<p>IP 分组转发过程如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260323161623416.png" alt="IP 分组转发过程"></p>
+<h4 id="4222-子网划分">4.2.2.2 子网划分</h4>
+<p>本小节涉及内容如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260323183513510.png" alt="子网划分内容">
+<strong>子网划分技术：</strong>
+就是将主机号的前若干比特位拆分出来当成<strong>子网号</strong>：</p>
 <ul>
-<li><strong>前缀：</strong> 除最后一个字符外，字符串的<strong>所有头部子串</strong>。</li>
-<li><strong>后缀：</strong> 除第一个字符外，字符串中的<strong>所有尾部子串</strong>。</li>
-<li><strong>部分匹配值：</strong> 指前缀和后缀的<strong>最长相等前后缀长度</strong>。</li>
+<li>引入子网划分技术前：&lt;网络号&gt;&lt;主机号&gt;</li>
+<li>引入子网划分技术后：&lt;网络号&gt;&lt;子网号&gt;&lt;主机号&gt;</li>
 </ul>
-<p>比如 &lsquo;ababa&rsquo; 的前缀为 {&lsquo;a&rsquo;,&lsquo;ab&rsquo;,&lsquo;aba&rsquo;,&lsquo;abab&rsquo;} ，后缀为 {&lsquo;a&rsquo;,&lsquo;ba&rsquo;,&lsquo;aba&rsquo;,&lsquo;baba&rsquo;} ，交集为 {&lsquo;a&rsquo;,&lsquo;aba&rsquo;} &lsquo;aba&rsquo; 最长，故部分匹配值为 3 。</p>
-<h4 id="4421-kmp总体算法实现">4.4.2.1 KMP总体算法实现</h4>
-<p>通过对匹配过程的观察可以发现，当匹配失败时，主串指针 i 无需回退，只需根据失配位置调整模式串指针 j。
-由于模式串在不同位置失配时，j 的回退位置不同，因此需要对模式串进行预处理，构造 next 数组，用于指示失配时 j 的移动位置。
-在此基础上，KMP 算法的整体实现便可得到简化。
-<img src="http://tuchuang.mrlxl.cn/picture/20260212121042377.png" alt="KMP">
-得到 next 数组之后，总体实现代码如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define MaxSize 255
-</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="n">ch</span><span class="p">[</span><span class="n">MaxSize</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">length</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">SString</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">Index_KMP</span><span class="p">(</span><span class="n">SString</span> <span class="n">S</span><span class="p">,</span> <span class="n">SString</span> <span class="n">T</span><span class="p">,</span><span class="kt">int</span> <span class="n">next</span><span class="p">[])</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;=</span> <span class="n">T</span><span class="p">.</span><span class="n">length</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">S</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">S</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>  <span class="c1">//注意这里j-0的情况
-</span></span></span><span class="line"><span class="cl">			<span class="n">i</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">			<span class="n">j</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">}</span>
-</span></span><span class="line"><span class="cl">		<span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">			<span class="n">j</span> <span class="o">=</span> <span class="n">next</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">		<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&gt;</span> <span class="n">T</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//匹配成功
-</span></span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//匹配失败
-</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h4 id="4422-求next数组">4.4.2.2 求next数组</h4>
-<p>next 数组含义：<strong>在第 j 位失配时，next[j] 表示模式串对应的下一次比较位置。next[j] 等于模式串前 j−1 个字符的最长相等前后缀长度加 1</strong>。</p>
-<p>在考研中，<strong>手算</strong>求取 next 数组是重点，不难发现 <strong>next[0] 将其置空，next[1] 始终为 0，next[2] 始终为 1。</strong>
-其方法和示例如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260212144141490.png" alt="next数组">
-实现代码如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">getNext</span><span class="p">(</span><span class="n">SString</span> <span class="n">T</span><span class="p">,</span> <span class="kt">int</span> <span class="n">next</span><span class="p">[])</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">next</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">j</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="n">k</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="n">next</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">k</span> <span class="o">=</span> <span class="n">next</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h4 id="4423-kmp-算法改进">4.4.2.3 KMP 算法改进</h4>
-<p>若出现如图所示的情况：当 j 位置的字符和其 next[j] 位置的字符相等时，当 j 位置的字符匹配失败，那么 next[j] 位置的字符也必然匹配失败。
-<img src="http://tuchuang.mrlxl.cn/picture/20260212153315778.png" alt="nextval">
-那优化思路也显而易见，我们不断地将出现这种情况 next[j] 全部替换为 next[next[j]]，而将修正之后的这种数组称为 <strong>nextval 数组</strong>。计算 nextval 数组的示意和算法代码改动如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260212154650072.png" alt="nextval数组"></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">get_nextval</span><span class="p">(</span><span class="n">SString</span> <span class="n">T</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nextval</span><span class="p">[])</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">nextval</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// 初始化nextval数组的第一个位置
-</span></span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// 遍历模式串T的每个字符
-</span></span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="p">{</span>  <span class="c1">// 匹配成功或k已经回到起点
-</span></span></span><span class="line"><span class="cl">            <span class="o">++</span><span class="n">j</span><span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">;</span>  <span class="c1">// 同时移动j和k
-</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>  <span class="c1">// 如果当前字符与k位置字符不相等
-</span></span></span><span class="line"><span class="cl">                <span class="n">nextval</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span>     <span class="c1">// 直接将k赋值给nextval[j]
-</span></span></span><span class="line"><span class="cl">            <span class="k">else</span>
-</span></span><span class="line"><span class="cl">                <span class="n">nextval</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">nextval</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>  <span class="c1">// 否则继承nextval[k]的值（优化）
-</span></span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">else</span>
-</span></span><span class="line"><span class="cl">            <span class="n">k</span> <span class="o">=</span> <span class="n">nextval</span><span class="p">[</span><span class="n">k</span><span class="p">];</span>  <span class="c1">// 匹配失败时，k回溯到nextval[k]的位置
-</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h1 id="附言">附言</h1>
-<p>在整个串的章节中，内容相对精简，但 KMP 算法是考研数据结构中难度较高、重要性排名前三的算法之一。初学者可能一开始难以理解 next / nextval 数组的构造逻辑，但只要通过多次手算模式串、绘制 next 表格、结合匹配示意图练习几遍，就能很快掌握算法核心思想与实现技巧。</p>
+<p>这不仅是在局域网内部逻辑上进行划分。为了使其能够起到实际的作用，引入<strong>子网掩码</strong>来进行保证子网的逻辑不会出错，比如终端 IP 地址并不是子网号不全为 1 或不全为 0，其主机号就能全为 1 或 0。即 &lt;10&gt;&lt;00000&hellip;&gt; 依旧表示的是整个网络（子网）。单论主机号，其全为 0 或全为 1 依旧具有特殊的含义。</p>
+<p><strong>子网掩码：</strong>
+是一个与 IP 地址对应的 32 位二进制串，前多少个 bit 为 1 代表 IP 地址前面多少个 bit 为<strong>网络前缀（网络号 + 子网号）</strong>，计算机通过将其与 IP 地址做 <strong>“与”运算</strong>（只有两个都是 1，结果才为 1）提取出网络前缀。</p>
+<p><strong>路由器的数据转发过程：</strong>
+引入子网划分技术后，其路由器的功能相比原先的标准分类地址也发生了变化，路由器转发过程如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260323183943175.png" alt="路由器的作用">
+<strong>主机的数据转发过程：</strong>
+主机发送数据时，会将源 IP 地址和目的 IP 地址分别与子网掩码进行按位与运算，得到各自的网络前缀（子网地址），若两者相同，则说明在同一子网；否则不在同一子网：</p>
+<ul>
+<li><strong>若在同一子网</strong>：终端首先会通过 ARP 协议，查询目的主机 IP 对应的 MAC 地址，并在数据链路层封装成帧，发往该 MAC 地址。</li>
+<li><strong>若不在同一子网</strong>：通过 ARP 协议查到默认网关的 MAC 地址，将数据报发给默认网关，<strong>默认网关</strong>通过 <strong>ARP</strong> 获取下一跳 MAC 地址，再将数据帧转发至下一跳路由器（路由表查下一跳 IP 只得知转发端口，即只知道走哪条路，有 MAC 地址才知道具体发到哪个设备）。</li>
+</ul>
+<p>通过一张图的模拟<strong>五个数据传播过程</strong>熟悉子网划分技术：</p>
+<ol>
+<li>H3→H6（同一子网内的两台主机）</li>
+<li>H1→H3（不同子网内的两台主机）</li>
+<li><strong>H1→H7</strong>（采用子网划分技术的网络→传统网络）：老式路由器可以<strong>看做</strong>（实际通过网络号前若干比特进行判断）使用隐式默认子网掩码的路由器。</li>
+<li><strong>H7→H1</strong>（传统网络→采用子网划分技术的网络）：遇到转发表带子网掩码的路由器，照常匹配即可（子网划分技术路由器有默认子网掩码），</li>
+<li>主机 H1 发往 Internet 的某个 IP 数据报如何传输？（设目的 IP 地址 = 111.2.3.4）：走默认路由。</li>
+</ol>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260323191522442.png" alt="子网划分技术过程"></p>
+<h4 id="4223-无分类编制cidr">4.2.2.3 无分类编制（CIDR）</h4>
+<p>引入<strong>子网掩码</strong>之后，IP 地址的网络边界不再由 A/B/C 类固定划分，而是由子网掩码动态决定。通过子网掩码，可以自由选择网络前缀长度，从而将 IP 地址空间划分为任意大小的连续网络块。</p>
+<p>在 CIDR 中，IP 地址的结构被统一表示为 <strong>&lt;网络前缀&gt;&lt;主机号&gt;</strong>，并用“/前缀长度”显式标识网络位数，例如 192.168.1.0/24。这样就不再依赖传统分类地址体系。</p>
+<p>一个单位同样会存在子网划分的需求，CIDR 具有两种子网划分方式，即定长子网划分和变长子网划分，两种划分方式都会产生一些不能分配的地址。但是<strong>定长</strong>是对需求可能分配多了，用不完。而<strong>变长</strong>一般对需求分配均匀，但是可能会出现不能再进行划分的子网（因为前缀原则），但总体来说，<strong>变长的利用率更高。</strong></p>
+<p><strong>定长子网划分：</strong>
+和子上一小节子网划分技术类似，通过占用<strong>一定长度</strong>的主机号。进行划分，相应的子网掩码也会改变。如：</p>
+<p>为 20.115.21.0/24 划分四个子网:</p>
+<ul>
+<li>20.115.21.<strong>00</strong>000000 / 26 - 20.115.21.<strong>00</strong>111111 / 26 划分给部门一。</li>
+<li>20.115.21.<strong>01</strong>000000 / 26 - 20.115.21.<strong>01</strong>111111 / 26 划分给部门二。</li>
+<li>20.115.21.<strong>10</strong>000000 / 26 - 20.115.21.<strong>10</strong>111111 / 26 划分给部门三。</li>
+<li>20.115.21.<strong>11</strong>000000 / 26 - 20.115.21.<strong>11</strong>111111 / 26 划分给部门四。</li>
+</ul>
+<p>下面用一道真题来熟悉：
+<img src="https://tuchuang.mrlxl.cn/picture/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-03-23%20230407.png" alt="真题"></p>
+<p><strong>变长子网划分（重点，难点）：</strong>
+变长子网划分要遵循的原则是在子网划分（VLSM）中，<strong>同一父网络下划分出的子网必须互不重叠。</strong>。比如 20.115.21.0/26 前 26 位是固定的，我们只需要管后 6 位满足该原则即可（画后 6 位 的前缀树）。</p>
+<p>类比哈夫曼树编码，通过从<strong>根到叶结点“构造哈夫曼树”技巧</strong>，我们可以快速得出划分出的最小子网的网络前缀。但实际上只是简化的<strong>二叉前缀树</strong>的画法</p>
+<p>如图所示：
+<strong>注意</strong>：在 VLSM 子网划分中，同一层级的子网必须互不重叠，因此不能将存在包含关系的网络作为并列子网同时使用。如 128/28 虽然能划分出 128/29 但是不能说作为<strong>并列子网</strong>同时使用。
+<img src="http://tuchuang.mrlxl.cn/picture/20260324115444603.png" alt="变长子网划分">
+下面用一道真题来熟悉：
+<img src="https://tuchuang.mrlxl.cn/picture/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-03-23%20225120.png" alt="真题"></p>
+<h4 id="4224-路由聚合">4.2.2.4 路由聚合</h4>
+<p>路由聚合和 CIDR 是一脉相承的技术。</p>
+<p><strong>路由聚合：</strong>
+对于路由聚合技术，就是指路由器中，如果几条表项属于<strong>同一转发接口</strong>且<strong>部分网络前缀也相同</strong>，就将这几条路由表项合并成一条。从而压缩路由表规模，提升网络性能。
+示意图如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260324205712076.png" alt="路由聚合的概念"></p>
+<p><strong>最长前缀匹配原则：</strong>
+当引入 CIDR 技术之后，可能会出现目的地址能够匹配多个路由项的情况（即使使用了路由聚合技术）。这个时候应选择<strong>网络前缀最长的那一条成功匹配的路由</strong>。因为网络前缀越长，对应的地址块就越小，信息就越精确。</p>
+<p>如图所示：
+“铁柱网吧”嫌弃“咸鱼电信”的路由器太慢，想要单飞，重新拉了一条线接到县里的路由器，并分配了一个 IP 给这个路由器接口。
+<img src="http://tuchuang.mrlxl.cn/picture/20260324210427648.png" alt="最长前缀匹配"></p>
+<p><strong>主机与路由器的数据转发过程：</strong>
+主机的数据转发过程依旧和 4.2.2.2 小节一致。</p>
+<p>路由器的数据转发过程相比于 4.2.2.2 小节，引入 CIDR 和 路由聚合技术之后，多了一些规则，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260324210956944.png" alt="路由器的数据转发过程"></p>
+<p>对于整个前面的 分类、子网划分、CIDR + 路由聚合 技术，我们可以通过下面这一张图<strong>模拟数据转发过程</strong>，进行熟悉：
+<img src="http://tuchuang.mrlxl.cn/picture/20260324211454679.png" alt="模拟图"></p>
+<h4 id="4225-网络地址转换nat">4.2.2.5 网络地址转换（NAT）</h4>
+<p><strong>网络地址转换（Network Address Translation，NAT）</strong> 简单来说是让一个局域网共用一个公网 IP 的技术，有效的缓解了 IP 地址池日益紧张的问题，还在一定程度上抵御了外部网络的攻击。其内容如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260325142014845.png" alt="NAT 内容">
+通过一张过程图来具体理解：
+注意：互联网中所有的路由器对于<strong>目的地址</strong>为<strong>内网 IP</strong> 的 IP 数据报（分组）一律<strong>不予转发</strong>。
+<img src="http://tuchuang.mrlxl.cn/picture/20260325142954190.png" alt="NAT 过程图"></p>
+<h4 id="4226-地址解析协议arp">4.2.2.6 地址解析协议（ARP）</h4>
+<p>地址解析协议（Address Resolution Protocol，ARP）是<strong>网络层协议</strong>，用于将 IP 地址转换为 MAC 地址，以便于数据链路层的封装。不论网络层使用何种协议，在实际链路上传输数据的时候<strong>最终都必须使用 MAC 地址</strong>。</p>
+<p><strong>ARP 协议内容</strong>如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260325152907670.png" alt="ARP 协议内容">
+采用 ARP 协议的主机和路由器本身会维护一张 <strong>ARP 缓存表</strong>，
+表项格式为：<strong>&lt;IP 地址&gt;&lt;MAC 地址&gt;</strong>，会为每个表项设置一个<strong>生存时间</strong>（防止网络中的结点位置发生变化），如 20 分钟。</p>
+<p>当源主机需要进行数据发送时（需进行 MAC 帧的封装）时，会查询 ARP 缓存表。<strong>若 ARP 缓存表无缓存记录</strong>，会将 ARP 分组封装进 MAC 帧，并发送广播帧（目的地址全为 1）。同一广播域内的<strong>正确主机</strong>收到会响应一个单播帧，返回正确主机的 MAC 地址。源主机将其存入进 ARP 缓存表。</p>
+<p>ARP 分组封装成帧如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260325164521775.png" alt="ARP 分组封装成帧">
+通过一个过程图来进行熟悉：
+<img src="http://tuchuang.mrlxl.cn/picture/20260325164710510.png" alt="过程图"></p>
+<h4 id="4227-动态主机配置协议dhcp">4.2.2.7 动态主机配置协议（DHCP）</h4>
+<p>动态主机配置协议（Dynamic Host Configuration Protocol，DHCP）其实是<strong>应用层协议</strong>，使用 <strong>UDP</strong> 的提供的服务。常用于给主机动态分配 <strong>IP 地址、配置子网掩码、默认网关</strong>等网络相关的参数。</p>
+<p><strong>DHCP 协议内容</strong>如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260325190544527.png" alt="DHCP内容">
+一个网路中 <strong>DHCP 协商流程</strong>如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260325190147551.png" alt="DHCP协商流程"></p>
+<h4 id="4228-网际控制报文协议icmp">4.2.2.8 网际控制报文协议（ICMP）</h4>
+<p>ICMP 协议不难理解，更多的时候是记忆问题，其内容如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260327194757694.png" alt="ICMP">
+值得注意的是，<strong>ICMP 报文</strong>会被封装在 IP 数据报的数据部分中，其和 IP 数据报的关系如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260327194603929.png" alt="ICMP在协议族中的位置"></p>
+<h2 id="43-ipv6">4.3 IPv6</h2>
+<h3 id="431-ipv6-地址">4.3.1 IPv6 地址</h3>
+<p>本节内容如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260327212405942.png" alt="IPv6地址内容">
+IPv6 地址占 <strong>128</strong> 个 bit，每<strong>两个字节</strong>间用<strong>冒号</strong>隔开。由于太长了，自然也会存在<strong>压缩记法</strong>，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260327212926733.png" alt="IPv6 地址压缩记法">
+IPv6 地址的资源分配和 IPv4 也差不多，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260327214919316.png" alt="IPv6 地址资源分配">
+当然，IPv6 地址多，也会带来另外的好处，比如一台新主机接入局域网时，能够“<strong>即插即用</strong>”，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-03-27%20214720.png" alt="IPv6即插即用">
+自然，IPv6 地址中也存在特殊的 IP 地址，IPv6 地址的分类如下：
+<img src="http://tuchuang.mrlxl.cn/picture/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-03-27%20215119.png" alt="IPv6 地址的分类"></p>
+<h2 id="44-路由算法">4.4 路由算法</h2>
+<p>本节知识总览如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260329191900552.png" alt="路由算法知识总览">
+其实路由算法本质就是在解决 “<strong>最佳路径问题</strong>” ，路由算法可分为如下两大类：</p>
+<ul>
+<li><strong>静态路由算法：</strong> 由网络管理员手动配置每一条路由。</li>
+<li><strong>动态路由算法：</strong> 根据网络状态的变化（如链路故障和新增）来动态调整自身的路由表。</li>
+</ul>
+<p>对于<strong>动态路由算法</strong>其实分为<strong>距离向量路由算法（Distance-Vector，DV）</strong>、<strong>链路状态路由算法（Link State，LS）</strong> 和 <strong>路径向量路由算法（明确要求掌握，上图有误！！！）</strong>。</p>
+<h3 id="441-距离向量路由算法">4.4.1 距离向量路由算法</h3>
+<p>距离向量路由算法不需要知道完整的网络拓扑结构，只需要知道<strong>相邻节点间的距离；各邻居节点到目的节点的最短距离</strong>，通过迭代交换信息最终收敛到全网一致的最短路径解。<strong>RIP 协议</strong>就是基于此算法。
+示意图如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260329195103607.png" alt="距离向量路由算法">
+通过一道真题来熟悉，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260329195317983.png" alt="真题"></p>
+<h3 id="442-链路状态算法">4.4.2 链路状态算法</h3>
+<p>链路状态算法需要知道整体网络的拓扑结构，将其看做一个带权图，利用 <strong>Dijkstra</strong> 算法求取最短路径。<strong>OSPF 协议</strong>就是基于此算法。
+示意图如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260329195821595.png" alt="链路状态算法"></p>
+<h2 id="45-路由协议">4.5 路由协议</h2>
+<p>路由算法和路由协议的关系如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260329200444898.png" alt="路由算法和路由协议的关系"></p>
+<h3 id="451-分层次的路由协议">4.5.1 分层次的路由协议</h3>
+<p>全世界的路由器数量、网络数量太多，不可能让每台路由器都知晓全世界的网络情况。因此有必要采用<strong>分层次的路由协议</strong>。
+互联网把路由协议划分为两大类：</p>
+<ul>
+<li><strong>内部网关协议（Interior Gateway Protocol，IGP）</strong> （或许换成<strong>内部路由协议</strong>这个称呼熟悉些）用于 AS（自治系统） 内部的路由选择。例如：RIP、OSPF</li>
+<li><strong>外部网关协议（External Gateway Protocol，EGP）</strong> 用于 AS 之间的路由选择。例如：BGP</li>
+</ul>
+<p>示意图如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260329203738868.png" alt="分层次的路由协议"></p>
+<h3 id="452-rip-路由协议">4.5.2 RIP 路由协议</h3>
+<p>路由信息协议（Routing Information Protocol RIP）</p>
+<h4 id="4521-rip-的基本概念">4.5.2.1 RIP 的基本概念</h4>
+<p>RIP 是<strong>应用层协议</strong>，其在网络体系结构中的位置如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260329211616913.png" alt="应用层协议">
+注意：路由器只是核心工作在网络层，并不代表只能到网络层，现代路由器是一个强大的专用计算机。</p>
+<p><strong>RIP 的规定</strong>如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260329211423703.png" alt="RIP 的规定">
+采用 RIP 协议的路由器<strong>交换信息的过程</strong>如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260329210346382.png" alt="交换信息">
+若 180s（RIP 默认超时时间）还没有收到相邻路由器的更新路由表，则把相邻路由器记为<strong>不可达路由器</strong>，即把距离设置为 16（表示不可达）</p>
+<h4 id="4522-rip-工作过程从路由器启动到收敛">4.5.2.2 RIP 工作过程（从路由器启动到收敛）</h4>
+<p>RIP 路由器规则如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260330155908295.png" alt="规则">
+以一个网络作为示例：
+<strong>0s 时刻</strong>过程如下：
+注意，0s 时刻是指的是所有路由器在同一时刻启动，并向相邻结点发送报文。
+<img src="http://tuchuang.mrlxl.cn/picture/20260330160427664.png" alt="0时刻过程">
+<strong>30s 时刻</strong>过程如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260330161222751.png" alt="30时刻过程">
+<strong>60s 时刻</strong>过程如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260330161853874.png" alt="60时刻过程">
+60s 时刻处理完之后这个示例已经收敛。后续在第 90s 在互相交换报文的时候，各个路由器不会进行修改。</p>
+<h4 id="4523-rip-工作过程动态适应网络拓扑变化">4.5.2.3 RIP 工作过程（动态适应网络拓扑变化）</h4>
+<p>当网络拓扑结构发生变化时，采用 RIP 协议的路由器能够适应并找到最短路径。
+假设在 100s 时刻网络中的链路发生了变化，比如在 R1 和 R4 之间新添加了一条链路。
+那么在第 120s 时刻：
+<img src="http://tuchuang.mrlxl.cn/picture/20260330164607694.png" alt="120s时刻">
+在第 150s 时刻：
+<img src="http://tuchuang.mrlxl.cn/picture/20260330164258401.png" alt="150s时刻">
+当然，这个示例中<strong>忽略了触发更新机制</strong>，为了更快适应，我们也可以添加上。</p>
+<h4 id="4524-rip-工作过程反映-rip-的缺点">4.5.2.4 RIP 工作过程（反映 RIP 的缺点）</h4>
+<p>RIP 的缺点：</p>
+<ol>
+<li>RIP 限制了网络的规模，它能使用的最大距离为 15（16 表示不可达）。</li>
+<li>路由器之间交换的是路由器中的完整路由表，因此网络规模越大，开销也越大。</li>
+<li>当网络出现故障时，路由器之间需反复多次交换信息才能完成收敛，要经过较长时间才能将故障消息传送到所有路由器（<strong>慢收敛现象</strong>），俗称<strong>坏消息传播得慢</strong>。</li>
+</ol>
+<p>注：距离向量路由可能会出现环路的情况，RIP 规定路径上的最高跳数 = 16 是一种防止环路的简单粗暴的方式。</p>
+<p>重点是第三点，接着上一小节的例子，示例如下：
+首先路由器 R2 损坏，造成 Net2 不可达。
+<img src="https://tuchuang.mrlxl.cn/picture/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-03-30%20192326.png" alt="路由器损坏">
+需要经过漫长的迭代，路由器才能意识到这个网络不可达，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331103234626.png" alt="漫长的迭代"></p>
+<h4 id="4525-rip-工作过程反映-rip-的优点">4.5.2.5 RIP 工作过程（反映 RIP 的优点）</h4>
+<p>RIP 的优点：</p>
+<ol>
+<li>实现简单、开销小、收敛过程较快。</li>
+<li>若一个路由器发现了更短的路由，则这种更新信息就传播得很快，在较短时间内便可被传至所有路由器，俗称“<strong>好消息传播得快</strong>”。</li>
+</ol>
+<p>重点是“好消息传播得快”：
+书接上回，在 700s 时刻，R2 被修好了：
+<img src="http://tuchuang.mrlxl.cn/picture/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-03-30%20210634.png" alt="700s时刻">
+在 720s 时刻，R1、R3 和 R4 会进行相邻节点的交换，R2 会在 730s 时刻进行交换（因为 R2 是在 700s 时刻才开机的，<strong>采用 RIP 协议的每台路由器单独计时</strong>）
+<img src="http://tuchuang.mrlxl.cn/picture/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-03-30%20205800.png" alt="720时刻">
+至此，从 700s 到 720s ，网络中的路由器迅速收敛，所谓“<strong>好消息传的快</strong>”。</p>
+<h3 id="453-ospf-路由协议">4.5.3 OSPF 路由协议</h3>
+<p>开放最短路径优先协议（Open Shortest Path First，OSPF）</p>
+<h4 id="4531-ospf-协议的基本概念">4.5.3.1 OSPF 协议的基本概念</h4>
+<p>OSPF 协议属于<strong>网络层</strong>，其在网络体系结构中的位置如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331170751128.png" alt="OSPF 协议位置">
+大致原理为，各个节点使用邻接表表示自己与相邻节点的链接信息，在各路由器泛洪得到整张网络拓扑图之后，运行 <strong>Dijkstra 算法</strong>找到最短路径。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331171024775.png" alt="OSPF 大致原理">
+<strong>几个易混淆的术语</strong>：</p>
+<ul>
+<li><strong>LSA（Link-State Advertisement）</strong>：链路状态通告，就可以看做是 LSDB 中的一个单链表。</li>
+<li><strong>LSDB（Link-State Database）</strong>—— 链路状态数据库，就看做就是整个邻接表，在 OSPF 中被称作 LSDB。</li>
+<li><strong>LSI（Link State Information）</strong>：链路状态信息，是一个广义的概念，指代所有描述链路状态的信息。可以说 LSA 是 LSI，也可以说 LSDB 是 LSI。</li>
+</ul>
+<p>把 LSI 比作一本书的内容，LSDB 比作书，LSI 比作书的某一章节。</p>
+<h4 id="4532-ospf-协议的特点">4.5.3.2 OSPF 协议的特点</h4>
+<p>与 RIP 相比，OSPF 具有以下四个<strong>主要特点</strong>：</p>
+<ol>
+<li>OSPF 使用<strong>洪泛法</strong>向本自治系统中所有路由器发送信息：路由器通过所有输出端口向相邻路由器发送信息，每个相邻路由器再将该信息转发给其所有邻居（但不再回传给刚刚发送信息的路由器，类似交换机的广播）。最终，整个区域内的所有路由器都会收到该信息的一个副本。而 RIP 仅向直接相邻的几个路由器发送信息。</li>
+<li>OSPF 发送的信息是本路由器与其相邻路由器之间的链路状态（局部拓扑信息），而非全局路由表：RIP 发送的是本路由器所知的全部路由信息（完整的路由表）。</li>
+<li>OSPF <strong>仅在链路状态发生变化时</strong>触发洪泛更新，收敛速度快，不会出现 RIP 中 “坏消息传得慢” 的问题：而 RIP 不论网络拓扑是否变化，都需定期交换路由信息。</li>
+<li>OSPF 是<strong>网络层协议</strong>，不使用 UDP 或 TCP，而是直接封装在 IP 数据报中（IP 首部的协议字段为 89）：而 RIP 是应用层协议，使用 UDP 传输（端口 520）。</li>
+</ol>
+<p>第 1、2 和 3 点如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331171845038.png" alt="OSPF主要特点">
+OSPF 的<strong>优势（其它特点）</strong>（除上述区别外）：</p>
+<ol>
+<li>OSPF 支持对每条路由设置不同的代价（<strong>默认以带宽为代价</strong>），可针对不同业务类型计算差异化路径。</li>
+<li>存在多条到同一目的网络且代价相同的路径时，可实现负载分担（或称<strong>负载均衡</strong>）。</li>
+<li>OSPF 分具备<strong>鉴别功能</strong>，确保仅在可信路由器之间交换链路状态信息。</li>
+<li>OSPF 支持可变长子网掩码和无分类编址。每条链路状态通告均携带一个 32 位序号，序号越大，表示状态越新。</li>
+</ol>
+<p>第 1 点如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331172300902.png" alt="其它特点第1点">
+第 3 点如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331173020710.png" alt="其它特点第3点"></p>
+<h4 id="4533-ospf-协议的基本工作原理">4.5.3.3 OSPF 协议的基本工作原理</h4>
+<p>本小节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331191634800.png" alt="4.5.3.3 思维导图">
+使用 OSPF 协议的路由器<strong>生成转发表过程</strong>如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331192750595.png" alt="生成转发表过程">
+当 AS 很大时，LSDB 越复杂，泛洪压力越大，Dijkstra 算法的开销也就越高。
+为了使 OSPF 能用于规模很大的网络，可将一个<strong>自治系统再划分为若干区域</strong>（Area）
+划分区域后，洪泛法（flooding）交换链路状态信息的范围局限在各个区域，而不是整个 AS。
+这样可以减少网络通信量，也让每个路由器的 LSDB 更小。
+示意图如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331193327954.png" alt="AS 内再划分"></p>
+<h4 id="4534-ospf-协议的分组类型">4.5.3.4 OSPF 协议的分组类型</h4>
+<p>OSPF 定义了以下<strong>五种分组类型</strong>：</p>
+<ol>
+<li><strong>问候（Hello）分组</strong>：用来发现邻居并维持邻接关系，确认链路双向连通性。</li>
+<li><strong>数据库描述（Database Description，DD）分组</strong>：向邻居发送自己的链路状态数据库（LSDB）中的所有链路状态项目的摘要信息。</li>
+<li><strong>链路状态请求（Link-State Request，LSR）分组</strong>：向邻居请求发送某些链路状态项目的详细信息。</li>
+<li><strong>链路状态更新（Link-State Update，LSU）分组</strong>：通过洪泛法向全网发送链路状态通告（LSA），它是 OSPF 最核心的部分。路由器使用这种分组将其链路状态通知给邻居。</li>
+<li><strong>链路状态确认（Link-State Acknowledgment，LSAck）分组</strong>：对链路更新分组的确认。</li>
+</ol>
+<p>这五种分组共同支撑了 OSPF 的邻居发现、数据库同步、拓扑更新、可靠确认的全过程。 OSPF 首部的 type 值会指明分组类型。在 OSPF 介绍开始的小节的图中也有更精简的描述。</p>
+<p><strong>问候（Hello）分组：</strong>
+如图所示：
+（AI 回答，LSU 分组装的是「自己本地 LSDB 中最新的 LSA 条目」，不知是否正确，不是重点，不必深究）
+<img src="http://tuchuang.mrlxl.cn/picture/20260331202258031.png" alt="问候（Hello）分组">
+<strong>数据库描述（Database Description，DD）分组：</strong>
+告诉对方自己有哪些 LSA（“会哪些题”），如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331202702569.png" alt="数据库描述（Database Description，DD）分组">
+<strong>链路状态请求（Link-State Request，LSR）分组：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260331202844120.png" alt="链路状态请求（Link-State Request，LSR）分组">
+<strong>链路状态更新（Link-State Update，LSU）分组：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260331203611561.png" alt="链路状态更新（Link-State Update，LSU）分组">
+注意，LSU 分组的发送，导致 LSA 被添加（被修改的时候也会）可能会引起泛洪，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260331205913664.png" alt="泛洪">
+<strong>链路状态确认（Link-State Acknowledgment，LSAck）分组：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260331203409105.png" alt="链路状态确认（Link-State Acknowledgment，LSAck）分组"></p>
+<h3 id="454-bgp-路由协议">4.5.4 BGP 路由协议</h3>
+<p>边界网关协议（Border Gateway Protocol，BGP）是一种<strong>内部网关协议</strong>，属于<strong>应用层协议</strong>。</p>
+<h4 id="4541-bgp-路由协议的基本概念和特点">4.5.4.1 BGP 路由协议的基本概念和特点</h4>
+<p>本小节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402152239184.png" alt="思维导图">
+<strong>值得指出的第一点</strong>是：
+BGP 协议是应用层协议，基于 TCP 协议进行实现，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402154942738.png" alt="值得指出的第一点"></p>
+<p><strong>值得指出的第二点</strong>是：
+BGP 协议不仅运行在自治系统的<strong>边界路由器</strong>上，为了在 AS 内传播外部路由信息，一些<strong>核心路由器</strong>也需要运行 BGP。不同 AS 的边界路由器之间建立 eBGP 会话，而同一 AS 内部的路由器之间建立 iBGP 会话。由于 iBGP 学到的路由不会再向其他 iBGP 邻居传播，因此 eBGP 学到的路由必须直接传播给所有 iBGP 路由器。因此 AS 内的 iBGP 路由器通常需要形成 <strong>全连接（强连通）拓扑</strong>。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402154236801.png" alt="值得指出的第二点"></p>
+<h4 id="4542-bgp-路由协议的路由信息和工作原理">4.5.4.2 BGP 路由协议的路由信息和工作原理</h4>
+<p>本小节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402163336396.png" alt="思维导图">
+工作原理如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402165904069.png" alt="工作原理"></p>
+<h4 id="4543-bgp-路由协议的路由选择">4.5.4.3 BGP 路由协议的路由选择</h4>
+<p>本小节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402182352134.png" alt="思维导图">
+对 How? 的第三点说明如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402182222829.png" alt="第三点说明">
+对 How? 的第四点说明如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402182630542.png" alt="第四点说明"></p>
+<h4 id="4544-bgp-路由协议的四种报文">4.5.4.4 BGP 路由协议的四种报文</h4>
+<p>只需要知道有哪些报文，每个报文有什么作用即可，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402183629454.png" alt="路由协议的四种报文"></p>
+<h2 id="46-ip-多播">4.6 IP 多播</h2>
+<p>对于 IP 多播，思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402190805250.png" alt="思维导图">
+IP 多播地址的使用，示例如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260402191530592.png" alt="">
+其实我们在使用网络电视的时候，进行电视调台，就是退出一个<strong>多播组（加入同一个多播地址的主机）</strong>，进入另一个多播组。</p>
+<h2 id="47-移动-ip">4.7 移动 IP</h2>
+<p>本节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260403190746643.png" alt="思维导图">
+首先思考一个问题，手机移动可能导致切换子网，导致 IP 地址发生变化，当正在传输一个大文件的时候，如何确保网络传输不受影响。</p>
+<p>为了解决这个问题，引入了移动 IP 技术，概念如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260403191840639.png" alt="移动 IP 技术概念">
+<strong>传统的通信方式</strong>是当上图所示 通信者B 向 通信者A 发送数据时，会直接传递到目标子网路由器的位置，再由目标子网路由器转发给目标主机。
+而由于主机不在子网内了，于是<strong>移动 IP 的通信方式</strong>如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260403193857598.png" alt="移动 IP 的通信方式">
+请注意两点：</p>
+<ol>
+<li>转交地址是供移动站、归属代理及外地代理使用的。移动站与其他主机之间的通信，都只使用“永久地址”。</li>
+<li>一个转交地址<strong>可能被多个移动站共用</strong>。外地代理要向连接在被访网络上的移动站发送IP分组时，直接使用移动站的MAC地址。(外地代理登记了移动站的永久地址，查 MAC 地址的时候直接使用永久地址查就不会搞混了)</li>
+</ol>
+<h2 id="48-网络层设备">4.8 网络层设备</h2>
+<p>网络层设备需要了解的只有一种：<strong>路由器</strong>。现代路由器只是<strong>核心工作在网络层</strong>，但在考研中通常认为他是网络层设备。我们需要知道：</p>
+<ol>
+<li><strong>路由器的组成与功能</strong></li>
+<li><strong>路由表与路由转发</strong></li>
+</ol>
+<p>本节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260403202055870.png" alt="思维导图">
+路由器在现实生活中长这样，商用路由器相比于家用路由器，功能更加的纯粹，当然性能更加强大，也更贵。
+<img src="http://tuchuang.mrlxl.cn/picture/20260403202601052.png" alt="商用路由器">
+路由器的结构划分如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260403202757548.png" alt="路由器的结构划分">
+我们先聚焦<strong>控制层面</strong>，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260403203025900.png" alt="路由器控制层面">
+<strong>数据层面</strong>如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260403203255291.png" alt="路由器数据层面">
+关于分别位于两个层面的<strong>路由表与转发表</strong>，区分如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260403203345684.png" alt="路由表与转发表"></p>
+<h2 id="附言">附言</h2>
+<p>这网络层好长啊。</p>
 
     </article>
     <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
@@ -1098,32 +1303,78 @@ InitList(&amp;amp;amp;L)：初始化表。构造一个空的线性表 L，并分
     <h3>大纲</h3>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#数据结构之串">数据结构之串</a></li>
-    <li><a href="#第四章_串">第四章_串</a>
+    <li><a href="#第四章_网络层">第四章_网络层</a>
       <ul>
-        <li><a href="#41-串的定义">4.1 串的定义</a></li>
-        <li><a href="#42-串的基本操作">4.2 串的基本操作</a></li>
-        <li><a href="#43-串的存储结构">4.3 串的存储结构</a>
+        <li><a href="#41-网络层的功能">4.1 网络层的功能</a></li>
+        <li><a href="#42-ipv4">4.2 IPv4</a>
           <ul>
-            <li><a href="#431-串的顺序存储">4.3.1 串的顺序存储</a></li>
-            <li><a href="#432-串的链式存储">4.3.2 串的链式存储</a></li>
-          </ul>
-        </li>
-        <li><a href="#44-串的模式匹配">4.4 串的模式匹配</a>
-          <ul>
-            <li><a href="#441-简单朴素模式匹配算法">4.4.1 简单（朴素）模式匹配算法</a></li>
-            <li><a href="#442-kmp算法">4.4.2 KMP算法</a>
+            <li><a href="#421-ipv4-分组">4.2.1 IPv4 分组</a>
               <ul>
-                <li><a href="#4421-kmp总体算法实现">4.4.2.1 KMP总体算法实现</a></li>
-                <li><a href="#4422-求next数组">4.4.2.2 求next数组</a></li>
-                <li><a href="#4423-kmp-算法改进">4.4.2.3 KMP 算法改进</a></li>
+                <li><a href="#4211-ipv4-分组格式">4.2.1.1 IPv4 分组格式</a></li>
+                <li><a href="#4212-ipv4-数据报分片">4.2.1.2 IPv4 数据报分片</a></li>
+              </ul>
+            </li>
+            <li><a href="#422-ipv4-地址">4.2.2 IPv4 地址</a>
+              <ul>
+                <li><a href="#4221-分类的-ipv4-地址">4.2.2.1 分类的 IPv4 地址</a></li>
+                <li><a href="#4222-子网划分">4.2.2.2 子网划分</a></li>
+                <li><a href="#4223-无分类编制cidr">4.2.2.3 无分类编制（CIDR）</a></li>
+                <li><a href="#4224-路由聚合">4.2.2.4 路由聚合</a></li>
+                <li><a href="#4225-网络地址转换nat">4.2.2.5 网络地址转换（NAT）</a></li>
+                <li><a href="#4226-地址解析协议arp">4.2.2.6 地址解析协议（ARP）</a></li>
+                <li><a href="#4227-动态主机配置协议dhcp">4.2.2.7 动态主机配置协议（DHCP）</a></li>
+                <li><a href="#4228-网际控制报文协议icmp">4.2.2.8 网际控制报文协议（ICMP）</a></li>
               </ul>
             </li>
           </ul>
         </li>
+        <li><a href="#43-ipv6">4.3 IPv6</a>
+          <ul>
+            <li><a href="#431-ipv6-地址">4.3.1 IPv6 地址</a></li>
+          </ul>
+        </li>
+        <li><a href="#44-路由算法">4.4 路由算法</a>
+          <ul>
+            <li><a href="#441-距离向量路由算法">4.4.1 距离向量路由算法</a></li>
+            <li><a href="#442-链路状态算法">4.4.2 链路状态算法</a></li>
+          </ul>
+        </li>
+        <li><a href="#45-路由协议">4.5 路由协议</a>
+          <ul>
+            <li><a href="#451-分层次的路由协议">4.5.1 分层次的路由协议</a></li>
+            <li><a href="#452-rip-路由协议">4.5.2 RIP 路由协议</a>
+              <ul>
+                <li><a href="#4521-rip-的基本概念">4.5.2.1 RIP 的基本概念</a></li>
+                <li><a href="#4522-rip-工作过程从路由器启动到收敛">4.5.2.2 RIP 工作过程（从路由器启动到收敛）</a></li>
+                <li><a href="#4523-rip-工作过程动态适应网络拓扑变化">4.5.2.3 RIP 工作过程（动态适应网络拓扑变化）</a></li>
+                <li><a href="#4524-rip-工作过程反映-rip-的缺点">4.5.2.4 RIP 工作过程（反映 RIP 的缺点）</a></li>
+                <li><a href="#4525-rip-工作过程反映-rip-的优点">4.5.2.5 RIP 工作过程（反映 RIP 的优点）</a></li>
+              </ul>
+            </li>
+            <li><a href="#453-ospf-路由协议">4.5.3 OSPF 路由协议</a>
+              <ul>
+                <li><a href="#4531-ospf-协议的基本概念">4.5.3.1 OSPF 协议的基本概念</a></li>
+                <li><a href="#4532-ospf-协议的特点">4.5.3.2 OSPF 协议的特点</a></li>
+                <li><a href="#4533-ospf-协议的基本工作原理">4.5.3.3 OSPF 协议的基本工作原理</a></li>
+                <li><a href="#4534-ospf-协议的分组类型">4.5.3.4 OSPF 协议的分组类型</a></li>
+              </ul>
+            </li>
+            <li><a href="#454-bgp-路由协议">4.5.4 BGP 路由协议</a>
+              <ul>
+                <li><a href="#4541-bgp-路由协议的基本概念和特点">4.5.4.1 BGP 路由协议的基本概念和特点</a></li>
+                <li><a href="#4542-bgp-路由协议的路由信息和工作原理">4.5.4.2 BGP 路由协议的路由信息和工作原理</a></li>
+                <li><a href="#4543-bgp-路由协议的路由选择">4.5.4.3 BGP 路由协议的路由选择</a></li>
+                <li><a href="#4544-bgp-路由协议的四种报文">4.5.4.4 BGP 路由协议的四种报文</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#46-ip-多播">4.6 IP 多播</a></li>
+        <li><a href="#47-移动-ip">4.7 移动 IP</a></li>
+        <li><a href="#48-网络层设备">4.8 网络层设备</a></li>
+        <li><a href="#附言">附言</a></li>
       </ul>
     </li>
-    <li><a href="#附言">附言</a></li>
   </ul>
 </nav>
   </div>
