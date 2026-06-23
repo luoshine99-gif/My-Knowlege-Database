@@ -1326,8 +1326,15 @@ of in on at for to from with by about between among through across during before
 <img src="http://tuchuang.mrlxl.cn/picture/20260307220533482.png" alt="通信原理带宽">
 虽然两种带宽含义不同，但是都可表示信道传输数据的能力，在后面的章节中通过<strong>香农定理，奈氏准则</strong>将两种带宽联系起来。</p>
 <h4 id="1163-吞吐量throughput">1.1.6.3 吞吐量（Throughput）</h4>
-<p>考研中很少涉及，有大致了解即可。注意是要把双向的速率都加起来考虑，示意如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260307221320721.png" alt="吞吐量"></p>
+<p>考研中很少涉及，有大致了解即可。示意如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260307221320721.png" alt="吞吐量">
+先看数据流之间是否互相竞争：</p>
+<ol>
+<li>若共享同一信道（总线、Hub、WiFi）：总吞吐量 = 信道带宽。</li>
+<li>若独占链路并行工作（交换机、多个点对点链路）：总吞吐量 = 各链路吞吐量之和。</li>
+<li>若串联经过多条链路：总吞吐量 = 最小链路速率（瓶颈）。</li>
+</ol>
+<p>注意判断问的是什么的吞吐量（是整个网络，还是设备发出的？）。全双工是否乘 2，要看是否同时统计两个方向的数据。</p>
 <h4 id="1164-时延delay">1.1.6.4 时延（Delay）</h4>
 <p>时延的概念如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260307232516752.png" alt="时延的概念">
