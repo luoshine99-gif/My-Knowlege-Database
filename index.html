@@ -771,8 +771,8 @@ StrAssign (&amp;amp;amp;T,chars): 赋值操作。把串 T 赋值为 chars。 Str
 InitStack(&amp;amp;amp;S)：初始化一个空栈S。 DestroyStack(&amp;amp;amp;S)：销毁栈S，释放其存储空间。 Pop(&amp;amp;amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。 Push(&amp;amp;amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。 GetTop(S,&amp;amp;amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。 StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。 3.1.3 栈的数学性质 栈的数学性质： 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n&#43;1)Cn2n，该数列也被称为卡特兰数。（做题时很好用）
 3.1.4 顺序栈 3.1.3.1 顺序栈的定义 采用顺序存储的栈称为顺序栈，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个整型指针（top） 指向当前栈顶元素位置。
 与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。
-3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论与线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
-1. top 表示当前栈顶元素的下标: 注意top指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
+3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论 / 线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
+1. top 表示当前栈顶元素的下标: 注意 top 指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
 #define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; #include &amp;amp;lt;stdlib.h&amp;amp;gt; # define MaxSize 50 typedef struct { Elemtype data[MaxSize]; int top; }SqStack; void InitStack(SqStack&amp;amp;amp; S) { S.top = -1; //注意这里初始化为-1 } bool StackEmpty(SqStack &amp;amp;amp;S) { if (S.top == -1) { return true; } return false; } bool Push(SqStack &amp;amp;amp;S, Elemtype x) { if (S.top == MaxSize - 1) { //栈满，不能插入 return false; } //下面两行等价于S.data[&#43;&#43;top]=x; 做题时注意区分 S.top&#43;&#43;; S.data[S.top] = x; return true; } bool Pop(SqStack&amp;amp;amp; S, Elemtype &amp;amp;amp;x) { if (S.top == -1) { //栈为空，无法删除 return false; } x = S.data[S.top--]; return true; } bool GetTop(SqStack &amp;amp;amp;S, Elemtype &amp;amp;amp;e) { if (S.top == -1) { //栈为空，无法读取 return false; } e = S.data[S.top]; return true; } 2. top 表示“下一个可存放元素的位置” 注意一开始 top 指针置为 0
 ">数据结构之栈、队列和数组</a>
         
@@ -1848,8 +1848,8 @@ StrAssign (&amp;amp;amp;T,chars): 赋值操作。把串 T 赋值为 chars。 Str
 InitStack(&amp;amp;amp;S)：初始化一个空栈S。 DestroyStack(&amp;amp;amp;S)：销毁栈S，释放其存储空间。 Pop(&amp;amp;amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。 Push(&amp;amp;amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。 GetTop(S,&amp;amp;amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。 StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。 3.1.3 栈的数学性质 栈的数学性质： 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n&#43;1)Cn2n，该数列也被称为卡特兰数。（做题时很好用）
 3.1.4 顺序栈 3.1.3.1 顺序栈的定义 采用顺序存储的栈称为顺序栈，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个整型指针（top） 指向当前栈顶元素位置。
 与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。
-3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论与线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
-1. top 表示当前栈顶元素的下标: 注意top指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
+3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论 / 线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
+1. top 表示当前栈顶元素的下标: 注意 top 指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
 #define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; #include &amp;amp;lt;stdlib.h&amp;amp;gt; # define MaxSize 50 typedef struct { Elemtype data[MaxSize]; int top; }SqStack; void InitStack(SqStack&amp;amp;amp; S) { S.top = -1; //注意这里初始化为-1 } bool StackEmpty(SqStack &amp;amp;amp;S) { if (S.top == -1) { return true; } return false; } bool Push(SqStack &amp;amp;amp;S, Elemtype x) { if (S.top == MaxSize - 1) { //栈满，不能插入 return false; } //下面两行等价于S.data[&#43;&#43;top]=x; 做题时注意区分 S.top&#43;&#43;; S.data[S.top] = x; return true; } bool Pop(SqStack&amp;amp;amp; S, Elemtype &amp;amp;amp;x) { if (S.top == -1) { //栈为空，无法删除 return false; } x = S.data[S.top--]; return true; } bool GetTop(SqStack &amp;amp;amp;S, Elemtype &amp;amp;amp;e) { if (S.top == -1) { //栈为空，无法读取 return false; } e = S.data[S.top]; return true; } 2. top 表示“下一个可存放元素的位置” 注意一开始 top 指针置为 0
 ">数据结构之栈、队列和数组</a>
         
