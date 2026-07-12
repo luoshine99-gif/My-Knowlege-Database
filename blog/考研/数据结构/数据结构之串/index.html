@@ -1233,7 +1233,7 @@ of in on at for to from with by about between among through across during before
 </span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">	<span class="n">SString</span> <span class="n">str</span><span class="p">;</span> <span class="c1">//用于暂存子串
 </span></span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//满足条件的子串最多 n - m + 1 个
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//满足条件的子串最多 n - m + 1 个（想不清楚的时候画个图动手推一下）
 </span></span></span><span class="line"><span class="cl">		<span class="nf">SubString</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">StrCompare</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="n">i</span><span class="p">;</span>
@@ -1271,7 +1271,8 @@ of in on at for to from with by about between among through across during before
 </span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">//匹配失败
 </span></span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><h3 id="442-kmp算法">4.4.2 KMP算法</h3>
+</span></span></code></pre></div><p>这种简单模式匹配算法若是匹配成功，则最多可能进行 n-m+1 趟匹配，每趟最多比较 m 次。因此 <strong>最坏时间复杂度为 O(mn)</strong>。</p>
+<h3 id="442-kmp算法">4.4.2 KMP算法</h3>
 <p><strong>KMP算法</strong>由D.E.<strong>K</strong>nuth，J.H.<strong>M</strong>orris，V.R.<strong>P</strong>ratt，提出，是对朴素模式匹配算法的一种优化算法，其<strong>算法的核心</strong>在于<strong>若已匹配成功的序列中有后缀正好是模式串的前缀，则可直接将模式串右滑到与这些字符对齐的位置，</strong> 无需像朴素模式匹配算法那样右滑一位从头开始。</p>
 <p>首先我们需要明确以下三个概念：</p>
 <ul>
@@ -1314,11 +1315,18 @@ of in on at for to from with by about between among through across during before
 <p>next 数组含义：<strong>在第 j 位失配时，next[j] 表示模式串对应的下一次比较位置。next[j] 等于模式串前 j−1 个字符的最长相等前后缀长度加 1</strong>。</p>
 <p>在考研中，<strong>手算</strong>求取 next 数组是重点，不难发现 <strong>next[0] 将其置空，next[1] 始终为 0，next[2] 始终为 1。</strong>
 其方法和示例如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260212144141490.png" alt="next数组">
-实现代码如下：</p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260709135938545.png" alt="next数组">
+为什么 next[1]=0？因为如果 next[1]=1，表示匹配失败后：j ← 1 即继续拿模式串第1个字符比较。但是 KMP 规定当第一个字符都失败时：</p>
+<ol>
+<li>模式串无法向右移动；</li>
+<li>应该让主串指针继续走一步；</li>
+<li>下一轮重新从模式串第1个字符开始。</li>
+</ol>
+<p>所以用 j=0 作为一个特殊标记，子串[0] 去匹配必定成功，这样就实现了主串的向右移动。</p>
+<p>实现代码如下（不好理解，我建议直接背）：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">getNext</span><span class="p">(</span><span class="n">SString</span> <span class="n">T</span><span class="p">,</span> <span class="kt">int</span> <span class="n">next</span><span class="p">[])</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">next</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//j：正在计算哪个位置的 next，k：当前已经找到的最长前缀长度
+</span></span></span><span class="line"><span class="cl">    <span class="n">next</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">T</span><span class="p">.</span><span class="n">ch</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="p">{</span>
@@ -1333,7 +1341,7 @@ of in on at for to from with by about between among through across during before
 </span></span></code></pre></div><h4 id="4423-kmp-算法改进">4.4.2.3 KMP 算法改进</h4>
 <p>若出现如图所示的情况：当 j 位置的字符和其 next[j] 位置的字符相等时，当 j 位置的字符匹配失败，那么 next[j] 位置的字符也必然匹配失败。
 <img src="http://tuchuang.mrlxl.cn/picture/20260212153315778.png" alt="nextval">
-那优化思路也显而易见，我们不断地将出现这种情况 next[j] 全部替换为 next[next[j]]，而将修正之后的这种数组称为 <strong>nextval 数组</strong>。计算 nextval 数组的示意和算法代码改动如下：
+那优化思路也显而易见，我们不断地将出现这种情况 next[j] 全部替换为 next[next[j]]，即 <strong>当 T[j]==T[ next[j] ] 的时候，另 next[j]=next[ next[j] ]。</strong> 而将修正之后的这种数组称为 <strong>nextval 数组</strong>。计算 nextval 数组的示意和算法代码改动如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260212154650072.png" alt="nextval数组"></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">get_nextval</span><span class="p">(</span><span class="n">SString</span> <span class="n">T</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nextval</span><span class="p">[])</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
