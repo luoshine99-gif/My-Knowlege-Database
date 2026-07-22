@@ -696,9 +696,10 @@ https://blog.csdn.net/Daears/article/details/126359972 https://blog.csdn.net/240
         <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E6%8E%92%E5%BA%8F/" class="article-link" data-summary="数据结构之排序 第八章_排序 8.1 排序的基本概念 排序就是将表中的元素重新排列，使其按关键字有序的过程，也方便了后序的查找操作。
 算法的稳定性： 算法的稳定性不能用来衡量算法的优劣（不同场景需求不同）。衡量排序算法的性能指标主要是时间复杂度和空间复杂度，其概念如下图所示： 排序算法的分类：
 内部排序： 所有的元素都能放进内存中。 外部排序： 数据太多无法放入内存中，需要频繁在内、外存之间交换数据。 示意图如图所示： 这里推荐 旧金山大学(University of San Francisco) 开发的一个神奇的学习网站（末尾链接），可可视化查看各种算法。
-8.2 插入排序 这是一种简单直观的算法，其基本思想是：每次将一个待排序的记录，按其关键字大小插入到前面已经排好序的子序列中。
-8.2.1 直接插入排序 实现代码如下：
-//普通实现方式 void InsertSort(int A[], int n) { int i, j; for (i = 1; i &amp;amp;lt; n; i&#43;&#43;) { if (A[i] &amp;amp;lt; A[i - 1]) { int temp = A[i]; for (j = i - 1; j &amp;amp;gt;= 0 &amp;amp;amp;&amp;amp;amp; A[j] &amp;amp;gt; temp; j--) { A[j &#43; 1] = A[j]; } A[j &#43; 1] = temp; } } } //直接插入排序（带哨兵） void InsertSort(int A[], int n){ int i, j; for(i=2; i&amp;amp;lt;=n; i&#43;&#43;) //依次将A[2]~A[n]插入到前面已排序序列 if(A[i]&amp;amp;lt;A[i-1]){ //若A[i]关键码小于其前驱，将A[i]插入有序表 A[0]=A[i]; //复制为哨兵，A[0]不存放元素 for(j=i-1; A[0]&amp;amp;lt;A[j]; --j)//从后往前查找待插入位置 A[j&#43;1]=A[j]; //向后挪位 A[j&#43;1]=A[0]; //复制到插入位置 } } 对于直接插入排序性能分析如下：
+8.2 插入排序 这是一种简单直观的算法，其 基本思想 是：每次将一个待排序的记录，按其关键字大小插入到前面已经排好序的子序列中。
+8.2.1 直接插入排序 直接插入排序，思想是每次从无序集合中取一个数，插入前面的有序集合中，若是算关键字的比较次数，通常不算确定这个关键字是否在有序序列中的这次（即 A[i] &amp;amp;lt; A[i - 1]）。因此最坏情况下的比较次数是 n(n-1)/2，最好情况下的比较次数是 n-1。关键记住：每趟插入前面的有序区，最坏需要比较所有有序区，最好只需要一次判断。
+实现代码如下：
+//普通实现方式（这是从下标 0 开始存储的） void InsertSort(int A[], int n) { int i, j; for (i = 1; i &amp;amp;lt; n; i&#43;&#43;) { if (A[i] &amp;amp;lt; A[i - 1]) { int temp = A[i]; for (j = i - 1; j &amp;amp;gt;= 0 &amp;amp;amp;&amp;amp;amp; A[j] &amp;amp;gt; temp; j--) { A[j &#43; 1] = A[j]; } A[j &#43; 1] = temp; } } } //直接插入排序（带哨兵，这是从下标 1 开始存储的） void InsertSort(int A[], int n){ int i, j; for(i=2; i&amp;amp;lt;=n; i&#43;&#43;) //依次将A[2]~A[n]插入到前面已排序序列 if(A[i]&amp;amp;lt;A[i-1]){ //若A[i]关键码小于其前驱，将A[i]插入有序表 A[0]=A[i]; //复制为哨兵，A[0]不存放元素 for(j=i-1; A[0]&amp;amp;lt;A[j]; --j)//从后往前查找待插入位置 A[j&#43;1]=A[j]; //向后挪位 A[j&#43;1]=A[0]; //复制到插入位置 } } 对于直接插入排序性能分析如下：
 空间效率： 空间复杂度 O(1)。
 时间效率：
 最坏时间复杂度：时间复杂度为 O(n2)，发生 n (n - 1) / 2 即原始数据全部逆序的情况。 最好时间复杂度：时间复杂度为 O(n)，比较次数为 n - 1 次，即原始数据全部有序的情况。 平均时间复杂度：O(n2) 稳定性： 相同关键字的元素的相对顺序不会改变，直接插入排序是稳定的算法。
@@ -1194,10 +1195,11 @@ of in on at for to from with by about between among through across during before
 <img src="http://tuchuang.mrlxl.cn/picture/20260302155616513.png" alt="排序算法的分类"></p>
 <p>这里推荐 旧金山大学(University of San Francisco) 开发的一个神奇的学习网站（末尾链接），可可视化查看各种算法。</p>
 <h2 id="82-插入排序">8.2 插入排序</h2>
-<p>这是一种简单直观的算法，其<strong>基本思想</strong>是：每次将一个待排序的记录，按其关键字大小插入到前面已经排好序的子序列中。</p>
+<p>这是一种简单直观的算法，其 <strong>基本思想</strong> 是：每次将一个待排序的记录，按其关键字大小插入到前面已经排好序的子序列中。</p>
 <h3 id="821-直接插入排序">8.2.1 直接插入排序</h3>
+<p>直接插入排序，思想是每次从无序集合中取一个数，插入前面的有序集合中，若是算关键字的比较次数，通常不算确定这个关键字是否在有序序列中的这次（即 A[i] &lt; A[i - 1]）。因此最坏情况下的比较次数是 <strong>n(n-1)/2</strong>，最好情况下的比较次数是 <strong>n-1</strong>。<strong>关键记住：每趟插入前面的有序区，最坏需要比较所有有序区，最好只需要一次判断。</strong></p>
 <p>实现代码如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//普通实现方式
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//普通实现方式（这是从下标 0 开始存储的）
 </span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InsertSort</span><span class="p">(</span><span class="kt">int</span> <span class="n">A</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> 
@@ -1211,7 +1213,7 @@ of in on at for to from with by about between among through across during before
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">//直接插入排序（带哨兵）
+</span></span><span class="line"><span class="cl"><span class="c1">//直接插入排序（带哨兵，这是从下标 1 开始存储的）
 </span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">InsertSort</span><span class="p">(</span><span class="kt">int</span> <span class="n">A</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">n</span><span class="p">){</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>         <span class="c1">//依次将A[2]~A[n]插入到前面已排序序列
@@ -1339,6 +1341,7 @@ of in on at for to from with by about between among through across during before
 <img src="http://tuchuang.mrlxl.cn/picture/20260303140837733.png" alt="快速排序">
 实现代码如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//用第一个元素将待排序序列划分成左右两个部分
+</span></span></span><span class="line"><span class="cl"><span class="c1">//这个参数传递别乱加 &amp; 哈，A[] 本身就是地址传递
 </span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">Partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">A</span><span class="p">[],</span><span class="kt">int</span> <span class="n">low</span><span class="p">,</span><span class="kt">int</span> <span class="n">high</span><span class="p">){</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">pivot</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="n">low</span><span class="p">];</span>        <span class="c1">//第一个元素作为枢轴
 </span></span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">low</span><span class="o">&lt;</span><span class="n">high</span><span class="p">){</span>        <span class="c1">//用low、high搜索枢轴的最终位置
@@ -1359,21 +1362,21 @@ of in on at for to from with by about between among through across during before
 </span></span></span><span class="line"><span class="cl">        <span class="nf">QuickSort</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">pivotpos</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">high</span><span class="p">);</span>       <span class="c1">//划分右子表
 </span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>快速排序正如其名，确实是在考研数据结构中<strong>平均性能最优的内部排序算法</strong>。</p>
+</span></span></code></pre></div><p>快速排序正如其名，确实是在考研数据结构中 <strong>平均性能最优的内部排序算法</strong>。</p>
 <p>对快速排序算法性能分析如下：</p>
 <ul>
 <li>
 <p><strong>空间效率：</strong> 算法采用递归实现，需借助系统栈，<strong>栈的容量 = 递归调用的最大层数 = 按照二叉树划分的二叉树高度</strong>。</p>
 <ul>
-<li>最坏情况：划分极不平衡，空间复杂度为 <strong>O(log<sub>2</sub>n)</strong>。</li>
-<li>最好情况：每次划分均分，空间复杂度为 <strong>O(n)</strong>。</li>
+<li>最坏情况：划分极不平衡，空间复杂度为 <strong>O(n)</strong>。</li>
+<li>最好情况：每次划分均分，空间复杂度为 <strong>O(log<sub>2</sub>n)</strong>。</li>
 <li>平均情况：空间复杂度为 <strong>O(log<sub>2</sub>n)</strong>。</li>
 </ul>
 </li>
 <li>
 <p><strong>时间效率：</strong></p>
 <ul>
-<li>最坏时间复杂度：时间复杂度为 <strong>O(n<sup>2</sup>)</strong>，每次划分仅确定一个元素的位置，发生 n (n - 1) / 2 次交换，即原始数据全部逆序的情况。</li>
+<li>最坏时间复杂度：时间复杂度为 <strong>O(n<sup>2</sup>)</strong>，每次划分仅确定一个元素的位置（即每次划分确定的都是最左边或最右边的一个），发生 n (n - 1) / 2 次交换，即原始数据全部有序或逆序的情况。</li>
 <li>最好时间复杂度：每次划分都将序列均分为两部分，时间复杂度为 <strong>O(nlog<sub>2</sub>n)</strong>。</li>
 <li>平均时间复杂度：接近最快，<strong>O(nlog<sub>2</sub>n)</strong></li>
 </ul>
@@ -1385,6 +1388,7 @@ of in on at for to from with by about between among through across during before
 <p><strong>适用性：</strong> 由于需要实现随机访问，该算法仅适用于顺序存储的线性表。</p>
 </li>
 </ul>
+<p>当快速排序选择 <strong>第一个元素或最后一个元素作为枢轴</strong>（pivot）时，待排序序列 <strong>越接近有序</strong>，越容易产生不均匀划分，<strong>效率越差</strong>。</p>
 <h2 id="84-选择排序">8.4 选择排序</h2>
 <h3 id="841-简单选择排序">8.4.1 简单选择排序</h3>
 <p>很简单，在每一次待排序序列中，选择关键字最大或者最小的元素加入有序子序列。
@@ -1420,9 +1424,9 @@ of in on at for to from with by about between among through across during before
 <li><strong>大根堆：</strong> 任一结点，根 &gt;= 左，右 的完全二叉树。</li>
 <li><strong>小根堆：</strong> 任一结点，根 &lt;= 左，右 的完全二叉树。</li>
 </ul>
-<p>在排序开始前，我们需要先使用二叉树的<strong>顺序存储</strong>将整个待排序序列放入一棵<strong>完全二叉树</strong>中。</p>
-<p>接着，对于有 n 个结点的完全二叉树，最后一个分支结点的编号为 <strong>（向下取整）[n / 2]</strong> 。因此，我们直接从最后一个结点开始，向前处理至位序为 1 的结点。如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260303165707837.png" alt="建立大根堆">
+<p>在排序开始前，我们需要先使用二叉树的 <strong>顺序存储</strong> 将整个待排序序列放入一棵<strong>完全二叉树</strong>中。</p>
+<p>接着，现在有一个有 n 个结点的完全二叉树，最后一个分支结点的编号为 <strong>（向下取整）[n / 2]</strong> 。因此，我们直接从最后一个分支结点开始，一块一块的向前处理至位序为 1 的结点。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260721223757789.png" alt="建立大根堆">
 这个建立大根堆的算法的实现代码如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//建立大根堆
 </span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">BuildMaxHeap</span><span class="p">(</span><span class="kt">int</span> <span class="n">A</span><span class="p">[],</span><span class="kt">int</span> <span class="n">len</span><span class="p">){</span>  <span class="c1">//len 代表序列中的有效记录值，k 代表需要调整的根结点的下标。
@@ -1469,15 +1473,15 @@ of in on at for to from with by about between among through across during before
 将新元素置于堆末端（数组末尾），然后<strong>自下而上地</strong>不停与其父结点比较，若不满足堆的性质，则交换。知道不能向上为止。示意图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260303181715677.png" alt="堆的插入"></li>
 <li><strong>堆的删除：</strong>
-将堆底元素放入空余位置，不停的与其最小（大）的孩子结点比较，若不满足堆的性质，则不断下沉，直到不能下沉为止。示意图如下：
+将堆底元素放入空余位置，不停的与其最小（大）的孩子结点比较（有两个孩子时，需要进行两次比较：孩子结点之间比较一次，父结点与前面比出的最小（大）孩子结点再比较一次），若不满足堆的性质，则不断下沉，直到不能下沉为止。示意图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260303182039805.png" alt="堆的删除"></li>
 </ul>
 <h2 id="85-归并排序merge-sort">8.5 归并排序（Merge Sort）</h2>
-<p>首先引入<strong>归并操作</strong>的概念：将两个或多个<strong>有序</strong>的合并成一个更长的有序序列。这里以 4 路归并为例，示意如下：
+<p>首先引入<strong>归并操作</strong>的概念：将两个或多个 <strong>有序的序列</strong> 的合并成一个更长的有序序列。这里以 4 路归并为例，示意如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260303202501708.png" alt="4路归并">
 那在<strong>归并排序</strong>中，将每个元素看做一个长度为 1 有序序列，两两归并知道合成一个长度为 n 的有序表，这种排序算法称为 <strong>2 路归并排序</strong>。
 示意图如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260303201738509.png" alt="归并排序">
+<img src="http://tuchuang.mrlxl.cn/picture/20260722220557319.png" alt="归并排序">
 用代码实现当然需要进行递归操作，代码如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//辅助数组B（主要就起到一个复制过去操作的作用，原数组才是每次比对的结果数组）
 </span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">B</span><span class="o">=</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span> 
@@ -1529,11 +1533,13 @@ of in on at for to from with by about between among through across during before
 </ol>
 <p>举例其用法如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260304162640250.png" alt="基数排序举例"></p>
-<p>对基数排序算法性能分析如下：
-<strong>时间效率：</strong> 共需进行 d 趟的分配与收集，每趟分配需遍历 n 个元素，所需时间为 O(n)；每趟收集需处理 r 个队列，所需时间为 O(r)。总时间复杂度为 <strong>O(d(n+r))</strong>。他与序列的初始状态无关。
-<strong>空间效率：</strong> 一趟需要辅助空间为 r (r 个队列：r 个队头指针，r 个队尾指针)，这些结构可重复使用，空间复杂度为 <strong>O(r)</strong>。
-<strong>稳定性：</strong> 当然是<strong>稳定</strong>的。
-<strong>适用性：</strong> 适用于顺序存储和链式存储的线性表，尤其适合链式结构。</p>
+<p>对基数排序算法性能分析如下：</p>
+<ul>
+<li><strong>时间效率：</strong> 共需进行 d 趟的分配与收集，每趟分配需遍历 n 个元素，所需时间为 O(n)；每趟收集需处理 r 个队列，所需时间为 O(r)。总时间复杂度为 <strong>O(d(n+r))</strong>。他与序列的初始状态无关。</li>
+<li><strong>空间效率：</strong> 一趟需要辅助空间为 r (r 个队列：r 个队头指针，r 个队尾指针)，这些结构可重复使用，空间复杂度为 <strong>O(r)</strong>。</li>
+<li><strong>稳定性：</strong> 当然是<strong>稳定</strong>的。</li>
+<li><strong>适用性：</strong> 适用于顺序存储和链式存储的线性表，尤其适合链式结构。</li>
+</ul>
 <h2 id="87-计数排序counting-sort">8.7 计数排序（Counting Sort）</h2>
 <p>计数排序并不在统考大纲范围内，但是其排序思想在历年真题中多次提及。
 一图胜千言，计数排序思路如下图所示：
@@ -1564,10 +1570,107 @@ of in on at for to from with by about between among through across during before
 <li><strong>稳定性：</strong> 上述代码的第 4 个 for 循环从后往前遍历输入数组，相同元素在输出数组中的相对次序得以保持，因此计数排序是<strong>稳定</strong>的排序算法。</li>
 <li><strong>适用性：</strong> 计数排序适用于顺序存储的线性表。</li>
 </ul>
-<h2 id="88-外部排序">8.8 外部排序</h2>
-<h3 id="881-外部排序的概念">8.8.1 外部排序的概念</h3>
+<h2 id="88-内部排序算法性能汇总">8.8 内部排序算法性能汇总</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">排序算法</th>
+          <th style="text-align: center">最好情况趟数</th>
+          <th style="text-align: center">最坏情况趟数</th>
+          <th style="text-align: center">最好情况时间复杂度</th>
+          <th style="text-align: center">平均情况时间复杂度</th>
+          <th style="text-align: center">最坏情况时间复杂度</th>
+          <th style="text-align: center">空间复杂度</th>
+          <th style="text-align: center">是否稳定</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">直接插入排序</td>
+          <td style="text-align: center">n-1 次插入</td>
+          <td style="text-align: center">n-1 次插入</td>
+          <td style="text-align: center">O(n)</td>
+          <td style="text-align: center">O(n²)</td>
+          <td style="text-align: center">O(n²)</td>
+          <td style="text-align: center">O(1)</td>
+          <td style="text-align: center">是</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">冒泡排序</td>
+          <td style="text-align: center">1 趟</td>
+          <td style="text-align: center">n-1 趟</td>
+          <td style="text-align: center">O(n)</td>
+          <td style="text-align: center">O(n²)</td>
+          <td style="text-align: center">O(n²)</td>
+          <td style="text-align: center">O(1)</td>
+          <td style="text-align: center">是</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">简单选择排序</td>
+          <td style="text-align: center">n-1 趟</td>
+          <td style="text-align: center">n-1 趟</td>
+          <td style="text-align: center">O(n²)</td>
+          <td style="text-align: center">O(n²)</td>
+          <td style="text-align: center">O(n²)</td>
+          <td style="text-align: center">O(1)</td>
+          <td style="text-align: center">否</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">希尔排序</td>
+          <td style="text-align: center">k 趟</td>
+          <td style="text-align: center">k 趟</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(n²)</td>
+          <td style="text-align: center">O(1)</td>
+          <td style="text-align: center">否</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">快速排序</td>
+          <td style="text-align: center">log₂n 层</td>
+          <td style="text-align: center">n-1 层</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(n²)</td>
+          <td style="text-align: center">O(log₂n)</td>
+          <td style="text-align: center">否</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">堆排序</td>
+          <td style="text-align: center">n 次左右</td>
+          <td style="text-align: center">n 次左右</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(1)</td>
+          <td style="text-align: center">否</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">2路归并排序</td>
+          <td style="text-align: center">⌈log₂n⌉ 趟</td>
+          <td style="text-align: center">⌈log₂n⌉ 趟</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(nlog₂n)</td>
+          <td style="text-align: center">O(n)</td>
+          <td style="text-align: center">是</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">基数排序</td>
+          <td style="text-align: center">d 趟</td>
+          <td style="text-align: center">d 趟</td>
+          <td style="text-align: center">O(d(n+r))</td>
+          <td style="text-align: center">O(d(n+r))</td>
+          <td style="text-align: center">O(d(n+r))</td>
+          <td style="text-align: center">O(r)</td>
+          <td style="text-align: center">是</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="89-外部排序">8.9 外部排序</h2>
+<h3 id="891-外部排序的概念">8.9.1 外部排序的概念</h3>
 <p>在许多应用中，常需对大规模文件进行排序，无法一次性装入内存，需在<strong>内存与外存之间多次交换数据</strong>，逐步完成整体排序，这种内外存协同操作的排序算法，称为<strong>外部排序</strong>。</p>
-<h3 id="882-外部排序的方法">8.8.2 外部排序的方法</h3>
+<h3 id="892-外部排序的方法">8.9.2 外部排序的方法</h3>
 <p>外部排序的时候，常采用的就是<strong>归并排序的策略</strong>，包含两个阶段：</p>
 <ol>
 <li><strong>生成初始归并段：</strong> 即将外存上的每个磁盘块都分别放入内存进行内部排序，再放回外存，变成有序的磁盘块。</li>
@@ -1584,24 +1687,24 @@ of in on at for to from with by about between among through across during before
 显然，若想优化时间开销，只需要<strong>增大归并路数以有效减少归并趟数，从而显著降低总的磁盘 I / O 次数</strong>，<strong>（增大归并路数需增加输入缓冲区个数,那在开始的时候也能用来生成更长的初始归并段，以减少初始归并段数量）</strong>
 如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260304213042724.png" alt="外部排序时间开销优化"></p>
-<h3 id="883-败者树">8.8.3 败者树</h3>
+<h3 id="893-败者树">8.9.3 败者树</h3>
 <p>上一小节中提到的<strong>归并路数 K 会每挑选一个关键字比对（k-1）次</strong>，那么如何减少关键字比对次数？接下来即引出<strong>败者树</strong>的概念。
 有了败者树，对于 k 路归并，后续每个新元素比较次数不超过败者树的高度，即 <strong>（向上取整）⌈log₂k⌉</strong> 次。
 <img src="http://tuchuang.mrlxl.cn/picture/20260305113519927.png" alt="败者树">
 关于败者树的实现也很简单，使用一个数组就行。如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260305114121827.png" alt="败者树的实现"></p>
-<h3 id="884-置换-选择排序">8.8.4 置换-选择排序</h3>
+<h3 id="894-置换-选择排序">8.9.4 置换-选择排序</h3>
 <p><strong>置换-选择排序可构造更长的初始归并段，以减少初始归并段数量。</strong>
 要想增大初始归并段长度，普通生成初始归并段方法需要增加内存开销（增加输入缓冲区个数）。而置换选择排序生成初始段方法不会增大内存开销。</p>
 <ul>
 <li>普通内部排序生成初始段：
 读 N 次 → 排序 → 写 N 次</li>
-<li>置换-选择排序生成初始段：
-读 N 次 → 边读边选 → 写 N 次</li>
+<li><strong>置换-选择排序</strong>生成初始段：
+读 N 次 → 边读边选 → 写 N 次。初始的时候将 内存工作区 WA 装满了，然后每输出一个就补充一个，然后选择 大于等于 MINIMAX 的最小值（第一个直接输出最小的就行了）。</li>
 </ul>
-<p>示意图如图所示，注意下图省略了输出缓冲区，实际上从磁盘读入输入缓冲区和从输出缓冲区输出到磁盘，都是以磁盘块为单位。
+<p>示意图如图所示，注意下图省略了输出缓冲区，实际上从磁盘读入输入缓冲区和从输出缓冲区输出到磁盘，都是以磁盘块为单位：
 <img src="http://tuchuang.mrlxl.cn/picture/20260305122617188.png" alt="置换选择排序"></p>
-<h3 id="885-最佳归并树">8.8.5 最佳归并树</h3>
+<h3 id="895-最佳归并树">8.9.5 最佳归并树</h3>
 <p>当采用置换-选择排序使各初始归并段的长度发生了变化，那么不同的归并次序对应的不同读写磁盘的次数。如何确定在归并过程中的最小读写磁盘次数？我们将归并过程画出一棵归并树后发现，<strong>读写磁盘次数=树的带权路径长度（WPL）* 2</strong>，如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260305135741208.png" alt="发现归并树规律">
 当然我们自然而然的能想到，要使磁盘 I/O 次数最少，就去求<strong>哈夫曼树</strong>（又称最优二叉树，对于三路归并，叫做三叉哈夫曼树，以此类推）。
@@ -1658,13 +1761,14 @@ of in on at for to from with by about between among through across during before
         <li><a href="#85-归并排序merge-sort">8.5 归并排序（Merge Sort）</a></li>
         <li><a href="#86-基数排序">8.6 基数排序</a></li>
         <li><a href="#87-计数排序counting-sort">8.7 计数排序（Counting Sort）</a></li>
-        <li><a href="#88-外部排序">8.8 外部排序</a>
+        <li><a href="#88-内部排序算法性能汇总">8.8 内部排序算法性能汇总</a></li>
+        <li><a href="#89-外部排序">8.9 外部排序</a>
           <ul>
-            <li><a href="#881-外部排序的概念">8.8.1 外部排序的概念</a></li>
-            <li><a href="#882-外部排序的方法">8.8.2 外部排序的方法</a></li>
-            <li><a href="#883-败者树">8.8.3 败者树</a></li>
-            <li><a href="#884-置换-选择排序">8.8.4 置换-选择排序</a></li>
-            <li><a href="#885-最佳归并树">8.8.5 最佳归并树</a></li>
+            <li><a href="#891-外部排序的概念">8.9.1 外部排序的概念</a></li>
+            <li><a href="#892-外部排序的方法">8.9.2 外部排序的方法</a></li>
+            <li><a href="#893-败者树">8.9.3 败者树</a></li>
+            <li><a href="#894-置换-选择排序">8.9.4 置换-选择排序</a></li>
+            <li><a href="#895-最佳归并树">8.9.5 最佳归并树</a></li>
           </ul>
         </li>
       </ul>
