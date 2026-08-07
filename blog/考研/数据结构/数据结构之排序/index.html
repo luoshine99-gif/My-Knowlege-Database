@@ -1477,12 +1477,13 @@ of in on at for to from with by about between among through across during before
 <img src="http://tuchuang.mrlxl.cn/picture/20260303182039805.png" alt="堆的删除"></li>
 </ul>
 <h2 id="85-归并排序merge-sort">8.5 归并排序（Merge Sort）</h2>
-<p>首先引入<strong>归并操作</strong>的概念：将两个或多个 <strong>有序的序列</strong> 的合并成一个更长的有序序列。这里以 4 路归并为例，示意如下：
+<p>首先引入 <strong>归并操作</strong> 的概念：将两个或多个 <strong>有序的序列</strong> 的合并成一个更长的有序序列。这里以 4 路归并为例，示意如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260303202501708.png" alt="4路归并">
-那在<strong>归并排序</strong>中，将每个元素看做一个长度为 1 有序序列，两两归并知道合成一个长度为 n 的有序表，这种排序算法称为 <strong>2 路归并排序</strong>。
+那在 <strong>归并排序</strong> 中，将每个元素看做一个长度为 1 有序序列，两两归并知道合成一个长度为 n 的有序表，这种排序算法称为 <strong>2 路归并排序</strong>。
 示意图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260722220557319.png" alt="归并排序">
-用代码实现当然需要进行递归操作，代码如下：</p>
+注意：对于两个长度分别为 m 和 n 的有序表进行合并的过程，<strong>最坏的比较次数为 m + n - 1。</strong></p>
+<p>用代码实现当然需要进行递归操作，代码如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">//辅助数组B（主要就起到一个复制过去操作的作用，原数组才是每次比对的结果数组）
 </span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="o">*</span><span class="n">B</span><span class="o">=</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span> 
 </span></span><span class="line"><span class="cl">
