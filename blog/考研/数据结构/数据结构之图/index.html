@@ -769,12 +769,15 @@ StrAssign (&amp;amp;amp;T,chars): 赋值操作。把串 T 赋值为 chars。 Str
 3.1 栈 3.1.1 栈的基本概念 栈（stack） 是仅允许在一端进行插入和删除操作的线性表。
 在写C语言时，函数销毁创建本质就是依赖于栈这一数据结构。特点是后进先出（Last In First Out，LIFO） 下面介绍栈的三个基本属性以及示意图：
 栈顶（Top）： 允许进行插入和删除操作的这一端。 栈底（Bottom）： 固定不变，不允许进行插入和删除操作的这一端。 空栈： 不含任何元素的栈。 3.1.2 栈的基本操作 采用严蔚敏版的命名规范：
-InitStack(&amp;amp;amp;S)：初始化一个空栈S。 DestroyStack(&amp;amp;amp;S)：销毁栈S，释放其存储空间。 Pop(&amp;amp;amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。 Push(&amp;amp;amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。 GetTop(S,&amp;amp;amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。 StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。 3.1.3 栈的数学性质 栈的数学性质： 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为 1/(n&#43;1)Cn2n，该数列也被称为卡特兰数。（做题时很好用）
+InitStack(&amp;amp;amp;S)：初始化一个空栈S。 DestroyStack(&amp;amp;amp;S)：销毁栈S，释放其存储空间。 Pop(&amp;amp;amp;S,x)：入栈操作，若栈未满，则x成为新的栈顶元素。 Push(&amp;amp;amp;S,x)：出栈操作，若栈非空，则弹出栈顶元素，并通过x返回该值。 GetTop(S,&amp;amp;amp;x)：读取栈顶元素但不出栈，若栈非空，则通过x返回值。 StackEmpty(S)：判断栈是否为空，为空返回True，否则返回False。 3.1.3 栈的数学性质 栈的数学性质（卡特兰数）： 当n个不同的元素按固定次序入栈时，可能的出栈序列的总数为：
+$$ \boxed{ C_n=\frac{1}{n&#43;1}C_{2n}^{n} } $$
+其中注意一下，虽然排列组合公式高中已能够熟练使用，但是也要记忆公式，可能涉及数学性质的推导，而非简单的运算：
+$$ \boxed{ C_n^m=\frac{n!}{m!(n-m)!} } $$
+$$ \boxed{ A_n^m=\frac{n!}{(n-m)!} } $$
 3.1.4 顺序栈 3.1.3.1 顺序栈的定义 采用顺序存储的栈称为顺序栈，它利用一组连续的存储单元存放从栈顶到栈底的数据元素，并附设一个整型指针（top） 指向当前栈顶元素位置。
 与线性表类似，栈也有两种基本的存储方式：顺序存储和链式存储。
 3.1.3.2 顺序栈的实现和基本操作 下面介绍顺序栈。基于top指针的指向方式，栈其实存在两种操作方式：1. top 表示当前栈顶元素的下标，2. top 表示“下一个可存放元素的位置”。由于和《数据结构之绪论 / 线性表》中的代码大致都相同，也很简单，这里直接用代码说明顺序栈的实现和基本操作。
 1. top 表示当前栈顶元素的下标: 注意 top 指针在这种情况下初始化为 -1。在做题时，S.data[&#43;&#43;top]; 等代码的 &#43;&#43;top 和 top&#43;&#43;，两种情况表示不同，一定理解记忆是哪种情况。
-#define _CRT_SECURE_NO_WARNINGS #include &amp;amp;lt;stdio.h&amp;amp;gt; #include &amp;amp;lt;stdlib.h&amp;amp;gt; # define MaxSize 50 typedef struct { Elemtype data[MaxSize]; int top; }SqStack; void InitStack(SqStack&amp;amp;amp; S) { S.top = -1; //注意这里初始化为-1 } bool StackEmpty(SqStack &amp;amp;amp;S) { if (S.top == -1) { return true; } return false; } bool Push(SqStack &amp;amp;amp;S, Elemtype x) { if (S.top == MaxSize - 1) { //栈满，不能插入 return false; } //下面两行等价于S.data[&#43;&#43;top]=x; 做题时注意区分 S.top&#43;&#43;; S.data[S.top] = x; return true; } bool Pop(SqStack&amp;amp;amp; S, Elemtype &amp;amp;amp;x) { if (S.top == -1) { //栈为空，无法删除 return false; } x = S.data[S.top--]; return true; } bool GetTop(SqStack &amp;amp;amp;S, Elemtype &amp;amp;amp;e) { if (S.top == -1) { //栈为空，无法读取 return false; } e = S.data[S.top]; return true; } 2. top 表示“下一个可存放元素的位置” 注意一开始 top 指针置为 0
 ">数据结构之栈、队列和数组</a>
         
       </div>
@@ -1519,6 +1522,48 @@ Prim 的贪心对象是“连接已选顶点集合与未选集合的最小权值
 <img src="http://tuchuang.mrlxl.cn/picture/20260224154334577.png" alt="大量子图相同">
 由于操作符<strong>生效顺序</strong>的不同，其最简有向无环图也可能<strong>不同</strong>，但是都应该是最简的。如下图是上图式子的另一种最简表示方法：
 <img src="http://tuchuang.mrlxl.cn/picture/20260224161322608.png" alt="最简有向无环图表示不唯一"></p>
+<p>补充一些常考的用于 <strong>判断图中的环路的算法</strong>：</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">图类型</th>
+          <th style="text-align: center">可以判断环的算法</th>
+          <th style="text-align: left">判断方法</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">无向图</td>
+          <td style="text-align: center">DFS</td>
+          <td style="text-align: left">DFS过程中发现已经访问过的顶点，且该顶点不是当前顶点的父节点，则存在环</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">无向图</td>
+          <td style="text-align: center">BFS</td>
+          <td style="text-align: left">BFS过程中发现已经访问过的顶点，且该顶点不是当前顶点的父节点，则存在环</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">无向图</td>
+          <td style="text-align: center">Kruskal</td>
+          <td style="text-align: left">加入边时，若两个顶点已经连通，则加入该边会形成环</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">有向图</td>
+          <td style="text-align: center">DFS</td>
+          <td style="text-align: left">DFS过程中发现指向正在访问（递归栈中）的顶点的边，则存在环</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">有向图</td>
+          <td style="text-align: center">拓扑排序</td>
+          <td style="text-align: left">若拓扑排序无法输出全部顶点，则说明存在环</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">有向图</td>
+          <td style="text-align: center">普通BFS</td>
+          <td style="text-align: left">❌ 不能直接判断环（访问过的顶点不一定形成环）</td>
+      </tr>
+  </tbody>
+</table>
 <h2 id="68-拓扑排序">6.8 拓扑排序</h2>
 <h3 id="681-aov-网">6.8.1 AOV 网</h3>
 <p><strong>AOV 网</strong> (Activity On Vertex NetWork, 用顶点表示活动的网)：
