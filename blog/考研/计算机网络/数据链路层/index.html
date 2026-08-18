@@ -1391,9 +1391,10 @@ CSMA/CD 协议内容<strong>大纲</strong>如下：
 <li><strong>无法解决隐蔽站问题。</strong></li>
 </ul>
 <p>CSMA/CA 协议<strong>分布式协调功能（DCF）</strong>，过程如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260318205654907.png" alt="DCF">
+<img src="http://tuchuang.mrlxl.cn/picture/20260818223930117.png" alt="DCF">
 CSMA/CA 协议<strong>点协调功能（PCF）</strong>，这个功能可以选择是否启用，过程如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260318205006025.png" alt="PCF"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260318205006025.png" alt="PCF">
+其他站点收到 <strong>RTS、CTS 等帧</strong> 中的 Duration 字段后，可以获知当前帧之后预计还需要占用信道的时间，并据此设置自己的 <strong>NAV（Network Allocation Vector，网络分配向量）</strong>。NAV 可以理解为其他站点预测的“<strong>信道还将忙多久</strong>”的计时状态。在 NAV 有效期间，站点通过虚拟载波监听认为信道处于忙状态，从而推迟发送、避免冲突。因此，NAV 是 802.11 虚拟载波监听机制的核心。</p>
 <h3 id="323-令牌传递协议">3.2.3 令牌传递协议</h3>
 <p>令牌传递协议（用于令牌环网技术）实际是一个过时的协议，运用于环形拓扑结构的网络之中，在上世纪 80 年代极为流行。最终被星形结构的以太网技术淘汰。该节简单了解即可。过程如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="err">以太网技术（总线形）</span><span class="o">&lt;--</span><span class="err">竞争对手</span><span class="o">--&gt;</span> <span class="err">令牌环网技术（环形）</span>
@@ -1485,7 +1486,16 @@ CSMA/CA 协议<strong>点协调功能（PCF）</strong>，这个功能可以选�
 </ul>
 <p><strong>802.11 局域网数据帧（无线MAC帧）</strong> 格式如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260319194509044.png" alt="无线MAC帧">
-我们以一道真题来熟悉：
+<strong>持续期（Duration）字段</strong>：
+Duration 字段相当于当前帧对“后续剩余信道占用时间”的声明；由于不同站可能因为加入监听时间不同、隐藏站或接收错误而听到不同阶段的帧，因此每个相关帧都携带 Duration 信息，使能够正确接收到该帧的站有机会维护自己的 <strong>NAV</strong>；RTS/CTS 则尤其用于让发送端和接收端周围的站都获得预约信息。</p>
+<p>比如（图见前面的 CSMA/CA 协议）：</p>
+<p>$$
+\mathrm{RTS}: \quad SIFS + CTS + SIFS + DATA + SIFS + ACK
+$$</p>
+<p>$$
+\mathrm{CTS}: \quad SIFS + DATA + SIFS + ACK
+$$</p>
+<p>我们以一道真题来熟悉：
 <img src="http://tuchuang.mrlxl.cn/picture/20260319195943534.png" alt="802.11 帧真题"></p>
 <h2 id="34-广域网">3.4 广域网</h2>
 <h3 id="341-广域网的基本概念">3.4.1 广域网的基本概念</h3>
