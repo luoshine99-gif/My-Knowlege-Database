@@ -1015,8 +1015,8 @@ CPU 内部总线：单总线、多总线。 专用数据通路。 5.3.1 单总�
 至于移码的作用，移码主要用于表示浮点数的阶码，因为阶码需要经常进行大小比较；采用移码后，二进制数（全部位）越大，对应的真值越大。 以题目来熟悉这几个“码”，注意做题技巧： 补码的作用： 在计算机硬件的实现过程中，加法器的实现难度小于减法器的实现难度，而一个计算机的底层如果既要实现加法器又要实现减法器，会显得冗余。所以能不能只使用加法器实现加法和减法呢？
 在 模运算 中，如果两个数绝对值相加等于模，那么这两个数互为对方的 补数，利用这个性质，在减去一个数的时候，只需要加上这个数的补数即可。即 原码 A − 原码 B = 原码 A &#43; 补码 B，而补码就是这个二进制补数，模通常就是机器字长（比如 28 bit）。
 如果使用数学手段严谨的证明补码为什么等于原码的补数，需要很多数论的知识，这里就不做展开，记住怎么求即可。
-2.1.3 C语言中的整数类型转换 C语言中的整数类型转换内部原理如图所示： 强制转换处理过程总结如下：
-情况 怎么处理 有符号短 → 有符号长（长度变化） 符号扩展 无符号短 → 无符号长（长度变化） 0 扩展 长 → 短（长度变化） 直接保留低位 同位数，有符号 ↔ 无符号（符号变化） 二进制位不变，只改变解释方式 短 → 长，改变符号（混合变化） 先扩展，再按新类型解释 注意： C语言中，不同类型定点数做运算：相同位数下，有符号数解释称无符号数进行运算，至于运算过程中的位数长度变化直接不管了。 如下：
+2.1.3 C语言中的数据类型转换 2.1.3.1 定点数类型间强制转换 C语言中的定点数类型转换内部原理如图所示： 强制转换处理过程总结如下：
+情况 怎么处理 有符号短 → 有符号长（长度变化） 符号扩展 无符号短 → 无符号长（长度变化） 0 扩展 长 → 短（长度变化） 直接保留低位 同位数，有符号 ↔ 无符号（符号变化） 二进制位不变，只改变解释方式 短 → 长，改变符号（混合变化） 先扩展，再按新类型解释 注意：有符号整数是补码存储！！无符号数是普通二进制存储！！（具体运算过程文字难以简明的解释，做几个题就懂了）。
 ">数据的表示与计算</a>
         
       </div>
@@ -1225,8 +1225,9 @@ of in on at for to from with by about between among through across during before
 在计算机硬件的实现过程中，加法器的实现难度小于减法器的实现难度，而一个计算机的底层如果既要实现加法器又要实现减法器，会显得冗余。所以能不能只使用加法器实现加法和减法呢？</p>
 <p>在 <strong>模运算</strong> 中，如果两个数绝对值相加等于模，那么这两个数互为对方的 <strong>补数</strong>，利用这个性质，在减去一个数的时候，只需要加上这个数的补数即可。即 <strong>原码 A − 原码 B = 原码 A + 补码 B</strong>，而补码就是这个二进制补数，模通常就是机器字长（比如 2<sup>8</sup> bit）。</p>
 <p>如果使用数学手段严谨的证明补码为什么等于原码的补数，需要很多数论的知识，这里就不做展开，记住怎么求即可。</p>
-<h3 id="213-c语言中的整数类型转换">2.1.3 C语言中的整数类型转换</h3>
-<p>C语言中的整数类型转换内部原理如图所示：
+<h3 id="213-c语言中的数据类型转换">2.1.3 C语言中的数据类型转换</h3>
+<h4 id="2131-定点数类型间强制转换">2.1.3.1 定点数类型间强制转换</h4>
+<p>C语言中的定点数类型转换内部原理如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260415181333672.png" alt="C语言中的整数类型转换">
 强制转换处理过程总结如下：</p>
 <table>
@@ -1259,11 +1260,129 @@ of in on at for to from with by about between among through across during before
       </tr>
   </tbody>
 </table>
-<p>注意： <strong>C语言中，不同类型定点数做运算：相同位数下，有符号数解释称无符号数进行运算</strong>，至于运算过程中的位数长度变化直接不管了。 如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">unsigned j = 0; //32 位全 0
-</span></span><span class="line"><span class="cl">j = j - 1;//考研整型常数默认为 int ，结果得16位全 1
-</span></span><span class="line"><span class="cl">//无符号数机器运算和补码运算相同，直接看成 j + [-1]补
-</span></span></code></pre></div><p>还要注意：<strong>有符号整数是补码存储！！无符号数是普通二进制存储！！</strong>（具体运算过程文字难以简明的解释，做几个题就懂了）。</p>
+<p>注意：<strong>有符号整数是补码存储！！无符号数是普通二进制存储！！</strong>（具体运算过程文字难以简明的解释，做几个题就懂了）。</p>
+<h4 id="2132-定点数类型间作运算">2.1.3.2 定点数类型间作运算</h4>
+<p>C语言中，不同类型定点数做运算：</p>
+<ol>
+<li><strong>相同位数下，有符号数按无符号数解释，再进行运算</strong>，</li>
+<li>至于运算过程中的两数据类型的位数长度不同，直接查下方的表格（都不想管这个了）</li>
+</ol>
+<p>举个例子如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="err">先按无符号类型运算，运算结果再在赋值时转换成</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="kt">unsigned</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//32 位全 0
+</span></span></span><span class="line"><span class="cl"><span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//考研整型常数默认为 int ，结果得 32 位全 1（这里其实溢出了）
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">先按无符号类型运算，运算结果再在赋值时转换成</span> <span class="kt">int</span> <span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">u</span> <span class="o">=</span> <span class="p">...;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">u</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span></code></pre></div><table>
+  <thead>
+      <tr>
+          <th>两种类型参与运算</th>
+          <th>最终按什么类型运算</th>
+          <th>记忆</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>char</code> + <code>char</code></td>
+          <td><code>int</code></td>
+          <td>都先提升</td>
+      </tr>
+      <tr>
+          <td><code>short</code> + <code>short</code></td>
+          <td><code>int</code></td>
+          <td>都先提升</td>
+      </tr>
+      <tr>
+          <td><code>char</code> + <code>int</code></td>
+          <td><code>int</code></td>
+          <td>小整数 → <code>int</code></td>
+      </tr>
+      <tr>
+          <td><code>short</code> + <code>int</code></td>
+          <td><code>int</code></td>
+          <td>小整数 → <code>int</code></td>
+      </tr>
+      <tr>
+          <td><code>unsigned char</code> + <code>int</code></td>
+          <td><code>int</code></td>
+          <td><code>unsigned char</code> 先提升</td>
+      </tr>
+      <tr>
+          <td><code>unsigned short</code> + <code>int</code></td>
+          <td><code>int</code></td>
+          <td>常见32位环境下</td>
+      </tr>
+      <tr>
+          <td><strong><code>unsigned int</code> + <code>int</code></strong></td>
+          <td><strong><code>unsigned int</code></strong></td>
+          <td><strong>重点</strong></td>
+      </tr>
+      <tr>
+          <td><code>unsigned int</code> + <code>unsigned int</code></td>
+          <td><code>unsigned int</code></td>
+          <td>同类</td>
+      </tr>
+      <tr>
+          <td><code>int</code> + <code>long</code></td>
+          <td><code>long</code></td>
+          <td>长度更长</td>
+      </tr>
+      <tr>
+          <td><code>unsigned int</code> + <code>long</code></td>
+          <td><strong>视 <code>long</code> 位数而定</strong></td>
+          <td><strong>重点陷阱</strong></td>
+      </tr>
+      <tr>
+          <td><code>unsigned int</code> + <code>unsigned long</code></td>
+          <td><code>unsigned long</code></td>
+          <td>同为无符号，长的</td>
+      </tr>
+      <tr>
+          <td><code>int</code> + <code>unsigned long</code></td>
+          <td><code>unsigned long</code></td>
+          <td>无符号长类型</td>
+      </tr>
+      <tr>
+          <td><code>long</code> + <code>unsigned long</code></td>
+          <td><code>unsigned long</code></td>
+          <td>无符号长类型</td>
+      </tr>
+      <tr>
+          <td><code>int</code> + <code>float</code></td>
+          <td><code>float</code></td>
+          <td>整数 → 浮点</td>
+      </tr>
+      <tr>
+          <td><code>unsigned int</code> + <code>float</code></td>
+          <td><code>float</code></td>
+          <td>整数 → 浮点</td>
+      </tr>
+      <tr>
+          <td><code>long</code> + <code>float</code></td>
+          <td><code>float</code></td>
+          <td>整数 → 浮点</td>
+      </tr>
+      <tr>
+          <td><code>float</code> + <code>double</code></td>
+          <td><code>double</code></td>
+          <td><code>float → double</code></td>
+      </tr>
+      <tr>
+          <td><code>int</code> + <code>double</code></td>
+          <td><code>double</code></td>
+          <td>整数 → double</td>
+      </tr>
+  </tbody>
+</table>
+<h4 id="2133-涉及浮点数的强制转换">2.1.3.3 涉及浮点数的强制转换</h4>
+<ol>
+<li><strong>定点数转浮点数：</strong> 先变成真值再转浮点数，注意精度问题。</li>
+<li><strong>浮点数转定点数：</strong> 小数部分直接截断，精度可能丢失。</li>
+<li>double 转 float（了解）：因为两者偏置值不同，阶码需要重新计算；由于 float 尾数位更少，需要截断并按舍入规则处理，因此可能发生精度丢失；数值过大时还可能发生浮点数溢出。</li>
+<li>float 转 double（了解）：因为两者偏置值不同，阶码需要重新计算；由于 double 尾数位更多，原 float 尾数全部保留，后面补 0，因此不会发生精度丢失（对可表示的正常有限 float 值而言）。</li>
+</ol>
 <h2 id="22-运算方法与运算电路">2.2 运算方法与运算电路</h2>
 <h3 id="221-数电基础知识">2.2.1 数电基础知识</h3>
 <p>基本逻辑门电路概括如下，很简单，不用深究其数字逻辑电路细节：
@@ -1409,25 +1528,48 @@ ALU 的图示是需要看懂的，像标志加法器一样，也会产生标志�
 <img src="http://tuchuang.mrlxl.cn/picture/20260421194819700.png" alt="例题1">
 <img src="http://tuchuang.mrlxl.cn/picture/20260421195001681.png" alt="例题2">
 <img src="http://tuchuang.mrlxl.cn/picture/20260421195216776.png" alt="例题3"></p>
-<h3 id="232-浮点数的表示范围及几种特殊的状态">2.3.2 浮点数的表示范围及几种特殊的状态</h3>
+<h3 id="232-几种特殊的浮点数">2.3.2 几种特殊的浮点数</h3>
 <p>IEEE 规定，当<strong>阶码</strong>不全为 0 或者 1 的时候，这个时候的浮点数为<strong>规格化表示</strong>。阶码全为 0 和 1 的情况一般被用作表示<strong>特殊浮点数</strong>，如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260423163531392.png" alt="特殊浮点数">
-而关于<strong>规格化的浮点数的表示的范围</strong>如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260423164209385.png" alt="规格化的浮点数的表示的范围">
-当然，在处理浮点数的运算的时候，同样会产生<strong>溢出现象</strong>。
-IEEE 规定把<strong>大于最大表示正数</strong>和<strong>小于最小表示负数</strong>的情况都被称为<strong>上溢</strong>，关于上溢的处理具体如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260423164657618.png" alt="上溢的处理">
-IEEE 规定把<strong>小于最小表示正数</strong>和<strong>大于最大表示负数</strong>的情况都被称为<strong>下溢</strong>，关于下溢的处理具体如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260423172245107.png" alt="下溢的处理">
-关于下溢区间会有两种情况。
-特别注意<strong>非规格化数（上面表格的特殊数）</strong> 的情况，计算时容易错误，如下图所示：
+简单总结来说：</p>
+<ol>
+<li>
+<p><strong>全 0 阶码 + 全 0 尾数：+0 / -0</strong>
+符号位 S 决定其正负，通常情况下，+0 和 -0 在数值上是等效的。</p>
+</li>
+<li>
+<p><strong>全 1 阶码 + 全 0 尾数：+Infinity / -Infinity</strong>
+符号位 S 决定其正负。+Infinity 在数值上大于所有有限数，-Infinity 则小于所有有限数。
+引入无穷大的目的是，使程序在溢出等异常情况下仍能继续执行。</p>
+</li>
+<li>
+<p><strong>全 1 阶码 + 非 0 尾数：NaN（Not a Number）</strong>
+表示一个没有定义的数，称为<strong>非数</strong>。</p>
+</li>
+<li>
+<p><strong>全 0 阶码 + 非 0 尾数：非规格化数</strong>
+非规格化数的特点是：<strong>阶码为全 0，不使用隐藏位，尾数字段非 0</strong>。
+因此，单精度和双精度浮点数的实际指数分别为：</p>
+<p><strong>-126</strong> 和 <strong>-1022</strong></p>
+<p>非规格化数用于实现<strong>渐进下溢</strong>，填补 0 与最小规格化数之间的数值间隙。</p>
+</li>
+</ol>
+<p>注意 <strong>非规格化数（上面表格的特殊数）</strong> 的情况，计算时容易错误，如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260423172454912.png" alt="非规格化数">
 用一道真题来熟悉非规格化数的表示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260423172547471.png" alt="真题">
 关于 <strong>无定义数（上面表格的特殊数）</strong> 也有一些需要注意的地方，如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260423172821976.png" alt="无定义数"></p>
-<h3 id="233-浮点数的加减运算">2.3.3 浮点数的加减运算</h3>
-<h4 id="2331-例题示例">2.3.3.1 例题示例</h4>
+<h3 id="233-浮点数的表示范围">2.3.3 浮点数的表示范围</h3>
+<p><strong>规格化的浮点数的表示的范围</strong>如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260423164209385.png" alt="规格化的浮点数的表示的范围">
+<strong>上溢</strong>：IEEE 规定把 <strong>大于最大表示正数</strong> 和 <strong>小于最小表示负数</strong> 的情况都被称为 <strong>上溢</strong>，关于上溢的处理具体如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260423164657618.png" alt="上溢的处理">
+<strong>下溢</strong>：IEEE 规定把 <strong>小于最小表示正数</strong> 和 <strong>大于最大表示负数</strong> 的情况都被称为 <strong>下溢</strong>，关于下溢的处理具体如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260423172245107.png" alt="下溢的处理">
+规格化数下溢其实还能够通过非规格化数来进行表示（|x|&lt; <strong>2<sup>-149</sup></strong> 才是真的下溢了）</p>
+<h3 id="234-浮点数的加减运算">2.3.4 浮点数的加减运算</h3>
+<h4 id="2341-例题示例">2.3.4.1 例题示例</h4>
 <p>浮点数的<strong>加减运算</strong>和十进制科学计数法是一样的分为五个步骤分别是：
 <strong>1. 对阶
 2. 尾数加减
@@ -1438,25 +1580,62 @@ IEEE 规定把<strong>小于最小表示正数</strong>和<strong>大于最大�
 <img src="http://tuchuang.mrlxl.cn/picture/20260423200753548.png" alt="例子1">
 <img src="http://tuchuang.mrlxl.cn/picture/20260423200852412.png" alt="例子2">
 <img src="http://tuchuang.mrlxl.cn/picture/20260423200558744.png" alt="例子3"></p>
-<h4 id="2332-舍入问题">2.3.3.2 舍入问题</h4>
+<h4 id="2342-舍入问题">2.3.4.2 舍入问题</h4>
 <p>关于浮点数的舍入方式如下图所示，重点在于关注就近舍入这种模式：
-<img src="http://tuchuang.mrlxl.cn/picture/20260424115221899.png" alt="舍入方式">
+<img src="http://tuchuang.mrlxl.cn/picture/20260828223015469.png" alt="舍入方式">
 关于<strong>就近舍入</strong>这种方式，举四个例子如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260424115618134.png" alt="就近舍入">
 <img src="http://tuchuang.mrlxl.cn/picture/20260424120026772.png" alt="就近舍入"></p>
-<h4 id="2333-溢出问题">2.3.3.3 溢出问题</h4>
-<p>浮点数的溢出并不是从尾数来判断的，而是通过<strong>阶码</strong>进行判断，关于<strong>上溢</strong>的判断如图所示：
+<h4 id="2343-溢出问题">2.3.4.3 溢出问题</h4>
+<p>浮点数的溢出主要取决于 <strong>阶码是否上溢</strong> ，因为阶码下溢还能够通过非规格化数来进行表示（|x|&lt; <strong>2<sup>-149</sup></strong> 才是真的下溢了），而尾数上溢或者下溢可以通过左移或者右移进行调整。</p>
+<p>关于 <strong>上溢</strong> 的判断如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260424141218428.png" alt="上溢溢出">
-而关于<strong>下溢</strong>的判断也如图所示：
+而关于 <strong>下溢</strong> 的判断也如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260424141049533.png" alt="下溢判断"></p>
-<h3 id="234-数据的存储和访问">2.3.4 数据的存储和访问</h3>
-<h4 id="2341-大小端模式">2.3.4.1 大小端模式</h4>
+<h4 id="2344-精度问题">2.3.4.4 精度问题</h4>
+<ul>
+<li><strong>float 的有效精度是 24 位</strong>（尾数加 1，因为一个 1 一直右移到舍弃位第二位就被舍弃了嘛）。</li>
+<li><strong>double 的有效精度是 53 位</strong>（和 float 同理)。</li>
+</ul>
+<p>记忆这个有什么用呢：</p>
+<ol>
+<li><strong>整数转浮点数</strong>：若是整数 <strong>大于</strong> 2<sup>24</sup>=16777216 或 2<sup>53</sup> 则可能会发生精度丢失。</li>
+<li><strong>浮点数之间加减运算</strong>：若是阶码之差绝对值 <strong>大于</strong> 24 或 53 则那么直接 <strong>忽略阶码小的</strong>。即小数对阶后被舍弃出现 “大数吃小数” 的情况。</li>
+</ol>
+<h3 id="235-数据的存储和访问">2.3.5 数据的存储和访问</h3>
+<h4 id="2351-大小端模式">2.3.5.1 大小端模式</h4>
 <p>计算机存储通常采用小端模式：
-<img src="http://tuchuang.mrlxl.cn/picture/20260424143259004.png" alt="大小端模式"></p>
-<h4 id="2342-边界对齐">2.3.4.2 边界对齐</h4>
+<img src="http://tuchuang.mrlxl.cn/picture/20260424143259004.png" alt="大小端模式">
+注意 <strong>大小端转换：以每个数据类型对象为范围，按字节反序排列；字节内部的比特顺序不变，不能把整个数组当成一个整体反序。</strong></p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>  
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x12345678</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xABCDEF12</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl"><span class="err">那么大端序为：</span><span class="mi">12</span> <span class="mi">34</span> <span class="mi">56</span> <span class="mi">78</span> <span class="n">AB</span> <span class="n">CD</span> <span class="n">EF</span> <span class="mi">12</span>
+</span></span><span class="line"><span class="cl"><span class="err">小端序为</span> <span class="mi">78</span> <span class="mi">56</span> <span class="mi">34</span> <span class="mi">12</span> <span class="mi">12</span> <span class="n">AB</span> <span class="n">CD</span> <span class="n">EF</span>
+</span></span></code></pre></div><h4 id="2352-边界对齐">2.3.5.2 边界对齐</h4>
+<p>在字长为 32 位的系统中，边界对齐是指某类型数据的存储地址是其 <strong>对齐值（通常是该数据类型大小）的整数倍。</strong> 系统按字节进行编址，所以字节长度类型数据可位于任意地址，半字长度类型数据起始地址需为 2 的倍数，字长类型的数据起始地址需为 4 的倍数。</p>
+<p>满足这个条件的时候，CPU 能够通过一次访存读取完整数据，否则，<strong>若数据跨越两个存储单元，则需两次访存拼接，显著降低效率。</strong> 为满足对齐要求，编译器会在必要时补充空白字节。</p>
 <p>关于计算机的边界对齐如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260424143010302.png" alt="边界对齐"></p>
-
+<img src="http://tuchuang.mrlxl.cn/picture/20260424143010302.png" alt="边界对齐">
+C 语言中，struct 类型的数据就遵循以下对齐规则：</p>
+<ol>
+<li>每个成员的 <strong>起始地址</strong> 是其对齐值（通常是该数据类型大小）的整数倍</li>
+<li>整个结构体大小必须是 <strong>最大成员对齐值的整数倍</strong>（不足时在尾部填充）</li>
+</ol>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span><span class="p">{</span> <span class="c1">//其实地址设为0x0000
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span> <span class="c1">//起始地址 0x0000
+</span></span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">b</span> <span class="c1">//起始地址 0x0004
+</span></span></span><span class="line"><span class="cl">    <span class="kt">short</span> <span class="n">c</span> <span class="c1">//起始地址 0x0006
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="c1">//由于最大成员对齐值为 4，整个结构体大小刚好为 8 ，不用进行填充。
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">struct</span><span class="p">{</span> <span class="c1">//其实地址设为0x0000
+</span></span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">b</span> <span class="c1">//起始地址 0x0000
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span> <span class="c1">//起始地址 0x0004
+</span></span></span><span class="line"><span class="cl">    <span class="kt">short</span> <span class="n">c</span> <span class="c1">//起始地址 0x0008
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="c1">//由于最大成员对齐值为 4，整个结构体大小 12 ，0x000A 0x000B 需填充。
+</span></span></span></code></pre></div>
     </article>
     <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
 
@@ -1471,7 +1650,13 @@ IEEE 规定把<strong>小于最小表示正数</strong>和<strong>大于最大�
           <ul>
             <li><a href="#211-进位计数制">2.1.1 进位计数制</a></li>
             <li><a href="#212-定点数的编码表示">2.1.2 定点数的编码表示</a></li>
-            <li><a href="#213-c语言中的整数类型转换">2.1.3 C语言中的整数类型转换</a></li>
+            <li><a href="#213-c语言中的数据类型转换">2.1.3 C语言中的数据类型转换</a>
+              <ul>
+                <li><a href="#2131-定点数类型间强制转换">2.1.3.1 定点数类型间强制转换</a></li>
+                <li><a href="#2132-定点数类型间作运算">2.1.3.2 定点数类型间作运算</a></li>
+                <li><a href="#2133-涉及浮点数的强制转换">2.1.3.3 涉及浮点数的强制转换</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
         <li><a href="#22-运算方法与运算电路">2.2 运算方法与运算电路</a>
@@ -1517,18 +1702,20 @@ IEEE 规定把<strong>小于最小表示正数</strong>和<strong>大于最大�
         <li><a href="#23-浮点数的表示和运算">2.3 浮点数的表示和运算</a>
           <ul>
             <li><a href="#231-浮点数的表示_ieee-754">2.3.1 浮点数的表示_IEEE 754</a></li>
-            <li><a href="#232-浮点数的表示范围及几种特殊的状态">2.3.2 浮点数的表示范围及几种特殊的状态</a></li>
-            <li><a href="#233-浮点数的加减运算">2.3.3 浮点数的加减运算</a>
+            <li><a href="#232-几种特殊的浮点数">2.3.2 几种特殊的浮点数</a></li>
+            <li><a href="#233-浮点数的表示范围">2.3.3 浮点数的表示范围</a></li>
+            <li><a href="#234-浮点数的加减运算">2.3.4 浮点数的加减运算</a>
               <ul>
-                <li><a href="#2331-例题示例">2.3.3.1 例题示例</a></li>
-                <li><a href="#2332-舍入问题">2.3.3.2 舍入问题</a></li>
-                <li><a href="#2333-溢出问题">2.3.3.3 溢出问题</a></li>
+                <li><a href="#2341-例题示例">2.3.4.1 例题示例</a></li>
+                <li><a href="#2342-舍入问题">2.3.4.2 舍入问题</a></li>
+                <li><a href="#2343-溢出问题">2.3.4.3 溢出问题</a></li>
+                <li><a href="#2344-精度问题">2.3.4.4 精度问题</a></li>
               </ul>
             </li>
-            <li><a href="#234-数据的存储和访问">2.3.4 数据的存储和访问</a>
+            <li><a href="#235-数据的存储和访问">2.3.5 数据的存储和访问</a>
               <ul>
-                <li><a href="#2341-大小端模式">2.3.4.1 大小端模式</a></li>
-                <li><a href="#2342-边界对齐">2.3.4.2 边界对齐</a></li>
+                <li><a href="#2351-大小端模式">2.3.5.1 大小端模式</a></li>
+                <li><a href="#2352-边界对齐">2.3.5.2 边界对齐</a></li>
               </ul>
             </li>
           </ul>
