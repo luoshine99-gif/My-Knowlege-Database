@@ -1370,7 +1370,13 @@ $$</p>
 <h3 id="352-cache-和主存的映射方式">3.5.2 Cache 和主存的映射方式</h3>
 <p>本小节思维导图及总览如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260430142132802.png" alt="思维导图">
-<img src="http://tuchuang.mrlxl.cn/picture/20260430142420766.png" alt="总览"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260430142420766.png" alt="总览">
+<img src="http://tuchuang.mrlxl.cn/picture/20260907223747044.png" alt="手绘图"></p>
+<p><strong>Cache 容量</strong> 的计算：</p>
+<p>$$
+\boxed{Cache容量 = 行数 \times 每行标记位数}
+$$</p>
+<p>每行标记位数包括 <strong>写回法的脏位，LRU 的替换位，固有的有效位，标记位，数据位。</strong></p>
 <h4 id="3521-全相连映射">3.5.2.1 全相连映射</h4>
 <p>全相连映射，主存中的每一块可以装入 Cache 中的<strong>任何位置</strong>，如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260430142926750.png" alt="全相连映射"></p>
@@ -1381,7 +1387,7 @@ $$</p>
 <p>组相连映射，主存中的每一块只能装入 Cache 中的固定组的任意一行。如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260430143951422.png" alt="组相连映射"></p>
 <h3 id="353-cache-的替换算法">3.5.3 Cache 的替换算法</h3>
-<p>在采用<strong>全相连映射</strong>或<strong>组相连映射</strong>方式时，当向 Cache 传送一个新主存块而 Cache（或组，组相联映射的替换只在“组内”进行） 已满，就需要使用替换算法选择被替换的 Cache 行。注意，在<strong>直接映射</strong>这种方式中，出现冲突，新块直接覆盖旧块，<strong>无需替换算法</strong>。</p>
+<p>在采用 <strong>全相连映射</strong> 或 <strong>组相连映射</strong> 方式时，当向 Cache 传送一个新主存块而 Cache（或组，组相联映射的替换只在“组内”进行） 已满，就需要使用替换算法选择被替换的 Cache 行。注意，在 <strong>直接映射</strong> 这种方式中，出现冲突，新块直接覆盖旧块，<strong>无需替换算法</strong>。</p>
 <p>替换算法分为四种：随机算法（RAND），先进先出算法（FIFO），最近最少使用算法（LRU），最不经常使用算法（LFU）。</p>
 <h4 id="3531-随机算法rand">3.5.3.1 随机算法（RAND）</h4>
 <p>随机选择一个 Cache 进行替换。实现较为简单，但<strong>未利用程序访问的局部性原理</strong>，命中率通常较低。
