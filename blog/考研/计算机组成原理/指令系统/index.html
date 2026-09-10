@@ -1265,7 +1265,11 @@ $$</p>
       </tr>
   </tbody>
 </table>
-<p>值得注意的是：这些偏移量一般用有符号数（补码）来表示，也能用无符号数表示，可能涉及到扩展以及偏移范围的问题。具体是用什么表示题目会具体说明。</p>
+<p>值得注意的是：</p>
+<ol>
+<li>这些偏移量一般用有符号数（补码）来表示，也能用无符号数表示，可能涉及到扩展以及偏移范围的问题。具体是用什么表示题目会具体说明。</li>
+<li>若采用基址寻址和变址寻址，地址字段需要用一些位数来表明寄存器编号，指出使用哪个基址寄存器/变址寄存器。具体用几位题目会说明，比如说总共 16 个寄存器那地址字段就要拆 4 位出来等。</li>
+</ol>
 <p><strong>基址寻址</strong> 如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260503195804481.png" alt="基址寻址">
 关于基址寻址的作用，如下图所示：
@@ -1354,7 +1358,7 @@ $$</p>
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">){</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>但是引出一个问题，C 语言在函数调用的时候传入了参数值，在函数返回的时候返回了值。可汇编语言中的 call 和 ret 指令只有改变 PC 寄存器地址的效果，那么：</p>
+</span></span></code></pre></div><p>但是引出一个问题，C 语言在函数调用的时候传入了参数值，在函数返回的时候返回了值。可汇编语言中的 call 指令是将 PC 旧值压入栈中并将 PC 值修改为调用函数地址， ret 指令改变 PC 寄存器地址为 PC 旧值，那么：</p>
 <ol>
 <li>汇编语言怎么传递调用函数，返回值？</li>
 <li>如何访问栈帧里的数据？</li>
@@ -1364,15 +1368,17 @@ $$</p>
 访问栈帧里的数据都两种方法，如下图所示，注意，一个函数就对应这样一个栈，下图里栈中不同的色块表示不同的函数。
 <img src="http://tuchuang.mrlxl.cn/picture/20260505190708931.png" alt="访问栈帧里的数据">
 <strong>切换栈帧：</strong>
-除了 main 函数，其他的函数都是被调用的函数，每个函数的 Enter 和 Leave 指令，都可以 <strong>看做是被调用函数的模版</strong>！
+除了 main 函数，其他的函数都是被调用的函数，每个函数的 <strong>Enter 和 Leave 指令</strong>，都可以 <strong>看做是被调用函数的模版</strong>！</p>
+<p>调用 <strong>call 指令（压 PC 旧值）</strong> 之后，紧接着调用 <strong>Enter 指令（压上一层函数基址）</strong>，在 ret 指令之前，调用 Leave 指令，两个指令的具体作用如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260505194436136.png" alt="切换栈帧">
 <strong>传递参数和返回值：</strong>
 首先我们需要知道一个 <strong>栈帧包含了什么内容</strong>，如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260505203325759.png" alt="栈帧包含了什么内容">
 那 <strong>如何进行的参数传递和返回值</strong> 的呢，下面这个汇编代码，较为全面的进行了说明：
-<img src="http://tuchuang.mrlxl.cn/picture/20260505204530419.png" alt="如何进行的参数传递和返回值"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260505204530419.png" alt="如何进行的参数传递和返回值">
+值得注意的是：一般考研都是和图中一样的模型，只需记住，<strong>[ebx + 一个数] 表示访问本函数变量。[ebx - 一个数] 表示访问上层函数变量。</strong></p>
 <h2 id="44-cisc-和-risc-基本概念">4.4 CISC 和 RISC 基本概念</h2>
-<p>CISC 即<strong>复杂指令系统计算机</strong>，RISC 即<strong>精简指令系统计算机</strong>。
+<p>CISC 即 <strong>复杂指令系统计算机</strong>，RISC 即 <strong>精简指令系统计算机</strong>。
 基本概念和比较如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260505210804874.png" alt="基本概念">
 <img src="http://tuchuang.mrlxl.cn/picture/20260505210917753.png" alt="比较"></p>
