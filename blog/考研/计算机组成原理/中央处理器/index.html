@@ -1364,41 +1364,126 @@ CPU 内部分为运算器和控制器：</p>
 <h3 id="542-微程序控制器">5.4.2 微程序控制器</h3>
 <p>本节思维导图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260509194632658.png" alt="思维导图"></p>
-<h4 id="5421-微程序控制器基本原理">5.4.2.1 微程序控制器基本原理</h4>
+<h4 id="5421-微程序控制器基本结构">5.4.2.1 微程序控制器基本结构</h4>
 <p>本小节思维导图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260509163835290.png" alt="思维导图">
-首先明确一下 微程序、微指令、微命令/微操作 这之间的区别，如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260509164258009.png" alt="微程序、微指令、微命令/微操作">
+首先明确一下 <strong>微程序、微指令、微命令/微操作 这之间的区别</strong>，如下图所示：</p>
+<table>
+  <thead>
+      <tr>
+          <th>概念</th>
+          <th>是什么</th>
+          <th>例子</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>指令</strong></td>
+          <td>程序员看到的、CPU要执行的一条机器指令</td>
+          <td><code>ADD R1,R2</code></td>
+      </tr>
+      <tr>
+          <td><strong>微指令</strong></td>
+          <td>CPU内部控制器在一个微周期发出的<strong>一组微命令（控制信号）</strong></td>
+          <td><code>R1out = 1</code>、<code>Yin = 1</code>、<code>R2out = 1</code>、<code>ALU_ADD = 1</code>、<code>Zin = 1</code></td>
+      </tr>
+      <tr>
+          <td><strong>微命令</strong></td>
+          <td>一个具体的 <strong>控制信号</strong>，控制数据通路完成某个动作</td>
+          <td><code>R1out = 1</code>、<code>Yin = 1</code></td>
+      </tr>
+      <tr>
+          <td><strong>微操作</strong></td>
+          <td>在微命令控制下，数据通路实际完成的<strong>基本操作</strong></td>
+          <td><code>R1 → Y</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260509164258009.png" alt="微程序、微指令、微命令/微操作">
 <strong>微程序控制器的基本结构</strong> 如下图所示，其实可以看成是一个 CPU 内部又套了一个更小、更简单的 CPU：
 特别注意控制存储器 CM，微程序就存储在其中。
-<img src="http://tuchuang.mrlxl.cn/picture/20260509165212058.png" alt="微程序控制器的基本结构">
-关于微程序控制器的工作原理如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260912233447175.png" alt="微程序控制器的基本结构"></p>
+<h4 id="5422-微程序控制器工作过程">5.4.2.2 微程序控制器工作过程</h4>
+<p>关于微程序控制器的工作过程：</p>
+<ol>
+<li><strong>执行指令公共操作</strong>：系统启动或者每条指令执行完毕之后，系统启动或每条指令执行完毕后，将取指微程序的入口地址（通常为 CM 的 0 号单元）送入 (\mu)PC。随后，从 CM 中读取首条取指微指令并送入 (\mu)IR。<strong>完成取指微程序</strong> 后，从主存中取出的机器指令即被存入指令寄存器（IR）中、PC + “1”。<strong>（题目中说一条指令对应的微指令通常不包括这个公共微指令）</strong>。</li>
+<li><strong>生成当前指令的微程序入口地址</strong>：根据 IR 中机器指令的操作码，通过微地址形成部件产生对应微程序的起始微地址，并送入 (\mu)PC。</li>
+<li><strong>顺序执行微程序</strong>：从 CM 逐条读取微指令，送入 (\mu)IR 并执行，直至该微程序执行完毕。</li>
+<li><strong>返回循环</strong>：当前机器指令对应的微程序执行结束后，控制器自动转移回取指微程序的入口（步骤1），重新开始处理下一条机器指令。整个流程不断循环，直至整个程序执行完毕。</li>
+</ol>
+<p>值得注意的是：控制存储器（CM）中的</p>
+<ol>
+<li><strong>微程序总数 = 支持的机器指令条数 + 公共微程序数（如取指、间址、中断等）。</strong></li>
+<li><strong>微指令总数 = 支持的机器指令条数*机器指令平均指令条数 + 公共指令数</strong></li>
+</ol>
+<p>如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260509165620767.png" alt="微程序控制器的工作原理">
 关于微程序控制器的一些选择题常考点需要进行说明：
 <img src="http://tuchuang.mrlxl.cn/picture/20260509170019040.png" alt="选择题常考点"></p>
-<h4 id="5422-微指令的设计">5.4.2.2 微指令的设计</h4>
-<p>本小节思维导图如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260509183837607.png" alt="思维导图"></p>
-<hr>
-<p><strong>微指令的编码方式</strong> 也叫做微指令的控制方式，是指对 <strong>操作控制字段</strong>进行组织和表示的方法。微指令有三种编码方式，如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260509185838982.png" alt="微指令的编码方式">
-而 <strong>微指令的格式</strong> 也有如下三种：</p>
+<h4 id="5423-微指令地址形成方式">5.4.2.3 微指令地址形成方式</h4>
 <ol>
-<li>水平型微指令：从编码方式上看，直接编码、字符直接编码、字符间接编码都属于水平型微指令，每一位（或每一字段）直接对应一个微指令。</li>
-<li>垂直型微指令：在微指令中设置 <strong>微操作码字段</strong>，通过译码产生控制信号，一条垂直型微指令通常显示定义 <strong>一个</strong> 微操作。</li>
+<li><strong>增量方式（计数器方式）</strong>：下条微地址由微程序计数器（(\boldsymbol{\mu})PC）自动加 1 生成，适用于微程序中的顺序执行段。</li>
+<li><strong>断定方式（下地址字段方式）</strong>：在当前微指令中显式指定下条微地址。上方所有的微程序控制器图示都采用断定方式，其微指令包含下地址字段，可直接给出下条微地址。</li>
+</ol>
+<h4 id="5424-微指令编码方式与格式">5.4.2.4 微指令编码方式与格式</h4>
+<p><strong>微指令的编码方式</strong> 即为微指令操作码的格式：</p>
+<ol>
+<li><strong>直接编码方式：</strong> <strong>直接编码方式无须译码</strong>。微指令的操作控制字段中，每一位直接对应一个微命令（比如控制某通路的三态门开合）。设计微指令时，若需发出某个微命令，只需将对应位设为 1，否则设为 0。每个微命令独立控制数据通路中的一个微操作。</li>
+<li><strong>字段直接编码方式</strong>：字段直接编码将操作控制字段划分为若干字段。<strong>互斥性微命令被归入同一字段</strong>，相容性微命令则分配到不同字段。每个字段独立编码，经 <strong>译码</strong> 后在其所属的互斥微命令集中激活一个微命令。</li>
+<li><strong>字段间接编码方式（了解）</strong>：字段间接编码进一步压缩微指令长度。其基本思想是：某个微命令字段的实际含义，由另一个字段的编码共同决定。例如，字段 A 的编码 001 本身无固定意义，只有结合字段 B 的值（如 B = 0 表示 ALU 操作，B = 1 表示存储器操作），才能确定 001 究竟代表加法还是写内存。</li>
+</ol>
+<p>如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260509185838982.png" alt="微指令的编码方式"></p>
+<p><strong>微指令的格式：</strong></p>
+<ol>
+<li>水平型微指令（三种编码方式都行）：
+从编码方式上看，直接编码、字符直接编码、字符间接编码都属于水平型微指令，每一位（或每一字段）直接对应一个微指令。</li>
+</ol>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">操作控制</th>
+          <th style="text-align: center">顺序控制</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">$A_1\quad A_2\quad \dots\quad A_{n-1}\quad A_n$</td>
+          <td style="text-align: center">判断测试字段　　后继地址字段</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong>控制做什么</strong></td>
+          <td style="text-align: center"><strong>判断</strong>　　　　　<strong>下一条微指令</strong></td>
+      </tr>
+  </tbody>
+</table>
+<ol start="2">
+<li>垂直型微指令（一个互斥段的字段直接编码方式）：
+在微指令中设置 <strong>微操作码字段</strong>，通过译码产生控制信号，一条垂直型微指令通常显示定义 <strong>一个</strong> 微操作。</li>
+</ol>
+<table>
+  <thead>
+      <tr>
+          <th>μOP<br>微操作码</th>
+          <th>Rd<br>目的地址</th>
+          <th>Rs<br>源地址</th>
+      </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<ol start="3">
 <li>混合型微指令</li>
 </ol>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260509190854202.png" alt="微指令的格式"></p>
-<p>而 <strong>下一条微指令形成的方式</strong> 有如下几种方法：
-<img src="http://tuchuang.mrlxl.cn/picture/20260509191238635.png" alt="下一条微指令形成的方式"></p>
-<hr>
-<p>通过两道例题来分别熟悉 微指令的编码方式 和 下一条微指令形成的方式的考察方式：
+<p>如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260509190854202.png" alt="微指令的格式">
+通过两道例题来分别熟悉 微指令的编码方式 和 下一条微指令形成的方式的考察方式：
 <img src="http://tuchuang.mrlxl.cn/picture/20260509191802514.png" alt="两道例题"></p>
-<h4 id="5423-微程序控制器的设计">5.4.2.3 微程序控制器的设计</h4>
+<h4 id="5425-微程序控制器的设计">5.4.2.5 微程序控制器的设计</h4>
 <p>微程序控制器的设计步骤总览如下：
 其实和硬布线控制器差不多还更加简单。
 <img src="http://tuchuang.mrlxl.cn/picture/20260509195418152.png" alt="微程序控制器的设计">
-记得微程序控制器在每个伪指令之间会有 <strong>特有操作</strong>！用取指周期示例如下：
+记得微程序控制器在每个微指令之间会有 <strong>特有操作</strong>！用取指周期示例如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260509200151726.png" alt="特有操作">
 <strong>微程序设计分类</strong> 如下：</p>
 <ol>
@@ -1555,9 +1640,11 @@ GPT 说可以是单节点多核，也可以是多节点。
             <li><a href="#541-硬布线控制器">5.4.1 硬布线控制器</a></li>
             <li><a href="#542-微程序控制器">5.4.2 微程序控制器</a>
               <ul>
-                <li><a href="#5421-微程序控制器基本原理">5.4.2.1 微程序控制器基本原理</a></li>
-                <li><a href="#5422-微指令的设计">5.4.2.2 微指令的设计</a></li>
-                <li><a href="#5423-微程序控制器的设计">5.4.2.3 微程序控制器的设计</a></li>
+                <li><a href="#5421-微程序控制器基本结构">5.4.2.1 微程序控制器基本结构</a></li>
+                <li><a href="#5422-微程序控制器工作过程">5.4.2.2 微程序控制器工作过程</a></li>
+                <li><a href="#5423-微指令地址形成方式">5.4.2.3 微指令地址形成方式</a></li>
+                <li><a href="#5424-微指令编码方式与格式">5.4.2.4 微指令编码方式与格式</a></li>
+                <li><a href="#5425-微程序控制器的设计">5.4.2.5 微程序控制器的设计</a></li>
               </ul>
             </li>
             <li><a href="#543-硬布线和微程序的比较">5.4.3 硬布线和微程序的比较</a></li>

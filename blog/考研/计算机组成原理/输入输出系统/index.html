@@ -1210,15 +1210,68 @@ of in on at for to from with by about between among through across during before
 在现代通常采用统一编址（MMIO），将 IO 设备中的寄存器映射到物理地址空间中（但是寄存器还是物理存在），CPU 使用普通访存指令即可访问这些寄存器，而不再需要专门的 IO 指令和独立 IO 空间。</p>
 <p>统一编址和独立编址如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260513161414037.png" alt="统一编址和独立编址"></p>
-<h2 id="74-中断系统">7.4 中断系统</h2>
-<h3 id="741-中断的基本概念">7.4.1 中断的基本概念</h3>
-<p>中断的基本概念如图所示：
+<h2 id="74-异常与中断机制">7.4 异常与中断机制</h2>
+<h3 id="741-异常与中断的基本概念">7.4.1 异常与中断的基本概念</h3>
+<p><strong>异常（也称内中断）</strong> 是指 CPU 在执行指令过程中，由其内部检测到的同步事件，例如除零错误、非法操作码、页缺失等。这类事件由当前指令直接引发，具有确定性和可重现性。在处理第 i 条指令时发生异常，<strong>立刻响应</strong>，<strong>若事件可恢复</strong>（除数为 0就不可恢复），<strong>恢复后重新执行第 i 条指令。</strong></p>
+<p><strong>中断（也称外中断）</strong> 则是由外部设备（如 I/O 控制器）发起的异步事件，用于通知 CPU 外设状态发生变化（如数据就绪或传输完成）。中断的发生与当前指令无关，具有随机性。<strong>外中断仅在第 i 条指令完整执行结束后才被检测，中断需要从第 i + 1 条指令开始继续执行。</strong></p>
+<p>如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260513191427130.png" alt="中断的基本概念">
-需要了解一个特殊的标记 &ndash; <strong>关中断</strong>，如图所示：
+需要了解一个特殊的标记 &ndash; <strong>关中断（IF标志位）</strong>，如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260513192137568.png" alt="中断请求的分类"></p>
-<h3 id="742-中断的工作流程">7.4.2 中断的工作流程</h3>
-<h4 id="7421-中断请求与中断响应">7.4.2.1 中断请求与中断响应</h4>
-<p><strong>中断源</strong>是指能够向 CPU 发出中断请求的设备或事件。一台计算机允许多个中断源同时存在，且各中断源发出请求的时间具有随机性。为记录并区分不同的中断请求，中断系统为每个中断源设置一个<strong>中断请求标记触发器</strong>：当其状态为 “1” 时，表示该中断源有中断请求。这些触发器可组成中断请求标记寄存器，该寄存器可集中置于 CPU 内部，也可分散在各个中断源中。
+<h3 id="742-异常和中断的分类">7.4.2 异常和中断的分类</h3>
+<p><strong>异常的分类：</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>类型</th>
+          <th>含义</th>
+          <th>典型例子</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>故障（Fault）</strong></td>
+          <td>执行当前指令时发现问题，通常<strong>可以被处理后重新执行该指令</strong></td>
+          <td>缺页、除数为0等</td>
+      </tr>
+      <tr>
+          <td><strong>陷阱（Trap）</strong></td>
+          <td>执行当前指令后产生，通常是<strong>有意设置的</strong></td>
+          <td>系统调用、调试陷阱</td>
+      </tr>
+      <tr>
+          <td><strong>终止（Abort）</strong></td>
+          <td>发生严重错误，通常<strong>无法恢复</strong></td>
+          <td>硬件故障、严重存储器错误</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>中断的分类：</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>类型</th>
+          <th>含义</th>
+          <th>特点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>可屏蔽中断</strong></td>
+          <td>CPU可以通过<strong>关中断/屏蔽中断</strong>暂时不响应</td>
+          <td>一般用于普通外部设备</td>
+      </tr>
+      <tr>
+          <td><strong>不可屏蔽中断</strong></td>
+          <td>CPU不能通过普通的关中断操作来禁止</td>
+          <td>一般用于非常紧急、严重的外部事件</td>
+      </tr>
+  </tbody>
+</table>
+<p>终止异常和外中断都属于硬件中断。</p>
+<h3 id="743-中断的工作流程">7.4.3 中断的工作流程</h3>
+<h4 id="7431-中断请求与中断响应">7.4.3.1 中断请求与中断响应</h4>
+<p><strong>中断源</strong> 是指能够向 CPU 发出中断请求的设备或事件。一台计算机允许多个中断源同时存在，且各中断源发出请求的时间具有随机性。为记录并区分不同的中断请求，中断系统为每个中断源设置一个 <strong>中断请求标记触发器</strong>：当其状态为 “1” 时，表示该中断源有中断请求。这些触发器可组成中断请求标记寄存器，该寄存器可集中置于 CPU 内部，也可分散在各个中断源中。
 中断请求标记如图所示：
 注意：通过 INTR 信号线发出的都是 <strong>可屏蔽中断</strong>，通过 NMI 信号线发出的是 <strong>不可屏蔽中断</strong>。
 <img src="http://tuchuang.mrlxl.cn/picture/20260513193215151.png" alt="中断请求标记">
@@ -1234,18 +1287,18 @@ of in on at for to from with by about between among through across during before
 <p>中断响应判优电路如下图所示（不考，便于理解）：
 注意：中断请求寄存器 + 判优逻辑电路 才是 排队器，别混了。
 <img src="http://tuchuang.mrlxl.cn/picture/20260513194049295.png" alt="中断响应判优电路"></p>
-<h4 id="7422-中断处理过程">7.4.2.2 中断处理过程</h4>
+<h4 id="7432-中断处理过程">7.4.3.2 中断处理过程</h4>
 <p>中断处理过程大致如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260513194412383.png" alt="中断处理过程大致">
 第一就是知道 <strong>中断隐指令</strong> 是怎么处理的，如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260513200701917.png" alt="中断隐指令">
 第二就是知道 <strong>中断服务程序</strong> 会做下面这些操作：
 <img src="http://tuchuang.mrlxl.cn/picture/20260513200813813.png" alt="中断服务程序"></p>
-<h3 id="743-单重中断">7.4.3 单重中断</h3>
+<h3 id="744-单重中断">7.4.4 单重中断</h3>
 <p>单重中断的整体流程如图所示：
 注意单重中断中关中断和开中断的位置，意味着单重中断：<strong>执行中断服务程序时不响应新的中断请求。</strong>
 <img src="http://tuchuang.mrlxl.cn/picture/20260513201109052.png" alt="单重中断的整体流程"></p>
-<h3 id="744-多重中断">7.4.4 多重中断</h3>
+<h3 id="745-多重中断">7.4.5 多重中断</h3>
 <p>多重中断具体概念如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260514143305458.png" alt="多重中断具体概念">
 通过一个题来具体看多重中断会怎么考察：
@@ -1311,17 +1364,18 @@ of in on at for to from with by about between among through across during before
             <li><a href="#733-i--o-端口及其编址">7.3.3 I / O 端口及其编址</a></li>
           </ul>
         </li>
-        <li><a href="#74-中断系统">7.4 中断系统</a>
+        <li><a href="#74-异常与中断机制">7.4 异常与中断机制</a>
           <ul>
-            <li><a href="#741-中断的基本概念">7.4.1 中断的基本概念</a></li>
-            <li><a href="#742-中断的工作流程">7.4.2 中断的工作流程</a>
+            <li><a href="#741-异常与中断的基本概念">7.4.1 异常与中断的基本概念</a></li>
+            <li><a href="#742-异常和中断的分类">7.4.2 异常和中断的分类</a></li>
+            <li><a href="#743-中断的工作流程">7.4.3 中断的工作流程</a>
               <ul>
-                <li><a href="#7421-中断请求与中断响应">7.4.2.1 中断请求与中断响应</a></li>
-                <li><a href="#7422-中断处理过程">7.4.2.2 中断处理过程</a></li>
+                <li><a href="#7431-中断请求与中断响应">7.4.3.1 中断请求与中断响应</a></li>
+                <li><a href="#7432-中断处理过程">7.4.3.2 中断处理过程</a></li>
               </ul>
             </li>
-            <li><a href="#743-单重中断">7.4.3 单重中断</a></li>
-            <li><a href="#744-多重中断">7.4.4 多重中断</a></li>
+            <li><a href="#744-单重中断">7.4.4 单重中断</a></li>
+            <li><a href="#745-多重中断">7.4.5 多重中断</a></li>
           </ul>
         </li>
         <li><a href="#75-i--o-方式">7.5 I / O 方式</a>
