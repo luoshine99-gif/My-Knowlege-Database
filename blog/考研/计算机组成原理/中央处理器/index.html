@@ -1298,7 +1298,7 @@ CPU 内部分为运算器和控制器：</p>
 <ol>
 <li>
 <p>单周期数据通路
-在单周期数据通路中，<strong>每条指令的所有操作（取指、译码、执行、访存、写回等）都在一个时钟周期内完成。</strong> 时钟周期长度由最慢的指令</p>
+在单周期数据通路中，<strong>每条指令的所有操作（取指、译码、执行、访存、写回等）都在一个时钟周期内完成。</strong> 时钟周期长度由最慢的指令决定。</p>
 </li>
 <li>
 <p>多周期数据通路
@@ -1406,10 +1406,24 @@ CPU 内部分为运算器和控制器：</p>
 <h4 id="5422-微程序控制器工作过程">5.4.2.2 微程序控制器工作过程</h4>
 <p>关于微程序控制器的工作过程：</p>
 <ol>
-<li><strong>执行指令公共操作</strong>：系统启动或者每条指令执行完毕之后，系统启动或每条指令执行完毕后，将取指微程序的入口地址（通常为 CM 的 0 号单元）送入 uPC。随后，从 CM 中读取首条取指微指令并送入 uIR。<strong>完成取指微程序</strong> 后，从主存中取出的机器指令即被存入指令寄存器（IR）中、PC + “1”。<strong>（题目中说一条指令对应的微指令通常不包括这个公共微指令）</strong>。</li>
-<li><strong>生成当前指令的微程序入口地址</strong>：根据 IR 中机器指令的操作码，通过微地址形成部件产生对应微程序的起始微地址，并送入 uPC。</li>
-<li><strong>顺序执行微程序</strong>：从 CM 逐条读取微指令，送入 uIR 并执行，直至该微程序执行完毕。</li>
-<li><strong>返回循环</strong>：当前机器指令对应的微程序执行结束后，控制器自动转移回取指微程序的入口（步骤1），重新开始处理下一条机器指令。整个流程不断循环，直至整个程序执行完毕。</li>
+<li>
+<p><strong>执行指令公共操作</strong>：
+系统启动或每条指令执行完毕后，将取指微程序的入口地址（通常为 CM 的 0 号单元）送入 uPC。随后，从 CM 中读取首条取指微指令并送入 uIR。<strong>完成取指微程序</strong> ，</p>
+<p>系统启动时，会设置 PC 的值，这段公共微程序根据 PC 的值取指放入 IR，（PC-&gt;MAR-&gt;M(MAR)-&gt;MDR-&gt;IR）并且 PC + &ldquo;1&rdquo;。
+<strong>（注意：题目中说一条指令对应的微指令通常不包括这个公共微指令）</strong>。</p>
+</li>
+<li>
+<p><strong>生成当前指令的微程序入口地址</strong>：
+根据 IR 中机器指令的操作码，通过微地址形成部件产生对应微程序的起始微地址，并送入 uPC。</p>
+</li>
+<li>
+<p><strong>顺序执行微程序</strong>：
+从 CM 逐条读取微指令，送入 uIR 并执行，直至该微程序执行完毕。</p>
+</li>
+<li>
+<p><strong>返回循环</strong>：
+当前机器指令对应的微程序执行结束后，控制器自动转移回取指微程序的入口（步骤1），重新开始处理下一条机器指令。整个流程不断循环，直至整个程序执行完毕。</p>
+</li>
 </ol>
 <p>值得注意的是：控制存储器（CM）中的</p>
 <ol>
@@ -1505,13 +1519,13 @@ CPU 内部分为运算器和控制器：</p>
 <h2 id="55-指令流水线">5.5 指令流水线</h2>
 <p>在指令执行方案那一小节介绍过三种执行方案，前面介绍的单周期处理器采用串行的方式执行命令，而这个小节介绍的就是流水线这个方案。思维导图如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260510131005061.png" alt="思维导图"></p>
-<h3 id="551-指令流水线的基本概念和性能指标">5.5.1 指令流水线的基本概念和性能指标</h3>
+<h3 id="551-指令流水线的很多概念">5.5.1 指令流水线的很多概念</h3>
 <p>提升处理器并行性的主要途径有两类：</p>
 <ol>
 <li>时间上的并行：将一个任务分解成多个子阶段，各阶段由专用功能部件依次处理，并允许多个任务在不同阶段推进，即 <strong>流水线技术</strong>。</li>
 <li>空间上的并行：在一个处理器内配置多个相同的功能部件，使其并行工作，称为 <strong>超量处理器</strong>。</li>
 </ol>
-<p>典型的<strong>五段流水线</strong>将指令执行划分为以下阶段（前面的周期划分是逻辑上的划分，这里是硬件上的划分，是如何把一条指令拆成更小步骤，让多条指令同时执行）：</p>
+<p>典型的 <strong>五段流水线</strong> 将指令执行划分为以下阶段（前面的周期划分是逻辑上的划分，这里是硬件上的划分，是如何把一条指令拆成更小步骤，让多条指令同时执行）：</p>
 <ul>
 <li><strong>取指（IF）</strong>：从指令存储器或缓存中读取指令。</li>
 <li><strong>译码 / 读寄存器（ID）</strong>：对指令进行译码，并从寄存器堆中读取操作数。</li>
@@ -1519,31 +1533,181 @@ CPU 内部分为运算器和控制器：</p>
 <li><strong>访存（MEM）</strong>：访问主存储器，完成数据的读或写操作。</li>
 <li><strong>写回（WB）</strong>：将执行结果写回寄存器堆。</li>
 </ul>
-<p>而<strong>流水线的表示方法</strong>通常使用下面两张图进行表示：
+<p>而 <strong>流水线的表示方法</strong> 通常使用下面两张图进行表示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260509210222216.png" alt="流水线的表示方法"></p>
 <hr>
-<p>指令流水线的性能指标主要有三个：<strong>吞吐率、加速比 和 效率</strong>，如下图所示：
+<p><strong>性能指标：</strong>
+指令流水线的性能指标主要有三个：<strong>吞吐率、加速比 和 效率</strong>，如下图所示：
 注意：下面这些情况都是在理想情况下讨论（完美衔接）。
-<img src="http://tuchuang.mrlxl.cn/picture/20260509211123448.png" alt="性能指标">
-计算总时间还可以这么看：
-第一个任务执行完要 k t，执行完第一个任务后后面 n - 1 个任务每隔 t 执行完一个。</p>
-<h3 id="552-指令流水线的影响因素和分类">5.5.2 指令流水线的影响因素和分类</h3>
+<img src="http://tuchuang.mrlxl.cn/picture/20260509211123448.png" alt="性能指标"></p>
+<hr>
+<p><strong>流水线的设计原则：</strong></p>
+<ol>
+<li><strong>流水段的数量以最复杂指令所需的功能段数为准。</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">例如：
+</span></span><span class="line"><span class="cl">指令 A 需要 4 个功能段
+</span></span><span class="line"><span class="cl">指令 B 需要 5 个功能段
+</span></span><span class="line"><span class="cl">指令 C 需要 3 个功能段
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">那么流水线应划分为：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">5 个流水段
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">因为较短的指令也要通过这 5 个流水段，只不过某些流水段对它来说是空操作/不执行实际功能。
+</span></span></code></pre></div><ol start="2">
+<li><strong>每个流水段的段长以最耗时的操作为准。</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">例如：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">流水段	实际操作时间
+</span></span><span class="line"><span class="cl">S1	1s
+</span></span><span class="line"><span class="cl">S2	2s
+</span></span><span class="line"><span class="cl">S3	1.5s
+</span></span><span class="line"><span class="cl">S4	1s
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">那么：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">流水段长度 t = 2s
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">为什么？
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">因为流水线必须按照统一的时钟节拍运行。
+</span></span><span class="line"><span class="cl">最慢的流水段需要 2s，其他流水段即使只需要 1s，也要占用这一个 2s 的流水周期。
+</span></span></code></pre></div><p><strong>计算总时间</strong> 可以这么看：
+第一个任务执行完要 k t，执行完第一个任务后后面 n - 1 个任务每隔 t 执行完一个。因此 <strong>T = (k + n - 1)t</strong></p>
+<p>这个方法要牢记，计算总时间及其容易出错，比如最后一个阶段规定 2s ，但实际是 1 s：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">| 流水段 | 实际操作时间 |
+</span></span><span class="line"><span class="cl">| --- | -----: |
+</span></span><span class="line"><span class="cl">| S1  |     1s |
+</span></span><span class="line"><span class="cl">| S2  |     2s |
+</span></span><span class="line"><span class="cl">| S3  |     1s |
+</span></span><span class="line"><span class="cl">| S4  |     1s |
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">虽然 S4 实际只需要 1s，但是流水线的统一段长已经由 S2 决定：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">t = 2s
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">所以不能认为最后一个任务进入 S4 后只需要 1s，然后直接用实际时间去算。
+</span></span></code></pre></div><hr>
+<p><strong>指令流水线的分类：</strong>
+如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260510140326031.png" alt="指令流水线的分类"></p>
+<hr>
+<p><strong>指令流水线对指令集的要求：</strong>
+为便于高效实现指令流水线，指令集应具备以下特征：</p>
+<ol>
+<li><strong>指令长度统一</strong>：简化取指与译码逻辑，避免因变长指令导致取指周期不确定。</li>
+<li><strong>指令格式规整</strong>：确保源操作数寄存器字段位置固定，支持在译码前预取操作数。</li>
+<li><strong>采用 LOAD/STORE 架构</strong>：仅允许加载（LOAD）和存储（STORE）指令访问主存，其他指令仅操作寄存器，有利于流水线段功能划分与调度。</li>
+<li><strong>数据与指令按边界对齐存放</strong>：确保单次访存即可获取完整操作数，避免跨周期访问，保障流水线段的原子性与时序规整性。</li>
+</ol>
+<h3 id="552-指令流水线冒险">5.5.2 指令流水线冒险</h3>
 <p>前面说的指令分为了五个阶段，具体如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260510133634030.png" alt="具体五个阶段">
-而 <strong>影响指令流水线的因素</strong> 具体有如下三种：</p>
+为什么叫做指令流水线冒险，因为流水线是脆弱的，在运行过程中随时可能被阻塞，因此叫做“冒险”。
+而 <strong>导致流水线阻塞的原因及对应的解决方法</strong> 具体有如下三种，注意在考研里面，下面三图中，一般每一列代表一个时钟周期。</p>
+<h4 id="5521-结构冒险">5.5.2.1 结构冒险</h4>
+<p>资源冲突，类似操作系统中的互斥。
+<img src="http://tuchuang.mrlxl.cn/picture/20260510134458309.png" alt="结构相关">
+<strong>解决方案：</strong></p>
 <ol>
-<li><strong>结构相关（资源冲突，类似操作系统中的互斥）：</strong>
-<img src="http://tuchuang.mrlxl.cn/picture/20260510134458309.png" alt="结构相关"></li>
-<li><strong>数据相关（数据冲突，类似操作系统中的同步）：</strong>
-<img src="http://tuchuang.mrlxl.cn/picture/20260510135138027.png" alt="数据相关"></li>
-<li><strong>控制相关（控制冲突）：</strong>
-<img src="http://tuchuang.mrlxl.cn/picture/20260510135321850.png" alt="控制相关"></li>
+<li><strong>遵循功能部件使用原则：</strong>
+确保每个功能部件在每条指令中至多使用一次，且总在固定阶段使用（如寄存器写回操作统一安排在 WB 段），可避免部分结构冲突。</li>
+<li><strong>增加硬件资源：</strong>
+例如，将寄存器堆的读口与写口分离，支持在一个周期的前半拍写、后半拍读；或将指令存储器与数据存储器分离。现代处理器的 L1 Cache 通常采用 <strong>指令 Cache 与数据 Cache 分离</strong> 的设计，从根本上消除了取指与数据访存之间的资源竞争。</li>
 </ol>
-<p>注意结构相关和数据相关的区别：
-数据相关是指令之间存在依赖关系，等别人用完才能用；结构相关和指令之间的依赖关系无关，纯纯是去争硬件。</p>
-<hr>
-<p>关于<strong>指令流水线的分类</strong>如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260510140326031.png" alt="指令流水线的分类"></p>
+<h4 id="5522-数据冒险">5.5.2.2 数据冒险</h4>
+<p>数据冲突，类似操作系统中的同步。
+<img src="http://tuchuang.mrlxl.cn/picture/20260510135138027.png" alt="数据相关">
+<strong>解决方案：</strong></p>
+<ol>
+<li>
+<p><strong>延迟执行相关指令：</strong>
+将数据相关的指令及其后续指令都暂停若干时钟周期，直至前一条指令的结果可被安全读取。可分为软件插入 <strong>空操作（nop）指令和硬件自动插入气泡（阻塞）</strong> 两种方法。</p>
+</li>
+<li>
+<p><strong>采用转发（旁路）技术：</strong>
+设置相关转发通路，使后续指令无须等待前一条指令将计算结果写回寄存器堆，而是将其在执行阶段生成的中间结果直接转发至 ALU 的输入端。</p>
+<p>能产生数据的指令（比如 Load 指令例外）通常在 EX 阶段产生数据，可将数据存在 <strong>EX / MEM 流水段寄存器。</strong> 当产生数据冲突的指令，进入 EX 段之后，观察所需数据是否已经产生。</p>
+</li>
+<li>
+<p><strong>load-use 数据冒险处理：</strong>
+load 指令在 <strong>MEM 阶段</strong> 结束时才能从存储器中读出数据，并将数据存入 <strong>MEM / WB 流水段寄存器</strong>。</p>
+<p>而紧随其后的指令如果需要使用该数据，其操作数通常要在 EX 阶段送入 ALU。此时，load 指令在该指令进入 EX 阶段时尚未产生数据，因此仅依靠数据旁路技术无法及时提供所需数据。</p>
+<p>因此，需要让后续指令的 EX 阶段延迟 1 个时钟周期，通常可通过 <strong>插入一条 NOP 指令</strong> 实现。</p>
+</li>
+</ol>
+<h4 id="5523-控制冒险">5.5.2.3 控制冒险</h4>
+<p>转移指令执行过程中，如果确定发生转移，PC 就会被修改为转移目标地址；但在确定转移结果之前，流水线可能已经根据原来的 PC 取出了后续指令。</p>
+<p>如果最终发生转移，那么这些已经取出的指令就是错误指令，需要被清除，从而造成流水线停顿。
+<img src="http://tuchuang.mrlxl.cn/picture/20260510135321850.png" alt="控制相关">
+<strong>解决方案：</strong></p>
+<ol>
+<li><strong>延迟分支处理</strong>：对于由分支指令引起的冲突，可由软件在分支指令后插入若干 nop 指令，或由硬件自动阻塞（插入气泡）。插入 nop 指令的数量等于分支延迟周期数。</li>
+</ol>
+<table>
+  <thead>
+      <tr>
+          <th>指令</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>5</th>
+          <th>6</th>
+          <th>7</th>
+          <th>8</th>
+          <th>9</th>
+          <th>10</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>add</td>
+          <td>IF</td>
+          <td>ID</td>
+          <td>EX</td>
+          <td>MEM</td>
+          <td>WB</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>bne</td>
+          <td></td>
+          <td>IF</td>
+          <td>ID</td>
+          <td>EX</td>
+          <td>MEM</td>
+          <td>WB</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>add</td>
+          <td></td>
+          <td></td>
+          <td>nop</td>
+          <td>nop</td>
+          <td>nop</td>
+          <td><strong>IF</strong></td>
+          <td>ID</td>
+          <td>EX</td>
+          <td>MEM</td>
+          <td>WB</td>
+      </tr>
+  </tbody>
+</table>
+<ol start="2">
+<li><strong>分支预测技术</strong>：尽早生成转移目标地址并预测转移方向，以减少流水线清空。静态预测采用简单规则，总是预测转移发生或不发生；动态预测根据程序运行时的转移历史动态调整预测策略，准确率更高。若预测错误，则需清空已进入流水线的错误路径指令，并从正确目标地址重新取指；若分支延迟周期数为 3，此时将损失 3 个时钟周期。</li>
+</ol>
+<p>注意： <strong>Cache 缺失、中断和异常也会引起结构冒险。</strong></p>
 <h3 id="553-多发技术高级流水线技术">5.5.3 多发技术（高级流水线技术）</h3>
 <p>有两种策略能够提升指令级的并行度：</p>
 <ol>
@@ -1652,8 +1816,14 @@ GPT 说可以是单节点多核，也可以是多节点。
         </li>
         <li><a href="#55-指令流水线">5.5 指令流水线</a>
           <ul>
-            <li><a href="#551-指令流水线的基本概念和性能指标">5.5.1 指令流水线的基本概念和性能指标</a></li>
-            <li><a href="#552-指令流水线的影响因素和分类">5.5.2 指令流水线的影响因素和分类</a></li>
+            <li><a href="#551-指令流水线的很多概念">5.5.1 指令流水线的很多概念</a></li>
+            <li><a href="#552-指令流水线冒险">5.5.2 指令流水线冒险</a>
+              <ul>
+                <li><a href="#5521-结构冒险">5.5.2.1 结构冒险</a></li>
+                <li><a href="#5522-数据冒险">5.5.2.2 数据冒险</a></li>
+                <li><a href="#5523-控制冒险">5.5.2.3 控制冒险</a></li>
+              </ul>
+            </li>
             <li><a href="#553-多发技术高级流水线技术">5.5.3 多发技术（高级流水线技术）</a></li>
             <li><a href="#554-五段式指令流水线">5.5.4 五段式指令流水线</a></li>
           </ul>
