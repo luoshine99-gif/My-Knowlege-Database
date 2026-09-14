@@ -1605,9 +1605,11 @@ CPU 内部分为运算器和控制器：</p>
 <h3 id="552-指令流水线冒险">5.5.2 指令流水线冒险</h3>
 <p>前面说的指令分为了五个阶段，具体如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260510133634030.png" alt="具体五个阶段">
-为什么叫做指令流水线冒险，因为流水线是脆弱的，在运行过程中随时可能被阻塞，因此叫做“冒险”。
-而 <strong>导致流水线阻塞的原因及对应的解决方法</strong> 具体有如下三种，注意在考研里面，下面三图中，一般每一列代表一个时钟周期。</p>
-<h4 id="5521-结构冒险">5.5.2.1 结构冒险</h4>
+为什么叫做指令流水线冒险，因为流水线是脆弱的，在运行过程中随时可能被阻塞，因此叫做“冒险”。</p>
+<p>考研里面考察冒险，一定是经典五段流水线，首先需要了解流水线每段及相关指令需要做什么，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260914222501555.png" alt="">
+而 <strong>导致流水线阻塞的原因及对应的解决方法</strong> 如下所示：</p>
+<h4 id="5521-结构冒险结构冲突">5.5.2.1 结构冒险（结构冲突）</h4>
 <p>资源冲突，类似操作系统中的互斥。
 <img src="http://tuchuang.mrlxl.cn/picture/20260510134458309.png" alt="结构相关">
 <strong>解决方案：</strong></p>
@@ -1617,34 +1619,112 @@ CPU 内部分为运算器和控制器：</p>
 <li><strong>增加硬件资源：</strong>
 例如，将寄存器堆的读口与写口分离，支持在一个周期的前半拍写、后半拍读；或将指令存储器与数据存储器分离。现代处理器的 L1 Cache 通常采用 <strong>指令 Cache 与数据 Cache 分离</strong> 的设计，从根本上消除了取指与数据访存之间的资源竞争。</li>
 </ol>
-<h4 id="5522-数据冒险">5.5.2.2 数据冒险</h4>
+<h4 id="5522-数据冒险数据冲突">5.5.2.2 数据冒险（数据冲突）</h4>
 <p>数据冲突，类似操作系统中的同步。
 <img src="http://tuchuang.mrlxl.cn/picture/20260510135138027.png" alt="数据相关">
-<strong>解决方案：</strong></p>
+<strong>如何判断是否可能存在数据冒险：</strong></p>
+<ol>
+<li>快速判断：判断一条指令 A 是否会引起数据冒险，看它 <strong>后面三条指令是否将 A 指令的输出结果作为输入</strong>。若是，则会引起数据冒险。注意若是看到指令 A 后续不足三条指令，不要忘记转移指令后面还有指令。</li>
+<li>较全面的判断：画图。</li>
+</ol>
+<p>需要注意：题目问的是可能引起数据冒险的指令，还是引起阻塞的指令。</p>
+<p><strong>解决方案：</strong></p>
 <ol>
 <li>
-<p><strong>延迟执行相关指令：</strong>
-将数据相关的指令及其后续指令都暂停若干时钟周期，直至前一条指令的结果可被安全读取。可分为软件插入 <strong>空操作（nop）指令和硬件自动插入气泡（阻塞）</strong> 两种方法。</p>
+<p><strong>延迟执行相关指令（重点）：</strong>
+将数据相关的指令及其后续指令都暂停若干时钟周期，直至前一条指令的结果可被安全读取。可分为软件插入 <strong>空操作（nop）指令和硬件自动插入气泡（阻塞）</strong> 两种方法。
+引起数据冒险的指令 A 在 WB 阶段才写回数据，故需要将 <strong>后续指令的 ID 阶段（读数据是 ID 阶段！！）移到指令 A 在 WB 阶段之后</strong>。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260914231834527.png" alt="延迟执行相关指令"></p>
 </li>
 <li>
 <p><strong>采用转发（旁路）技术：</strong>
-设置相关转发通路，使后续指令无须等待前一条指令将计算结果写回寄存器堆，而是将其在执行阶段生成的中间结果直接转发至 ALU 的输入端。</p>
-<p>能产生数据的指令（比如 Load 指令例外）通常在 EX 阶段产生数据，可将数据存在 <strong>EX / MEM 流水段寄存器。</strong> 当产生数据冲突的指令，进入 EX 段之后，观察所需数据是否已经产生。</p>
-</li>
-<li>
-<p><strong>load-use 数据冒险处理：</strong>
-load 指令在 <strong>MEM 阶段</strong> 结束时才能从存储器中读出数据，并将数据存入 <strong>MEM / WB 流水段寄存器</strong>。</p>
-<p>而紧随其后的指令如果需要使用该数据，其操作数通常要在 EX 阶段送入 ALU。此时，load 指令在该指令进入 EX 阶段时尚未产生数据，因此仅依靠数据旁路技术无法及时提供所需数据。</p>
-<p>因此，需要让后续指令的 EX 阶段延迟 1 个时钟周期，通常可通过 <strong>插入一条 NOP 指令</strong> 实现。</p>
+设置相关转发通路，使后续指令无须等待前一条指令将计算结果写回寄存器堆，而是将前一条指令产生的结果直接转发至后续指令 EX 阶段的 ALU 输入端。</p>
+<p>能产生数据的指令通常在 EX 阶段产生数据（ Load 指令例外），可将数据存在 <strong>EX / MEM 流水段寄存器。</strong> 当产生数据冲突的指令，进入 EX 段之后，观察所需数据是否已经产生。<strong>后续指令的 EX 段若在产生数据冒险的指令 A 的 EX 段之后，就能够被成功处理，</strong></p>
 </li>
 </ol>
-<h4 id="5523-控制冒险">5.5.2.3 控制冒险</h4>
+<table>
+  <thead>
+      <tr>
+          <th>指令</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>5</th>
+          <th>6</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>add</td>
+          <td>IF</td>
+          <td>ID</td>
+          <td><strong>EX</strong></td>
+          <td>MEM</td>
+          <td>WB</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>add</td>
+          <td></td>
+          <td>IF</td>
+          <td>ID</td>
+          <td><strong>EX</strong></td>
+          <td>MEM</td>
+          <td>WB</td>
+      </tr>
+  </tbody>
+</table>
+<ol start="3">
+<li>
+<p><strong>load-use 处理：</strong>
+load 指令在 <strong>MEM 阶段</strong> 结束时才能从存储器中读出数据，并将数据存入 <strong>MEM / WB 流水段寄存器</strong>。</p>
+<p>而紧随其后的指令如果需要使用该数据，其操作数通常要在 EX 阶段送入 ALU。此时，load 指令在该指令进入 EX 阶段时尚未产生数据，因此仅依靠数据旁路技术无法及时提供所需数据。</p>
+<p>因此，需要让后续指令的 EX 阶段延迟 1 个时钟周期，才能通过数据旁路技术解决冒险问题。通常可通过 <strong>插入一条 NOP 指令</strong> 实现。</p>
+</li>
+</ol>
+<table>
+  <thead>
+      <tr>
+          <th>指令</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>5</th>
+          <th>6</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>lw</td>
+          <td>IF</td>
+          <td>ID</td>
+          <td>EX</td>
+          <td><strong>MEM</strong></td>
+          <td>WB</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>add</td>
+          <td></td>
+          <td>IF</td>
+          <td>ID</td>
+          <td>nop</td>
+          <td><strong>EX</strong></td>
+          <td>MEM</td>
+      </tr>
+  </tbody>
+</table>
+<h4 id="5523-控制冒险控制冲突">5.5.2.3 控制冒险（控制冲突）</h4>
 <p>转移指令执行过程中，如果确定发生转移，PC 就会被修改为转移目标地址；但在确定转移结果之前，流水线可能已经根据原来的 PC 取出了后续指令。</p>
 <p>如果最终发生转移，那么这些已经取出的指令就是错误指令，需要被清除，从而造成流水线停顿。
 <img src="http://tuchuang.mrlxl.cn/picture/20260510135321850.png" alt="控制相关">
-<strong>解决方案：</strong></p>
+<strong>如何判断是否可能存在控制冒险：</strong>
+只要有转移指令就存在控制冒险，如：jmp、call、ret 等。</p>
+<p><strong>解决方案：</strong></p>
 <ol>
-<li><strong>延迟分支处理</strong>：对于由分支指令引起的冲突，可由软件在分支指令后插入若干 nop 指令，或由硬件自动阻塞（插入气泡）。插入 nop 指令的数量等于分支延迟周期数。</li>
+<li><strong>延迟分支处理</strong>：对于由分支指令引起的冲突，可由软件在分支指令后插入若干 nop 指令，或由硬件自动阻塞（插入气泡）。</li>
 </ol>
 <table>
   <thead>
@@ -1660,6 +1740,7 @@ load 指令在 <strong>MEM 阶段</strong> 结束时才能从存储器中读出�
           <th>8</th>
           <th>9</th>
           <th>10</th>
+          <th>11</th>
       </tr>
   </thead>
   <tbody>
@@ -1675,6 +1756,7 @@ load 指令在 <strong>MEM 阶段</strong> 结束时才能从存储器中读出�
           <td></td>
           <td></td>
           <td></td>
+          <td></td>
       </tr>
       <tr>
           <td>bne</td>
@@ -1682,8 +1764,9 @@ load 指令在 <strong>MEM 阶段</strong> 结束时才能从存储器中读出�
           <td>IF</td>
           <td>ID</td>
           <td>EX</td>
-          <td>MEM</td>
+          <td><strong>MEM</strong></td>
           <td>WB</td>
+          <td></td>
           <td></td>
           <td></td>
           <td></td>
@@ -1701,9 +1784,25 @@ load 指令在 <strong>MEM 阶段</strong> 结束时才能从存储器中读出�
           <td>EX</td>
           <td>MEM</td>
           <td>WB</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>add</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>IF</td>
+          <td>ID</td>
+          <td>EX</td>
+          <td>MEM</td>
+          <td>WB</td>
       </tr>
   </tbody>
 </table>
+<p><strong>注意：</strong> 转移指令在 MEM 阶段完成后，就完成了 PC 的修改。故需要把<strong>下一个指令的 IF 阶段放到转移指令的 MEM 阶段之后。</strong> 后续的指令也是同样需要后移的别忘了。</p>
 <ol start="2">
 <li><strong>分支预测技术</strong>：尽早生成转移目标地址并预测转移方向，以减少流水线清空。静态预测采用简单规则，总是预测转移发生或不发生；动态预测根据程序运行时的转移历史动态调整预测策略，准确率更高。若预测错误，则需清空已进入流水线的错误路径指令，并从正确目标地址重新取指；若分支延迟周期数为 3，此时将损失 3 个时钟周期。</li>
 </ol>
@@ -1819,9 +1918,9 @@ GPT 说可以是单节点多核，也可以是多节点。
             <li><a href="#551-指令流水线的很多概念">5.5.1 指令流水线的很多概念</a></li>
             <li><a href="#552-指令流水线冒险">5.5.2 指令流水线冒险</a>
               <ul>
-                <li><a href="#5521-结构冒险">5.5.2.1 结构冒险</a></li>
-                <li><a href="#5522-数据冒险">5.5.2.2 数据冒险</a></li>
-                <li><a href="#5523-控制冒险">5.5.2.3 控制冒险</a></li>
+                <li><a href="#5521-结构冒险结构冲突">5.5.2.1 结构冒险（结构冲突）</a></li>
+                <li><a href="#5522-数据冒险数据冲突">5.5.2.2 数据冒险（数据冲突）</a></li>
+                <li><a href="#5523-控制冒险控制冲突">5.5.2.3 控制冒险（控制冲突）</a></li>
               </ul>
             </li>
             <li><a href="#553-多发技术高级流水线技术">5.5.3 多发技术（高级流水线技术）</a></li>
