@@ -1186,7 +1186,9 @@ of in on at for to from with by about between among through across during before
 <h2 id="73-i--o-接口">7.3 I / O 接口</h2>
 <p>本小节思维导图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260513151941852.png" alt="思维导图"></p>
-<h3 id="731-i--o-设备的功能和基本结构">7.3.1 I / O 设备的功能和基本结构</h3>
+<h3 id="731-i--o-接口的基本概念">7.3.1 I / O 接口的基本概念</h3>
+<p>这是 I / O 接口（也称 I / O 控制器）的实物结构，不是 I / O 设备（I / O 接口外部接口连接），也不是 I / O 端口（I / O 接口内部）：
+<img src="http://tuchuang.mrlxl.cn/picture/20260513162958035.png" alt="I / O 设备的基本结构"></p>
 <p>I/O 接口的主要功能如下：</p>
 <ol>
 <li><strong>地址译码与设备选择：</strong> 当 CPU 发出 I/O 操作请求时，会同时提供目标外设的地址码。接口对地址进行译码，产生设备选择信号，确保主机仅与指定外设通信。</li>
@@ -1195,17 +1197,15 @@ of in on at for to from with by about between among through across during before
 <li><strong>信号格式转换：</strong> 主机与外设在电平标准、数据格式或信号类型上可能存在差异。接口需完成电平转换、并 / 串或串 / 并转换、模 / 数或数 / 模转换等，以实现物理兼容。</li>
 <li><strong>控制命令与状态信息传递：</strong> CPU 通过向接口的控制寄存器写入命令（如 “启动”）控制外设；外设通过状态寄存器反馈状态（如 “就绪”）。当外设需要主动通知 CPU（如数据到达）时，接口可向 CPU 发出中断请求，由 CPU 适时响应处理。</li>
 </ol>
-<p>I / O 设备的基本结构如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260513162958035.png" alt="I / O 设备的基本结构"></p>
-<h3 id="732-i--o-设备的工作原理">7.3.2 I / O 设备的工作原理</h3>
-<p>关于 I / O 设备的工作原理如下图所示：
+<p>关于 <strong>I / O 接口的工作原理</strong> 如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260513162003536.png" alt="I / O 设备的工作原理"></p>
-<h3 id="733-i--o-端口及其编址">7.3.3 I / O 端口及其编址</h3>
+<h3 id="732-i--o-端口及其编址">7.3.2 I / O 端口及其编址</h3>
 <p><strong>I / O 端口指的是能直接被 CPU 访问的 I / O 接口中的寄存器</strong>，不是 I / O 接口连接的那些 I / O 设备！（别总想着计算机网络中的端口）</p>
 <p><strong>独立编址：</strong>
 关于独立编址的来源是这样的：早期架构如 X86 架构中 I / O 设备中的寄存器很少，于是直接采用物理编址的方式，如 60H 表示数据寄存器，这种 60H 其实并不是什么空间的地址，而是一个编号！这个编号体系长的像空间编址体系。</p>
 <p>你可以这么看：I / O 设备的编址体系看成一个地址空间比如 0-65535，其中不同地址对应不同寄存器编号&ndash;这就是 <strong>I / O 空间</strong>。所有 I / O 设备都共享同一个 I / O 地址空间，所以不同 I / O 接口的端口不能重名。I / O 空间并不是真的物理空间，而是一套体系！</p>
-<p>站在 CPU 视角上看，其实有两种地址空间，<strong>内存空间和 I / O 空间</strong>，如 X86 架构的汇编语言：MOV AL,[60H] 表示访问的是主存空间；IN AL,60H 表示访问的是 I / O 设备中的寄存器。</p>
+<p>站在 CPU 视角上看，其实有两种地址空间，<strong>内存空间（包括虚拟内存空间）和 I / O 空间</strong>，如 X86 架构的汇编语言：MOV AL,[60H] 表示访问的是主存空间；IN AL,60H 表示访问的是 I / O 设备中的寄存器。</p>
+<p>内存空间（包括虚拟内存空间）和 I / O 空间 地址值可以相同，因为属于不同的地址空间，但是 <strong>CPU 需要通过专门的指令（如 X86 中的 IN 和 OUT）才能访问 I / O 端口，指令中的地址字段指定端口号。</strong></p>
 <p><strong>统一编址：</strong>
 在现代通常采用统一编址（MMIO），将 IO 设备中的寄存器映射到物理地址空间中（但是寄存器还是物理存在），CPU 使用普通访存指令即可访问这些寄存器，而不再需要专门的 IO 指令和独立 IO 空间。</p>
 <p>统一编址和独立编址如下图所示：
@@ -1270,12 +1270,18 @@ of in on at for to from with by about between among through across during before
 </table>
 <p>终止异常和外中断都属于硬件中断。</p>
 <h3 id="743-中断的工作流程">7.4.3 中断的工作流程</h3>
-<h4 id="7431-中断请求与中断响应">7.4.3.1 中断请求与中断响应</h4>
+<h4 id="7431-中断请求">7.4.3.1 中断请求</h4>
 <p><strong>中断源</strong> 是指能够向 CPU 发出中断请求的设备或事件。一台计算机允许多个中断源同时存在，且各中断源发出请求的时间具有随机性。为记录并区分不同的中断请求，中断系统为每个中断源设置一个 <strong>中断请求标记触发器</strong>：当其状态为 “1” 时，表示该中断源有中断请求。这些触发器可组成中断请求标记寄存器，该寄存器可集中置于 CPU 内部，也可分散在各个中断源中。
 中断请求标记如图所示：
-注意：通过 INTR 信号线发出的都是 <strong>可屏蔽中断</strong>，通过 NMI 信号线发出的是 <strong>不可屏蔽中断</strong>。
-<img src="http://tuchuang.mrlxl.cn/picture/20260513193215151.png" alt="中断请求标记">
-对于不同的中断请求有优先级判断，即 <strong>中断响应判优</strong>，具体优先级如下：</p>
+注意：通过 <strong>INTR 信号线</strong> 发出的都是 <strong>可屏蔽中断</strong>，通过 <strong>NMI 信号线</strong> 发出的是 <strong>不可屏蔽中断</strong>。
+<img src="http://tuchuang.mrlxl.cn/picture/20260513193215151.png" alt="中断请求标记"></p>
+<h4 id="7432-中断响应与中断处理">7.4.3.2 中断响应与中断处理</h4>
+<p>首先区分什么叫做中断响应，什么叫做中断处理：</p>
+<ol>
+<li><strong>中断响应</strong>： 指多个中断请求 <strong>同时</strong> 到来时，CPU 先响应哪个中断。</li>
+<li><strong>中断处理</strong>：指 CPU <strong>已经在处理</strong> 某个中断时，另一个中断来了，能不能打断当前中断。</li>
+</ol>
+<p><strong>中断响应优先级判断</strong> 如下：</p>
 <ol>
 <li>硬件故障中断属于最高级，其次是软件中断；</li>
 <li>非屏蔽中断优于可屏蔽中断；</li>
@@ -1284,24 +1290,27 @@ of in on at for to from with by about between among through across during before
 <li>输入设备优于输出设备；</li>
 <li>实时设备优于普通设备。</li>
 </ol>
-<p>中断响应判优电路如下图所示（不考，便于理解）：
-注意：中断请求寄存器 + 判优逻辑电路 才是 排队器，别混了。
-<img src="http://tuchuang.mrlxl.cn/picture/20260513194049295.png" alt="中断响应判优电路"></p>
-<h4 id="7432-中断处理过程">7.4.3.2 中断处理过程</h4>
-<p>中断处理过程大致如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260513194412383.png" alt="中断处理过程大致">
-第一就是知道 <strong>中断隐指令</strong> 是怎么处理的，如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260513200701917.png" alt="中断隐指令">
-第二就是知道 <strong>中断服务程序</strong> 会做下面这些操作：
-<img src="http://tuchuang.mrlxl.cn/picture/20260513200813813.png" alt="中断服务程序"></p>
-<h3 id="744-单重中断">7.4.4 单重中断</h3>
-<p>单重中断的整体流程如图所示：
-注意单重中断中关中断和开中断的位置，意味着单重中断：<strong>执行中断服务程序时不响应新的中断请求。</strong>
-<img src="http://tuchuang.mrlxl.cn/picture/20260513201109052.png" alt="单重中断的整体流程"></p>
-<h3 id="745-多重中断">7.4.5 多重中断</h3>
-<p>多重中断具体概念如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260514143305458.png" alt="多重中断具体概念">
-通过一个题来具体看多重中断会怎么考察：
+<p>中断响应优先级判断电路如下图所示（不考，便于理解）：
+注意：中断请求寄存器 + 判优逻辑电路 才是 排队器，别混了。其次，<strong>中断响应优先级判断方式</strong> 通常是硬件方式或中断查询程序。
+<img src="http://tuchuang.mrlxl.cn/picture/20260513194049295.png" alt="中断响应判优电路">
+<strong>中断处理</strong>：
+判断要进行响应哪个中断之后，就在开始做出对应的操作了。
+先由 <strong>硬件完成一系列操作</strong> 被称为 <strong>中断隐指令</strong>（注意：中断隐指令是硬件操作，并不是真正的指令），<strong>随后转入中断服务程序</strong>（由软件完成）。这整个过程被称作 <strong>中断处理</strong>。</p>
+<p>中断处理过程如下图所示，需要记忆，可能会考有哪些过程：
+<img src="http://tuchuang.mrlxl.cn/picture/20260916231916270.png" alt="中断处理过程">
+<strong>中断隐指令</strong>：</p>
+<ol>
+<li>关中断</li>
+<li>保存断点：将 <strong>程序计数器（PC）</strong> 和 <strong>程序状态字（PSW）</strong> 保存至栈或专用寄存器。</li>
+<li>引出中断服务程序：通过识别中断源，将对应的中断服务程序入口地址送入程序计数器 PC ，识别方法主要有 <strong>硬件向量法</strong>（涉及到下方中断向量的知识）和<strong>软件查询法</strong>。</li>
+</ol>
+<p><strong>中断向量</strong>：
+在向量中断中，每个中断源被分配一个唯一的中断类型号，该类型号对应一个中断服务程序的入口地址，此地址称为 <strong>中断向量</strong>。系统将所有中断向量集中存放在内存的特定区域，该区域称为 <strong>中断向量表</strong>。
+<img src="http://tuchuang.mrlxl.cn/picture/20260916234226355.png" alt="中断向量"></p>
+<p><strong>中断处理优先级判断（中断屏蔽技术）</strong>：
+中断处理优先级判断用于多重中断，很明显，中断处理优先级判断是决定不同中断服务程序的完成顺序（<strong>注意：中断屏蔽仅在 CPU 执行中断服务程序期间生效</strong>）。是指在处理中断 A 的过程中，新的中断 B 到来。中断 A 能不能被打断。如图所示：</p>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260917000243683.png" alt="中断处理优先级判断">
+通过一个题来具体看中断处理优先级判断会怎么考察：
 <img src="http://tuchuang.mrlxl.cn/picture/20260514141750926.png" alt="多重中断"></p>
 <h2 id="75-i--o-方式">7.5 I / O 方式</h2>
 <h3 id="751-程序查询方式">7.5.1 程序查询方式</h3>
@@ -1315,25 +1324,45 @@ of in on at for to from with by about between among through across during before
 <p>用一个例题来了解程序查询方式：
 <img src="http://tuchuang.mrlxl.cn/picture/20260513171336501.png" alt="例题"></p>
 <h3 id="752-程序中断方式">7.5.2 程序中断方式</h3>
-<p>程序中断方式的具体流程图前面已经提过了，这里通过一个题目来熟悉这部分内容的考察方式：
+<p>程序中断方式显而易见，即 I/O 设备通过 I/O 接口向 CPU 发送中断请求，CPU 响应中断后暂停当前程序的执行，转去执行中断服务程序，处理完毕后再返回原程序继续执行。</p>
+<p>这里通过一个题目来熟悉这部分内容的考察方式：
 <img src="http://tuchuang.mrlxl.cn/picture/20260514145135105.png" alt="程序中断方式"></p>
 <h3 id="753-dma-方式">7.5.3 DMA 方式</h3>
 <p>本节思维导图如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260514154828904.png" alt="思维导图">
-时序图前面有、</p>
-<h4 id="7531-dma-控制器">7.5.3.1 DMA 控制器</h4>
-<p><strong>DMA 的主要功能</strong> 如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260514155058816.png" alt="DMA 的主要功能">
-<strong>DMA 的结构</strong> 如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260514155514885.png" alt="DMA 的结构"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260514154828904.png" alt="思维导图"></p>
+<h4 id="7531-dma-控制器dma-接口">7.5.3.1 DMA 控制器（DMA 接口）</h4>
+<p>首先明确一点，DMA 接口并不是代替了 I / O 接口，而是 <strong>与 I / O 接口并行</strong>，外设发送数据 -&gt;  I / O 接口 -&gt; DMA 接口。</p>
+<p>在 DMA 方式中，对数据传送过程进行控制的硬件称为 DMA 控制器（DMA 接口）。整个 DMA 传输流程如下：</p>
+<ol>
+<li>首先，存储地址、传输计数等信息通常在 DMA 请求发生之前，就已经由 CPU/操作系统 配置好了。</li>
+<li>当 I/O 设备需要进行数据传送时，通过 DMA 控制器向 CPU 提出 DMA 请求，CPU 响应后即让出系统总线，由 DMA 控制器接管总线并执行数据传送。</li>
+<li>传输完成后，DMA 通过发送中断请求的方式向 CPU 报告数据传输完成，并释放总线控制权；CPU 响应中断后，可根据需要重新配置 DMA，以进行下一次传输。</li>
+</ol>
+<p>注意：<strong>DMA 请求是总线请求，而不是中断请求哈（书上没说但可以就这么记）</strong>。</p>
+<p><strong>DMA 控制器的结构</strong> 如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260514155514885.png" alt="DMA 的结构">
+其主要功能如下：</p>
+<ol>
+<li>接收外设发出的 DMA 请求，并向 CPU 发出总线请求信号。</li>
+<li>在 CPU 发出总线响应信号后，DMA 控制器接管总线控制权，进入 DMA 操作周期。</li>
+<li>确定数据传送的主存起始地址及长度，并自动更新主存地址计数器和传送长度计数器。</li>
+<li>指定数据在主存与外设间的传送方向，发出读 / 写等控制信号，完成数据传送。</li>
+<li>在 DMA 操作结束后，向 CPU 报告传送完成。</li>
+</ol>
 <h4 id="7532-dma-传送过程">7.5.3.2 DMA 传送过程</h4>
 <p>在了解完 DMA 的功能和物理结构之后，通过动态的过程来了解 DMA 传送过程，如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260614135103882.png" alt="DMA 传送过程"></p>
-<h4 id="7533-dma-控制方式">7.5.3.3 DMA 控制方式</h4>
-<p>若是 <strong>三总线结构</strong>，主存分别与 DMA 和 系统总线有连接，就会出现同时访存造成数据冲突的情况，那么具体怎么决定访问顺序，如下图所示：
+<h4 id="7532-dma-传送方式与传送过程">7.5.3.2 DMA 传送方式与传送过程</h4>
+<p>在三总线结构中，主存分别与 DMA 和 系统总线有连接，在 I / O 外设通过 DMA 控制器向 CPU 发出 DMA 请求总线传输时，可能会和 CPU 使用总线发生冲突，那么怎么规划 CPU 和 DMA 访存顺序？具体有如下三种方式：</p>
+<ol>
+<li><strong>停止 CPU 访存</strong>：DMA 需要传输时，CPU 暂停访存，让 DMA 独占总线进行数据传送；传送完成后 CPU 恢复访存。</li>
+<li><strong>DMA 与 CPU 交替访存</strong>：把 <strong>一个存储周期分成两个时间段</strong>，一个给 DMA，一个给 CPU，两者交替访问主存。</li>
+<li><strong>周期挪用（周期窃取）</strong>：DMA 需要访问主存时，挪用 CPU 的一个 <strong>存储周期</strong>。DMA 传送一个数据后释放总线，CPU 再继续工作；DMA 再需要时再次挪用。DMA 一次传送的数据量由 DMA 控制器和系统的数据通路等具体设计决定。</li>
+</ol>
+<p>如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260514161525625.png" alt="DMA 控制方式">
 而在 <strong>单总线结构</strong> 中，DMA 与 CPU 共享同一总线，DMA 访存必须通过总线请求与仲裁机制获得控制权。不会出现同时访存的情况，也就不会出现上述三种控制方式。</p>
-<h4 id="7534-dma-的特点">7.5.3.4 DMA 的特点</h4>
+<h4 id="7533-dma-的特点">7.5.3.3 DMA 的特点</h4>
 <p>如下图所示，看看就好：
 <img src="http://tuchuang.mrlxl.cn/picture/20260514161655752.png" alt="DMA 的特点"></p>
 <h3 id="754-程序中断-vs-dma">7.5.4 程序中断 VS DMA</h3>
@@ -1359,9 +1388,8 @@ of in on at for to from with by about between among through across during before
         <li><a href="#72-外部设备">*7.2 外部设备</a></li>
         <li><a href="#73-i--o-接口">7.3 I / O 接口</a>
           <ul>
-            <li><a href="#731-i--o-设备的功能和基本结构">7.3.1 I / O 设备的功能和基本结构</a></li>
-            <li><a href="#732-i--o-设备的工作原理">7.3.2 I / O 设备的工作原理</a></li>
-            <li><a href="#733-i--o-端口及其编址">7.3.3 I / O 端口及其编址</a></li>
+            <li><a href="#731-i--o-接口的基本概念">7.3.1 I / O 接口的基本概念</a></li>
+            <li><a href="#732-i--o-端口及其编址">7.3.2 I / O 端口及其编址</a></li>
           </ul>
         </li>
         <li><a href="#74-异常与中断机制">7.4 异常与中断机制</a>
@@ -1370,12 +1398,10 @@ of in on at for to from with by about between among through across during before
             <li><a href="#742-异常和中断的分类">7.4.2 异常和中断的分类</a></li>
             <li><a href="#743-中断的工作流程">7.4.3 中断的工作流程</a>
               <ul>
-                <li><a href="#7431-中断请求与中断响应">7.4.3.1 中断请求与中断响应</a></li>
-                <li><a href="#7432-中断处理过程">7.4.3.2 中断处理过程</a></li>
+                <li><a href="#7431-中断请求">7.4.3.1 中断请求</a></li>
+                <li><a href="#7432-中断响应与中断处理">7.4.3.2 中断响应与中断处理</a></li>
               </ul>
             </li>
-            <li><a href="#744-单重中断">7.4.4 单重中断</a></li>
-            <li><a href="#745-多重中断">7.4.5 多重中断</a></li>
           </ul>
         </li>
         <li><a href="#75-i--o-方式">7.5 I / O 方式</a>
@@ -1384,10 +1410,10 @@ of in on at for to from with by about between among through across during before
             <li><a href="#752-程序中断方式">7.5.2 程序中断方式</a></li>
             <li><a href="#753-dma-方式">7.5.3 DMA 方式</a>
               <ul>
-                <li><a href="#7531-dma-控制器">7.5.3.1 DMA 控制器</a></li>
+                <li><a href="#7531-dma-控制器dma-接口">7.5.3.1 DMA 控制器（DMA 接口）</a></li>
                 <li><a href="#7532-dma-传送过程">7.5.3.2 DMA 传送过程</a></li>
-                <li><a href="#7533-dma-控制方式">7.5.3.3 DMA 控制方式</a></li>
-                <li><a href="#7534-dma-的特点">7.5.3.4 DMA 的特点</a></li>
+                <li><a href="#7532-dma-传送方式与传送过程">7.5.3.2 DMA 传送方式与传送过程</a></li>
+                <li><a href="#7533-dma-的特点">7.5.3.3 DMA 的特点</a></li>
               </ul>
             </li>
             <li><a href="#754-程序中断-vs-dma">7.5.4 程序中断 VS DMA</a></li>
