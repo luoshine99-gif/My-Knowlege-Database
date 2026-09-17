@@ -1276,10 +1276,12 @@ of in on at for to from with by about between among through across during before
 注意：通过 <strong>INTR 信号线</strong> 发出的都是 <strong>可屏蔽中断</strong>，通过 <strong>NMI 信号线</strong> 发出的是 <strong>不可屏蔽中断</strong>。
 <img src="http://tuchuang.mrlxl.cn/picture/20260513193215151.png" alt="中断请求标记"></p>
 <h4 id="7432-中断响应与中断处理">7.4.3.2 中断响应与中断处理</h4>
-<p>首先区分什么叫做中断响应，什么叫做中断处理：</p>
+<p>首先区分什么叫做中断响应，什么叫做中断处理，什么叫做中断响应优先级，什么叫做中断处理优先级：</p>
 <ol>
-<li><strong>中断响应</strong>： 指多个中断请求 <strong>同时</strong> 到来时，CPU 先响应哪个中断。</li>
-<li><strong>中断处理</strong>：指 CPU <strong>已经在处理</strong> 某个中断时，另一个中断来了，能不能打断当前中断。</li>
+<li><strong>中断响应优先级</strong>： 指多个中断请求 <strong>同时</strong> 到来时，CPU 先响应哪个中断。</li>
+<li><strong>中断处理优先级</strong>：指 CPU <strong>已经在处理</strong> 某个中断时，另一个中断来了，能不能打断当前中断。</li>
+<li><strong>中断响应</strong>： 在 408 中就是中断隐指令对应的过程。</li>
+<li><strong>中断处理</strong>： 在 408 中就是中断处理程序对应的过程。</li>
 </ol>
 <p><strong>中断响应优先级判断</strong> 如下：</p>
 <ol>
@@ -1293,15 +1295,15 @@ of in on at for to from with by about between among through across during before
 <p>中断响应优先级判断电路如下图所示（不考，便于理解）：
 注意：中断请求寄存器 + 判优逻辑电路 才是 排队器，别混了。其次，<strong>中断响应优先级判断方式</strong> 通常是硬件方式或中断查询程序。
 <img src="http://tuchuang.mrlxl.cn/picture/20260513194049295.png" alt="中断响应判优电路">
-<strong>中断处理</strong>：
-判断要进行响应哪个中断之后，就在开始做出对应的操作了。
-先由 <strong>硬件完成一系列操作</strong> 被称为 <strong>中断隐指令</strong>（注意：中断隐指令是硬件操作，并不是真正的指令），<strong>随后转入中断服务程序</strong>（由软件完成）。这整个过程被称作 <strong>中断处理</strong>。</p>
-<p>中断处理过程如下图所示，需要记忆，可能会考有哪些过程：
+<strong>中断响应与中断处理</strong>：
+CPU 对选中的中断进行 <strong>中断响应</strong> ，其中硬件自动完成一系列操作，这部分通常称为中断隐指令对应的操作过程。
+随后转入 <strong>中断服务程序</strong>（由软件完成）。中断服务程序过程被称作 <strong>中断处理</strong>。</p>
+<p>中断处理过程如下图所示，需要记忆，可能会考有哪些过程（下图的中断处理过程是广义的中断处理过程，包含中断处理与中断响应）：
 <img src="http://tuchuang.mrlxl.cn/picture/20260916231916270.png" alt="中断处理过程">
 <strong>中断隐指令</strong>：</p>
 <ol>
-<li>关中断</li>
-<li>保存断点：将 <strong>程序计数器（PC）</strong> 和 <strong>程序状态字（PSW）</strong> 保存至栈或专用寄存器。</li>
+<li>关中断。</li>
+<li>保存断点：将 <strong>程序计数器（PC）</strong> 和 <strong>程序状态字（PSW）</strong>（有些架构保存 PSW 由中断服务程序完成） 保存至栈或专用寄存器。</li>
 <li>引出中断服务程序：通过识别中断源，将对应的中断服务程序入口地址送入程序计数器 PC ，识别方法主要有 <strong>硬件向量法</strong>（涉及到下方中断向量的知识）和<strong>软件查询法</strong>。</li>
 </ol>
 <p><strong>中断向量</strong>：
