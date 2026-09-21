@@ -1229,7 +1229,8 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
 <strong>信号</strong>：用于通知进程某个特定事件已经发生，进程收到一个信号后，对该信号进行处理。（不是信号量，也不要去类比成中断信号的那个信号！）
 <strong>信号的接收与处理全流程</strong> 如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260521162216840.png" alt="信号的接收与处理全流程">
-<strong>常见的信号默认处理</strong> 如下图所示：
+显然，信号的传递是通过系统调用完成的，信号传递在内核态、信号处理程序在用户态，系统调用请求在用户态。注意区分。</p>
+<p><strong>常见的信号默认处理</strong> 如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260521163147663.png" alt="信号对应处理">
 <strong>常见疑难点</strong> 如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260521163009451.png" alt="常见疑难点"></p>
@@ -1324,6 +1325,7 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
       </tr>
   </tbody>
 </table>
+<p>注意：进程和线程的切换 有被动（中断，异常，被调度），也有主动（系统调用，阻塞等待）。</p>
 <h2 id="23-cpu-调度">2.3 CPU 调度</h2>
 <h3 id="231-调度的概念和层次">2.3.1 调度的概念和层次</h3>
 <p>在多道程序系统中，进程的数量通常远多于 CPU 的个数，因此多个进程争用 CPU 的情况在所难免。<strong>CPU 调度</strong> 是指按照一定的算法（兼顾公平性与效率），从就绪队列中选择一个进程，并将 CPU 分配给它运行，从而实现多个进程的并发执行。</p>
@@ -1422,7 +1424,12 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
 </ol>
 <h4 id="2353-多级队列调度算法">2.3.5.3 多级队列调度算法</h4>
 <p>很简单，一张图就能说明：
-<img src="http://tuchuang.mrlxl.cn/picture/20260525142404147.png" alt="多级队列调度算法"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260525142404147.png" alt="多级队列调度算法">
+注意和前面的多级反馈队列的区别：</p>
+<ol>
+<li>多级队列调度：进程固定属于某个队列，不会改变。</li>
+<li>多级反馈队列：进程可以在多个队列之间移动，会根据运行情况调整优先级。</li>
+</ol>
 <h3 id="236-多处理机调度">2.3.6 多处理机调度</h3>
 <p>本小节思维导图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260525144917239.png" alt="思维导图">
@@ -1441,7 +1448,8 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
 而这里提到 <strong>同步（直接制约关系）</strong> 的概念，即各进程间存在制约关系，不是说进程完全没有异步性了，只是需要协调异步进程间的进行。比如系统为 1 + 2 * 3 创造两个进程，那么乘法进程必须在加法进程之前执行。
 所谓 <strong>互斥（间接制约关系）</strong>，即当一个进程正在临界区中使用邻接资源是，其他试图访问该资源的进程必须等待，只有当占用临界资源的进程退出临界区后，其他进程才被允许进入。</p>
 <p><strong>互斥和临界资源的关系</strong> 如下所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260525154518880.png" alt="互斥的概念"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260525154518880.png" alt="互斥的概念">
+注意：临界区只是互斥访问临界资源，进入临界区的代码是能够被调度和中断的。</p>
 <h3 id="242-进程互斥的软件实现办法">2.4.2 进程互斥的软件实现办法</h3>
 <p>本小节思维导图如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260526105956075.png" alt="思维导图"></p>
@@ -1454,6 +1462,49 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
 <h4 id="2424-peterson-算法">2.4.2.4 Peterson 算法</h4>
 <p>这个算法是前面三种方法的一个综合。
 <img src="http://tuchuang.mrlxl.cn/picture/20260526111543287.png" alt="Peterson 算法"></p>
+<p>总结如下：</p>
+<table>
+  <thead>
+      <tr>
+          <th>算法</th>
+          <th>核心思想</th>
+          <th>互斥</th>
+          <th>空闲让进</th>
+          <th>有限等待</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>单标志法</td>
+          <td>太公平，没人用也要等</td>
+          <td>√</td>
+          <td>×</td>
+          <td>√</td>
+      </tr>
+      <tr>
+          <td>双标志先检查</td>
+          <td>先表明意愿再检查</td>
+          <td>√</td>
+          <td>√</td>
+          <td>×</td>
+      </tr>
+      <tr>
+          <td>双标志后检查</td>
+          <td>先检查再表明意愿</td>
+          <td>×</td>
+          <td>√</td>
+          <td>×</td>
+      </tr>
+      <tr>
+          <td>Peterson算法</td>
+          <td>标志+让步变量</td>
+          <td>√</td>
+          <td>√</td>
+          <td>√</td>
+      </tr>
+  </tbody>
+</table>
+<p>软件方法都无法实现让权等待。</p>
 <h3 id="243-进程互斥的硬件实现办法">2.4.3 进程互斥的硬件实现办法</h3>
 <p>本小节思维导图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260526113019585.png" alt="思维导图"></p>
@@ -1476,8 +1527,8 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
 </span></span><span class="line"><span class="cl"><span class="nf">release</span><span class="p">()</span> <span class="p">{</span>              <span class="c1">//释放锁的定义
 </span></span></span><span class="line"><span class="cl">    <span class="n">available</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>    <span class="c1">//释放锁
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>acquire() 或 release() 的执行必须是原子操作，因此互斥锁通常采用硬件机制来实现。</p>
-<p>上述互斥锁也称 <strong>自旋锁</strong>，其主要缺点是忙等待：当有一个进程在临界区中时，任何其他进程在进入临界区前都必须连续循环调用 acquire ()。类似的还有前面介绍的单标志法、TS 指令和 Swap 指令。当多个进程共享同一 CPU 时，这种连续循环显然浪费了 CPU 周期。因此，自旋锁通常用于多处理器系统，一个线程可以在一个处理器上 “旋转”，而不影响其他线程的执行。自旋锁的优点：进程在等待期间没有上下文切换；若持有锁的时间较短，则等待代价较低。</p>
+</span></span></code></pre></div><p>acquire() 或 release() 的执行必须是原子操作，因此互斥锁通常采用 <strong>硬件机制</strong> 来实现。</p>
+<p>上述互斥锁也称 <strong>自旋锁</strong>，其主要缺点是 <strong>忙等待（运行态）</strong>：当有一个进程在临界区中时，任何其他进程在进入临界区前都必须连续循环调用 acquire ()。类似的还有前面介绍的单标志法、TS 指令和 Swap 指令。当多个进程共享同一 CPU 时，这种连续循环显然浪费了 CPU 周期。因此，自旋锁通常用于 <strong>多处理器系统</strong>，一个线程可以在一个处理器上 “旋转”，而不影响其他线程的执行。自旋锁的优点：进程在等待期间没有上下文切换；<strong>若持有锁的时间较短，则等待代价较低</strong>。</p>
 <h3 id="245-信号量机制">2.4.5 信号量机制</h3>
 <p>本小节思维导图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260527173735322.png" alt="思维导图">
@@ -1553,7 +1604,34 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
 <p><strong>解决问题：</strong>
 关于哲学家进餐的死锁问题，存在 <strong>三种解决方案</strong>，如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260528165218016.png" alt="解决问题">
-<img src="http://tuchuang.mrlxl.cn/picture/20260528165859346.png" alt="解决问题"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260921233021254.png" alt="解决问题"></p>
+<p>总结如下：</p>
+<table>
+  <thead>
+      <tr>
+          <th>方法</th>
+          <th>核心思想</th>
+          <th>破坏的死锁条件</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>限制最多4个哲学家尝试</td>
+          <td>保证至少一个人能拿到两根</td>
+          <td>循环等待</td>
+      </tr>
+      <tr>
+          <td>奇偶哲学家不同方向拿</td>
+          <td>避免形成环</td>
+          <td>循环等待</td>
+      </tr>
+      <tr>
+          <td><strong>同时拿两根筷子</strong></td>
+          <td>不允许拿一根等另一根</td>
+          <td><strong>请求并保持</strong></td>
+      </tr>
+  </tbody>
+</table>
 <h3 id="246-管程">2.4.6 管程</h3>
 <p>若写程序的时候频繁使用 PV 操作，会导致代码难懂，极其容易出错，于是提出了 <strong>管程的概念</strong>，如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260528173044561.png" alt="管程的概念">
