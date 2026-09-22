@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <title>进程与线程 | mrlxl的知识库</title>
@@ -18,10 +18,10 @@
 </script>
 
 
-    <link rel="stylesheet" href="../../../../css/main.css">
+      <link rel="stylesheet" href="../../../../css/main.min.a68af554a90f80b26ff93cbe8192fc27112f2d2e58e21ac015d6ac0bd5a19455.css" integrity="sha256-por1VKkPgLJv&#43;Ty&#43;gZL8JxEvLS5Y4hrAFdasC9WhlFU=" crossorigin="anonymous">
 
 
-      <script src="../../../../js/main.js"></script>
+        <script src="../../../../js/main.c7c382a34629504a0438bf6064d168a2df4a02e88159bc8148fc2bd4f2e54d01.js" integrity="sha256-x8OCo0YpUEoEOL9gZNFoot9KAuiBWbyBSPwr1PLlTQE=" crossorigin="anonymous"></script>
 
 
 
@@ -1450,6 +1450,68 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
 <p><strong>互斥和临界资源的关系</strong> 如下所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260525154518880.png" alt="互斥的概念">
 注意：临界区只是互斥访问临界资源，进入临界区的代码是能够被调度和中断的。</p>
+<p><strong>阻塞等待与忙等待：</strong>
+实现互斥有很多种方法，但是其他进程在等待的时候，主要有这两种等待方式：</p>
+<ol>
+<li>忙等待：进程一直占用 CPU，不断检查锁是否释放。如果被调度下 CPU 就从 <strong>运行态变成就绪态</strong>。</li>
+<li>阻塞等待：进程发现不能进入临界区，就主动放弃CPU，进入阻塞状态。</li>
+</ol>
+<table>
+  <thead>
+      <tr>
+          <th>实现方法</th>
+          <th>等待方式</th>
+          <th>原因</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>软件方法：单标志法</strong></td>
+          <td>忙等待</td>
+          <td>while循环检查turn</td>
+      </tr>
+      <tr>
+          <td><strong>软件方法：双标志先检查法</strong></td>
+          <td>忙等待</td>
+          <td>while循环检查flag</td>
+      </tr>
+      <tr>
+          <td><strong>软件方法：双标志后检查法</strong></td>
+          <td>忙等待</td>
+          <td>while循环检查flag</td>
+      </tr>
+      <tr>
+          <td><strong>软件方法：Peterson算法</strong></td>
+          <td>忙等待</td>
+          <td>while循环检查turn和flag</td>
+      </tr>
+      <tr>
+          <td><strong>硬件方法：TS指令(TestAndSet)</strong></td>
+          <td>忙等待</td>
+          <td>while(TS(lock))循环</td>
+      </tr>
+      <tr>
+          <td><strong>硬件方法：Swap指令</strong></td>
+          <td>忙等待</td>
+          <td>while(Swap(lock,key))循环</td>
+      </tr>
+      <tr>
+          <td><strong>自旋锁（Spin Lock）</strong></td>
+          <td>忙等待</td>
+          <td>本质就是硬件忙等待</td>
+      </tr>
+      <tr>
+          <td><strong>信号量机制（整型信号量）</strong></td>
+          <td>忙等待</td>
+          <td>while(S&lt;=0)循环等待</td>
+      </tr>
+      <tr>
+          <td><strong>信号量机制（记录型信号量）</strong></td>
+          <td><strong>阻塞等待</strong></td>
+          <td>block()进入阻塞队列</td>
+      </tr>
+  </tbody>
+</table>
 <h3 id="242-进程互斥的软件实现办法">2.4.2 进程互斥的软件实现办法</h3>
 <p>本小节思维导图如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260526105956075.png" alt="思维导图"></p>
@@ -1636,7 +1698,21 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
 <p>若写程序的时候频繁使用 PV 操作，会导致代码难懂，极其容易出错，于是提出了 <strong>管程的概念</strong>，如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260528173044561.png" alt="管程的概念">
 通过看 <strong>管程大概的样子</strong>，来更加熟悉管程长什么样子：
-<img src="http://tuchuang.mrlxl.cn/picture/20260528173609826.png" alt="管程大概的样子"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260528173609826.png" alt="管程大概的样子">
+注意 <strong>管程的两个操作</strong>：</p>
+<ol>
+<li>
+<p><strong>x.wait</strong>：当条件变量 x 所代表的条件不满足时，当前执行管程过程的进程调用 x.wait ()，将自身加入 x 的等待队列，并自动释放管程，从而允许其他进程进入。</p>
+</li>
+<li>
+<p><strong>x.signal</strong>：当 x 所代表的条件发生变化（可能已满足）时，调用 x.signal ()，唤醒一个因等待该条件而阻塞在 x 上的进程。</p>
+</li>
+</ol>
+<p><strong>条件变量与信号量的比较：</strong></p>
+<ol>
+<li>相似点：wait/signal 操作与 P/V 操作均可实现进程的阻塞与唤醒。</li>
+<li>不同点：信号量具有整数值，反映可用资源数量；而 <strong>条件变量不维护数值，仅用于线程排队和通知</strong>。在管程中，资源数量由共享变量（如 S）显式记录，条件变量只负责同步。</li>
+</ol>
 <h3 id="247-死锁">2.4.7 死锁</h3>
 <h4 id="2471-死锁的基本概念">2.4.7.1 死锁的基本概念</h4>
 <p>死锁是指多个进程因竞争资源而陷入相互等待的僵局，每个进程都在等待其他进程所占有的资源，而这些资源又不会被释放，从而形成一个 <strong>循环等待链</strong>，结果，所有涉及的进程都被永久阻塞，若无外界干预，他们讲无法继续推进。</p>
@@ -1663,9 +1739,13 @@ PCB 控制块在进程被创建的时候进行分配，分配后 <strong>常驻�
 <img src="http://tuchuang.mrlxl.cn/picture/20260529192932814.png" alt="破坏循环等待条件"></p>
 <h4 id="2473-死锁处理策略避免死锁">2.4.7.3 死锁处理策略&ndash;避免死锁</h4>
 <p>避免死锁的核心思想是在资源动态分配的过程中，通过特定算法判断分配后的系统是不是仍然处于安全状态，仅当安全时才允许分配，从而避免进入可能导致死锁的不安全状态。</p>
-<p><strong>银行家算法</strong> 就是最著名的死锁避免算法，其基本思想如图所示：
+<p><strong>银行家算法</strong> 就是最著名的死锁避免算法，其核心思想是：<strong>任何时刻都能保证至少有一个进程可以得到 所需的全部资源（一开始声明的最大资源）</strong>。
+如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260529202150899.png" alt="银行家算法">
-那在 <strong>实际手工操作</strong> 中，我们可以这样来 <strong>加快速度</strong>，不用像上面那样算：
+<strong>银行家算法分配条件：</strong>
+进程运行之前先声明它对各类资源的最大需求量，并保证它在任何时刻对每类资源的请求量不超过它所声明的最大需求量。当进程已占有的资源数与本次申请的资源数之和不超过对该进程资源的最大需求量，并且 <strong>现存资源量能满足该进程尚需的最大资源量时</strong>，才分配资源（注意不是能够满足请求就分配）。</p>
+<p><strong>对于满足分配条件的进程若能够找到一个让所有进程顺利执行完的顺序即安全序列，则才处在安全状态，反之在不安全状态</strong>。</p>
+<p>那在 <strong>实际手工操作</strong> 中，我们可以这样来 <strong>加快速度</strong>，不用像上面那样算：
 <img src="http://tuchuang.mrlxl.cn/picture/20260529202649505.png" alt="实际手工操作">
 银行家算法的 <strong>系统实现流程</strong> 如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260529201206480.png" alt="系统实现流程"></p>
