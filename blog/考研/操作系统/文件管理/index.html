@@ -1049,10 +1049,16 @@ $$ \boxed{\text{CPU执行时间}=\text{指令条数}\times\text{CPI}\times\text{
         <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
         <a href="../../../../blog/%E8%80%83%E7%A0%94/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" class="article-link" data-summary="第四章_文件管理 4.1 文件系统基础 4.1.1 初始文件系统 文件系统基础涉及到的内容如下：
 文件的定义：一组有意义的信息的集合。 文件的属性：文件名、标识符、类型、位置、大小、保护信息… 文件内部应该如何被组织起来（文件的逻辑结构）。 文件之间应该如何被组织起来（目录结构）。 操作系统应向上提供哪些功能（create、delete、open、close、read、write 系统调用）。 文件应如何存放在外存中（文件的物理结构）。 操作系统如何管理外存中的空闲块（存储空间的管理）。 操作系统需要提供的其他文件管理功能：文件共享，文件保护。 4.1.2 文件的逻辑结构 本小节思维导图如图所示： 4.1.2.1 有结构文件 - 顺序文件 拓展：采用这种文件管理方式，操作系统通常会利用日志功能，将多次修改先记录下来并延迟写盘，以提高效率和保证可靠性。对于按关键字有序组织的顺序文件，若经过多次插入和删除操作后需要重新整理文件，则可能利用数据结构中的外部归并（外部排序技术）来恢复或维护文件的有序性。
-4.1.2.2 有结构文件 - 索引文件 这种方式的缺点在下面。
-4.1.2.3 有结构文件 - 索引顺序文件 但是这种结构舍弃了索引文件中索引表的地址字段，所以索引顺序文件默认更适合定长记录。
-为了进一步提高检索效率，还能够进一步优化为多级索引文件： 4.1.3 文件目录 本小节思维导图如图所示： 4.1.3.1 文件控制块和索引节点 文件控制块（FCB） 是用于存取控制文件所需的各种信息的数据结构，以实现按名存取。每个文件对应一个 FCB。 主要包括以下几类信息：
-基本信息：文件名、物理位置、逻辑结构、物理结构等。 存取控制信息：包括文件主、核准用户和一般用户的访问权限。 使用信息：如文件的创建时间、最后修改时间等。 索引节点 是对文件控制块的一个优化： 4.1.3.2 目录结构 单级目录结构和两级目录结构 已成为过去式，了解就好： 多级目录结构（树形目录结构） 才是现在操作系统常使用的结构： 由于 树形目录结构不利于实现文件的共享（这里主要是说用户间文件的共享），因此出现了 无环图目录结构（了解即可）： 4.1.4 文件的物理结构（文件分配方式） 本小节总结如下图所示： 4.1.4.1 连续分配 4.1.4.2 链式分配 链式分配（隐式链接）： 如果没指明显示还是隐式链接，默认是隐式链接。 链接分配（显式链接）： ">文件管理</a>
+4.1.2.2 有结构文件 - 索引文件 原本变长记录的文件不能够直接定位，需要挨个进行查找。为文件建立索引表之后，由于索引表项是定长记录，因此支持随机查找，显著提高了检索速度。 缺点： 需要额外分配索引块（索引表），用于存放文件数据块地址，因此增加了存储开销。当文件较小时，索引表占用的空间可能接近甚至超过文件本身大小，导致磁盘空间利用率降低。
+4.1.2.3 有结构文件 - 索引顺序文件 与索引文件的区别 在于：索引文件的索引项可以有序，也可以无序；而索引顺序文件的索引项和数据记录都要求按关键字有序。
+如图所示： 这种结构舍弃了索引文件中索引表的地址字段，索引顺序文件默认更适合定长记录。
+为了进一步提高检索效率，还能够进一步优化为多级索引文件： 索引顺序文件的查找效率： 对于含$N$条记录的普通顺序文件，平均需查找$N/2$次。而在索引顺序文件中，若将记录均分为$m$组，则每组约含$s=N/m$条记录。查找过程分为两步：
+在索引表中顺序查找，平均需$m/2$次； 在对应组内顺序查找，平均需$s/2$次。 因此，总平均查找次数为 $$m/2&#43;s/2=m/2&#43;(N/m)/2$$ 当$m=\sqrt{N}$时，该值最小，查找效率达到最优。
+4.1.3 文件目录 本小节思维导图如图所示： 4.1.3.1 文件控制块和索引节点 文件控制块（FCB） 是用于存取控制文件所需的各种信息的数据结构，以实现 按名存取。每个文件对应一个 FCB。 主要包括以下几类信息：
+基本信息：文件名、文件物理位置、逻辑结构、物理结构等。 存取控制信息：包括文件主、核准用户和一般用户的访问权限。 使用信息：如文件的创建时间、最后修改时间等。 索引节点 是对文件控制块的一个优化：
+FCB 中包含文件名、文件属性、文件存取权限以及文件物理地址等大量信息（早期操作系统目录项就是 FCB），因此若因此一个目录文件直接存放多个完整 FCB，则目录文件较大，占用较多磁盘块。查找文件时，需要读取更多目录块，导致磁盘I/O次数增加。
+采用索引节点后，将文件名与文件描述信息分离，目录项只保存 文件名 和 索引节点编号，而文件属性和磁盘地址等信息存放在inode中。由于目录项变小，同一个磁盘块能够存放更多目录项，使目录文件占用磁盘块减少，从而降低查找文件时的I/O次数。
+">文件管理</a>
         
       </div>
     </li>
@@ -1174,82 +1180,262 @@ of in on at for to from with by about between among through across during before
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260608211212338.png" alt="顺序文件">
 拓展：采用这种文件管理方式，操作系统通常会利用日志功能，将多次修改先记录下来并延迟写盘，以提高效率和保证可靠性。对于按关键字有序组织的顺序文件，若经过多次插入和删除操作后需要重新整理文件，则可能利用数据结构中的外部归并（外部排序技术）来恢复或维护文件的有序性。</p>
 <h4 id="4122-有结构文件---索引文件">4.1.2.2 有结构文件 - 索引文件</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260608211344885.png" alt="索引文件">
-这种方式的缺点在下面。</p>
+<p>原本变长记录的文件不能够直接定位，需要挨个进行查找。为文件建立索引表之后，由于索引表项是定长记录，因此支持随机查找，显著提高了检索速度。
+<img src="http://tuchuang.mrlxl.cn/picture/20260608211344885.png" alt="索引文件">
+缺点：
+需要额外分配索引块（索引表），用于存放文件数据块地址，因此增加了存储开销。当文件较小时，索引表占用的空间可能接近甚至超过文件本身大小，导致磁盘空间利用率降低。</p>
 <h4 id="4123-有结构文件---索引顺序文件">4.1.2.3 有结构文件 - 索引顺序文件</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260608213208947.png" alt="索引顺序文件">
-但是这种结构舍弃了索引文件中索引表的地址字段，所以索引顺序文件默认更适合定长记录。</p>
+<p><strong>与索引文件的区别</strong> 在于：索引文件的索引项可以有序，也可以无序；而索引顺序文件的索引项和数据记录都要求按关键字有序。</p>
+<p>如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260608213208947.png" alt="索引顺序文件">
+这种结构舍弃了索引文件中索引表的地址字段，索引顺序文件默认更适合定长记录。</p>
 <p>为了进一步提高检索效率，还能够进一步优化为多级索引文件：
-<img src="http://tuchuang.mrlxl.cn/picture/20260608213335612.png" alt="多级索引文件"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260608213335612.png" alt="多级索引文件">
+<strong>索引顺序文件的查找效率：</strong>
+对于含$N$条记录的普通顺序文件，平均需查找$N/2$次。而在索引顺序文件中，若将记录均分为$m$组，则每组约含$s=N/m$条记录。查找过程分为两步：</p>
+<ol>
+<li>在索引表中顺序查找，平均需$m/2$次；</li>
+<li>在对应组内顺序查找，平均需$s/2$次。</li>
+</ol>
+<p>因此，总平均查找次数为
+$$m/2+s/2=m/2+(N/m)/2$$
+<strong>当$m=\sqrt{N}$时，该值最小，查找效率达到最优。</strong></p>
 <h3 id="413-文件目录">4.1.3 文件目录</h3>
 <p>本小节思维导图如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260609134301394.png" alt="思维导图"></p>
 <h4 id="4131-文件控制块和索引节点">4.1.3.1 文件控制块和索引节点</h4>
-<p><strong>文件控制块（FCB）</strong> 是用于存取控制文件所需的各种信息的数据结构，以实现<strong>按名存取</strong>。<strong>每个文件对应一个 FCB。</strong>
+<p><strong>文件控制块（FCB）</strong> 是用于存取控制文件所需的各种信息的数据结构，以实现 <strong>按名存取</strong>。<strong>每个文件对应一个 FCB。</strong>
 主要包括以下几类信息：</p>
 <ol>
-<li>基本信息：文件名、物理位置、逻辑结构、物理结构等。</li>
+<li>基本信息：文件名、文件物理位置、逻辑结构、物理结构等。</li>
 <li>存取控制信息：包括文件主、核准用户和一般用户的访问权限。</li>
 <li>使用信息：如文件的创建时间、最后修改时间等。</li>
 </ol>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260609135442604.png" alt="文件控制块（FCB"></p>
-<p><strong>索引节点</strong> 是对文件控制块的一个优化：
+<p><strong>索引节点</strong> 是对文件控制块的一个优化：</p>
+<p>FCB 中包含文件名、文件属性、文件存取权限以及文件物理地址等大量信息（早期操作系统目录项就是 FCB），因此若因此一个目录文件直接存放多个完整 FCB，则目录文件较大，占用较多磁盘块。查找文件时，需要读取更多目录块，导致磁盘I/O次数增加。</p>
+<p>采用索引节点后，将文件名与文件描述信息分离，目录项只保存 <strong>文件名</strong> 和 <strong>索引节点编号</strong>，而文件属性和磁盘地址等信息存放在inode中。由于目录项变小，同一个磁盘块能够存放更多目录项，使目录文件占用磁盘块减少，从而降低查找文件时的I/O次数。</p>
+<p><strong>FCB</strong> 变为 <strong>文件名 + 索引节点编号 &ndash;&gt; 索引节点(inode)</strong>。
+注意 inode 和 FCB 不完全等同。
+如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260609140326160.png" alt="索引节点"></p>
 <h4 id="4132-目录结构">4.1.3.2 目录结构</h4>
 <p><strong>单级目录结构和两级目录结构</strong> 已成为过去式，了解就好：
 <img src="http://tuchuang.mrlxl.cn/picture/20260609140830731.png" alt="单级目录结构和两级目录结构">
-<strong>多级目录结构（树形目录结构）</strong> 才是现在操作系统常使用的结构：
+<strong>多级目录结构（树形目录结构）</strong>：
+一个目录中，既可能有子目录，又可能有数据文件。树形目录结构是现在操作系统常使用的结构：
 <img src="http://tuchuang.mrlxl.cn/picture/20260609141808840.png" alt="多级目录结构">
 由于 <strong>树形目录结构不利于实现文件的共享</strong>（这里主要是说用户间文件的共享），因此出现了 <strong>无环图目录结构（了解即可）</strong>：
 <img src="http://tuchuang.mrlxl.cn/picture/20260609142118228.png" alt="无环图目录结构"></p>
 <h3 id="414-文件的物理结构文件分配方式">4.1.4 文件的物理结构（文件分配方式）</h3>
-<p>本小节总结如下图所示：
+<p>文件分方式研究的是如何为文件分配已经使用的磁盘块，是 <strong>对非空闲块的管理</strong>。
+本小节总结如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260609160102730.png" alt="总结"></p>
 <h4 id="4141-连续分配">4.1.4.1 连续分配</h4>
+<p>文件采用不同的物理分配方式，对应的 FCB / inode 结构也不同，连续分配方式的FCB / inode 结构如下所示（不完整，只写了重点）：</p>
+<table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>内容</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>文件大小</td>
+          <td>文件占用空间大小</td>
+      </tr>
+      <tr>
+          <td><strong>起始块号</strong></td>
+          <td>文件第一个数据块的位置</td>
+      </tr>
+      <tr>
+          <td><strong>块数量</strong></td>
+          <td>文件连续占用的数据块数量</td>
+      </tr>
+  </tbody>
+</table>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260609151353085.png" alt="连续分配"></p>
 <h4 id="4142-链式分配">4.1.4.2 链式分配</h4>
+<p>文件采用不同的物理分配方式，对应的 FCB / inode 结构也不同，链式分配方式的FCB / inode 结构如下所示（不完整，只写了重点）：</p>
+<table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>内容</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>文件名</td>
+          <td>文件名称</td>
+      </tr>
+      <tr>
+          <td>文件大小</td>
+          <td>文件占用空间大小</td>
+      </tr>
+      <tr>
+          <td><strong>第一块地址</strong></td>
+          <td>文件第一个数据块的位置</td>
+      </tr>
+  </tbody>
+</table>
 <p><strong>链式分配（隐式链接）</strong>：
 如果没指明显示还是隐式链接，默认是隐式链接。
 <img src="http://tuchuang.mrlxl.cn/picture/20260609151801952.png" alt="隐式链接">
-<strong>链接分配（显式链接）</strong>：
-<img src="http://tuchuang.mrlxl.cn/picture/20260609153105433.png" alt="显式链接"></p>
+为缓解隐式链接分配的缺点问题，引入了 <strong>簇（cluster）</strong> 这个概念，将原本分配的若干个磁盘块中，在物理上连续的磁盘块组合成一个簇（cluster），显著缩短了链式分配查找时间，提升了整体 I/O 性能。但是这样可能导致最后一个簇（cluster）的空间无法被利用，产生 <strong>内部碎片</strong>。</p>
+<p><strong>链接分配（显式链接）</strong>：
+<img src="http://tuchuang.mrlxl.cn/picture/20260609153105433.png" alt="显式链接">
+注意：<strong>一个磁盘仅会设置一张文件分配表（FAT）</strong>，且由于文件分配表需常驻内存，因此磁盘容量越大，内存开销越显著。FAT 表同时也通过 -1 或者其他的特殊标志标注了磁盘的空闲磁盘块，因此 <strong>系统能够直接利用 FAT 表管理空闲空间</strong>。</p>
 <h4 id="4143-索引分配">4.1.4.3 索引分配</h4>
-<p>一个文件一张（或一套）索引表，索引分配有三种方案：
-<strong>索引分配（单级索引分配）</strong>：
-<img src="http://tuchuang.mrlxl.cn/picture/20260609160924113.png" alt="单级索引分配">
-<strong>索引分配（多级索引分配）</strong>：
-<img src="http://tuchuang.mrlxl.cn/picture/20260609161544152.png" alt="多级索引分配">
-若一个文件很小，本来只占一个磁盘块，但是也需要 K + 1 次磁盘 I / O（顶级索引表未调入内存的情况）</p>
-<p><strong>索引分配（混合索引分配）</strong>：
-为了兼顾小、中、大乃至特大文件的访问效率，需要 <strong>根据文件大小动态的分配选用最合适的分配策略</strong>，通常采用混合索引分配方式：
-<img src="http://tuchuang.mrlxl.cn/picture/20260609162141697.png" alt="混合索引分配">
-本小节总结如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260609160416795.png" alt="总结"></p>
-<p>ChatGpt：
+<p>很明显，打开一个文件时，不必像 显式链接那样，将整个 FAT 加载进内存，只需要将这个文件所占用的磁盘块编号加载进内存即可，这正是索引分配的思想，系统为每个文件分配一个专用的 <strong>索引块（或称为索引表）</strong> ，将分配给该文件的所有磁盘块号记录在其中。</p>
+<p>文件采用不同的物理分配方式，对应的 FCB / inode 结构也不同，索引分配方式的 FCB / inode 结构如下所示（不完整，只写了重点）：</p>
+<table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>内容</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>文件大小</td>
+          <td>文件占用空间大小</td>
+      </tr>
+      <tr>
+          <td><strong>索引块地址</strong></td>
+          <td>保存文件数据块地址索引表的位置</td>
+      </tr>
+  </tbody>
+</table>
+<p>一个文件一张（或一套）索引表，索引分配有三种方案：</p>
+<ol>
+<li><strong>索引分配（单级索引分配）</strong>：</li>
+</ol>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260609160924113.png" alt="单级索引分配"></p>
+<ol start="2">
+<li><strong>索引分配（多级索引分配）</strong>：</li>
+</ol>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260609161544152.png" alt="多级索引分配">
+和多级页表的概念极其类似，假设系统访问文件的逻辑块号 1001，10 查询一级索引表，查询到之后再查询 10 索引表对应的 01 号索引表项，最终查到 1001 对应的物理块号。
+但若一个文件很小，本来只占一个磁盘块，但是也需要 K + 1 次磁盘 I / O（顶级索引表未调入内存的情况）</p>
+<ol start="3">
+<li><strong>索引分配（混合索引分配）</strong>：</li>
+</ol>
+<p>为了兼顾小、中、大乃至特大文件的访问效率，需要 <strong>根据文件大小动态的分配选用最合适的分配策略</strong>，通常采用混合索引分配方式。
+因此一个文件的 inode 中同时包含多种索引方式，根据文件大小选择不同的寻址方式。以 UNIX 的策略为例，UNIX 在索引节点（inode）中设置了多个地址项：</p>
+<table>
+  <thead>
+      <tr>
+          <th>inode字段</th>
+          <th>类型</th>
+          <th>存储内容</th>
+          <th>I/O次数</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>i.addr[1]-i.addr[10]</td>
+          <td>直接地址</td>
+          <td>直接保存数据块号</td>
+          <td>1次</td>
+      </tr>
+      <tr>
+          <td>i.addr[11]</td>
+          <td>一级间接索引</td>
+          <td>保存主索引块地址</td>
+          <td>2次</td>
+      </tr>
+      <tr>
+          <td>i.addr[12]</td>
+          <td>二级间接索引</td>
+          <td>保存主索引块地址</td>
+          <td>3次</td>
+      </tr>
+      <tr>
+          <td>i.addr[13]</td>
+          <td>三级间接索引</td>
+          <td>保存主索引块地址</td>
+          <td>4次</td>
+      </tr>
+  </tbody>
+</table>
+<p>对于 <strong>小文件</strong>，直接使用 <strong>直接地址</strong>，inode 中直接保存数据块号，可以减少索引查询次数，提高访问速度。</p>
+<p>对于 <strong>中等大小文件</strong>，当直接地址不足以表示所有数据块时，使用 <strong>一级间接索引</strong>，通过索引块保存数据块地址。</p>
+<p>对于 <strong>大文件</strong>，一级间接索引仍然不足时，使用 <strong>二级间接索引</strong>，通过多级索引扩大文件支持范围。</p>
+<p>对于超大文件，使用 <strong>三级间接索引</strong>，进一步扩展文件容量。</p>
+<p>因此，UNIX 通过混合索引分配方式，在文件访问效率和文件最大容量之间取得平衡。如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260609162141697.png" alt="混合索引分配"></p>
+<p>本小节总结如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260609160416795.png" alt="总结">
+ChatGpt：
 磁盘I/O次数主要由文件的物理结构和访问模式（逻辑结构的）决定，而不是由文件的逻辑结构本身决定。逻辑结构更多影响的是查找和处理方式，物理结构直接影响外存访问效率。</p>
 <h3 id="415-文件存储空间的管理">4.1.5 文件存储空间的管理</h3>
-<p>本小节思维导图如下图所示：
+<p>文件存储空间的管理研究的是如何跟踪和分配空闲块，是对 <strong>空闲块的管理</strong>。
+本小节思维导图如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260610201929798.png" alt="思维导图">
 <strong>存储空间的划分与初始化</strong> 如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260610205143512.png" alt="存储空间的划分与初始化"></p>
 <h4 id="4151-空闲表法">4.1.5.1 空闲表法</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260610205400729.png" alt="空闲表法"></p>
+<p>思想源于内存管理中的动态分区分配，分配和回收都与动态分区分配非常类似。
+<img src="http://tuchuang.mrlxl.cn/picture/20260610205400729.png" alt="空闲表法"></p>
 <h4 id="4152-空闲链表法">4.1.5.2 空闲链表法</h4>
+<ol>
+<li>
+<p><strong>空闲盘块链：</strong>
+空闲盘块链以 <strong>单个盘块</strong> 为单位，将所有空闲盘块链接成一条链，每个盘块包含一个指向下一个空闲盘块的指针。分配时：从链首依次摘下所需数量的盘块分配给用户。回收时：将释放的盘块逐个插入链尾。
+空闲盘块链的 <strong>优点</strong>：单个盘块的分配与回收操作极为简单。<strong>缺点</strong>：为一个文件分配多个盘块需要多次访问链表，效率较低；且由于管理粒度细，空闲盘块链通常较长，管理开销大。</p>
+</li>
+<li>
+<p><strong>空闲盘区链：</strong>
+空闲盘区链以 <strong>空闲盘区（一组连续的盘块）</strong> 为单位构建链表。每个盘区包含两项信息：本盘区的盘块数和指向下一个空闲盘区的指针。分配时：采用与内存动态分区分配类似的策略（如首次适应算法），查找满足需求的空闲盘区进行分配。回收时：需要判断回收区是否与链表中相邻的空闲盘区在物理上连续，若相邻则合并，从而有效减少外部碎片。
+空闲盘区链的优缺点与空闲盘块链恰好相反，<strong>优点</strong>：分配与回收的效率较高，且空闲盘区链的长度较短。<strong>缺点</strong>：分配与回收的过程较为复杂，需要处理盘区的分割与合并操作。</p>
+</li>
+</ol>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260610210003764.png" alt="空闲链表法"></p>
 <h4 id="4153-位示图法">4.1.5.3 位示图法</h4>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260610210442676.png" alt=""></p>
 <h4 id="4154-成组链接法">4.1.5.4 成组链接法</h4>
-<p>空闲表法和空闲链表法均不适用于大型文件系统，为此，Unix 融合了以上两种方法的思想，采用了成组链接法。
-<strong>成组链接法的基本概念</strong> 示意如图所示：
-<strong>用每组的第一个盘块做索引块：</strong>
-<img src="http://tuchuang.mrlxl.cn/picture/20260610202857798.png" alt="基本概念">
-<strong>如何进行分配</strong> 如图所示：
-<strong>分配一个磁盘块：</strong>
+<p>空闲表法和空闲链表法均不适用于大型文件系统，为此，Unix 融合了以上两种方法的思想，采用了成组链接法。</p>
+<p><strong>成组链接法的基本概念</strong>：</p>
+<p>将所有 <strong>空闲盘块划分为若干组</strong>，<strong>用每组的第一个盘块做索引块</strong>，记录 <strong>下一组</strong> 中所有 <strong>空闲盘块的块号及数量</strong>。第一组的空闲盘块号及数量用 <strong>超级块</strong> 保存。</p>
+<p>示意如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260610202857798.png" alt="基本概念"></p>
+<p><strong>那这种方法如何进行分配？</strong></p>
+<p>首先明晰：<strong>超级块</strong> 在文件系统挂载的时候就会进入内存，并在运行过程中自动持续维护内存副本和磁盘副本的一致性。</p>
+<p><strong>超级块中的数据结构</strong> 存放如下（每一个空闲块组的第一个块也存储这种格式的数据）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="err">超级块</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">空闲块数量：</span><span class="mi">4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//最大能放多少个空闲块号是事先约定好的
+</span></span></span><span class="line"><span class="cl"><span class="mi">100</span>
+</span></span><span class="line"><span class="cl"><span class="mi">101</span>
+</span></span><span class="line"><span class="cl"><span class="mi">102</span>
+</span></span><span class="line"><span class="cl"><span class="mi">103</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">下一组：</span><span class="mi">200</span>
+</span></span></code></pre></div><p>注意：虽然每一组中 <strong>第一个块保存了信息</strong>，但是它 <strong>仍然是空闲块</strong>，在分配的时候仍然能够进行分配，只不过是最后一个进行分配，该块被分配标志着该组被分配完毕，将该块中的信息复制到超级块中。</p>
+<p><strong>如何进行分配（分配一个磁盘块）：</strong>
 <img src="http://tuchuang.mrlxl.cn/picture/20260610203627023.png" alt="分配一个磁盘块">
-<strong>分配一百个磁盘块：</strong>
-<img src="http://tuchuang.mrlxl.cn/picture/20260610204018640.png" alt="分配一百个磁盘块">
-<strong>如何进行回收：</strong>
-<img src="http://tuchuang.mrlxl.cn/picture/20260610204914596.png" alt="如何进行回收"></p>
+<strong>如何进行分配（分配一百个磁盘块）：</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260928200934574.png" alt="分配一百个磁盘块"></p>
+<p><strong>如何进行回收：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="err">把释放的空闲块</span> <span class="n">a</span> <span class="err">加入当前空闲块组</span> <span class="n">b</span><span class="err">（信息在超级块中，在超级块中进行操作）。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">若当前空闲块组</span> <span class="n">b</span> <span class="err">未满：</span>
+</span></span><span class="line"><span class="cl">    <span class="err">直接将块</span> <span class="n">a</span> <span class="err">加入空闲块组</span> <span class="n">b</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">若当前空闲块组</span> <span class="n">b</span> <span class="err">已满：</span>
+</span></span><span class="line"><span class="cl">    <span class="err">将当前空闲块组</span> <span class="n">b</span> <span class="err">的信息（空闲块数量和空闲块号）存入释放的块</span> <span class="n">a</span> <span class="err">中，</span>
+</span></span><span class="line"><span class="cl">    <span class="err">使块</span> <span class="n">a</span> <span class="err">成为新的空闲块组头。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">此时：</span>
+</span></span><span class="line"><span class="cl">    <span class="err">新的空闲块组</span> <span class="n">A</span> <span class="err">只包含块</span> <span class="n">a</span><span class="err">；</span>
+</span></span><span class="line"><span class="cl">    <span class="err">块</span> <span class="n">a</span> <span class="err">中保存原空闲块组</span> <span class="n">b</span> <span class="err">的数量和空闲块号；</span>
+</span></span><span class="line"><span class="cl">    <span class="err">超级块只记录新的空闲块组</span> <span class="n">A</span> <span class="err">的信息，即块</span> <span class="n">a</span> <span class="err">的地址。</span>
+</span></span></code></pre></div><p>注意：成组链接法中，空闲块组的大小由系统预先规定。当超级块中记录的当前空闲块组 <strong>数量达到该限制</strong> 时，称该组已满，而 <strong>非超级块物理空间被占满</strong>。</p>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260610204914596.png" alt="如何进行回收"></p>
 <h3 id="416-文件的几种基本操作">4.1.6 文件的几种基本操作</h3>
 <p>本小节思维导图如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260610233951533.png" alt="思维导图"></p>
@@ -1258,28 +1444,123 @@ of in on at for to from with by about between among through across during before
 <h4 id="4162-删除文件">4.1.6.2 删除文件</h4>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260610232951084.png" alt="删除文件"></p>
 <h4 id="4163-打开文件">4.1.6.3 打开文件</h4>
-<p>从目录表中复制到内存的 FCB 应该只是复制的关键信息，不是整个复制。
-<img src="http://tuchuang.mrlxl.cn/picture/20260610233644434.png" alt="打开文件"></p>
+<p>首先需要明晰 <strong>打开文件表</strong> 的概念，现代操作系统通常将其分成两级：</p>
+<ol>
+<li><strong>系统级打开文件表</strong>：</li>
+</ol>
+<table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>内容</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>文件号</td>
+          <td>系统为打开文件分配的编号</td>
+      </tr>
+      <tr>
+          <td>文件状态</td>
+          <td>打开方式（读/写等）</td>
+      </tr>
+      <tr>
+          <td>当前文件偏移量</td>
+          <td>当前读写位置</td>
+      </tr>
+      <tr>
+          <td><strong>文件FCB指针/索引节点编号</strong></td>
+          <td>指向内存中的 FCB 或 inode</td>
+      </tr>
+      <tr>
+          <td><strong>引用计数</strong></td>
+          <td>当前打开该文件的进程数</td>
+      </tr>
+  </tbody>
+</table>
+<ol start="2">
+<li><strong>进程级打开文件表</strong>：</li>
+</ol>
+<table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>内容</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>文件描述符fd</strong></td>
+          <td>用户使用的编号</td>
+      </tr>
+      <tr>
+          <td><strong>系统打开文件表索引</strong></td>
+          <td>指向系统级打开文件表</td>
+      </tr>
+      <tr>
+          <td><strong>打开权限</strong></td>
+          <td>本进程的访问权限</td>
+      </tr>
+  </tbody>
+</table>
+<p>打开文件的完整过程如下：</p>
+<p>首先，用户调用 open 系统调用并提供文件名后，操作系统首先根据文件名检索文件目录，找到对应的目录项，从而获得该文件的 FCB（采用索引节点机制时获得inode编号）。随后通过 <strong>索引节点编号</strong> 看内存中的打开文件表是否已有该文件对应项（不用管 FCB 模型）。</p>
+<p>若未打开：系统根据 FCB 或 inode 信息，将 <strong>文件控制信息加载到内存</strong>（将 FCB 或 inode 的部分信息存入内存）。同时在系统打开表中建立一个表项。并将 <strong>打开计数器设置为 1</strong>。</p>
+<p>若已打开：系统仅将对应表项的 <strong>计数器加 1</strong>。</p>
+<p>随后，操作系统在进程级打开文件表中建立对应表项，并将 <strong>文件的描述符</strong> 返还给用户进程，</p>
+<p><strong>注意：</strong> 所谓打开文件，并不是将整个文件调入到内存，而是将文件的 FCB 或 inode 相关控制信息调入到内存中，并通过打开文件表的表项字段指向这部分信息。还有 <strong>文件名并不是打开文件表的组成部分</strong>，系统通过文件名完成 FCB 和 inode 的定位之后，<strong>后续所有操作都不需要文件名，而是通过文件描述符进行。</strong></p>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260610233644434.png" alt="打开文件"></p>
 <h4 id="4164-关闭文件">4.1.6.4 关闭文件</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260610233817367.png" alt="关闭文件"></p>
+<p>当文件不再使用时，用户调用 close 关闭它。系统随即从该 <strong>进程的打开文件表中删除对应项</strong>，并将 <strong>系统打开文件表中相应项的打开计数器减 1</strong>。一旦计数器减至 0，表明该文件已无任何进程引用，系统便可安全地删除其在系统表中的项，并释放所占用的相关资源。
+<img src="http://tuchuang.mrlxl.cn/picture/20260610233817367.png" alt="关闭文件"></p>
 <h4 id="4165-读文件">4.1.6.5 读文件</h4>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260610232021642.png" alt="读文件"></p>
-<h4 id="4166-写文件">4.1.6.6 写文件</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">fd</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="n">O_RDONLY</span><span class="p">);</span>  <span class="c1">// 打开文件
+</span></span></span><span class="line"><span class="cl"><span class="nf">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>               <span class="c1">// 读取文件
+</span></span></span><span class="line"><span class="cl"><span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>                        <span class="c1">// 关闭文件
+</span></span></span></code></pre></div><h4 id="4166-写文件">4.1.6.6 写文件</h4>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260610232516268.png" alt="写文件"></p>
 <h3 id="417-文件共享">4.1.7 文件共享</h3>
 <p>本小节思维导图如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260611131121470.png" alt="思维导图"></p>
 <h4 id="4171-硬链接">4.1.7.1 硬链接</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260611132150015.png" alt="硬链接"></p>
-<h4 id="4172-软连接">4.1.7.2 软连接</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260611132604901.png" alt="软连接"></p>
+<p><strong>本质是多个文件名指向同一个 inode（直接不考虑早期的 FCB 模型）</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260611132150015.png" alt="硬链接">
+在 UNIX 的 inode 模型中，索引节点（inode）中存在一个 <strong>链接计数 count</strong>，用于记录当前指向它的目录项数量，当创建硬链接时，增加一个目录项指向该 inode，count 加 1；删除硬链接时，count 减 1。（注意：软链接的增加或减少不会改变该值）</p>
+<h4 id="4172-软连接符号链接">4.1.7.2 软连接（符号链接）</h4>
+<p>本质是创建一个新的文件，该文件保存目标文件的路径。</p>
+<p>例如：
+原文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">a</span><span class="p">.</span><span class="n">txt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> <span class="err">↓</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">inode</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> <span class="err">↓</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">数据块</span>
+</span></span></code></pre></div><p>创建软链接：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">b</span><span class="p">.</span><span class="n">txt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> <span class="err">↓</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">inode</span> <span class="mi">200</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> <span class="err">↓</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">内容：</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">&#34;a.txt的路径&#34;</span>
+</span></span></code></pre></div><p><img src="http://tuchuang.mrlxl.cn/picture/20260611132604901.png" alt="软连接"></p>
 <h3 id="418-文件保护">4.1.8 文件保护</h3>
 <p><strong>口令保护</strong>：
 <img src="http://tuchuang.mrlxl.cn/picture/20260611133344149.png" alt="口令保护">
 <strong>加密保护</strong>：
 <img src="http://tuchuang.mrlxl.cn/picture/20260611140538800.png" alt="加密保护">
 <strong>访问控制</strong>：
-<img src="http://tuchuang.mrlxl.cn/picture/20260611140916801.png" alt="访问控制"></p>
+<img src="http://tuchuang.mrlxl.cn/picture/20260611140916801.png" alt="访问控制">
+ACL 和 口令一样也存储在 FCB 中。</p>
 <h2 id="42-文件系统">4.2 文件系统</h2>
 <h3 id="421-文件系统结构">4.2.1 文件系统结构</h3>
 <p>文件系统结构构如下图所示：
@@ -1289,7 +1570,9 @@ of in on at for to from with by about between among through across during before
 <h3 id="422-文件系统布局">4.2.2 文件系统布局</h3>
 <p>新磁盘首先要进行 <strong>格式化</strong>，如图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260611154513257.png" alt="格式化">
-而前面提过的打开文件表在整个文件布局中的这个位置：
+BIOS 开机后首先读取磁盘第0扇区的主引导记录（MBR），MBR中的引导程序和分区表用于确定需要启动的系统分区。</p>
+<p>随后根据分区表找到对应分区的引导块（Boot Block），读取其中的启动程序，并由该程序进一步加载操作系统内核。</p>
+<p>而前面提过的打开文件表在整个文件布局中的这个位置：
 <img src="http://tuchuang.mrlxl.cn/picture/20260611154011392.png" alt="文件系统布局"></p>
 <h3 id="423-虚拟文件系统">4.2.3 虚拟文件系统</h3>
 <p>虚拟文件系统概念如下图所示：
@@ -1352,7 +1635,7 @@ of in on at for to from with by about between among through across during before
             <li><a href="#417-文件共享">4.1.7 文件共享</a>
               <ul>
                 <li><a href="#4171-硬链接">4.1.7.1 硬链接</a></li>
-                <li><a href="#4172-软连接">4.1.7.2 软连接</a></li>
+                <li><a href="#4172-软连接符号链接">4.1.7.2 软连接（符号链接）</a></li>
               </ul>
             </li>
             <li><a href="#418-文件保护">4.1.8 文件保护</a></li>
