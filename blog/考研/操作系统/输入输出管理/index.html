@@ -1038,8 +1038,10 @@ $$ \boxed{\text{CPU执行时间}=\text{指令条数}\times\text{CPI}\times\text{
 按使用特性分类（无明确界限）
 人机交互类外部设备 存储设备 网络通信设备 按传输速率分类（无明确界限）
 低速设备 中速设备 高速设备 按信息交换的单位分类
-块设备（传输快，可寻址） 字符设备（传输慢，不可寻址，常采用中断驱动方式） 5.1.2 I / O 接口（设备控制器） I / O 接口主要实现以下功能：
-接受和识别CPU发出的命令（要有控制寄存器） 向CPU报告设备的状态（要有状态寄存器） 数据交换（要有数据寄存器，暂存输入/输出的数据） 地址识别（由I/O逻辑实现） 其内部构造图与两种寄存器编址方式在《计算机组成原理》中已经介绍过，这里不再进行介绍，仅贴一张图： 5.1.3 I / O 控制方式 5.1.3.1 程序直接控制方式（程序查询方式） 5.1.3.2 中断驱动方式 5.1.3.3 DMA 方式 DMA 控制器的结构如下： DMA 方式过程如下： 5.1.4 I / O 软件的结构层次 5.1.4.1 I / O 软件的结构层次 其中又能够细分为 I / O 核心子系统，如图所示： ">输入输出管理</a>
+块设备（传输快，可寻址） 字符设备（传输慢，不可寻址，常采用中断驱动方式） 按共享属性分类
+独占设备：任一时刻仅允许一个进程使用。一旦分配给某进程，即由该进程独占，直至使用完毕后释放。典型的独占设备多为低速设备，如打印机。 共享设备：允许多个进程在逻辑上并发访问。尽管物理访问仍需调度协调，系统可将其分配给多个进程分时交替使用。磁盘是典型的共享设备。 虚拟设备：通过 SPOOLing 技术，将独占设备改造为多个逻辑设备，使多个进程能并发使用。其实质是利用高速共享设备（如磁盘）作为缓冲区，实现独占设备的逻辑共享。 5.1.2 I / O 接口（设备控制器） I / O 接口主要实现以下功能：
+接受和识别CPU发出的命令（要有控制寄存器） 向CPU报告设备的状态（要有状态寄存器） 数据交换（要有数据寄存器，暂存输入/输出的数据） 地址识别（由I/O逻辑实现） 其内部构造图与两种寄存器编址方式在《计算机组成原理》中已经介绍过，这里不再进行介绍，仅贴一张图： 5.1.3 I / O 控制方式 5.1.3.1 程序直接控制方式（程序查询方式） 5.1.3.2 中断驱动方式 5.1.3.3 DMA 方式 DMA 控制器的结构如下： DMA 方式过程如下： 5.1.4 I / O 软件的结构层次 I/O 软件是 用户程序 与 I / O设备 之间的中间管理层。
+">输入输出管理</a>
         
       </div>
     </li>
@@ -1183,8 +1185,16 @@ of in on at for to from with by about between among through across during before
 <li>
 <p>按信息交换的单位分类</p>
 <ul>
-<li>块设备（传输快，可寻址）</li>
-<li>字符设备（传输慢，不可寻址，常采用中断驱动方式）</li>
+<li><strong>块设备（传输快，可寻址）</strong></li>
+<li><strong>字符设备（传输慢，不可寻址，常采用中断驱动方式）</strong></li>
+</ul>
+</li>
+<li>
+<p>按共享属性分类</p>
+<ul>
+<li><strong>独占设备</strong>：任一时刻仅允许一个进程使用。一旦分配给某进程，即由该进程独占，直至使用完毕后释放。典型的独占设备多为低速设备，如打印机。</li>
+<li><strong>共享设备</strong>：允许多个进程在逻辑上并发访问。尽管物理访问仍需调度协调，系统可将其分配给多个进程分时交替使用。磁盘是典型的共享设备。</li>
+<li><strong>虚拟设备</strong>：通过 SPOOLing 技术，将独占设备改造为多个逻辑设备，使多个进程能并发使用。其实质是利用高速共享设备（如磁盘）作为缓冲区，实现独占设备的逻辑共享。</li>
 </ul>
 </li>
 </ol>
@@ -1210,6 +1220,7 @@ of in on at for to from with by about between among through across during before
 DMA 方式过程如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260614140912145.png" alt="DMA 方式"></p>
 <h3 id="514-i--o-软件的结构层次">5.1.4 I / O 软件的结构层次</h3>
+<p>I/O 软件是 <strong>用户程序 与 I / O设备</strong> 之间的中间管理层。</p>
 <h4 id="5141-i--o-软件的结构层次">5.1.4.1 I / O 软件的结构层次</h4>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260614144040817.png" alt="I / O 软件的结构层次">
 其中又能够细分为 <strong>I / O 核心子系统</strong>，如图所示：
@@ -1220,28 +1231,38 @@ DMA 方式过程如下：
 <li>让应用程序无需关心底层硬件的具体实现细节。</li>
 <li>使新设备能够以模块化的方式方便的加入系统，而无需改动内核代码。</li>
 </ol>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260614151746310.png" alt="应用程序接口">
-这里顺便提一句什么是 <strong>阻塞与非阻塞 I / O 设备</strong>：</p>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260614151746310.png" alt="应用程序接口"></p>
+<p>根据进程发出 I / O 请求之后，操作系统如何处理这个进程的状态分为 <strong>阻塞与非阻塞 I / O</strong>：</p>
 <ol>
 <li><strong>阻塞 I/O</strong>：应用程序发出 I/O 系统调用，进程需转为阻塞态等待。
 eg：字符设备接口 —— 从键盘读一个字符 get</li>
 <li><strong>非阻塞 I/O</strong>：应用程序发出 I/O 系统调用，系统调用可迅速返回，进程无需阻塞等待。
 eg：块设备接口 —— 往磁盘写数据 write</li>
 </ol>
-<h4 id="5143-驱动程序接口">5.1.4.3 驱动程序接口</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260614152308202.png" alt="驱动程序接口"></p>
-<h4 id="5144-假脱机技术spooling技术">5.1.4.4 假脱机技术（SPOOLing技术）</h4>
-<p>本小节思维导图如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260615223956679.png" alt="思维导图">
-假脱机技术是为了缓和 CPU 的高速性与 I / O 设备低速性之间的矛盾。其思想来源于早期的 <strong>脱机 I / O 方式</strong>：
-<img src="http://tuchuang.mrlxl.cn/picture/20260615224225691.png" alt="脱机 I / O 方式">
-在输入的时候，外围机将低速输入设备（如纸带机）上的数据预先读入高速磁盘。
-在输出的时候，CPU 先将结果高速写入磁盘，再由外围机将数据送至低速输出设备（如打印机）。</p>
-<p>而现代常用软件的方式对脱机技术进行实现，因此叫做 <strong>假脱机技术</strong>。假就体现在 <strong>以多道程序和磁盘空间代替外围机</strong>，<strong>进而将一台物理独占设备虚拟为多台逻辑设备，实现设备共享</strong>：
-<img src="http://tuchuang.mrlxl.cn/picture/20260615225218417.png" alt="假脱机技术">
-通过 <strong>共享打印机</strong> 这种案例进行进一步的熟悉：
-<img src="http://tuchuang.mrlxl.cn/picture/20260615225642475.png" alt="共享打印机"></p>
-<h4 id="5145-设备的分配与回收">5.1.4.5 设备的分配与回收</h4>
+<h3 id="515-设备独立性软件">5.1.5 设备独立性软件</h3>
+<h4 id="5151-缓冲区管理">5.1.5.1 缓冲区管理</h4>
+<p>本小节 <strong>思维导图</strong> 如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260616204930568.png" alt="思维导图">
+关于 <strong>缓冲区的作用</strong>，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260616205216830.png" alt="缓冲区的作用">
+而缓冲区又分为单缓冲区和双缓冲区的情况。</p>
+<p><strong>单缓冲区</strong> ：
+假设设备向缓冲区写入一块数据的时间为 T，操作系统将缓冲区数据送到用户工作区的时间是 M，CPU 处理一块的数据时间是 C。</p>
+<p>不难看出，设备向数据写入的时间和 CPU 处理前一块数据的时间是能够并行的，因此，<strong>单缓冲区处理每块数据平均耗时</strong> 是具有不同的情况的，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260616205858135.png" alt="单缓冲区">
+注意：<strong>单缓冲区中，数据到缓冲区</strong> 和 <strong>数据从缓冲区到用户区，这段时间是不能并行的</strong>。</p>
+<hr>
+<p><strong>双缓冲区</strong> 的情况如下图所示：
+仍假设设备向缓冲区写入一块数据的时间为 T，操作系统将缓冲区数据送到用户工作区的时间是 M，CPU 处理一块的数据时间是 C。</p>
+<p><strong>双缓冲区处理每块数据平均耗时</strong> 是具有不同的情况的，如下图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260616210414134.png" alt="双缓冲区">
+不难理解，若采用单缓冲区的策略，在通信的时候，任一时刻只能实现数据的单向传输。若采用双缓冲区的策略，在通信的时候，同一时刻能够实现数据的双向传输。</p>
+<p>另外关于 <strong>循环缓冲区</strong> 的概念，简单了解即可：
+<img src="http://tuchuang.mrlxl.cn/picture/20260616210740327.png" alt="循环缓冲区"></p>
+<p>关于 <strong>缓冲池</strong> 的概念如下所示：
+缓冲池是一种包含管理数据结构的操作函数的软件机制，用于统一的管理多个缓冲区，并支持多进程共享使用。
+<img src="http://tuchuang.mrlxl.cn/picture/20260616211141798.png" alt="缓冲池"></p>
+<h4 id="5152-设备的分配与回收">5.1.5.2 设备的分配与回收</h4>
 <p>本小节思维导图如下：
 <img src="http://tuchuang.mrlxl.cn/picture/20260615225937069.png" alt="思维导图">
 首先关于设备的分配与回收，我们 <strong>需要考虑如下因素</strong>：
@@ -1252,21 +1273,22 @@ eg：块设备接口 —— 往磁盘写数据 write</li>
 <img src="http://tuchuang.mrlxl.cn/picture/20260615231312921.png" alt="设备分配的步骤">
 关于上述步骤的缺点，我们还能够做如下这些 <strong>步骤改进</strong>：
 <img src="http://tuchuang.mrlxl.cn/picture/20260615231603274.png" alt="步骤改进"></p>
-<h4 id="5146-缓冲区管理">5.1.4.6 缓冲区管理</h4>
-<p>本小节 <strong>思维导图</strong> 如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260616204930568.png" alt="思维导图">
-关于 <strong>缓冲区的作用</strong>，如图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260616205216830.png" alt="缓冲区的作用">
-而缓冲区又分为单缓冲区和双缓冲区的情况，
-<strong>单缓冲区</strong> 的情况如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260616205858135.png" alt="单缓冲区">
-<strong>双缓冲区</strong> 的情况如下图所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260616210414134.png" alt="双缓冲区">
-不难理解，若采用单缓冲区的策略，在通信的时候，任一时刻只能实现数据的单向传输。若采用双缓冲区的策略，在通信的时候，同一时刻能够实现数据的双向传输。</p>
-<p>另外关于 <strong>循环缓冲区</strong> 的概念，简单了解即可：
-<img src="http://tuchuang.mrlxl.cn/picture/20260616210740327.png" alt="循环缓冲区">
-关于 <strong>缓冲池</strong> 的概念如下所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20260616211141798.png" alt="缓冲池"></p>
+<h4 id="5153-假脱机技术spooling技术">5.1.5.3 假脱机技术（SPOOLing技术）</h4>
+<p><strong>假脱机技术主要目的是将独占设备变成从用户角度看起来的共享设备（即虚拟设备）。</strong></p>
+<p>本小节思维导图如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260615223956679.png" alt="思维导图">
+假脱机技术是为了缓和 CPU 的高速性与 I / O 设备低速性之间的矛盾而被操作系统引入的。其思想来源于早期的 <strong>脱机 I / O 方式</strong>：
+<img src="http://tuchuang.mrlxl.cn/picture/20260615224225691.png" alt="脱机 I / O 方式">
+在输入的时候，外围机将低速输入设备（如纸带机）上的数据预先读入高速磁盘。
+在输出的时候，CPU 先将结果高速写入磁盘，再由外围机将数据送至低速输出设备（如打印机）。</p>
+<p>而现代常用软件的方式对脱机技术进行实现，因此叫做 <strong>假脱机技术</strong>。假就体现在 <strong>以多道程序和磁盘空间代替外围机</strong>，<strong>进而将一台物理独占设备虚拟为多台逻辑设备，实现设备共享</strong>：
+<img src="http://tuchuang.mrlxl.cn/picture/20260615225218417.png" alt="假脱机技术">
+输入进程：把独占设备输入的数据，先送到 <strong>输入井（磁盘）</strong>，供以后进程使用
+输出进程：从 <strong>输出井（磁盘）</strong> 取出进程要输出的数据，再送到独占设备</p>
+<p>通过 <strong>共享打印机</strong> 这种案例进行进一步的熟悉：
+<img src="http://tuchuang.mrlxl.cn/picture/20260615225642475.png" alt="共享打印机"></p>
+<h4 id="5151-驱动程序接口">5.1.5.1 驱动程序接口</h4>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260614152308202.png" alt="驱动程序接口"></p>
 <h2 id="52-磁盘和固态硬盘">5.2 磁盘和固态硬盘</h2>
 <h3 id="521-磁盘的结构">5.2.1 磁盘的结构</h3>
 <p><strong>磁盘的结构</strong> 如图所示：
@@ -1287,9 +1309,11 @@ eg：块设备接口 —— 往磁盘写数据 write</li>
 <h4 id="5224-look-算法">5.2.2.4 LOOK 算法</h4>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260616220245624.png" alt="LOOK 算法"></p>
 <h4 id="5225-c-scan-算法">5.2.2.5 C-SCAN 算法</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260616220504862.png" alt="C-SCAN"></p>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260616220504862.png" alt="C-SCAN">
+<strong>注意：快速移动的过程中不处理任何请求！</strong></p>
 <h4 id="5226-c-look-算法">5.2.2.6 C-LOOK 算法</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260616220603091.png" alt="C-LOOK"></p>
+<p><img src="http://tuchuang.mrlxl.cn/picture/20260616220603091.png" alt="C-LOOK">
+<strong>注意：快速移动的过程中不处理任何请求！</strong></p>
 <h3 id="523-减少磁盘延迟时间的方法">5.2.3 减少磁盘延迟时间的方法</h3>
 <p>前面说的磁盘调度算法，优化的只能是寻道时间，而下面介绍的是关于其他方面优化的方法。
 本小节思维导图如下图所示：
@@ -1299,20 +1323,102 @@ eg：块设备接口 —— 往磁盘写数据 write</li>
 <h4 id="5232-磁盘地址结构的设计">5.2.3.2 磁盘地址结构的设计</h4>
 <p><img src="http://tuchuang.mrlxl.cn/picture/20260617211100799.png" alt="磁盘地址结构的设计"></p>
 <h4 id="5233-错位命名">5.2.3.3 错位命名</h4>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20260617211428493.png" alt="错位命名"></p>
+<p>交替编号解决的是早期磁盘转速和磁头读取速度不同步的问题，而错位编号解决的是<strong>跨磁道读取时的衔接问题。</strong></p>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="err">磁道</span><span class="mi">1</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl">  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span>  <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">  <span class="err">↑</span>
+</span></span><span class="line"><span class="cl">  <span class="err">这一圈读完</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">磁道</span><span class="mi">2</span><span class="err">：</span>
+</span></span><span class="line"><span class="cl">        <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span>  <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">        <span class="err">↑</span>
+</span></span><span class="line"><span class="cl">        <span class="err">错开一个位置</span>
+</span></span></code></pre></div><p>当磁头从磁道1切换到磁道2时，磁盘仍然在旋转。</p>
+<p>如果两个磁道的“1号扇区”完全对齐：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="err">磁道</span><span class="mi">1</span><span class="err">：</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">        <span class="err">↑</span>
+</span></span><span class="line"><span class="cl"><span class="err">磁道</span><span class="mi">2</span><span class="err">：</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">        <span class="err">↑</span>
+</span></span></code></pre></div><p>切换过去后，可能已经错过了磁道2的第一个扇区，需要再转一圈。</p>
+<p>错位命名就是故意让不同磁道的编号位置错开，使磁头切换后能够及时读到下一个逻辑扇区。</p>
+<p>如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20260617211428493.png" alt="错位命名"></p>
 <h3 id="524-磁盘的管理">5.2.4 磁盘的管理</h3>
 <p>磁盘刚开始使用要进行 <strong>磁盘的初始化</strong>，即低级格式化：
 <img src="http://tuchuang.mrlxl.cn/picture/20260617211602250.png" alt="磁盘的初始化">
-<strong>引导块</strong> 的概念如下：
-注意：磁盘上专门存放引导程序的一块区域叫做引导块，不是 BIOS 芯片。
-<img src="http://tuchuang.mrlxl.cn/picture/20260617212236957.png" alt="引导块">
-对于 <strong>坏块的处理</strong> 如下图所示：
+由于扇区单位过小，为提高 I/O 效率，操作系统将多个连续扇区组合成 <strong>一簇（在文件系统中也称块）</strong>。为简化管理，<strong>通常将一簇分配给单个文件</strong>，因此文件占用空间为 <strong>簇的整数倍</strong>；即使文件大小小于一簇（甚至为 0 字节），仍需占用一整簇空间。</p>
+<p><strong>引导块</strong>：
+引导块是用来存放操作系统的引导程序的一块地方。</p>
+<p>传统 BIOS + MBR 启动过程可概括为：<strong>BIOS → MBR引导代码 → 分区引导程序 → 操作系统引导程序 → 操作系统内核</strong>。
+<img src="http://tuchuang.mrlxl.cn/picture/20260617212236957.png" alt="引导块"></p>
+<p><strong>坏块的处理</strong>：
+如下图所示：
 <img src="http://tuchuang.mrlxl.cn/picture/20260617212713730.png" alt="坏块的处理*"></p>
+<p><strong>低级格式化（物理格式化）</strong> 与 <strong>高级格式化（逻辑格式化）</strong> 对比如下：</p>
+<table>
+  <thead>
+      <tr>
+          <th>对比</th>
+          <th>低级格式化（物理格式化）</th>
+          <th>高级格式化（逻辑格式化）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>对象</strong></td>
+          <td>磁盘的物理结构</td>
+          <td>文件系统</td>
+      </tr>
+      <tr>
+          <td><strong>主要目的</strong></td>
+          <td>建立磁盘的基本物理存储格式</td>
+          <td>建立文件和目录的管理结构</td>
+      </tr>
+      <tr>
+          <td><strong>主要操作</strong></td>
+          <td>划分磁道、扇区等物理结构（磁盘分区指的是分扇区而不是分 C D 区，那是一个人为的操作）</td>
+          <td>建立文件系统的数据结构</td>
+      </tr>
+      <tr>
+          <td><strong>扇区</strong></td>
+          <td>对扇区进行划分、设置相应控制信息</td>
+          <td>利用这些扇区组织文件系统</td>
+      </tr>
+      <tr>
+          <td><strong>文件系统</strong></td>
+          <td>❌ 不建立具体文件系统</td>
+          <td>✅ 建立文件系统</td>
+      </tr>
+      <tr>
+          <td><strong>目录</strong></td>
+          <td>❌</td>
+          <td>✅ 建立目录结构</td>
+      </tr>
+      <tr>
+          <td><strong>空闲空间管理</strong></td>
+          <td>❌</td>
+          <td>✅ 建立空闲空间管理结构</td>
+      </tr>
+      <tr>
+          <td><strong>文件管理信息</strong></td>
+          <td>❌</td>
+          <td>✅ 建立相应元数据</td>
+      </tr>
+      <tr>
+          <td><strong>典型结果</strong></td>
+          <td>磁盘具备基本的物理读写单位</td>
+          <td>磁盘可以按照某种文件系统存储文件</td>
+      </tr>
+  </tbody>
+</table>
 <h3 id="525-固态硬盘">5.2.5 固态硬盘</h3>
+<p>固态硬盘（SSD）是一种基于 <strong>闪存技术</strong>（前面讲过的 ROM）的存储设备。其存储介质与 U 盘 类似，但容量更大，存储性能更优。</p>
 <p>本小节思维导图如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20260617213103564.png" alt="思维导图">
-固态硬盘（SSD）是一种基于<strong>闪存技术</strong>（前面讲过的 ROM）的存储设备。其存储介质与 U 盘 类似，但容量更大，存储性能更优。
-而固态硬盘具体长下面这个样子，由于 <strong>“块、页”</strong> 等术语经常会在 408 中的不同地方出现，注意进行区分，<strong>可以把块看成磁盘中的磁道，页看成磁道对应的扇区。</strong>
+<img src="http://tuchuang.mrlxl.cn/picture/20260617213103564.png" alt="思维导图"></p>
+<p>动态磨损均衡：只在 <strong>动态变化的数据块之间</strong> 进行磨损均衡。
+静态磨损均衡：连长期不变的 <strong>静态数据</strong> 也会搬移至高磨损块，使整个闪存的擦写次数更加均匀。通常比动态磨损均衡 <strong>表现性能更优</strong>。</p>
+<p>而固态硬盘具体长下面这个样子，<strong>读写以页为单位进行</strong>，<strong>擦除以块的单位进行</strong>。由于 <strong>“块、页”</strong> 等术语经常会在 408 中的不同地方出现，注意进行区分，可以把块看成磁盘中的磁道，页看成磁道对应的扇区。
 <img src="http://tuchuang.mrlxl.cn/picture/20260428210712893.png" alt="固态硬盘">
 最后放个图，<strong>机械硬盘（磁盘）和固态硬盘</strong>的真实样子：
 <img src="http://tuchuang.mrlxl.cn/picture/20260428211014775.png" alt="机械硬盘（磁盘）和固态硬盘"></p>
@@ -1342,10 +1448,14 @@ eg：块设备接口 —— 往磁盘写数据 write</li>
               <ul>
                 <li><a href="#5141-i--o-软件的结构层次">5.1.4.1 I / O 软件的结构层次</a></li>
                 <li><a href="#5142-输入输出应用程序接口应用程序接口">5.1.4.2 输入输出应用程序接口（应用程序接口）</a></li>
-                <li><a href="#5143-驱动程序接口">5.1.4.3 驱动程序接口</a></li>
-                <li><a href="#5144-假脱机技术spooling技术">5.1.4.4 假脱机技术（SPOOLing技术）</a></li>
-                <li><a href="#5145-设备的分配与回收">5.1.4.5 设备的分配与回收</a></li>
-                <li><a href="#5146-缓冲区管理">5.1.4.6 缓冲区管理</a></li>
+              </ul>
+            </li>
+            <li><a href="#515-设备独立性软件">5.1.5 设备独立性软件</a>
+              <ul>
+                <li><a href="#5151-缓冲区管理">5.1.5.1 缓冲区管理</a></li>
+                <li><a href="#5152-设备的分配与回收">5.1.5.2 设备的分配与回收</a></li>
+                <li><a href="#5153-假脱机技术spooling技术">5.1.5.3 假脱机技术（SPOOLing技术）</a></li>
+                <li><a href="#5151-驱动程序接口">5.1.5.1 驱动程序接口</a></li>
               </ul>
             </li>
           </ul>
