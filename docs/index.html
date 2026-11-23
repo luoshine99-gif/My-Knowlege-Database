@@ -210,6 +210,18 @@ window.MathJax = {
     <li>
       <div class="tree-item-wrapper">
         <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%89%E5%85%A8/" class="article-link" data-summary="云原生安全 一. docker 逃逸 docker 简单来说就是一个利用操作系统实现的逻辑上独立的空间。那么 docker 逃逸即为获取 docker 容器权限之后，如何跳出 docker 容器，实现真机的控制。
+1.1 docker 空间识别 获取到一个机器的权限之后，第一件事 是去判断这个容器是否为 docker 容器，有以下几条命令去判断当前属于 docker 环境而并非真机环境：
+检查方式 命令 判断依据 Docker 标记文件 ls -la /.dockerenv 文件存在是 Docker 常见标志 进程信息 cat /proc/1/cgroup 查看进程所属的控制组 操作系统信息 cat /etc/os-release 查看当前用户空间发行版 命名空间 ls -l /proc/1/ns/ 查看进程的命名空间信息 1.2 docker 特权模式判断与利用 判断这个容器是否为特权模式启动： Docker 的特权模式由启动容器时的 &amp;amp;ndash;privileged 参数控制。 执行以下命令，判断当前是否为特权模式:
+CAPHEX=$(awk &amp;amp;#39;/CapEff/ {print $2}&amp;amp;#39; /proc/self/status) CAPDEC=$((16#$CAPHEX)) if [ $((CAPDEC &amp;amp;amp; 0x200000)) -ne 0 ]; then echo &amp;amp;#34;Privileged: CAP_SYS_ADMIN set (CapEff=$CAPHEX)&amp;amp;#34; else echo &amp;amp;#34;Not privileged: CAP_SYS_ADMIN missing (CapEff=$CAPHEX)&amp;amp;#34; fi 这里展示一个如何利用特权模式进行的 docker 容器的逃逸： 通过这个实验也能看出，若有些镜像本身就存在一些问题，比如镜像提前预埋了反弹链接那么当你用特权模式进行启动容器的时候就会出现钓鱼攻击的情况。
+">云原生安全</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
         <a href="../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="云原生基础知识 正式开始云原生安全的学习，首先了解一下相关的基础知识
 常见名词 记录一些常见的专业术语的意思
 容器 这玩意打CTF的应该都比较熟悉
