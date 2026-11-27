@@ -6,7 +6,14 @@
     <description>Recent content in API安全 on mrlxl的知识库</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <lastBuildDate></lastBuildDate>
+    <lastBuildDate>Fri, 27 Nov 2026 19:36:52 +0800</lastBuildDate>
     <atom:link href="https://luoshine99-gif.github.io/blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/api%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>API安全</title>
+      <link>https://luoshine99-gif.github.io/blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/api%E5%AE%89%E5%85%A8/api%E5%AE%89%E5%85%A8/</link>
+      <pubDate>Fri, 27 Nov 2026 00:00:00 +0800</pubDate>
+      <guid>https://luoshine99-gif.github.io/blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/api%E5%AE%89%E5%85%A8/api%E5%AE%89%E5%85%A8/</guid>
+      <description>&lt;h1 id=&#34;api安全&#34;&gt;API安全&lt;/h1&gt;&#xA;&lt;h2 id=&#34;一-api基础知识&#34;&gt;一. API基础知识&lt;/h2&gt;&#xA;&lt;h3 id=&#34;11-api-概念&#34;&gt;1.1 API 概念&lt;/h3&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;API 全称：&lt;strong&gt;Application Programming Interface 应用编程接口&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;简单来说，API 就是服务器对外开的一个“窗口”，外部程序通过这个窗口按规则请求功能，服务器返回结果。&lt;strong&gt;只要是用于规范“如何调用功能、如何交换数据”的接口，都可以抽象成为 API。&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;12-api-标准&#34;&gt;1.2 API 标准&lt;/h3&gt;&#xA;&lt;p&gt;API 标准的 &lt;strong&gt;API 文档最小完备集合&lt;/strong&gt; 包含以下&lt;strong&gt;八点&lt;/strong&gt;，任何一个对外 API，少一个都算 “不规范” ：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;服务器地址：&lt;/strong&gt; 用于说明 API 所在的服务器域名或 IP 地址。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;通信协议 / 通信地址（Protocol）：&lt;/strong&gt; 指明接口采用的通信协议，如 HTTP 或 HTTPS，其中 HTTPS 为当前主流的安全通信方式。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Endpoint（接口路径）：&lt;/strong&gt; 采用一个接口（接口功能）对应一个 url 这样是非常方便的。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;版本：&lt;/strong&gt; 防止接口升级，与其对接的其他系统没有改，导致客户端炸了。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;消息格式：&lt;/strong&gt; 数据长什么样，是 XML，json? 2026年最近几年常用的是 json。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;请求响应字段描述：&lt;/strong&gt; 对接口请求参数和返回数据的字段名称、类型、含义及是否必填进行详细说明，是 API 文档的核心部分。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;响应码：&lt;/strong&gt; 程序判断成功/失败的依据，响应码的描述就是是给非技术业务人员看的那些，本质就是像 IDE 中代码报错内容的再封装。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;接口安全要求：&lt;/strong&gt; 身份认证，鉴权，比如 API Key。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;详细结构可参考 &lt;strong&gt;OpenAPI 规范（以前也叫 Swagger 规范，是应用及其广泛的规范）&lt;/strong&gt; ，这是一个将 API 的各项定义和结构以“图/树”的方式展示出来，帮助开发者理解规范本身的组织和含义的 &lt;strong&gt;可视化浏览规范&lt;/strong&gt;（末尾链接）&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>

